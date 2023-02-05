@@ -8,8 +8,8 @@ import {
   TuiRootModule,
   TUI_ANIMATIONS_DURATION,
 } from '@taiga-ui/core';
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app.routing';
 
 const TAIGA_UI = [TuiRootModule, TuiAlertModule, TuiDialogModule];
 
