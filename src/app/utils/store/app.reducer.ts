@@ -3,7 +3,7 @@ import { AppApiAction } from './app.api.actions';
 import { AppPageAction } from './app.page.actions';
 import { AppState } from './app.state';
 
-const initialState: AppState = {
+export const initialState: AppState = {
   user: null,
   status: 'idle',
 };

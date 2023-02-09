@@ -50,16 +50,18 @@ describe('LoginComponentStore', () => {
   });
 
   it('should have initial state', () => {
-    expect(store.status$).toBeObservable(cold('a', { a: 'idle' }));
+    const expected = cold('a', { a: 'idle' });
+    expect(store.status$).toBeObservable(expected);
   });
 
   describe('Effect login', () => {
     it('[Called] should patch state `loading`', () => {
       mockUserService.login.and.returnValue(cold('--|'));
+      const expected = cold('a', { a: 'loading' });
 
       store.login({ userName: '', password: '' });
 
-      expect(store.status$).toBeObservable(cold('a', { a: 'loading' }));
+      expect(store.status$).toBeObservable(expected);
       expect(mockUserService.login).toHaveBeenCalled();
     });
 
@@ -85,11 +87,11 @@ describe('LoginComponentStore', () => {
 
     it('[Error] should patch state `error`', fakeAsync(() => {
       mockUserService.login.and.returnValue(cold('--#'));
+      const expected = cold('a-b', { a: 'loading', b: 'error' });
+
       store.login({ userName: '', password: '' });
 
-      expect(store.status$).toBeObservable(
-        cold('a-b', { a: 'loading', b: 'error' })
-      );
+      expect(store.status$).toBeObservable(expected);
     }));
   });
 });
