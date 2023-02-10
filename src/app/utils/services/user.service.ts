@@ -1,10 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
+import { Result } from '@esm/cdk';
+import { AppEnv, APP_ENV } from '@esm/core';
+import { GeneratedToken, LoginRequest, UserSummary } from '@esm/data';
 import { Observable } from 'rxjs';
-import { AppEnv, APP_ENV } from 'src/core/config';
-import { Result } from 'src/cdk/models';
-import { GeneratedToken, UserSummary } from 'src/data/models';
-import { LoginRequest } from 'src/data/requests';
 
 @Injectable({
   providedIn: 'root',

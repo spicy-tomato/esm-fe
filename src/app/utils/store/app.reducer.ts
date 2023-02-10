@@ -6,6 +6,7 @@ import { AppState } from './app.state';
 export const initialState: AppState = {
   user: null,
   status: 'idle',
+  breadcrumbs: []
 };
 
 export const appFeatureKey = '[NGRX Key] App';

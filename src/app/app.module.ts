@@ -2,6 +2,9 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { inject, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { emailFactory, requiredFactory } from '@esm/cdk';
+import { AuthInterceptor } from '@esm/interceptors';
+import { AppEffects, appFeatureKey, appReducer } from '@esm/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -11,11 +14,10 @@ import {
   TuiDialogModule,
   TuiRootModule,
   TUI_ANIMATIONS_DURATION,
+  TUI_SANITIZER
 } from '@taiga-ui/core';
 import { TUI_VALIDATION_ERRORS } from '@taiga-ui/kit';
-import { AuthInterceptor } from 'src/app/utils/interceptors/auth.interceptor';
-import { AppEffects, appFeatureKey, appReducer } from 'src/app/utils/store';
-import { emailFactory, requiredFactory } from 'src/cdk/factories';
+import { NgDompurifySanitizer } from '@tinkoff/ng-dompurify';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
 
@@ -46,8 +48,8 @@ const TAIGA_UI = [TuiRootModule, TuiAlertModule, TuiDialogModule];
       multi: true,
     },
     {
-      provide: TUI_ANIMATIONS_DURATION,
-      useFactory: (): number => (inject(TUI_IS_CYPRESS) ? 0 : 300),
+      provide: TUI_SANITIZER,
+      useClass: NgDompurifySanitizer,
     },
     {
       provide: TUI_VALIDATION_ERRORS,
@@ -55,6 +57,10 @@ const TAIGA_UI = [TuiRootModule, TuiAlertModule, TuiDialogModule];
         required: requiredFactory,
         email: emailFactory,
       },
+    },
+    {
+      provide: TUI_ANIMATIONS_DURATION,
+      useFactory: (): number => (inject(TUI_IS_CYPRESS) ? 0 : 300),
     },
   ],
   bootstrap: [AppComponent],

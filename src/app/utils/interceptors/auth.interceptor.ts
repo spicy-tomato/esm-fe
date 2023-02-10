@@ -5,8 +5,8 @@ import {
   HttpRequest,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { TokenService } from '@esm/cdk';
 import { Observable } from 'rxjs';
-import { TokenService } from 'src/cdk/services/token.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {

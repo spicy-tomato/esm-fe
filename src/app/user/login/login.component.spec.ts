@@ -2,8 +2,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { APP_ENV } from '@esm/core';
 import { provideMockStore } from '@ngrx/store/testing';
-import { APP_ENV } from 'src/core/config';
 import { LoginComponent } from './login.component';
 import { NGRX, TAIGA_UI } from './login.module';
 

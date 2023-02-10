@@ -21,7 +21,33 @@
     "lib": [
       "es2020",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@esm/cdk": [
+        "src/cdk"
+      ],
+      "@esm/core": [
+        "src/core"
+      ],
+      "@esm/data": [
+        "src/data"
+      ],
+      "@esm/interceptors": [
+        "src/app/utils/interceptors"
+      ],
+      "@esm/services": [
+        "src/app/utils/services"
+      ],
+      "@esm/shared/components": [
+        "src/app/shared/components"
+      ],
+      "@esm/shared/directives": [
+        "src/app/shared/directives"
+      ],
+      "@esm/store": [
+        "src/app/utils/store"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

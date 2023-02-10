@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { TokenService } from '@esm/cdk';
+import { UserService } from '@esm/services';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of, tap } from 'rxjs';
-import { UserService } from 'src/app/utils/services/user.service';
-import { TokenService } from 'src/cdk/services/token.service';
 import { AppApiAction } from './app.api.actions';
 import { AppPageAction } from './app.page.actions';
 
@@ -29,9 +29,9 @@ export class AppEffects {
     () => {
       return this.actions$.pipe(
         ofType(AppPageAction.logOut),
-        tap(() => {
+        tap(async () => {
           this.tokenService.clear();
-          this.router.navigate(['']);
+          await this.router.navigate(['']);
         })
       );
     },

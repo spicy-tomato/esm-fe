@@ -4,7 +4,7 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { fakeAsync, TestBed } from '@angular/core/testing';
-import { TokenService } from 'src/cdk/services/token.service';
+import { TokenService } from '@esm/cdk';
 import { AuthInterceptor } from './auth.interceptor';
 
 describe('AuthInterceptor', () => {

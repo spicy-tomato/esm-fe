@@ -2,11 +2,11 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-import { AppEnv } from "src/core/config";
+import { AppEnv } from '@esm/core';
 
 export const environment: AppEnv = {
   production: false,
-  baseUrl: 'http://localhost:5001/'
+  baseUrl: 'http://localhost:5001/',
 };
 
 /*

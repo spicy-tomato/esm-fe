@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { NonNullableFormBuilder, Validators } from '@angular/forms';
+import { slideUp, StringHelper } from '@esm/core';
 import { TuiDestroyService } from '@taiga-ui/cdk';
 import { tap } from 'rxjs';
-import { slideUp } from 'src/core/animations/slide-up.animation';
-import { StringHelper } from 'src/core/utils';
 import { LoginStore } from './login.store';
 
 @Component({

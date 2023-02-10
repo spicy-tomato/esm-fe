@@ -11,6 +11,7 @@ describe('AppSelector', () => {
   const initialState: AppState = {
     status: 'success',
     user: mockLoggedInUser,
+    breadcrumbs: []
   };
 
   it('should return the default state', () => {

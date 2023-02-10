@@ -11,4 +11,9 @@ export class AppSelector {
     this.selector,
     (state) => state.status
   );
+  static readonly permissions = createSelector(this.selector, () => [0]);
+  static readonly breadcrumbs = createSelector(
+    this.selector,
+    (state) => state.breadcrumbs
+  );
 }

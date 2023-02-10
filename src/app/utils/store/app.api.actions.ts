@@ -1,5 +1,5 @@
+import { UserSummary } from '@esm/data';
 import { createAction, props } from '@ngrx/store';
-import { UserSummary } from 'src/data/models';
 
 export class AppApiAction {
   static readonly noCacheUserInfo = createAction(

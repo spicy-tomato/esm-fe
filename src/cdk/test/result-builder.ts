@@ -1,4 +1,4 @@
-import { Result } from 'src/cdk/models';
+import { Result } from '@esm/cdk';
 
 export class ResultBuilder {
   static success<T>(data: T): Result<T> {

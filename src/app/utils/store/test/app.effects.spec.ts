@@ -1,14 +1,14 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import { TokenService } from '@esm/cdk';
+import { APP_ENV } from '@esm/core';
+import { UserService } from '@esm/services';
+import { AppEffects } from '@esm/store';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable, of } from 'rxjs';
-import { UserService } from 'src/app/utils/services/user.service';
-import { AppEffects } from 'src/app/utils/store/app.effects';
-import { TokenService } from 'src/cdk/services/token.service';
-import { APP_ENV } from 'src/core/config';
 
 describe('AppEffects', () => {
   const mockLoggedInUser = {

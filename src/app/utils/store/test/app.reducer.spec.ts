@@ -12,6 +12,7 @@ describe('appReducer', () => {
       joinedDate: new Date(),
     },
     status: 'success',
+    breadcrumbs: [],
   };
 
   describe('unknown action', () => {
@@ -28,6 +29,7 @@ describe('appReducer', () => {
       const newState: AppState = {
         status: 'loading',
         user: null,
+        breadcrumbs: [],
       };
 
       const action = AppPageAction.getUserInfo();
@@ -43,6 +45,7 @@ describe('appReducer', () => {
       const newState: AppState = {
         status: 'success',
         user: null,
+        breadcrumbs: [],
       };
 
       const action = AppPageAction.logOut();
@@ -58,6 +61,7 @@ describe('appReducer', () => {
       const newState: AppState = {
         status: 'success',
         user: null,
+        breadcrumbs: [],
       };
 
       const action = AppApiAction.noCacheUserInfo();
@@ -85,6 +89,7 @@ describe('appReducer', () => {
       const newState: AppState = {
         user: null,
         status: 'error',
+        breadcrumbs: [],
       };
 
       const action = AppApiAction.getUserInfoFailed();
