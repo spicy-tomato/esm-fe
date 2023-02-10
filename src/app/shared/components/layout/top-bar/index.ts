@@ -1,1 +1,1 @@
-export * from './top-bar.module';
+export { TopBarModule } from './top-bar.module';

@@ -1,8 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
+import { AppSelector } from '@esm/store';
 import { LetModule } from '@ngrx/component';
+import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
+import { BreadcrumbModule } from '../../breadcrumbs';
 import { MainViewComponent } from './main-view.component';
+import { TAIGA_UI } from './main-view.module';
 
 describe('MainViewComponent', () => {
   let component: MainViewComponent;
@@ -10,9 +15,25 @@ describe('MainViewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, LetModule],
+      imports: [
+        NoopAnimationsModule,
+        RouterTestingModule,
+        LetModule,
+        BreadcrumbModule,
+        StoreModule.forRoot({}),
+        ...TAIGA_UI,
+      ],
       declarations: [MainViewComponent],
-      providers: [provideMockStore({})],
+      providers: [
+        provideMockStore({
+          selectors: [
+            {
+              selector: AppSelector.breadcrumbs,
+              value: [],
+            },
+          ],
+        }),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(MainViewComponent);

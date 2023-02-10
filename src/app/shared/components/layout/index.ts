@@ -1,2 +1,2 @@
-export * from './layout.module';
+export { LayoutModule } from './layout.module';
 export * from './top-bar';

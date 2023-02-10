@@ -13,7 +13,7 @@ import { BellModule } from '../../bell';
 import { TopBarComponent } from './top-bar.component';
 
 const NGRX = [LetModule];
-const TAIGA_UI = [
+export const TAIGA_UI = [
   TuiButtonModule,
   TuiDataListModule,
   TuiHostedDropdownModule,

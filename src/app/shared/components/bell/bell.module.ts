@@ -2,17 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BellComponent } from './bell.component';
 
-
-
 @NgModule({
-  declarations: [
-    BellComponent
-  ],
-  imports: [
-    CommonModule
-  ],
-  exports: [
-    BellComponent
-  ]
+  declarations: [BellComponent],
+  exports: [BellComponent],
+  imports: [CommonModule],
 })
-export class BellModule { }
+export class BellModule {}

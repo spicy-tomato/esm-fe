@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AppSelector } from '@esm/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { PermissionDirective } from './permission.directive';
 
@@ -16,7 +17,16 @@ describe('PermissionDirective', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [PermissionDirective, HostComponent],
-      providers: [provideMockStore({})],
+      providers: [
+        provideMockStore({
+          selectors: [
+            {
+              selector: AppSelector.breadcrumbs,
+              value: [1],
+            },
+          ],
+        }),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HostComponent);
