@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { AppSelector } from '@esm/store';
+import { appFeatureKey, appInitialState } from '@esm/store';
 import { LetModule } from '@ngrx/component';
 import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -26,12 +26,9 @@ describe('MainViewComponent', () => {
       declarations: [MainViewComponent],
       providers: [
         provideMockStore({
-          selectors: [
-            {
-              selector: AppSelector.breadcrumbs,
-              value: [],
-            },
-          ],
+          initialState: {
+            [appFeatureKey]: appInitialState,
+          },
         }),
       ],
     }).compileComponents();

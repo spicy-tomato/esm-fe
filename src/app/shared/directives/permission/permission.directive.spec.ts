@@ -17,16 +17,7 @@ describe('PermissionDirective', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [PermissionDirective, HostComponent],
-      providers: [
-        provideMockStore({
-          selectors: [
-            {
-              selector: AppSelector.breadcrumbs,
-              value: [1],
-            },
-          ],
-        }),
-      ],
+      providers: [provideMockStore({})],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HostComponent);
