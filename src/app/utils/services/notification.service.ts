@@ -13,9 +13,7 @@ export class NotificationService {
   private readonly url: string;
 
   // CONSTRUCTOR
-  constructor(
-    private readonly http: HttpClient,@Inject(APP_ENV) env: AppEnv
-  ) {
+  constructor(private readonly http: HttpClient, @Inject(APP_ENV) env: AppEnv) {
     this.url = env.baseUrl + 'notifications/';
   }
 
