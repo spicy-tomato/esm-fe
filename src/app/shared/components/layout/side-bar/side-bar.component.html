@@ -4,7 +4,7 @@
       <div (click)="onClickItem(item)">
         <!-- Accordion item -->
         <tui-accordion-item
-          *ngIf="item.subItems || item.subCheckboxes; else link"
+          *ngIf="item.subItems; else link"
           [nativeId]="item.name"
           [borders]="null"
           size="s"
@@ -26,55 +26,29 @@
                 (click)="$event.stopPropagation()"
                 class="my-2 pl-3 border-tui-base-03"
               >
-                <!-- Subitem as link -->
-                <ng-container *ngIf="item.subItems; else subCheckboxes">
-                  <a
-                    tuiLink
-                    *ngFor="let subItem of item.subItems"
-                    [routerLink]="subItem.routerLink"
-                    [routerLinkActiveOptions]="{ exact: true }"
-                    [icon]="subItem.useTaigaIcon ? subItem.icon : ''"
-                    tuiMode="onLight"
-                    routerLinkActive="!text-tui-base-09"
-                    iconAlign="left"
-                    class="block !pt-2 leading-6 w-fit"
+                <a
+                  tuiLink
+                  *ngFor="let subItem of item.subItems"
+                  [routerLink]="subItem.routerLink"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  [icon]="subItem.useTaigaIcon ? subItem.icon : ''"
+                  tuiMode="onLight"
+                  routerLinkActive="!text-tui-base-09"
+                  iconAlign="left"
+                  class="block !pt-2 leading-6 w-fit"
+                >
+                  <span
+                    *ngIf="
+                      subItem.useTaigaIcon === null || !subItem.useTaigaIcon
+                    "
+                    class="inline-block"
                   >
-                    <span
-                      *ngIf="
-                        subItem.useTaigaIcon === null || !subItem.useTaigaIcon
-                      "
-                      class="inline-block"
-                    >
-                      <div class="flex w-6 h-6">
-                        <i [class]="subItem.icon" class="block mx-auto"></i>
-                      </div>
-                    </span>
-                    {{ subItem.name }}
-                  </a>
-                </ng-container>
-
-                <!-- Subitem as checkbox -->
-                <ng-template #subCheckboxes>
-                  <!-- <ng-container [formGroupName]="item.controlName!">
-                    <tui-checkbox-labeled
-                      *ngFor="
-                        let subCheckbox of item.subCheckboxes;
-                        first as first
-                      "
-                      (ngModelChange)="
-                        onClickCheckbox(
-                          item.controlName + '.' + subCheckbox.controlName,
-                          $event
-                        )
-                      "
-                      [formControlName]="subCheckbox.controlName"
-                      [class.mt-2]="!first"
-                      class="sub-checkbox"
-                    >
-                      {{ subCheckbox.name }}
-                    </tui-checkbox-labeled>
-                  </ng-container> -->
-                </ng-template>
+                    <div class="flex w-6 h-6">
+                      <i [class]="subItem.icon" class="block mx-auto"></i>
+                    </div>
+                  </span>
+                  {{ subItem.name }}
+                </a>
               </div>
             </div>
           </ng-template>

@@ -7,7 +7,6 @@ import { appFeatureKey, appInitialState } from '@esm/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { BreadcrumbModule } from '../breadcrumbs';
 import {
   EchoService,
   notificationFeatureKey,
@@ -34,7 +33,6 @@ describe('LayoutComponent', () => {
         TopBarModule,
         SideBarModule,
         MainViewModule,
-        BreadcrumbModule,
         StoreModule.forRoot({}),
         EffectsModule.forRoot([]),
         ...NGRX,

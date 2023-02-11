@@ -11,7 +11,6 @@ describe('AppSelector', () => {
   const initialState: AppState = {
     status: 'success',
     user: mockLoggedInUser,
-    breadcrumbs: [],
   };
 
   describe('idle', () => {

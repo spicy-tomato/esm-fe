@@ -17,10 +17,8 @@ export class SideBarComponent {
 
   // PUBLIC METHODS
   async onClickItem(item: SidebarItem): Promise<void> {
-    if (item.subCheckboxes) {
-      if (item.routerLink?.includes('calendar')) {
-        await this.router.navigate(['/calendar']);
-      }
+    if (item.routerLink?.includes('calendar')) {
+      await this.router.navigate(['/calendar']);
     }
   }
 }

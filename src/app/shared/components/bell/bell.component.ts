@@ -22,23 +22,4 @@ export class BellComponent {
   readonly hasUnread$ = new Observable();
   readonly show$ = new BehaviorSubject<boolean>(true);
   openDropdown = false;
-
-  // CONSTRUCTOR
-  constructor() // private readonly store: Store<NotificationState>,
-  // appStore: Store<AppState>
-  {
-    // appStore
-    //   .select(AppSelector.breadcrumbs)
-    //   .pipe(
-    //     tap((breadcrumbs) => {
-    //       const inNotificationPage =
-    //         !!breadcrumbs[1]?.url.includes('notifications');
-    //       this.show$.next(!inNotificationPage);
-    //       if (inNotificationPage) {
-    //         this.openDropdown = false;
-    //       }
-    //     })
-    //   )
-    //   .subscribe();
-  }
 }

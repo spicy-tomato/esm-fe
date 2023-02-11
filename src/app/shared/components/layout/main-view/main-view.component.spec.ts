@@ -5,7 +5,6 @@ import { appFeatureKey, appInitialState } from '@esm/store';
 import { LetModule } from '@ngrx/component';
 import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { BreadcrumbModule } from '../../breadcrumbs';
 import { MainViewComponent } from './main-view.component';
 import { TAIGA_UI } from './main-view.module';
 
@@ -19,7 +18,6 @@ describe('MainViewComponent', () => {
         NoopAnimationsModule,
         RouterTestingModule,
         LetModule,
-        BreadcrumbModule,
         StoreModule.forRoot({}),
         ...TAIGA_UI,
       ],
