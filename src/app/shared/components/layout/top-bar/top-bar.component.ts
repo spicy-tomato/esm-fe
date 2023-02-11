@@ -22,7 +22,13 @@ import { TopBarOptions, TOP_BAR_OPTIONS } from './top-bar.token';
 export class TopBarComponent {
   // PUBLIC PROPERTIES
   readonly items = TopBarConstants.items;
-  openDropDown = false;
+  examinations = [
+    'Thi kết thúc học phần kỳ 2 năm học 2022-2023',
+    'Thi kết thúc học phần kỳ 1 năm học 2022-2023',
+  ];
+  selectedExamination = this.examinations[0];
+  openExaminationDropdown = false;
+  openUserDropdown = false;
   user$: Observable<UserSummary | null> | undefined;
 
   // CONSTRUCTOR
@@ -32,8 +38,15 @@ export class TopBarComponent {
   ) {}
 
   // PUBLIC METHODS
-  onClickDropDownItem(action: string): void {
-    this.openDropDown = false;
+  onClickExaminationDropdownItem(action: string): void {
+    this.openUserDropdown = false;
+    if (action === TopBarConstants.keys.LOG_OUT) {
+      this.appStore.dispatch(AppPageAction.logOut());
+    }
+  }
+
+  onClickUserDropdownItem(action: string): void {
+    this.openUserDropdown = false;
     if (action === TopBarConstants.keys.LOG_OUT) {
       this.appStore.dispatch(AppPageAction.logOut());
     }

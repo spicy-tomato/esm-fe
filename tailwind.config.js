@@ -21,9 +21,11 @@ module.exports = {
         "tui-base-02": "var(--tui-base-02)",
         "tui-base-03": "var(--tui-base-03)",
         "tui-base-04": "var(--tui-base-04)",
+        "tui-base-05": "var(--tui-base-05)",
         "tui-base-09": "var(--tui-base-09)",
         "tui-clear": "var(--tui-clear)",
         "tui-primary": "var(--tui-primary)",
+        "tui-secondary": "var(--tui-secondary)",
         // Text
         "tui-text-01": "var(--tui-text-01)",
         "tui-text-02": "var(--tui-text-02)",

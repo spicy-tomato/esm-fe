@@ -24,9 +24,23 @@
         alt="Logo"
       />
     </a>
-    <h3 class="hidden ml-1 text-lg font-bold uppercase md:block">
-      Hệ thống quản lý lịch thi
-    </h3>
+
+    <h3 class="hidden ml-1 text-lg font-bold uppercase md:block">ESM</h3>
+
+    <tui-hosted-dropdown
+      [(open)]="openExaminationDropdown"
+      [content]="examinationDropdown"
+      class="ml-10"
+    >
+      <button
+        tuiButton
+        appearance="flat"
+        iconRight="tuiIconChevronDownLarge"
+        [pseudoHover]="openExaminationDropdown"
+      >
+        {{ selectedExamination }}
+      </button>
+    </tui-hosted-dropdown>
   </div>
 
   <div class="flex items-center">
@@ -35,14 +49,18 @@
     </div>
 
     <div *ngIf="options.showInfo" class="hidden lg:block">
-      <tui-hosted-dropdown [(open)]="openDropDown" [content]="dropdown">
+      <tui-hosted-dropdown
+        [(open)]="openUserDropdown"
+        [content]="userDropdown"
+        tuiDropdownAlign="left"
+      >
         <button
           tuiButton
           *ngrxLet="user$ as user"
           appearance="nav-button"
           type="button"
         >
-          Xin chào 
+          Xin chào
           <!-- {{ user | navbarName }}! -->
         </button>
       </tui-hosted-dropdown>
@@ -59,7 +77,30 @@
   </div>
 </div>
 
-<ng-template #dropdown>
+<ng-template #examinationDropdown>
+  <tui-data-list size="l" class="p-0 py-1 w-[450px]" role="menu">
+    <ng-container *ngFor="let examination of examinations">
+      <!-- TODO: Use esm-var -->
+      <button
+        tuiOption
+        (click)="onClickExaminationDropdownItem(examination)"
+        [class.!bg-tui-secondary]="examination === selectedExamination"
+        class="!justify-start"
+        role="menuitem"
+      >
+        <span class="w-6 mr-1">
+          <tui-svg
+            *ngIf="examination === selectedExamination"
+            src="tuiIconCheck"
+          ></tui-svg>
+        </span>
+        {{ examination }}
+      </button>
+    </ng-container>
+  </tui-data-list>
+</ng-template>
+
+<ng-template #userDropdown>
   <tui-data-list class="navbar-dropdown" size="l" role="menu">
     <tui-opt-group *ngFor="let group of items">
       <ng-container *ngFor="let item of group.items">
@@ -78,8 +119,8 @@
           <a
             tuiOption
             *ngIf="item.routerLink; else button"
+            (click)="onClickUserDropdownItem(item.key)"
             [routerLink]="item.routerLink"
-            (click)="onClickDropDownItem(item.key)"
             role="menuitem"
           >
             <tui-svg [src]="item.icon"></tui-svg>
@@ -89,7 +130,7 @@
         <ng-template #button>
           <button
             tuiOption
-            (click)="onClickDropDownItem(item.key)"
+            (click)="onClickUserDropdownItem(item.key)"
             role="menuitem"
           >
             <tui-svg [src]="item.icon"></tui-svg>

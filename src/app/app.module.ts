@@ -20,6 +20,7 @@ import { TUI_VALIDATION_ERRORS } from '@taiga-ui/kit';
 import { NgDompurifySanitizer } from '@tinkoff/ng-dompurify';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
+import { LayoutModule } from './shared';
 
 const NGRX = [
   StoreModule.forRoot({}, {}),
@@ -37,6 +38,7 @@ const TAIGA_UI = [TuiRootModule, TuiAlertModule, TuiDialogModule];
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
+    LayoutModule,
     ...NGRX,
     ...TAIGA_UI,
   ],
