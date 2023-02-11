@@ -1,6 +1,6 @@
 import { AppApiAction } from '../app.api.actions';
 import { AppPageAction } from '../app.page.actions';
-import { appReducer, initialState } from '../app.reducer';
+import { appReducer, appInitialState } from '../app.reducer';
 import { AppState } from '../app.state';
 
 describe('appReducer', () => {
@@ -18,9 +18,9 @@ describe('appReducer', () => {
   describe('unknown action', () => {
     it('should return the default state', () => {
       const action = { type: 'Unknown' };
-      const state = appReducer(initialState, action);
+      const state = appReducer(appInitialState, action);
 
-      expect(state).toBe(initialState);
+      expect(state).toBe(appInitialState);
     });
   });
 
@@ -33,10 +33,10 @@ describe('appReducer', () => {
       };
 
       const action = AppPageAction.getUserInfo();
-      const state = appReducer(initialState, action);
+      const state = appReducer(appInitialState, action);
 
       expect(state).toEqual(newState);
-      expect(state).not.toBe(initialState);
+      expect(state).not.toBe(appInitialState);
     });
   });
 
@@ -65,10 +65,10 @@ describe('appReducer', () => {
       };
 
       const action = AppApiAction.noCacheUserInfo();
-      const state = appReducer(initialState, action);
+      const state = appReducer(appInitialState, action);
 
       expect(state).toEqual(newState);
-      expect(state).not.toBe(initialState);
+      expect(state).not.toBe(appInitialState);
     });
   });
 
@@ -77,10 +77,10 @@ describe('appReducer', () => {
       const action = AppApiAction.getUserInfoSuccessful({
         user: mockLoggedInState.user!,
       });
-      const state = appReducer(initialState, action);
+      const state = appReducer(appInitialState, action);
 
       expect(state).toEqual(mockLoggedInState);
-      expect(state).not.toBe(initialState);
+      expect(state).not.toBe(appInitialState);
     });
   });
 
@@ -93,10 +93,10 @@ describe('appReducer', () => {
       };
 
       const action = AppApiAction.getUserInfoFailed();
-      const state = appReducer(initialState, action);
+      const state = appReducer(appInitialState, action);
 
       expect(state).toEqual(newState);
-      expect(state).not.toBe(initialState);
+      expect(state).not.toBe(appInitialState);
     });
   });
 });

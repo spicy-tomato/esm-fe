@@ -1,1 +1,20 @@
-<p>bell works!</p>
+<!-- <ng-container *ngrxLet="hasUnread$ as hasUnread"> -->
+<tui-badged-content *ngIf="show$ | async" [rounded]="true" [@fadeInOut]>
+  <!-- [colorTop]="hasUnread ? 'var(--tui-error-fill)' : ''" -->
+  <tui-hosted-dropdown [(open)]="openDropdown" [content]="dropdown">
+    <button
+      tuiIconButton
+      [pseudoHover]="openDropdown || null"
+      icon="tuiIconBellLarge"
+      size="m"
+      aria-label="Notification"
+    ></button>
+  </tui-hosted-dropdown>
+</tui-badged-content>
+
+<ng-template #dropdown let-activeZone>
+  <div class="w-80 pt-5">
+    <esm-notification-list [activeZone]="activeZone"></esm-notification-list>
+  </div>
+</ng-template>
+<!-- </ng-container> -->

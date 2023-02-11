@@ -3,7 +3,7 @@ import { AppApiAction } from './app.api.actions';
 import { AppPageAction } from './app.page.actions';
 import { AppState } from './app.state';
 
-export const initialState: AppState = {
+export const appInitialState: AppState = {
   user: null,
   status: 'idle',
   breadcrumbs: []
@@ -12,7 +12,7 @@ export const initialState: AppState = {
 export const appFeatureKey = '[NGRX Key] App';
 
 export const appReducer = createReducer(
-  initialState,
+  appInitialState,
   on(AppPageAction.getUserInfo, (state) => ({
     ...state,
     status: 'loading',

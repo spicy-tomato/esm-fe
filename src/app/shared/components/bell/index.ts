@@ -1,1 +1,1 @@
-export * from './bell.module';
+export { BellModule } from './bell.module';

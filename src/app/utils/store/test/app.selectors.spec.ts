@@ -11,16 +11,18 @@ describe('AppSelector', () => {
   const initialState: AppState = {
     status: 'success',
     user: mockLoggedInUser,
-    breadcrumbs: []
+    breadcrumbs: [],
   };
 
-  it('should return the default state', () => {
-    const result = AppSelector.user.projector(initialState);
-    expect(result).toEqual(mockLoggedInUser);
-  });
+  describe('idle', () => {
+    it('should return the default state', () => {
+      const result = AppSelector.user.projector(initialState);
+      expect(result).toEqual(mockLoggedInUser);
+    });
 
-  it('should return the default state', () => {
-    const result = AppSelector.status.projector(initialState);
-    expect(result).toEqual('success');
+    it('should return the default state', () => {
+      const result = AppSelector.status.projector(initialState);
+      expect(result).toEqual('success');
+    });
   });
 });

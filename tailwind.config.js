@@ -3,6 +3,14 @@ module.exports = {
   content: ["./src/**/*.{html,ts}"],
   theme: {
     extend: {
+      spacing: {
+        'nav-h': '65px',
+        'main-view-h': 'calc(100vh - 65px)',
+        'main-view-h-md': 'calc(100vh - 79px)',
+        'content-h': 'calc(100vh - 127px)' /* With breadcrumbs */,
+        'sidebar-w': '240px',
+        'main-view-w': 'calc(100vw - 240px)',
+      },
       colors: {
         // UTC
         "utc-1": "#29166f",

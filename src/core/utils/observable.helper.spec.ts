@@ -1,4 +1,4 @@
-import { StringHelper } from './string-helper';
+import { StringHelper } from './string.helper';
 
 describe('StringHelper', () => {
   describe('md5', () => {

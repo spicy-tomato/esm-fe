@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { LetModule } from '@ngrx/component';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -12,7 +13,13 @@ describe('TopBarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LetModule, RouterTestingModule, BellModule, ...TAIGA_UI],
+      imports: [
+        NoopAnimationsModule,
+        RouterTestingModule,
+        LetModule,
+        BellModule,
+        ...TAIGA_UI,
+      ],
       declarations: [TopBarComponent],
       providers: [provideMockStore({})],
     }).compileComponents();
