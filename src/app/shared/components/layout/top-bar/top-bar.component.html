@@ -44,9 +44,18 @@
   </div>
 
   <div class="flex items-center">
-    <div class="flex items-center">
-      <esm-bell class="lg:mr-1"></esm-bell>
-    </div>
+    <tui-input
+      [(ngModel)]="searchExaminationValue"
+      [tuiTextfieldLabelOutside]="true"
+      [tuiTextfieldCleaner]="true"
+      tuiTextfieldIconLeft="tuiIconSearchLarge"
+      tuiTextfieldSize="m"
+      class="w-[400px] mr-2"
+    >
+      Tìm bất cứ thứ gì
+    </tui-input>
+
+    <esm-bell class="lg:mr-2"></esm-bell>
 
     <div *ngIf="options.showInfo" class="hidden lg:block">
       <tui-hosted-dropdown
@@ -78,25 +87,38 @@
 </div>
 
 <ng-template #examinationDropdown>
-  <tui-data-list size="l" class="p-0 py-1 w-[450px]" role="menu">
-    <ng-container *ngFor="let examination of examinations">
-      <!-- TODO: Use esm-var -->
-      <button
-        tuiOption
-        (click)="onClickExaminationDropdownItem(examination)"
-        [class.!bg-tui-secondary]="examination === selectedExamination"
-        class="!justify-start"
-        role="menuitem"
-      >
-        <span class="w-6 mr-1">
-          <tui-svg
-            *ngIf="examination === selectedExamination"
-            src="tuiIconCheck"
-          ></tui-svg>
-        </span>
-        {{ examination }}
-      </button>
-    </ng-container>
+  <tui-data-list size="l" class="w-[460px] px-0 py-1" role="menu">
+    <tui-opt-group>
+      <div class="p-1">
+        <tui-input
+          [(ngModel)]="searchExaminationValue"
+          [tuiTextfieldLabelOutside]="true"
+          [tuiTextfieldCleaner]="true"
+          tuiTextfieldIconLeft="tuiIconSearchLarge"
+          tuiTextfieldSize="m"
+        >
+          Tìm kỳ thi
+        </tui-input>
+      </div>
+    </tui-opt-group>
+
+    <tui-opt-group>
+      <ng-container *ngFor="let examination of examinations">
+        <button
+          *esmVar="examination === selectedExamination as isCurrentExamination"
+          tuiOption
+          (click)="onClickExaminationDropdownItem(examination)"
+          [class.!bg-tui-secondary]="isCurrentExamination"
+          class="!justify-start !my-0 !rounded-none"
+          role="menuitem"
+        >
+          <span class="w-6 mr-1">
+            <tui-svg *ngIf="isCurrentExamination" src="tuiIconCheck"></tui-svg>
+          </span>
+          {{ examination }}
+        </button>
+      </ng-container>
+    </tui-opt-group>
   </tui-data-list>
 </ng-template>
 

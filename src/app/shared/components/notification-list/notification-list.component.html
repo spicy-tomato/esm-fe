@@ -100,10 +100,10 @@
           <tui-svg src="tuiIconCheck"></tui-svg>
           <div class="flex-grow ml-1.5">Đánh dấu tất cả là đã đọc</div>
         </button>
-        <a tuiOption *ngIf="options.forBell" routerLink="/notifications">
+        <button tuiOption *ngIf="options.forBell" (click)="openNotification()">
           <tui-svg src="tuiIconFlag"></tui-svg>
           <div class="flex-grow ml-1.5">Mở thông báo</div>
-        </a>
+        </button>
       </tui-data-list>
     </ng-template>
 

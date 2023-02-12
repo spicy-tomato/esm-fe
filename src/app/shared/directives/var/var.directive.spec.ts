@@ -1,21 +1,19 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
-import { PermissionDirective } from './permission.directive';
+import { VarDirective } from './var.directive';
 
 @Component({
-  template: '<div *esmPermission="permission"></div>',
+  template: '<div *esmVar="1 as value"></div>',
 })
-class HostComponent {
-  permission = 1;
-}
+class HostComponent {}
 
-describe('PermissionDirective', () => {
+describe('VarDirective', () => {
   let fixture: ComponentFixture<HostComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PermissionDirective, HostComponent],
+      declarations: [VarDirective, HostComponent],
       providers: [provideMockStore({})],
     }).compileComponents();
 

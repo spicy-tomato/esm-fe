@@ -45,13 +45,13 @@ export class NotificationListComponent implements OnInit {
   // PUBLIC PROPERTIES
   readonly tabsBtn = ['Tất cả', 'Chưa đọc'];
   readonly activeTabIndex$ = new BehaviorSubject<number>(0);
+  readonly data$ = this.store.select(NotificationSelector.data);
+  readonly hasNext$ = this.store.select(NotificationSelector.hasNext);
+  readonly hasUnread$ = this.store.select(NotificationSelector.selectHasUnread);
+  readonly nameTitle$ = this.appStore.select(AppSelector.user);
 
   openDropdown = false;
   openOptions = false;
-  data$!: Observable<EchoMessage[][]>;
-  hasNext$!: Observable<boolean[]>;
-  hasUnread$!: Observable<boolean>;
-  nameTitle$!: Observable<UserSummary | null>;
 
   // CONSTRUCTOR
   constructor(
@@ -66,11 +66,6 @@ export class NotificationListComponent implements OnInit {
 
   // LIFECYCLE
   ngOnInit(): void {
-    this.data$ = this.store.select(NotificationSelector.data);
-    this.hasNext$ = this.store.select(NotificationSelector.hasNext);
-    this.hasUnread$ = this.store.select(NotificationSelector.selectHasUnread);
-    this.nameTitle$ = this.appStore.select(AppSelector.user);
-
     this.handleDataChange();
   }
 
@@ -86,8 +81,8 @@ export class NotificationListComponent implements OnInit {
     this.openOptions = false;
   }
 
-  openNotification(): void {
-    void this.router.navigate(['/notifications']);
+  async openNotification(): Promise<void> {
+    await this.router.navigate(['/notification']);
     this.openOptions = false;
   }
 

@@ -7,8 +7,8 @@ export type EchoMessage = {
     content: string;
   };
   type: number;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
   readAt: Date | null;
   sender: string;
 };

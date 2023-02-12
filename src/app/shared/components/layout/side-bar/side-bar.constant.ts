@@ -12,13 +12,21 @@ export type SidebarItem = {
   useTaigaIcon?: boolean;
   externalLink?: string;
   exactRouterLink?: boolean;
-  controlName?: string;
 };
 
 export class SideBarConstant {
   static items: SidebarItem[] = [
     {
-      controlName: 'calendar',
+      name: 'Tổng quan',
+      icon: 'far fa-telescope',
+      routerLink: '/',
+    },
+    {
+      name: 'Đề thi',
+      icon: 'far fa-briefcase',
+      routerLink: '/exam',
+    },
+    {
       name: 'Quản lý CBCT',
       icon: 'far fa-user',
       routerLink: '/calendar',
@@ -38,10 +46,6 @@ export class SideBarConstant {
           icon: 'far fa-users-class',
         },
       ],
-    },
-    {
-      name: 'Đề thi',
-      icon: 'far fa-briefcase',
     },
     {
       name: 'Quản lý thanh toán',

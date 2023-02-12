@@ -4,9 +4,9 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'relativeTime',
 })
 export class RelativeTimePipe implements PipeTransform {
-  transform(inputDate: string): string {
+  transform(inputDate: Date): string {
     const current = new Date().valueOf();
-    const input = new Date(inputDate).valueOf();
+    const input = inputDate.valueOf();
     const msPerMinute = 60 * 1000;
     const msPerHour = msPerMinute * 60;
     const msPerDay = msPerHour * 24;

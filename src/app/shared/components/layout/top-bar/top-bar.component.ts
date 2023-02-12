@@ -29,6 +29,7 @@ export class TopBarComponent {
   selectedExamination = this.examinations[0];
   openExaminationDropdown = false;
   openUserDropdown = false;
+  searchExaminationValue = '';
   user$: Observable<UserSummary | null> | undefined;
 
   // CONSTRUCTOR
@@ -39,10 +40,8 @@ export class TopBarComponent {
 
   // PUBLIC METHODS
   onClickExaminationDropdownItem(action: string): void {
-    this.openUserDropdown = false;
-    if (action === TopBarConstants.keys.LOG_OUT) {
-      this.appStore.dispatch(AppPageAction.logOut());
-    }
+    this.selectedExamination = action;
+    this.openExaminationDropdown = false;
   }
 
   onClickUserDropdownItem(action: string): void {

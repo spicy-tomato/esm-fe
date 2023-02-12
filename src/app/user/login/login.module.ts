@@ -41,6 +41,5 @@ export const TAIGA_UI = [
     ...TAIGA_UI,
   ],
   declarations: [LoginComponent],
-  exports: [LoginComponent],
 })
 export class LoginModule {}

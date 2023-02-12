@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { SideBarConstant, SidebarItem } from './side-bar.constant';
+import { SideBarConstant } from './side-bar.constant';
 
 @Component({
   selector: 'esm-side-bar',
@@ -13,12 +12,12 @@ export class SideBarComponent {
   items = SideBarConstant.items;
 
   // CONSTRUCTOR
-  constructor(private readonly router: Router) {}
+  // constructor(private readonly router: Router) {}
 
   // PUBLIC METHODS
-  async onClickItem(item: SidebarItem): Promise<void> {
-    if (item.routerLink?.includes('calendar')) {
-      await this.router.navigate(['/calendar']);
-    }
-  }
+  // async onClickItem(item: SidebarItem): Promise<void> {
+  //   if (item.routerLink?.includes('calendar')) {
+  //     await this.router.navigate(['/calendar']);
+  //   }
+  // }
 }

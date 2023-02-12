@@ -10,8 +10,16 @@ const routes: Routes = [
   },
   {
     path: '',
-    component: LayoutComponent
-  }
+    component: LayoutComponent,
+    children: [
+      {
+        path: 'notification',
+        loadChildren: async () =>
+          (await import('./notification/notification.module'))
+            .NotificationModule,
+      },
+    ],
+  },
 ];
 
 @NgModule({

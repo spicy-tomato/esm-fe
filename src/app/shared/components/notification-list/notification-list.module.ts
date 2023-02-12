@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { RelativeTimePipeModule } from '@esm/core';
 import { LetModule } from '@ngrx/component';
 import { TuiActiveZoneModule } from '@taiga-ui/cdk';
@@ -31,7 +32,13 @@ export const TAIGA_UI = [
 ];
 
 @NgModule({
-  imports: [CommonModule, RelativeTimePipeModule, ...NGRX, ...TAIGA_UI],
+  imports: [
+    CommonModule,
+    RouterModule,
+    RelativeTimePipeModule,
+    ...NGRX,
+    ...TAIGA_UI,
+  ],
   declarations: [NotificationListComponent],
   exports: [NotificationListComponent],
 })
