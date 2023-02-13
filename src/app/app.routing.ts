@@ -25,6 +25,20 @@ const routes: Routes = [
           (await import('./examination/exam/exam.module')).ExamModule,
       },
       {
+        path: 'invigilator',
+        children: [
+          {
+            path: 'assign-faculty',
+            loadChildren: async () =>
+              (
+                await import(
+                  './invigilator/assign-faculty/assign-faculty.module'
+                )
+              ).InvigilatorAssignFacultyModule,
+          },
+        ],
+      },
+      {
         path: 'notification',
         loadChildren: async () =>
           (await import('./notification/notification.module'))

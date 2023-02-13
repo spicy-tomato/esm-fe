@@ -1,7 +1,7 @@
 <div
   class="py-3 flex flex-0 justify-between items-center bg-white text-3xl font-bold"
 >
-  <h3>Danh sách phòng và số đề thi</h3>
+  <h3>Danh sách phân giảng viên mỗi khoa</h3>
 
   <div *ngIf="isEditing; else noEdit">
     <button
@@ -55,23 +55,38 @@
         <th tuiTh>Ca thi</th>
         <th tuiTh>Phòng thi</th>
         <th tuiTh>Số thí sinh</th>
-        <th tuiTh>Số đề</th>
+        <th tuiTh>Khoa Khoa học Cơ bản</th>
+        <th tuiTh>Khoa Cơ khí</th>
+        <th tuiTh>Khoa Công trình</th>
+        <th tuiTh>Khoa Điện - Điện tử</th>
+        <th tuiTh>Khoa Kỹ thuật xây dựng</th>
+        <th tuiTh>Khoa Vận tải - Kinh tế</th>
+        <th tuiTh>Khoa MT&ATGT</th>
+        <th tuiTh>Khoa Lý luận Chính trị</th>
+        <th tuiTh>Khoa QLXD</th>
+        <th tuiTh>Khoa Công nghệ thông tin</th>
       </tr>
     </thead>
-    <tbody tuiTbody [data]="data" formArrayName="examsCount">
-      <tr *ngFor="let item of data; let i = index" tuiTr>
+    <tbody tuiTbody [data]="data" formArrayName="invigilatorsCount">
+      <tr
+        [formGroup]="invigilatorsCount(i)"
+        *ngFor="let item of data; let i = index"
+        tuiTr
+      >
         <td *tuiCell="'startAt'" tuiTd>
           <div>
             {{ item.startAt | date : "dd/MM/y" }}
           </div>
         </td>
-        <td *tuiCell="'examsCount'" tuiTd [class.colored]="isEditing">
-          <tui-input-number
-            (ngModelChange)="onValueChange(item.id, $event)"
-            [formControl]="examsCount(i)"
-            [readOnly]="!isEditing"
-          ></tui-input-number>
-        </td>
+        <ng-container *ngFor="let facultyId of facultiesId">
+          <td *tuiCell="facultyId" tuiTd [class.colored]="isEditing">
+            <tui-input-number
+              (ngModelChange)="onValueChange(item.id, $event)"
+              [formControl]="control(i, facultyId)"
+              [readOnly]="!isEditing"
+            ></tui-input-number>
+          </td>
+        </ng-container>
       </tr>
     </tbody>
   </table>

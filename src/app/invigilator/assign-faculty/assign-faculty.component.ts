@@ -4,7 +4,6 @@ import {
   FormControl,
   FormGroup,
   NonNullableFormBuilder,
-  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { tuiButtonOptionsProvider } from '@taiga-ui/core';
@@ -18,23 +17,24 @@ type Item = {
   startAt: Date;
   shift: number;
   room: string;
-  examsCount: number;
   candidatesCount: number;
+  invigilatorsCount: Record<string, number>;
 };
 
 @Component({
-  templateUrl: './exam.component.html',
-  styleUrls: ['./exam.component.less'],
+  templateUrl: './assign-faculty.component.html',
+  styleUrls: ['./assign-faculty.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [tuiButtonOptionsProvider({ size: 'm' })],
 })
-export class ExamComponent {
+export class InvigilatorAssignFacultyComponent {
   // PUBLIC PROPERTIES
   data: Item[] = data;
   isEditing = false;
   readonly isSaving$ = new BehaviorSubject<boolean>(false);
+  readonly facultiesId = Object.keys(this.data[0].invigilatorsCount);
 
-  readonly columns = [
+  columns = [
     'moduleId',
     'moduleName',
     'type',
@@ -42,28 +42,36 @@ export class ExamComponent {
     'shift',
     'room',
     'candidatesCount',
-    'examsCount',
+    ...this.facultiesId,
   ];
   readonly form!: FormGroup;
-
-  readonly minExamsCount: ValidatorFn = ({ value }) =>
-    value > 0 ? null : { minExamsCount: 'Exams count must be above 0' };
 
   // CONSTRUCTOR
   constructor(private readonly fb: NonNullableFormBuilder) {
     this.form = this.fb.group({
-      examsCount: this.fb.array(
-        this.data.map((item) => item.candidatesCount),
-        [Validators.required, Validators.min(0)]
+      invigilatorsCount: this.fb.array(
+        this.data.map((item) =>
+          this.fb.group(
+            Object.entries(item.invigilatorsCount).reduce(
+              (acc, [key, value]) => {
+                acc[key] = [value, [Validators.required, Validators.min(0)]];
+                return acc;
+              },
+              {} as Record<string, any>
+            )
+          )
+        )
       ),
     });
+
+    this.form.disable();
   }
 
   // PUBLIC METHODS
   onValueChange(id: string, value: number): void {
     for (const item of this.data) {
       if (item.id === id) {
-        item.examsCount = value;
+        item.candidatesCount = value;
         break;
       }
     }
@@ -71,28 +79,37 @@ export class ExamComponent {
     this.data = this.data;
   }
 
-  examsCount(index: number): FormControl {
-    return (this.form.controls['examsCount'] as FormArray).at(
+  invigilatorsCount(index: number): FormGroup {
+    return (this.form.controls['invigilatorsCount'] as FormArray).at(
       index
-    ) as FormControl;
+    ) as FormGroup;
+  }
+
+  control(index: number, controlName: string): FormControl {
+    return this.invigilatorsCount(index).controls[controlName] as FormControl;
   }
 
   saveChange(): void {
     this.isSaving$.next(true);
     setTimeout(() => {
-      data = (this.form.controls['examsCount'] as FormArray).value;
+      data = (this.form.controls['invigilatorsCount'] as FormArray).value;
       this.toggleEdit(false);
       this.isSaving$.next(false);
     }, 1000);
   }
 
   cancelEdit(): void {
-    (this.form.controls['examsCount'] as FormArray).patchValue(data);
+    (this.form.controls['invigilatorsCount'] as FormArray).patchValue(data);
     this.toggleEdit(false);
   }
 
   toggleEdit(isEditing: boolean): void {
     this.isEditing = isEditing;
+    if (isEditing) {
+      this.form.enable();
+    } else {
+      this.form.disable();
+    }
   }
 }
 
@@ -105,8 +122,19 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    examsCount: 0,
     candidatesCount: 100,
+    invigilatorsCount: {
+      khcb: 7,
+      ck: 1,
+      ct: 3,
+      ddt: 1,
+      ktxd: 1,
+      vtkt: 1,
+      mtatgt: 1,
+      llct: 1,
+      qlxd: 0,
+      cntt: 0,
+    },
   },
   {
     id: '2',
@@ -116,8 +144,19 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    examsCount: 0,
     candidatesCount: 100,
+    invigilatorsCount: {
+      khcb: 7,
+      ck: 1,
+      ct: 3,
+      ddt: 1,
+      ktxd: 1,
+      vtkt: 1,
+      mtatgt: 1,
+      llct: 1,
+      qlxd: 0,
+      cntt: 0,
+    },
   },
   {
     id: '3',
@@ -127,8 +166,19 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    examsCount: 0,
     candidatesCount: 100,
+    invigilatorsCount: {
+      khcb: 7,
+      ck: 1,
+      ct: 3,
+      ddt: 1,
+      ktxd: 1,
+      vtkt: 1,
+      mtatgt: 1,
+      llct: 1,
+      qlxd: 0,
+      cntt: 0,
+    },
   },
   {
     id: '4',
@@ -138,8 +188,19 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    examsCount: 0,
     candidatesCount: 100,
+    invigilatorsCount: {
+      khcb: 7,
+      ck: 1,
+      ct: 3,
+      ddt: 1,
+      ktxd: 1,
+      vtkt: 1,
+      mtatgt: 1,
+      llct: 1,
+      qlxd: 0,
+      cntt: 0,
+    },
   },
   {
     id: '5',
@@ -149,8 +210,19 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    examsCount: 55,
     candidatesCount: 55,
+    invigilatorsCount: {
+      khcb: 7,
+      ck: 1,
+      ct: 3,
+      ddt: 1,
+      ktxd: 1,
+      vtkt: 1,
+      mtatgt: 1,
+      llct: 1,
+      qlxd: 0,
+      cntt: 0,
+    },
   },
   {
     id: '6',
@@ -160,8 +232,19 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    examsCount: 55,
     candidatesCount: 55,
+    invigilatorsCount: {
+      khcb: 7,
+      ck: 1,
+      ct: 3,
+      ddt: 1,
+      ktxd: 1,
+      vtkt: 1,
+      mtatgt: 1,
+      llct: 1,
+      qlxd: 0,
+      cntt: 0,
+    },
   },
   {
     id: '7',
@@ -171,8 +254,19 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    examsCount: 55,
     candidatesCount: 55,
+    invigilatorsCount: {
+      khcb: 7,
+      ck: 1,
+      ct: 3,
+      ddt: 1,
+      ktxd: 1,
+      vtkt: 1,
+      mtatgt: 1,
+      llct: 1,
+      qlxd: 0,
+      cntt: 0,
+    },
   },
   {
     id: '8',
@@ -182,8 +276,19 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    examsCount: 55,
     candidatesCount: 55,
+    invigilatorsCount: {
+      khcb: 7,
+      ck: 1,
+      ct: 3,
+      ddt: 1,
+      ktxd: 1,
+      vtkt: 1,
+      mtatgt: 1,
+      llct: 1,
+      qlxd: 0,
+      cntt: 0,
+    },
   },
   {
     id: '9',
@@ -193,8 +298,19 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    examsCount: 0,
     candidatesCount: 100,
+    invigilatorsCount: {
+      khcb: 7,
+      ck: 1,
+      ct: 3,
+      ddt: 1,
+      ktxd: 1,
+      vtkt: 1,
+      mtatgt: 1,
+      llct: 1,
+      qlxd: 0,
+      cntt: 0,
+    },
   },
   {
     id: '10',
@@ -204,8 +320,19 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    examsCount: 0,
     candidatesCount: 100,
+    invigilatorsCount: {
+      khcb: 7,
+      ck: 1,
+      ct: 3,
+      ddt: 1,
+      ktxd: 1,
+      vtkt: 1,
+      mtatgt: 1,
+      llct: 1,
+      qlxd: 0,
+      cntt: 0,
+    },
   },
   {
     id: '13',
@@ -215,8 +342,19 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    examsCount: 0,
     candidatesCount: 100,
+    invigilatorsCount: {
+      khcb: 7,
+      ck: 1,
+      ct: 3,
+      ddt: 1,
+      ktxd: 1,
+      vtkt: 1,
+      mtatgt: 1,
+      llct: 1,
+      qlxd: 0,
+      cntt: 0,
+    },
   },
   {
     id: '14',
@@ -226,8 +364,19 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    examsCount: 0,
     candidatesCount: 100,
+    invigilatorsCount: {
+      khcb: 7,
+      ck: 1,
+      ct: 3,
+      ddt: 1,
+      ktxd: 1,
+      vtkt: 1,
+      mtatgt: 1,
+      llct: 1,
+      qlxd: 0,
+      cntt: 0,
+    },
   },
   {
     id: '15',
@@ -237,8 +386,19 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    examsCount: 55,
     candidatesCount: 55,
+    invigilatorsCount: {
+      khcb: 7,
+      ck: 1,
+      ct: 3,
+      ddt: 1,
+      ktxd: 1,
+      vtkt: 1,
+      mtatgt: 1,
+      llct: 1,
+      qlxd: 0,
+      cntt: 0,
+    },
   },
   {
     id: '16',
@@ -248,8 +408,19 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    examsCount: 55,
     candidatesCount: 55,
+    invigilatorsCount: {
+      khcb: 7,
+      ck: 1,
+      ct: 3,
+      ddt: 1,
+      ktxd: 1,
+      vtkt: 1,
+      mtatgt: 1,
+      llct: 1,
+      qlxd: 0,
+      cntt: 0,
+    },
   },
   {
     id: '17',
@@ -259,8 +430,19 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    examsCount: 55,
     candidatesCount: 55,
+    invigilatorsCount: {
+      khcb: 7,
+      ck: 1,
+      ct: 3,
+      ddt: 1,
+      ktxd: 1,
+      vtkt: 1,
+      mtatgt: 1,
+      llct: 1,
+      qlxd: 0,
+      cntt: 0,
+    },
   },
   {
     id: '18',
@@ -270,8 +452,19 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    examsCount: 55,
     candidatesCount: 55,
+    invigilatorsCount: {
+      khcb: 7,
+      ck: 1,
+      ct: 3,
+      ddt: 1,
+      ktxd: 1,
+      vtkt: 1,
+      mtatgt: 1,
+      llct: 1,
+      qlxd: 0,
+      cntt: 0,
+    },
   },
   {
     id: '11',
@@ -281,8 +474,19 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    examsCount: 0,
     candidatesCount: 100,
+    invigilatorsCount: {
+      khcb: 7,
+      ck: 1,
+      ct: 3,
+      ddt: 1,
+      ktxd: 1,
+      vtkt: 1,
+      mtatgt: 1,
+      llct: 1,
+      qlxd: 0,
+      cntt: 0,
+    },
   },
   {
     id: '12',
@@ -292,8 +496,19 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    examsCount: 0,
     candidatesCount: 100,
+    invigilatorsCount: {
+      khcb: 7,
+      ck: 1,
+      ct: 3,
+      ddt: 1,
+      ktxd: 1,
+      vtkt: 1,
+      mtatgt: 1,
+      llct: 1,
+      qlxd: 0,
+      cntt: 0,
+    },
   },
   {
     id: '13',
@@ -303,8 +518,19 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    examsCount: 0,
     candidatesCount: 100,
+    invigilatorsCount: {
+      khcb: 7,
+      ck: 1,
+      ct: 3,
+      ddt: 1,
+      ktxd: 1,
+      vtkt: 1,
+      mtatgt: 1,
+      llct: 1,
+      qlxd: 0,
+      cntt: 0,
+    },
   },
   {
     id: '14',
@@ -314,8 +540,19 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    examsCount: 0,
     candidatesCount: 100,
+    invigilatorsCount: {
+      khcb: 7,
+      ck: 1,
+      ct: 3,
+      ddt: 1,
+      ktxd: 1,
+      vtkt: 1,
+      mtatgt: 1,
+      llct: 1,
+      qlxd: 0,
+      cntt: 0,
+    },
   },
   {
     id: '15',
@@ -325,8 +562,19 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    examsCount: 55,
     candidatesCount: 55,
+    invigilatorsCount: {
+      khcb: 7,
+      ck: 1,
+      ct: 3,
+      ddt: 1,
+      ktxd: 1,
+      vtkt: 1,
+      mtatgt: 1,
+      llct: 1,
+      qlxd: 0,
+      cntt: 0,
+    },
   },
   {
     id: '16',
@@ -336,8 +584,19 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    examsCount: 55,
     candidatesCount: 55,
+    invigilatorsCount: {
+      khcb: 7,
+      ck: 1,
+      ct: 3,
+      ddt: 1,
+      ktxd: 1,
+      vtkt: 1,
+      mtatgt: 1,
+      llct: 1,
+      qlxd: 0,
+      cntt: 0,
+    },
   },
   {
     id: '17',
@@ -347,8 +606,19 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    examsCount: 55,
     candidatesCount: 55,
+    invigilatorsCount: {
+      khcb: 7,
+      ck: 1,
+      ct: 3,
+      ddt: 1,
+      ktxd: 1,
+      vtkt: 1,
+      mtatgt: 1,
+      llct: 1,
+      qlxd: 0,
+      cntt: 0,
+    },
   },
   {
     id: '18',
@@ -358,8 +628,19 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    examsCount: 55,
     candidatesCount: 55,
+    invigilatorsCount: {
+      khcb: 7,
+      ck: 1,
+      ct: 3,
+      ddt: 1,
+      ktxd: 1,
+      vtkt: 1,
+      mtatgt: 1,
+      llct: 1,
+      qlxd: 0,
+      cntt: 0,
+    },
   },
   {
     id: '19',
@@ -369,8 +650,19 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    examsCount: 0,
     candidatesCount: 100,
+    invigilatorsCount: {
+      khcb: 7,
+      ck: 1,
+      ct: 3,
+      ddt: 1,
+      ktxd: 1,
+      vtkt: 1,
+      mtatgt: 1,
+      llct: 1,
+      qlxd: 0,
+      cntt: 0,
+    },
   },
   {
     id: '110',
@@ -380,8 +672,19 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    examsCount: 0,
     candidatesCount: 100,
+    invigilatorsCount: {
+      khcb: 7,
+      ck: 1,
+      ct: 3,
+      ddt: 1,
+      ktxd: 1,
+      vtkt: 1,
+      mtatgt: 1,
+      llct: 1,
+      qlxd: 0,
+      cntt: 0,
+    },
   },
   {
     id: '113',
@@ -391,8 +694,19 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    examsCount: 0,
     candidatesCount: 100,
+    invigilatorsCount: {
+      khcb: 7,
+      ck: 1,
+      ct: 3,
+      ddt: 1,
+      ktxd: 1,
+      vtkt: 1,
+      mtatgt: 1,
+      llct: 1,
+      qlxd: 0,
+      cntt: 0,
+    },
   },
   {
     id: '114',
@@ -402,8 +716,19 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    examsCount: 0,
     candidatesCount: 100,
+    invigilatorsCount: {
+      khcb: 7,
+      ck: 1,
+      ct: 3,
+      ddt: 1,
+      ktxd: 1,
+      vtkt: 1,
+      mtatgt: 1,
+      llct: 1,
+      qlxd: 0,
+      cntt: 0,
+    },
   },
   {
     id: '115',
@@ -413,8 +738,19 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    examsCount: 55,
     candidatesCount: 55,
+    invigilatorsCount: {
+      khcb: 7,
+      ck: 1,
+      ct: 3,
+      ddt: 1,
+      ktxd: 1,
+      vtkt: 1,
+      mtatgt: 1,
+      llct: 1,
+      qlxd: 0,
+      cntt: 0,
+    },
   },
   {
     id: '116',
@@ -424,8 +760,19 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    examsCount: 55,
     candidatesCount: 55,
+    invigilatorsCount: {
+      khcb: 7,
+      ck: 1,
+      ct: 3,
+      ddt: 1,
+      ktxd: 1,
+      vtkt: 1,
+      mtatgt: 1,
+      llct: 1,
+      qlxd: 0,
+      cntt: 0,
+    },
   },
   {
     id: '117',
@@ -435,8 +782,19 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    examsCount: 55,
     candidatesCount: 55,
+    invigilatorsCount: {
+      khcb: 7,
+      ck: 1,
+      ct: 3,
+      ddt: 1,
+      ktxd: 1,
+      vtkt: 1,
+      mtatgt: 1,
+      llct: 1,
+      qlxd: 0,
+      cntt: 0,
+    },
   },
   {
     id: '118',
@@ -446,7 +804,18 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    examsCount: 55,
     candidatesCount: 55,
+    invigilatorsCount: {
+      khcb: 7,
+      ck: 1,
+      ct: 3,
+      ddt: 1,
+      ktxd: 1,
+      vtkt: 1,
+      mtatgt: 1,
+      llct: 1,
+      qlxd: 0,
+      cntt: 0,
+    },
   },
 ];

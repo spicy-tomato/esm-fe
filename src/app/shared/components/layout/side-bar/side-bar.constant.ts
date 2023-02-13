@@ -29,7 +29,18 @@ export class SideBarConstant {
     {
       name: 'Quản lý CBCT',
       icon: 'far fa-user',
-      routerLink: '/calendar',
+      subItems: [
+        {
+          name: 'Phân số lượng tới khoa',
+          routerLink: '/invigilator/assign-faculty',
+          icon: 'far fa-chalkboard',
+        },
+        {
+          name: 'Phân công phòng thi',
+          routerLink: '/schedule/import',
+          icon: 'far fa-users-class',
+        },
+      ],
     },
     {
       name: 'Quản lý coi thi',

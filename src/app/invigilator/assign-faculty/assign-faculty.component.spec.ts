@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ExamComponent } from './exam.component';
-import { NGRX, TAIGA_UI } from './exam.module';
+import { InvigilatorAssignFacultyComponent } from './assign-faculty.component';
+import { NGRX, TAIGA_UI } from './assign-faculty.module';
 
-describe('ExamComponent', () => {
-  let component: ExamComponent;
-  let fixture: ComponentFixture<ExamComponent>;
+describe('AssignFacultyComponent', () => {
+  let component: InvigilatorAssignFacultyComponent;
+  let fixture: ComponentFixture<InvigilatorAssignFacultyComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, ...NGRX, ...TAIGA_UI],
-      declarations: [ExamComponent],
+      declarations: [InvigilatorAssignFacultyComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ExamComponent);
+    fixture = TestBed.createComponent(InvigilatorAssignFacultyComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
