@@ -7,7 +7,7 @@ module.exports = {
         'nav-h': '65px',
         'main-view-h': 'calc(100vh - 65px)',
         'main-view-h-md': 'calc(100vh - 79px)',
-        'content-h': 'calc(100vh - 127px)' /* With breadcrumbs */,
+        'content-h': 'calc(100vh - 79px)' /* With paddings */,
         'sidebar-w': '240px',
         'main-view-w': 'calc(100vw - 240px)',
       },

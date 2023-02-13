@@ -9,7 +9,6 @@ import {
   TuiButtonModule,
   TuiDataListModule,
   TuiHostedDropdownModule,
-  TuiPrimitiveTextfieldModule,
   TuiSvgModule,
   TuiTextfieldControllerModule,
 } from '@taiga-ui/core';

@@ -13,6 +13,13 @@ const routes: Routes = [
     component: LayoutComponent,
     children: [
       {
+        path: '',
+        pathMatch: 'full',
+        loadChildren: async () =>
+          (await import('./examination/overview/overview.module'))
+            .OverviewModule,
+      },
+      {
         path: 'notification',
         loadChildren: async () =>
           (await import('./notification/notification.module'))
