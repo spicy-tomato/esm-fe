@@ -1,0 +1,147 @@
+<div
+  class="py-3 flex flex-0 justify-between items-center bg-white text-3xl font-bold"
+>
+  <h3>Phân giảng viên coi thi khoa Cơ khí</h3>
+
+  <div *ngIf="isEditing; else noEdit">
+    <button
+      *ngrxLet="isSaving$ as isSaving"
+      tuiButton
+      (click)="saveChange()"
+      [showLoader]="isSaving"
+      icon="tuiIconCheckLarge"
+      class="mr-2"
+    >
+      Lưu
+    </button>
+    <button
+      tuiButton
+      (click)="cancelEdit()"
+      appearance="secondary-destructive"
+      icon="tuiIconCloseLarge"
+    >
+      Hủy
+    </button>
+  </div>
+  <ng-template #noEdit>
+    <div>
+      <button
+        tuiButton
+        (click)="toggleEdit(true)"
+        icon="tuiIconEditLarge"
+        class="mr-2"
+      >
+        Chỉnh sửa
+      </button>
+      <button tuiButton icon="tuiIconDownloadLarge">Tải file Excel</button>
+    </div>
+  </ng-template>
+</div>
+
+<tui-scrollbar waIntersectionRoot class="scrollbar" class="flex-1">
+  <table
+    tuiTable
+    *ngIf="form"
+    [formGroup]="form"
+    [columns]="columns"
+    class="w-full"
+  >
+    <thead tuiThead>
+      <tr tuiThGroup>
+        <th tuiTh>Mã học phần</th>
+        <th tuiTh>Tên học phần</th>
+        <th tuiTh>Ngày thi</th>
+        <th tuiTh>Ca thi</th>
+        <th tuiTh class="!text-center">Bộ môn</th>
+        <th tuiTh class="!text-center">Họ tên CBCT</th>
+        <th tuiTh>SĐT</th>
+      </tr>
+    </thead>
+    <tbody tuiTbody [data]="data" formArrayName="assign">
+      <ng-container *ngFor="let item of data; let i = index">
+        <tr
+          *tuiRepeatTimes="let subIndex of item.size"
+          [formArrayName]="i"
+          [class.span-col]="subIndex > 0"
+          tuiTr
+        >
+          <td
+            *tuiCell="'moduleId'"
+            tuiTd
+            [rowSpan]="item.size"
+            [class.hidden]="subIndex > 0"
+          >
+            {{ item.moduleId }}
+          </td>
+          <td
+            *tuiCell="'moduleName'"
+            tuiTd
+            [class.hidden]="subIndex > 0"
+            [rowSpan]="item.size"
+          >
+            {{ item.moduleName }}
+          </td>
+          <td
+            *tuiCell="'startAt'"
+            tuiTd
+            [class.hidden]="subIndex > 0"
+            [rowSpan]="item.size"
+          >
+            <div>
+              {{ item.startAt | date : "dd/MM/y" }}
+            </div>
+          </td>
+          <td
+            *tuiCell="'shift'"
+            tuiTd
+            [class.hidden]="subIndex > 0"
+            [rowSpan]="item.size"
+          >
+            {{ item.shift }}
+          </td>
+
+          <td
+            *tuiCell="'department'"
+            tuiTd
+            [class.colored]="isEditing"
+            class="w-60"
+          >
+            <!-- formControlName="department" -->
+            <tui-select
+              (ngModelChange)="onDepartmentChanges(i, subIndex)"
+              [formControl]="control(i, subIndex, 'department')"
+              [readOnly]="!isEditing"
+              class="w-60"
+            >
+              <tui-data-list-wrapper
+                *tuiDataList
+                [items]="departments"
+              ></tui-data-list-wrapper>
+            </tui-select>
+          </td>
+
+          <td
+            *tuiCell="'teacher'"
+            tuiTd
+            [class.colored]="isEditing"
+            class="w-60"
+          >
+            <!-- formControlName="teacher" -->
+            <tui-select
+              [formControl]="control(i, subIndex, 'teacher')"
+              [readOnly]="!isEditing"
+              class="w-60"
+            >
+              <tui-data-list-wrapper
+                *tuiDataList
+                [items]="getTeacher(i, subIndex)"
+              ></tui-data-list-wrapper>
+            </tui-select>
+          </td>
+
+          <td *tuiCell="'phoneNumber'" tuiTd></td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</tui-scrollbar>

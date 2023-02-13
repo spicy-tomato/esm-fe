@@ -43,6 +43,12 @@ const routes: Routes = [
                 )
               ).InvigilatorAssignTeacherModule,
           },
+          {
+            path: 'assign-room',
+            loadChildren: async () =>
+              (await import('./invigilator/assign-room/assign-room.module'))
+                .InvigilatorAssignRoomModule,
+          },
         ],
       },
       {
