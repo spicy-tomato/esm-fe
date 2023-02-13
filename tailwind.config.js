@@ -4,12 +4,12 @@ module.exports = {
   theme: {
     extend: {
       spacing: {
-        'nav-h': '65px',
-        'main-view-h': 'calc(100vh - 65px)',
-        'main-view-h-md': 'calc(100vh - 79px)',
-        'content-h': 'calc(100vh - 79px)' /* With paddings */,
-        'sidebar-w': '240px',
-        'main-view-w': 'calc(100vw - 240px)',
+        'nav-h': 'var(--nav-height)',
+        'main-view-h': 'var(--main-view-height)',
+        'main-view-h-md': 'var(--main-view-height)',
+        'content-h': 'var(--content-height)',
+        'sidebar-w': 'var(--sidebar-width)',
+        'main-view-w': 'var(--main-view-width)',
       },
       colors: {
         // UTC

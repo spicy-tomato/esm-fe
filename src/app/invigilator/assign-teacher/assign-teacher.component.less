@@ -1,0 +1,19 @@
+:host {
+  @apply relative h-content-h flex flex-col;
+
+  table {
+    th {
+      @apply whitespace-nowrap;
+    }
+
+    tbody ::ng-deep td {
+      &.colored {
+        @apply bg-tui-base-02;
+      }
+
+      tui-input-number input {
+        @apply text-right;
+      }
+    }
+  }
+}

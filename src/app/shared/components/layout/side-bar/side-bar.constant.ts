@@ -36,8 +36,13 @@ export class SideBarConstant {
           icon: 'far fa-chalkboard',
         },
         {
+          name: 'Phân công giảng viên',
+          routerLink: '/invigilator/assign-teacher',
+          icon: 'far fa-chalkboard',
+        },
+        {
           name: 'Phân công phòng thi',
-          routerLink: '/schedule/import',
+          routerLink: '/invigilator/assign-room',
           icon: 'far fa-users-class',
         },
       ],
