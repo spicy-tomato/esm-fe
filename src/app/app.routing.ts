@@ -15,9 +15,7 @@ const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        loadChildren: async () =>
-          (await import('./examination/overview/overview.module'))
-            .OverviewModule,
+        redirectTo: 'exam',
       },
       {
         path: 'exam',
@@ -52,6 +50,12 @@ const routes: Routes = [
         loadChildren: async () =>
           (await import('./notification/notification.module'))
             .NotificationModule,
+      },
+      {
+        path: 'statistic',
+        loadChildren: async () =>
+          (await import('./examination/statistic/statistic.module'))
+            .StatisticModule,
       },
     ],
   },

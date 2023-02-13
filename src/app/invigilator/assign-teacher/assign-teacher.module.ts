@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LetModule } from '@ngrx/component';
 import { TuiTableModule } from '@taiga-ui/addon-table';
+import { TuiRepeatTimesModule } from '@taiga-ui/cdk';
 import { TuiButtonModule, TuiScrollbarModule } from '@taiga-ui/core';
 import { TuiDataListWrapperModule, TuiSelectModule } from '@taiga-ui/kit';
 import { InvigilatorAssignTeacherComponent } from './assign-teacher.component';
@@ -12,6 +13,7 @@ export const NGRX = [LetModule];
 export const TAIGA_UI = [
   TuiButtonModule,
   TuiDataListWrapperModule,
+  TuiRepeatTimesModule,
   TuiScrollbarModule,
   TuiSelectModule,
   TuiTableModule,

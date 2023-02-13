@@ -58,43 +58,90 @@
       </tr>
     </thead>
     <tbody tuiTbody [data]="data" formArrayName="assign">
-      <tr [formGroup]="row(i)" *ngFor="let item of data; let i = index" tuiTr>
-        <td *tuiCell="'startAt'" tuiTd>
-          <div>
-            {{ item.startAt | date : "dd/MM/y" }}
-          </div>
-        </td>
-        <td
-          *tuiCell="'department'"
-          tuiTd
-          [class.colored]="isEditing"
-          class="w-60"
+      <ng-container *ngFor="let item of data; let i = index">
+        <tr
+          *tuiRepeatTimes="let subIndex of item.size"
+          [formArrayName]="i"
+          [class.span-col]="subIndex > 0"
+          tuiTr
         >
-          <tui-select
-            formControlName="department"
-            (ngModelChange)="onDepartmentChanges(i)"
-            [readOnly]="!isEditing"
+          <td
+            *tuiCell="'moduleId'"
+            tuiTd
+            [rowSpan]="item.size"
+            [class.hidden]="subIndex > 0"
+          >
+            {{ item.moduleId }}
+          </td>
+          <td
+            *tuiCell="'moduleName'"
+            tuiTd
+            [class.hidden]="subIndex > 0"
+            [rowSpan]="item.size"
+          >
+            {{ item.moduleName }}
+          </td>
+          <td
+            *tuiCell="'startAt'"
+            tuiTd
+            [class.hidden]="subIndex > 0"
+            [rowSpan]="item.size"
+          >
+            <div>
+              {{ item.startAt | date : "dd/MM/y" }}
+            </div>
+          </td>
+          <td
+            *tuiCell="'shift'"
+            tuiTd
+            [class.hidden]="subIndex > 0"
+            [rowSpan]="item.size"
+          >
+            {{ item.shift }}
+          </td>
+
+          <td
+            *tuiCell="'department'"
+            tuiTd
+            [class.colored]="isEditing"
             class="w-60"
           >
-            <tui-data-list-wrapper
-              *tuiDataList
-              [items]="departments"
-            ></tui-data-list-wrapper>
-          </tui-select>
-        </td>
-        <td *tuiCell="'teacher'" tuiTd [class.colored]="isEditing" class="w-60">
-          <tui-select
-            formControlName="teacher"
-            [readOnly]="!isEditing"
+            <!-- formControlName="department" -->
+            <tui-select
+              (ngModelChange)="onDepartmentChanges(i, subIndex)"
+              [formControl]="control(i, subIndex, 'department')"
+              [readOnly]="!isEditing"
+              class="w-60"
+            >
+              <tui-data-list-wrapper
+                *tuiDataList
+                [items]="departments"
+              ></tui-data-list-wrapper>
+            </tui-select>
+          </td>
+
+          <td
+            *tuiCell="'teacher'"
+            tuiTd
+            [class.colored]="isEditing"
             class="w-60"
           >
-            <tui-data-list-wrapper
-              *tuiDataList
-              [items]="getTeacher(i)"
-            ></tui-data-list-wrapper>
-          </tui-select>
-        </td>
-      </tr>
+            <!-- formControlName="teacher" -->
+            <tui-select
+              [formControl]="control(i, subIndex, 'teacher')"
+              [readOnly]="!isEditing"
+              class="w-60"
+            >
+              <tui-data-list-wrapper
+                *tuiDataList
+                [items]="getTeacher(i, subIndex)"
+              ></tui-data-list-wrapper>
+            </tui-select>
+          </td>
+
+          <td *tuiCell="'phoneNumber'" tuiTd></td>
+        </tr>
+      </ng-container>
     </tbody>
   </table>
 </tui-scrollbar>

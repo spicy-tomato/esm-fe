@@ -17,56 +17,40 @@ export type SidebarItem = {
 export class SideBarConstant {
   static items: SidebarItem[] = [
     {
-      name: 'Tổng quan',
-      icon: 'far fa-telescope',
-      routerLink: '/',
-    },
-    {
       name: 'Đề thi',
       icon: 'far fa-briefcase',
       routerLink: '/exam',
     },
     {
-      name: 'Quản lý CBCT',
+      name: 'Phân công CBCT',
       icon: 'far fa-user',
       subItems: [
         {
-          name: 'Phân số lượng tới khoa',
+          name: 'Khối lượng CBCT',
           routerLink: '/invigilator/assign-faculty',
           icon: 'far fa-chalkboard',
         },
         {
-          name: 'Phân công giảng viên',
+          name: 'Phân công CBCT',
           routerLink: '/invigilator/assign-teacher',
           icon: 'far fa-chalkboard',
         },
         {
-          name: 'Phân công phòng thi',
+          name: 'Phòng thi',
           routerLink: '/invigilator/assign-room',
           icon: 'far fa-users-class',
         },
       ],
     },
     {
-      name: 'Quản lý coi thi',
+      name: 'Bàn giao bài thi',
       icon: 'far fa-pencil-paintbrush',
-      subItems: [
-        {
-          name: 'Quản lý lịch thi',
-          routerLink: '/schedule/assign',
-          icon: 'far fa-calendar-day',
-        },
-        {
-          name: 'Phân công CBCT',
-          routerLink: '/schedule/import',
-          icon: 'far fa-users-class',
-        },
-      ],
+      routerLink: '/handover',
     },
     {
       name: 'Quản lý thanh toán',
       icon: 'far fa-wallet',
-      routerLink: '/schedule/change',
+      routerLink: '/pay',
     },
     {
       name: 'Thống kê',

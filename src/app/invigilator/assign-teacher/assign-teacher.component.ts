@@ -16,8 +16,9 @@ type Item = {
   startAt: Date;
   shift: number;
   room: string;
-  teacher: string;
-  department: '';
+  teacher: string[];
+  department: string[];
+  size: number;
 };
 
 @Component({
@@ -49,10 +50,14 @@ export class InvigilatorAssignTeacherComponent {
     this.form = this.fb.group({
       assign: this.fb.array(
         this.data.map((item) =>
-          this.fb.group({
-            department: [item.department, Validators.required],
-            teacher: [item.teacher, Validators.required],
-          })
+          this.fb.array(
+            new Array(item.size).fill(null).map(() =>
+              this.fb.group({
+                department: ['', Validators.required],
+                teacher: ['', Validators.required],
+              })
+            )
+          )
         )
       ),
     });
@@ -61,22 +66,24 @@ export class InvigilatorAssignTeacherComponent {
   }
 
   // PUBLIC METHODS
-  row(index: number): FormGroup {
-    return (this.form.controls['assign'] as FormArray).at(index) as FormGroup;
+  row(index: number): FormArray {
+    return (this.form.controls['assign'] as FormArray).at(index) as FormArray;
   }
 
-  control(index: number, controlName: string): FormControl {
-    return this.row(index).controls[controlName] as FormControl;
+  control(index: number, subIndex: number, controlName: string): FormControl {
+    return (this.row(index).at(subIndex) as FormGroup).controls[
+      controlName
+    ] as FormControl;
   }
 
-  getTeacher(index: number): string[] {
-    const department = this.control(index, 'department')
+  getTeacher(index: number, subIndex: number): string[] {
+    const department = this.control(index, subIndex, 'department')
       .value as keyof typeof teacherData;
     return teacherData[department];
   }
 
-  onDepartmentChanges(index: number): void {
-    this.control(index, 'teacher').setValue('');
+  onDepartmentChanges(index: number, subIndex: number): void {
+    this.control(index, subIndex, 'teacher').setValue('');
   }
 
   saveChange(): void {
@@ -111,8 +118,9 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    teacher: '',
-    department: '',
+    teacher: [],
+    department: [],
+    size: 1,
   },
   {
     id: '2',
@@ -121,8 +129,9 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    teacher: '',
-    department: '',
+    teacher: [],
+    department: [],
+    size: 2,
   },
   {
     id: '3',
@@ -131,8 +140,9 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    teacher: '',
-    department: '',
+    teacher: [],
+    department: [],
+    size: 3,
   },
   {
     id: '4',
@@ -141,8 +151,9 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    teacher: '',
-    department: '',
+    teacher: [],
+    department: [],
+    size: 1,
   },
   {
     id: '5',
@@ -151,8 +162,9 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    teacher: '',
-    department: '',
+    teacher: [],
+    department: [],
+    size: 1,
   },
   {
     id: '6',
@@ -161,8 +173,9 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    teacher: '',
-    department: '',
+    teacher: [],
+    department: [],
+    size: 1,
   },
   {
     id: '7',
@@ -171,8 +184,9 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    teacher: '',
-    department: '',
+    teacher: [],
+    department: [],
+    size: 1,
   },
   {
     id: '8',
@@ -181,8 +195,9 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    teacher: '',
-    department: '',
+    teacher: [],
+    department: [],
+    size: 1,
   },
   {
     id: '9',
@@ -191,8 +206,9 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    teacher: '',
-    department: '',
+    teacher: [],
+    department: [],
+    size: 1,
   },
   {
     id: '10',
@@ -201,8 +217,9 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    teacher: '',
-    department: '',
+    teacher: [],
+    department: [],
+    size: 1,
   },
   {
     id: '13',
@@ -211,8 +228,9 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    teacher: '',
-    department: '',
+    teacher: [],
+    department: [],
+    size: 1,
   },
   {
     id: '14',
@@ -221,8 +239,9 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    teacher: '',
-    department: '',
+    teacher: [],
+    department: [],
+    size: 1,
   },
   {
     id: '15',
@@ -231,8 +250,9 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    teacher: '',
-    department: '',
+    teacher: [],
+    department: [],
+    size: 1,
   },
   {
     id: '16',
@@ -241,8 +261,9 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    teacher: '',
-    department: '',
+    teacher: [],
+    department: [],
+    size: 1,
   },
   {
     id: '17',
@@ -251,8 +272,9 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    teacher: '',
-    department: '',
+    teacher: [],
+    department: [],
+    size: 1,
   },
   {
     id: '18',
@@ -261,8 +283,9 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    teacher: '',
-    department: '',
+    teacher: [],
+    department: [],
+    size: 1,
   },
   {
     id: '11',
@@ -271,8 +294,9 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    teacher: '',
-    department: '',
+    teacher: [],
+    department: [],
+    size: 1,
   },
   {
     id: '12',
@@ -281,8 +305,9 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    teacher: '',
-    department: '',
+    teacher: [],
+    department: [],
+    size: 1,
   },
   {
     id: '13',
@@ -291,8 +316,9 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    teacher: '',
-    department: '',
+    teacher: [],
+    department: [],
+    size: 1,
   },
   {
     id: '14',
@@ -301,8 +327,9 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    teacher: '',
-    department: '',
+    teacher: [],
+    department: [],
+    size: 1,
   },
   {
     id: '15',
@@ -311,8 +338,9 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    teacher: '',
-    department: '',
+    teacher: [],
+    department: [],
+    size: 1,
   },
   {
     id: '16',
@@ -321,8 +349,9 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    teacher: '',
-    department: '',
+    teacher: [],
+    department: [],
+    size: 1,
   },
   {
     id: '17',
@@ -331,8 +360,9 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    teacher: '',
-    department: '',
+    teacher: [],
+    department: [],
+    size: 1,
   },
   {
     id: '18',
@@ -341,8 +371,9 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    teacher: '',
-    department: '',
+    teacher: [],
+    department: [],
+    size: 1,
   },
   {
     id: '19',
@@ -351,8 +382,9 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    teacher: '',
-    department: '',
+    teacher: [],
+    department: [],
+    size: 1,
   },
   {
     id: '110',
@@ -361,8 +393,9 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    teacher: '',
-    department: '',
+    teacher: [],
+    department: [],
+    size: 1,
   },
   {
     id: '113',
@@ -371,8 +404,9 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    teacher: '',
-    department: '',
+    teacher: [],
+    department: [],
+    size: 1,
   },
   {
     id: '114',
@@ -381,8 +415,9 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    teacher: '',
-    department: '',
+    teacher: [],
+    department: [],
+    size: 1,
   },
   {
     id: '115',
@@ -391,8 +426,9 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    teacher: '',
-    department: '',
+    teacher: [],
+    department: [],
+    size: 1,
   },
   {
     id: '116',
@@ -401,8 +437,9 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    teacher: '',
-    department: '',
+    teacher: [],
+    department: [],
+    size: 1,
   },
   {
     id: '117',
@@ -411,8 +448,9 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    teacher: '',
-    department: '',
+    teacher: [],
+    department: [],
+    size: 1,
   },
   {
     id: '118',
@@ -421,8 +459,9 @@ let data: Item[] = [
     startAt: new Date(),
     shift: 2,
     room: '403-A4',
-    teacher: '',
-    department: '',
+    teacher: [],
+    department: [],
+    size: 1,
   },
 ];
 
