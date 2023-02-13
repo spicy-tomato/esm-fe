@@ -20,6 +20,11 @@ const routes: Routes = [
             .OverviewModule,
       },
       {
+        path: 'exam',
+        loadChildren: async () =>
+          (await import('./examination/exam/exam.module')).ExamModule,
+      },
+      {
         path: 'notification',
         loadChildren: async () =>
           (await import('./notification/notification.module'))
