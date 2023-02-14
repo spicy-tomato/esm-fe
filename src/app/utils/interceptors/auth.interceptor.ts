@@ -1,4 +1,5 @@
 import {
+  HttpErrorResponse,
   HttpEvent,
   HttpHandler,
   HttpInterceptor,
@@ -6,12 +7,18 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TokenService } from '@esm/cdk';
-import { Observable } from 'rxjs';
+import { Location } from '@angular/common';
+import { Observable, tap } from 'rxjs';
+import { RedirectService } from '@esm/services';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   // CONSTRUCTOR
-  constructor(private readonly tokenService: TokenService) {}
+  constructor(
+    private readonly tokenService: TokenService,
+    private readonly location: Location,
+    private readonly redirectService: RedirectService,
+  ) {}
 
   // IMPLEMENTATIONS
   intercept(
@@ -22,6 +29,25 @@ export class AuthInterceptor implements HttpInterceptor {
     const headers = req.headers.set('Authorization', `Bearer ${token}`);
     const authReq = req.clone({ headers });
 
-    return next.handle(authReq);
+    return next.handle(authReq).pipe(
+      tap({
+        error: (error) => {
+          if (!(error instanceof HttpErrorResponse)) return;
+          const currentUrl = this.location.path();
+
+          switch (error.status) {
+            case 401: {
+              const token = error.headers.get('Authorization');
+              if (token) {
+                this.tokenService.save(token);
+              } else if (!currentUrl.includes('login')) {
+                this.tokenService.clear();
+                this.redirectService.login(currentUrl);
+              }
+            }
+          }
+        },
+      })
+    );
   }
 }

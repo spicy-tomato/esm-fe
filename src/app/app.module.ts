@@ -14,13 +14,13 @@ import {
   TuiDialogModule,
   TuiRootModule,
   TUI_ANIMATIONS_DURATION,
-  TUI_SANITIZER
+  TUI_SANITIZER,
 } from '@taiga-ui/core';
 import { TUI_VALIDATION_ERRORS } from '@taiga-ui/kit';
 import { NgDompurifySanitizer } from '@tinkoff/ng-dompurify';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
-import { LayoutModule } from './shared';
+import { LayoutModule, LoaderModule } from './shared';
 
 const NGRX = [
   StoreModule.forRoot({}, {}),
@@ -39,6 +39,7 @@ const TAIGA_UI = [TuiRootModule, TuiAlertModule, TuiDialogModule];
     AppRoutingModule,
     HttpClientModule,
     LayoutModule,
+    LoaderModule,
     ...NGRX,
     ...TAIGA_UI,
   ],

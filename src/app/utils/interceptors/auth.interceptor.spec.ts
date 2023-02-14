@@ -1,14 +1,17 @@
-import { HttpClient, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpRequest } from '@angular/common/http';
 import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { TokenService } from '@esm/cdk';
+import { Observable } from 'rxjs';
 import { AuthInterceptor } from './auth.interceptor';
 
 describe('AuthInterceptor', () => {
-  let next: { handle: (request: any) => any };
+  let next: {
+    handle: (request: HttpRequest<any>) => Observable<HttpEvent<any>>;
+  };
   let mockRequest: HttpRequest<unknown>;
   let interceptor: AuthInterceptor;
   let mockTokenService: jasmine.SpyObj<TokenService>;
@@ -36,17 +39,20 @@ describe('AuthInterceptor', () => {
   });
 
   it('[Token misses] should not has Authorization header', () => {
-    next = { handle: (): void => {} };
+    next = {
+      handle: (): Observable<HttpEvent<any>> => new Observable(),
+    };
     interceptor.intercept(mockRequest, next);
     expect(mockTokenService.get).toHaveBeenCalled();
     expect(mockRequest.headers.get('Authorization')).toEqual(null);
   });
 
   it('[Token exists] should has Authorization header', fakeAsync(() => {
-    let response: HttpResponse<any> | null = null;
+    let response: HttpRequest<any> | null = null;
     next = {
-      handle: (responseHandle): void => {
+      handle: (responseHandle): Observable<HttpEvent<any>> => {
         response = responseHandle;
+        return new Observable();
       },
     };
     mockTokenService.get.and.returnValue('saved token');

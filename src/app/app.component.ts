@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { AppPageAction } from '@esm/store';
 import { Store } from '@ngrx/store';
 import { AppState } from './utils/store/app.state';
 
@@ -11,7 +12,6 @@ import { AppState } from './utils/store/app.state';
 export class AppComponent {
   // CONSTRUCTOR
   constructor(appStore: Store<AppState>) {
-    // TODO: Uncomment below
-    // appStore.dispatch(AppPageAction.getUserInfo());
+    appStore.dispatch(AppPageAction.getUserInfo());
   }
 }

@@ -1,7 +1,13 @@
+import { SimpleDepartment } from '../department';
+import { Role } from './role';
+
 export type UserSummary = {
-  userName: string;
+  id: string;
+  displayId: string | null;
   fullName: string;
-  image?: string;
   email: string;
-  joinedDate: Date;
+  createdAt: Date;
+  department: SimpleDepartment;
+  roles: Role[];
+  isMale: boolean;
 };

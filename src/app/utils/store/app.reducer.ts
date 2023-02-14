@@ -6,6 +6,7 @@ import { AppState } from './app.state';
 export const appInitialState: AppState = {
   user: null,
   status: 'idle',
+  showLoader: null,
 };
 
 export const appFeatureKey = '[NGRX Key] App';

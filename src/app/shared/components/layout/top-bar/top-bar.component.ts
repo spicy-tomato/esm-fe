@@ -4,12 +4,11 @@ import {
   Inject,
   Input,
 } from '@angular/core';
-import { fadeInOut } from '@esm/core';
-import { UserSummary } from '@esm/data';
-import { AppPageAction, AppState } from '@esm/store';
+import { fadeInOut, StringHelper } from '@esm/core';
+import { AppPageAction, AppSelector, AppState } from '@esm/store';
 import { Store } from '@ngrx/store';
 import { tuiButtonOptionsProvider } from '@taiga-ui/core';
-import { Observable } from 'rxjs';
+import { map } from 'rxjs';
 import { TopBarConstants } from './top-bar.constant';
 import { TopBarOptions, TOP_BAR_OPTIONS } from './top-bar.token';
 
@@ -24,14 +23,13 @@ import { TopBarOptions, TOP_BAR_OPTIONS } from './top-bar.token';
       size: 'm',
     }),
   ],
-  animations: [fadeInOut]
+  animations: [fadeInOut],
 })
 export class TopBarComponent {
   // INPUT
   @Input() isInCommonPage!: boolean;
 
   // PUBLIC PROPERTIES
-  readonly items = TopBarConstants.items;
   examinations = [
     'Thi kết thúc học phần kỳ 2 năm học 2022-2023',
     'Thi kết thúc học phần kỳ 1 năm học 2022-2023',
@@ -40,7 +38,13 @@ export class TopBarComponent {
   openExaminationDropdown = false;
   openUserDropdown = false;
   searchExaminationValue = '';
-  user$: Observable<UserSummary | null> | undefined;
+
+  readonly items = TopBarConstants.items;
+  readonly userName$ = this.appStore.pipe(
+    AppSelector.notNullUser,
+    map(({ fullName }) => StringHelper.getFirstName(fullName))
+  );
+  readonly userTitle$ = this.appStore.pipe(AppSelector.userTitle(false));
 
   // CONSTRUCTOR
   constructor(

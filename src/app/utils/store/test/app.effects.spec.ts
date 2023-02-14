@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { TokenService } from '@esm/cdk';
 import { APP_ENV } from '@esm/core';
+import { UserSummary } from '@esm/data';
 import { UserService } from '@esm/services';
 import { AppEffects } from '@esm/store';
 import { provideMockActions } from '@ngrx/effects/testing';
@@ -11,11 +12,25 @@ import { cold, hot } from 'jasmine-marbles';
 import { Observable, of } from 'rxjs';
 
 describe('AppEffects', () => {
-  const mockLoggedInUser = {
+  const mockLoggedInUser: UserSummary = {
     email: 'test@abc.com',
     fullName: 'Tester',
-    userName: 'tester',
-    joinedDate: new Date(),
+    createdAt: new Date(),
+    department: {
+      displayId: null,
+      faculty: null,
+      id: 'fac',
+      name: 'fn',
+      school: {
+        displayId: null,
+        id: 'sc',
+        name: 'sc',
+      },
+    },
+    displayId: null,
+    id: 'id',
+    isMale: true,
+    roles: [],
   };
   let actions$: Observable<Action>;
   let mockTokenService: jasmine.SpyObj<TokenService>;

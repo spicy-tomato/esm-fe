@@ -72,18 +72,18 @@
 
     <div *ngIf="options.showInfo" class="hidden lg:block">
       <tui-hosted-dropdown
+        *ngrxLet="userTitle$ as userTitle"
         [(open)]="openUserDropdown"
         [content]="userDropdown"
         tuiDropdownAlign="left"
       >
         <button
           tuiButton
-          *ngrxLet="user$ as user"
+          *ngrxLet="userName$ as userName"
           appearance="nav-button"
           type="button"
         >
-          Xin chào
-          <!-- {{ user | navbarName }}! -->
+          Xin chào {{ userTitle }} {{ userName }}!
         </button>
       </tui-hosted-dropdown>
     </div>
@@ -102,7 +102,7 @@
 <ng-template #examinationDropdown>
   <tui-data-list size="l" class="w-[460px] px-0 py-1" role="menu">
     <tui-opt-group>
-      <div class="p-1">
+      <div class="px-1">
         <tui-input
           [(ngModel)]="searchExaminationValue"
           [tuiTextfieldLabelOutside]="true"

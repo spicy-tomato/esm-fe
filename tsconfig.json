@@ -32,6 +32,9 @@
       "@esm/data": [
         "src/data"
       ],
+      "@esm/guards": [
+        "src/app/utils/guards"
+      ],
       "@esm/interceptors": [
         "src/app/utils/interceptors"
       ],

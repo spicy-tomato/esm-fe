@@ -23,7 +23,7 @@ export class NotificationEffects {
   // PRIVATE PROPERTIES
   private readonly uuidAccount$ = this.appStore.pipe(
     AppSelector.notNullUser,
-    map(({ userName }) => userName)
+    map(({ fullName: userName }) => userName)
   );
 
   // EFFECTS
@@ -41,53 +41,53 @@ export class NotificationEffects {
     { dispatch: false }
   );
 
-  getAll$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(NotificationPageAction.getAll),
-      withLatestFrom(
-        this.store.select(NotificationSelector.all).pipe(
-          map((x) => x.milestone),
-          ObservableHelper.filterNullish()
-        ),
-        this.uuidAccount$
-      ),
-      mergeMap(({ 1: milestone, 2: uuidAccount }) => {
-        return this.notificationService
-          .getAll(uuidAccount, {
-            milestone,
-            limit: 5,
-          })
-          .pipe(
-            map((page) => NotificationApiAction.getAllSuccessful({ page })),
-            catchError(() => of(NotificationApiAction.getAllFailed()))
-          );
-      })
-    );
-  });
+  // getAll$ = createEffect(() => {
+  //   return this.actions$.pipe(
+  //     ofType(NotificationPageAction.getAll),
+  //     withLatestFrom(
+  //       this.store.select(NotificationSelector.all).pipe(
+  //         map((x) => x.milestone),
+  //         ObservableHelper.filterNullish()
+  //       ),
+  //       this.uuidAccount$
+  //     ),
+  //     mergeMap(({ 1: milestone, 2: uuidAccount }) => {
+  //       return this.notificationService
+  //         .getAll(uuidAccount, {
+  //           milestone,
+  //           limit: 5,
+  //         })
+  //         .pipe(
+  //           map((page) => NotificationApiAction.getAllSuccessful({ page })),
+  //           catchError(() => of(NotificationApiAction.getAllFailed()))
+  //         );
+  //     })
+  //   );
+  // });
 
-  getUnread$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(NotificationPageAction.getUnread),
-      withLatestFrom(
-        this.store.select(NotificationSelector.unread).pipe(
-          map((x) => x.milestone),
-          ObservableHelper.filterNullish()
-        ),
-        this.uuidAccount$
-      ),
-      mergeMap(({ 1: milestone, 2: uuidAccount }) => {
-        return this.notificationService
-          .getUnread(uuidAccount, {
-            milestone,
-            limit: 5,
-          })
-          .pipe(
-            map((page) => NotificationApiAction.getUnreadSuccessful({ page })),
-            catchError(() => of(NotificationApiAction.getUnreadFailed()))
-          );
-      })
-    );
-  });
+  // getUnread$ = createEffect(() => {
+  //   return this.actions$.pipe(
+  //     ofType(NotificationPageAction.getUnread),
+  //     withLatestFrom(
+  //       this.store.select(NotificationSelector.unread).pipe(
+  //         map((x) => x.milestone),
+  //         ObservableHelper.filterNullish()
+  //       ),
+  //       this.uuidAccount$
+  //     ),
+  //     mergeMap(({ 1: milestone, 2: uuidAccount }) => {
+  //       return this.notificationService
+  //         .getUnread(uuidAccount, {
+  //           milestone,
+  //           limit: 5,
+  //         })
+  //         .pipe(
+  //           map((page) => NotificationApiAction.getUnreadSuccessful({ page })),
+  //           catchError(() => of(NotificationApiAction.getUnreadFailed()))
+  //         );
+  //     })
+  //   );
+  // });
 
   markAllAsRead$ = createEffect(
     () => {

@@ -8,10 +8,25 @@ describe('appReducer', () => {
     user: {
       email: 'test@abc.com',
       fullName: 'Tester',
-      userName: 'tester',
-      joinedDate: new Date(),
+      createdAt: new Date(),
+      department: {
+        displayId: null,
+        faculty: null,
+        id: 'fac',
+        name: 'fn',
+        school: {
+          displayId: null,
+          id: 'sc',
+          name: 'sc',
+        },
+      },
+      displayId: null,
+      id: 'id',
+      isMale: true,
+      roles: [],
     },
     status: 'success',
+    showLoader: null,
   };
 
   describe('unknown action', () => {
@@ -28,6 +43,7 @@ describe('appReducer', () => {
       const newState: AppState = {
         status: 'loading',
         user: null,
+        showLoader: null,
       };
 
       const action = AppPageAction.getUserInfo();
@@ -43,6 +59,7 @@ describe('appReducer', () => {
       const newState: AppState = {
         status: 'success',
         user: null,
+        showLoader: null,
       };
 
       const action = AppPageAction.logOut();
@@ -58,6 +75,7 @@ describe('appReducer', () => {
       const newState: AppState = {
         status: 'success',
         user: null,
+        showLoader: null,
       };
 
       const action = AppApiAction.noCacheUserInfo();
@@ -85,6 +103,7 @@ describe('appReducer', () => {
       const newState: AppState = {
         user: null,
         status: 'error',
+        showLoader: null,
       };
 
       const action = AppApiAction.getUserInfoFailed();

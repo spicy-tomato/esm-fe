@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { AppPageAction } from '@esm/store';
+import { appFeatureKey, appInitialState, AppPageAction } from '@esm/store';
 import { LetModule } from '@ngrx/component';
 import { provideMockStore } from '@ngrx/store/testing';
 import { BellModule } from '../../bell';
@@ -25,7 +25,13 @@ describe('TopBarComponent', () => {
         ...TAIGA_UI,
       ],
       declarations: [TopBarComponent],
-      providers: [provideMockStore({})],
+      providers: [
+        provideMockStore({
+          initialState: {
+            [appFeatureKey]: appInitialState,
+          },
+        }),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TopBarComponent);

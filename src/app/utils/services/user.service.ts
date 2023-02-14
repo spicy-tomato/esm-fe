@@ -27,7 +27,7 @@ export class UserService {
   }
 
   me(): Observable<Result<UserSummary>> {
-    return this.http.get<Result<UserSummary>>(this.url + 'me');
+    return this.http.get<Result<UserSummary>>(this.url + 'summary');
   }
 
   getByUserName(userName: string): Observable<Result<UserSummary>> {

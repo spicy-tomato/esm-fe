@@ -1,15 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from '@esm/guards';
 import { LayoutComponent } from './shared/components/layout/layout.component';
 
 const routes: Routes = [
   {
     path: 'login',
+    canActivate: [AuthGuard],
     loadChildren: async () =>
       (await import('./user/login/login.module')).LoginModule,
   },
   {
     path: '',
+    canActivate: [AuthGuard],
     component: LayoutComponent,
     children: [
       {
