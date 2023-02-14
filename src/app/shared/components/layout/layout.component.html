@@ -1,6 +1,19 @@
-<div class="wrapper w-screen h-screen grid">
-  <esm-top-bar class="col-start-1 col-span-2"></esm-top-bar>
-  <esm-side-bar class="hidden lg:block"></esm-side-bar>
-  <esm-main-view class="max-h-main-view-h"></esm-main-view>
+<div
+  *ngrxLet="isInCommonPage$ as isInCommonPage"
+  class="wrapper w-screen h-screen grid"
+>
+  <esm-top-bar
+    [isInCommonPage]="isInCommonPage"
+    class="col-start-1 col-span-2"
+  ></esm-top-bar>
+  <esm-side-bar
+    [class.!hidden]="isInCommonPage"
+    class="hidden lg:block"
+  ></esm-side-bar>
+  <esm-main-view
+    [isInCommonPage]="isInCommonPage"
+    [class.col-span-2]="isInCommonPage"
+    class="max-h-main-view-h"
+  ></esm-main-view>
   <!-- <esm-version></esm-version> -->
 </div>

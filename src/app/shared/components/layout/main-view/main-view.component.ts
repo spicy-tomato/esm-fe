@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { routerFade } from '@esm/core';
 
 @Component({
@@ -8,4 +8,7 @@ import { routerFade } from '@esm/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [routerFade],
 })
-export class MainViewComponent {}
+export class MainViewComponent {
+  // INPUT
+  @Input() isInCommonPage!: boolean;
+}

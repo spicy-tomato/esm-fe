@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  Input,
+} from '@angular/core';
+import { fadeInOut } from '@esm/core';
 import { UserSummary } from '@esm/data';
 import { AppPageAction, AppState } from '@esm/store';
 import { Store } from '@ngrx/store';
@@ -18,8 +24,12 @@ import { TopBarOptions, TOP_BAR_OPTIONS } from './top-bar.token';
       size: 'm',
     }),
   ],
+  animations: [fadeInOut]
 })
 export class TopBarComponent {
+  // INPUT
+  @Input() isInCommonPage!: boolean;
+
   // PUBLIC PROPERTIES
   readonly items = TopBarConstants.items;
   examinations = [

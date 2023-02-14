@@ -28,8 +28,10 @@
     <h3 class="hidden ml-1 text-lg font-bold uppercase md:block">ESM</h3>
 
     <tui-hosted-dropdown
+      *ngIf="!isInCommonPage"
       [(open)]="openExaminationDropdown"
       [content]="examinationDropdown"
+      [@fadeInOut]
       class="ml-10"
     >
       <button
@@ -43,19 +45,30 @@
     </tui-hosted-dropdown>
   </div>
 
-  <div class="flex items-center">
+  <div class="right flex items-center">
+    <a
+      *ngIf="!isInCommonPage"
+      [@fadeInOut]
+      tuiButton
+      routerLink="/create"
+      appearance="primary"
+      icon="tuiIconPlusCircleLarge"
+    >
+      Tạo
+    </a>
+
     <tui-input
       [(ngModel)]="searchExaminationValue"
       [tuiTextfieldLabelOutside]="true"
       [tuiTextfieldCleaner]="true"
       tuiTextfieldIconLeft="tuiIconSearchLarge"
       tuiTextfieldSize="m"
-      class="w-[400px] mr-2"
+      class="w-[400px]"
     >
       Tìm bất cứ thứ gì
     </tui-input>
 
-    <esm-bell class="lg:mr-2"></esm-bell>
+    <esm-bell></esm-bell>
 
     <div *ngIf="options.showInfo" class="hidden lg:block">
       <tui-hosted-dropdown

@@ -18,6 +18,11 @@ const routes: Routes = [
         redirectTo: 'exam',
       },
       {
+        path: 'create',
+        loadChildren: async () =>
+          (await import('./examination/create/create.module')).CreateModule,
+      },
+      {
         path: 'exam',
         loadChildren: async () =>
           (await import('./examination/exam/exam.module')).ExamModule,
