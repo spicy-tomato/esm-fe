@@ -58,5 +58,11 @@ export class SideBarConstant {
       routerLink: '/statistic',
       // permission: PermissionConstant.STATISTICIZE_CHANGE_SCHEDULE,
     },
+    {
+      name: 'Thông báo, tài liệu',
+      icon: 'far fa-folders',
+      routerLink: '/document',
+      // permission: PermissionConstant.STATISTICIZE_CHANGE_SCHEDULE,
+    },
   ];
 }
