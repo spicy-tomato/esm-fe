@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { PermissionDirectiveModule } from '@esm/shared/directives';
+import { LetModule } from '@ngrx/component';
 import {
   TuiLinkModule,
   TuiLoaderModule,
@@ -11,7 +12,8 @@ import {
 import { TuiAccordionModule, TuiCheckboxLabeledModule } from '@taiga-ui/kit';
 import { SideBarComponent } from './side-bar.component';
 
-const TAIGA_UI = [
+export const NGRX = [LetModule];
+export const TAIGA_UI = [
   TuiAccordionModule,
   TuiCheckboxLabeledModule,
   TuiLinkModule,
@@ -21,7 +23,13 @@ const TAIGA_UI = [
 ];
 
 @NgModule({
-  imports: [CommonModule, RouterModule, PermissionDirectiveModule, ...TAIGA_UI],
+  imports: [
+    CommonModule,
+    RouterModule,
+    PermissionDirectiveModule,
+    ...NGRX,
+    ...TAIGA_UI,
+  ],
   declarations: [SideBarComponent],
   exports: [SideBarComponent],
 })

@@ -1,15 +1,21 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { TokenService } from '@esm/cdk';
 import { ExaminationService, UserService } from '@esm/services';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
-import { catchError, map, mergeMap, of, tap } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { catchError, map, mergeMap, of, tap, withLatestFrom } from 'rxjs';
 import { AppApiAction } from './app.api.actions';
 import { AppPageAction } from './app.page.actions';
+import { AppSelector } from './app.selectors';
+import { AppState } from './app.state';
 
 @Injectable()
 export class AppEffects {
+  // PRIVATE PROPERTIES
+  private id$ = this.appStore.select(AppSelector.examinationId);
+
   // EFFECTS
   readonly getUserInfo$ = createEffect(() => {
     return this.actions$.pipe(
@@ -39,24 +45,32 @@ export class AppEffects {
     { dispatch: false }
   );
 
-  readonly changeRouter$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(routerNavigatedAction),
-      map(({ payload }) => {
-        let firstChild = payload.routerState.root.firstChild;
-        let id: string | null = null;
-        while (firstChild) {
-          if (firstChild.params['examinationId']) {
-            id = firstChild.params['examinationId'];
-            break;
+  readonly changeRouter$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(routerNavigatedAction),
+        withLatestFrom(this.id$),
+        map(([{ payload }, oldId]) => {
+          let firstChild = payload.routerState.root.firstChild;
+          let id: string | null = null;
+          while (firstChild) {
+            if (firstChild.params['examinationId']) {
+              id = firstChild.params['examinationId'];
+              break;
+            }
+            firstChild = firstChild.firstChild;
           }
-          firstChild = firstChild.firstChild;
-        }
 
-        return AppApiAction.changeExaminationId({ id });
-      })
-    );
-  });
+          if (id !== oldId) {
+            this.appStore.dispatch(AppApiAction.changeExaminationId({ id }));
+          }
+
+          return of(null);
+        })
+      );
+    },
+    { dispatch: false }
+  );
 
   readonly changeExaminationId$ = createEffect(() => {
     return this.actions$.pipe(
@@ -80,6 +94,7 @@ export class AppEffects {
   // CONSTRUCTOR
   constructor(
     private readonly actions$: Actions,
+    private readonly appStore: Store<AppState>,
     private readonly router: Router,
     private readonly userService: UserService,
     private readonly examinationService: ExaminationService,

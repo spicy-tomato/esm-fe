@@ -49,6 +49,11 @@ export class AppSelector {
     (state) => state.examinationStatus
   );
 
+  static readonly examinationId = createSelector(
+    this.selector,
+    (state) => state.examinationId
+  );
+
   static readonly examination = createSelector(
     this.selector,
     (state) => state.examination

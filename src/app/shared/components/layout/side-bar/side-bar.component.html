@@ -1,66 +1,64 @@
-<tui-scrollbar class="w-full h-full border-r border-tui-base-03">
+<tui-scrollbar
+  *ngrxLet="examinationId$ as examinationId"
+  class="w-full h-full border-r border-tui-base-03"
+>
   <ng-container *ngFor="let item of items">
     <ng-container *esmPermission="item.permission">
-      <div>
-        <!-- (click)="onClickItem(item)" -->
-        <!-- Accordion item -->
-        <tui-accordion-item
-          *ngIf="item.subItems; else link"
-          [nativeId]="item.name"
-          [borders]="null"
-          size="s"
-          class="!rounded-none"
-        >
-          <!-- Accordion title -->
-          <span class="icon-wrapper inline-block">
-            <div class="flex">
-              <i [class]="item.icon" class="mx-auto"></i>
-            </div>
-          </span>
-          <strong>{{ item.name }}</strong>
+      <!-- Accordion item -->
+      <tui-accordion-item
+        *ngIf="item.subItems; else link"
+        [nativeId]="item.name"
+        [borders]="null"
+        size="s"
+        class="!rounded-none"
+      >
+        <!-- Accordion title -->
+        <span class="icon-wrapper inline-block">
+          <div class="flex">
+            <i [class]="item.icon" class="mx-auto"></i>
+          </div>
+        </span>
+        <strong>{{ item.name }}</strong>
 
-          <!-- Accordion content -->
-          <ng-template tuiAccordionItemContent>
-            <div class="sub-item -mt-4 -mb-2">
-              <div
-                [class.border-l-2]="item.subItems"
-                (click)="$event.stopPropagation()"
-                class="my-2 pl-3 border-tui-base-03"
+        <!-- Accordion content -->
+        <ng-template tuiAccordionItemContent>
+          <div class="sub-item -mt-4 -mb-2">
+            <div
+              [class.border-l-2]="item.subItems"
+              (click)="$event.stopPropagation()"
+              class="my-2 pl-3 border-tui-base-03"
+            >
+              <a
+                tuiLink
+                *ngFor="let subItem of item.subItems"
+                [routerLink]="(examinationId ?? '') + subItem.routerLink"
+                [routerLinkActiveOptions]="{ exact: true }"
+                [icon]="subItem.useTaigaIcon ? subItem.icon : ''"
+                tuiMode="onLight"
+                routerLinkActive="!text-tui-base-09"
+                iconAlign="left"
+                class="block !pt-2 leading-6 w-fit"
               >
-                <a
-                  tuiLink
-                  *ngFor="let subItem of item.subItems"
-                  [routerLink]="subItem.routerLink"
-                  [routerLinkActiveOptions]="{ exact: true }"
-                  [icon]="subItem.useTaigaIcon ? subItem.icon : ''"
-                  tuiMode="onLight"
-                  routerLinkActive="!text-tui-base-09"
-                  iconAlign="left"
-                  class="block !pt-2 leading-6 w-fit"
+                <span
+                  *ngIf="subItem.useTaigaIcon === null || !subItem.useTaigaIcon"
+                  class="inline-block"
                 >
-                  <span
-                    *ngIf="
-                      subItem.useTaigaIcon === null || !subItem.useTaigaIcon
-                    "
-                    class="inline-block"
-                  >
-                    <div class="flex w-6 h-6">
-                      <i [class]="subItem.icon" class="block mx-auto"></i>
-                    </div>
-                  </span>
-                  {{ subItem.name }}
-                </a>
-              </div>
+                  <div class="flex w-6 h-6">
+                    <i [class]="subItem.icon" class="block mx-auto"></i>
+                  </div>
+                </span>
+                {{ subItem.name }}
+              </a>
             </div>
-          </ng-template>
-        </tui-accordion-item>
-      </div>
+          </div>
+        </ng-template>
+      </tui-accordion-item>
 
       <!-- Link -->
       <ng-template #link>
         <a
           tuiLink
-          [routerLink]="item.routerLink ?? ''"
+          [routerLink]="(examinationId ?? '') + (item.routerLink ?? '')"
           [routerLinkActiveOptions]="{ exact: item.exactRouterLink ?? true }"
           routerLinkActive="!bg-tui-base-03"
           class="block !px-3 !py-2.5 bg-white !text-tui-text-01 hover:bg-tui-base-02"

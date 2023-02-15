@@ -8,6 +8,7 @@ import { UserService } from '@esm/services';
 import { AppEffects } from '@esm/store';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
+import { provideMockStore } from '@ngrx/store/testing';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable, of } from 'rxjs';
 
@@ -50,6 +51,7 @@ describe('AppEffects', () => {
       imports: [HttpClientTestingModule],
       providers: [
         AppEffects,
+        provideMockStore({}),
         provideMockActions(() => actions$),
         {
           provide: TokenService,
