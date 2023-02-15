@@ -1,4 +1,4 @@
-import { UserSummary } from '@esm/data';
+import { ExaminationSummary, UserSummary } from '@esm/data';
 import { createAction, props } from '@ngrx/store';
 
 export class AppApiAction {
@@ -11,5 +11,16 @@ export class AppApiAction {
   );
   static readonly getUserInfoFailed = createAction(
     '[App/API] Get user info failed'
+  );
+  static readonly changeExaminationId = createAction(
+    '[App/API] Change examination id',
+    props<{ id: string | null }>()
+  );
+  static readonly getExaminationSuccessful = createAction(
+    '[App/API] Get examination successful',
+    props<{ examination: ExaminationSummary | null }>()
+  );
+  static readonly getExaminationFailed = createAction(
+    '[App/API] Get examination failed'
   );
 }

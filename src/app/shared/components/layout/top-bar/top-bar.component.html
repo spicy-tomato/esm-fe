@@ -35,12 +35,14 @@
       class="ml-10"
     >
       <button
+        *ngrxLet="examinationStatus$ as examinationStatus"
         tuiButton
         appearance="flat"
         iconRight="tuiIconChevronDownLarge"
-        [pseudoHover]="openExaminationDropdown"
+        [showLoader]="examinationStatus === 'loading'"
+        [pseudoHover]="openExaminationDropdown || null"
       >
-        {{ selectedExamination }}
+        {{ selectedExamination?.name }}
       </button>
     </tui-hosted-dropdown>
   </div>
@@ -58,7 +60,7 @@
     </a>
 
     <tui-input
-      [(ngModel)]="searchExaminationValue"
+      [(ngModel)]="searchValue"
       [tuiTextfieldLabelOutside]="true"
       [tuiTextfieldCleaner]="true"
       tuiTextfieldIconLeft="tuiIconSearchLarge"
@@ -100,39 +102,63 @@
 </div>
 
 <ng-template #examinationDropdown>
-  <tui-data-list size="l" class="w-[460px] px-0 py-1" role="menu">
-    <tui-opt-group>
-      <div class="px-1">
-        <tui-input
-          [(ngModel)]="searchExaminationValue"
-          [tuiTextfieldLabelOutside]="true"
-          [tuiTextfieldCleaner]="true"
-          tuiTextfieldIconLeft="tuiIconSearchLarge"
-          tuiTextfieldSize="m"
-        >
-          Tìm kỳ thi
-        </tui-input>
-      </div>
-    </tui-opt-group>
+  <tui-input
+    #input
+    [(ngModel)]="searchExaminationValue"
+    [tuiTextfieldLabelOutside]="true"
+    [tuiTextfieldCleaner]="true"
+    tuiTextfieldIconLeft="tuiIconSearchLarge"
+    tuiTextfieldSize="m"
+    class="m-2"
+  >
+    Tìm kỳ thi
+  </tui-input>
 
-    <tui-opt-group>
-      <ng-container *ngFor="let examination of examinations">
-        <button
-          *esmVar="examination === selectedExamination as isCurrentExamination"
-          tuiOption
-          (click)="onClickExaminationDropdownItem(examination)"
-          [class.!bg-tui-secondary]="isCurrentExamination"
-          class="!justify-start !my-0 !rounded-none"
-          role="menuitem"
-        >
-          <span class="w-6 mr-1">
-            <tui-svg *ngIf="isCurrentExamination" src="tuiIconCheck"></tui-svg>
-          </span>
-          {{ examination }}
-        </button>
-      </ng-container>
-    </tui-opt-group>
-  </tui-data-list>
+  <hr />
+
+  <ng-container *ngrxLet="relatedStatus$ as relatedStatus">
+    <tui-loader
+      *ngIf="relatedStatus === 'loading'; else data"
+      class="w-96 h-20"
+    ></tui-loader>
+  </ng-container>
+
+  <ng-template #data>
+    <tui-data-list
+      *ngrxLet="relatedExaminations$ as relatedExaminations"
+      size="l"
+      class="w-[460px] px-0 py-1"
+      role="menu"
+    >
+      <tui-opt-group
+        *tuiLet="
+          relatedExaminations
+            | tuiFilter : filter : searchExaminationValue as filtered
+        "
+      >
+        <ng-container *ngFor="let examination of filtered">
+          <button
+            tuiOption
+            *esmVar="
+              examination.id === selectedExamination?.id as isCurrentExamination
+            "
+            (click)="onClickExaminationDropdownItem(examination.id)"
+            [class.!bg-tui-secondary]="isCurrentExamination"
+            class="!justify-start !my-0 !rounded-none"
+            role="menuitem"
+          >
+            <span class="w-6 mr-1">
+              <tui-svg
+                *ngIf="isCurrentExamination"
+                src="tuiIconCheck"
+              ></tui-svg>
+            </span>
+            {{ examination.name }}
+          </button>
+        </ng-container>
+      </tui-opt-group>
+    </tui-data-list>
+  </ng-template>
 </ng-template>
 
 <ng-template #userDropdown>

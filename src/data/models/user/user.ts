@@ -1,4 +1,4 @@
-import { SimpleDepartment } from '../department';
+import { DepartmentSummary } from '../department';
 import { Role } from './role';
 
 export type UserSummary = {
@@ -7,7 +7,7 @@ export type UserSummary = {
   fullName: string;
   email: string;
   createdAt: Date;
-  department: SimpleDepartment;
+  department: DepartmentSummary;
   roles: Role[];
   isMale: boolean;
 };

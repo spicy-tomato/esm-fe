@@ -1,8 +1,16 @@
 import { Status } from '@esm/cdk';
-import { UserSummary } from '@esm/data';
+import { ExaminationSummary, UserSummary } from '@esm/data';
 
-export interface AppState {
-  user: UserSummary | null;
-  status: Status;
+type UserState = {
   showLoader: boolean | null;
-}
+  user: UserSummary | null;
+  userStatus: Status;
+};
+
+type ExaminationState = {
+  examinationId: string | null;
+  examination: ExaminationSummary | null;
+  examinationStatus: Status;
+};
+
+export type AppState = UserState & ExaminationState;

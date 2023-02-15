@@ -4,9 +4,12 @@ import { AppPageAction } from './app.page.actions';
 import { AppState } from './app.state';
 
 export const appInitialState: AppState = {
-  user: null,
-  status: 'idle',
   showLoader: null,
+  user: null,
+  userStatus: 'idle',
+  examinationId: null,
+  examination: null,
+  examinationStatus: 'idle',
 };
 
 export const appFeatureKey = '[NGRX Key] App';
@@ -15,7 +18,7 @@ export const appReducer = createReducer(
   appInitialState,
   on(AppPageAction.getUserInfo, (state) => ({
     ...state,
-    status: 'loading',
+    userStatus: 'loading',
   })),
   on(AppPageAction.logOut, (state) => ({
     ...state,
@@ -23,16 +26,31 @@ export const appReducer = createReducer(
   })),
   on(AppApiAction.noCacheUserInfo, (state) => ({
     ...state,
-    status: 'success',
+    userStatus: 'success',
   })),
   on(AppApiAction.getUserInfoSuccessful, (state, { user }) => ({
     ...state,
-    user,
-    status: 'success',
+    user: user,
+    userStatus: 'success',
   })),
   on(AppApiAction.getUserInfoFailed, (state) => ({
     ...state,
     user: null,
-    status: 'error',
+    userStatus: 'error',
+  })),
+  on(AppApiAction.changeExaminationId, (state, { id }) => ({
+    ...state,
+    examinationId: id,
+    examinationStatus: 'loading',
+  })),
+  on(AppApiAction.getExaminationSuccessful, (state, { examination }) => ({
+    ...state,
+    examination,
+    examinationStatus: 'success',
+  })),
+  on(AppApiAction.getExaminationFailed, (state) => ({
+    ...state,
+    examination: null,
+    examinationStatus: 'error',
   }))
 );

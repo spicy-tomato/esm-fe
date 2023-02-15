@@ -1,15 +1,20 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   Inject,
   Input,
+  OnInit,
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { fadeInOut, StringHelper } from '@esm/core';
+import { ExaminationSummary } from '@esm/data';
 import { AppPageAction, AppSelector, AppState } from '@esm/store';
 import { Store } from '@ngrx/store';
 import { tuiButtonOptionsProvider } from '@taiga-ui/core';
-import { map } from 'rxjs';
+import { map, tap, withLatestFrom } from 'rxjs';
 import { TopBarConstants } from './top-bar.constant';
+import { TopBarStore } from './top-bar.store';
 import { TopBarOptions, TOP_BAR_OPTIONS } from './top-bar.token';
 
 @Component({
@@ -18,6 +23,7 @@ import { TopBarOptions, TOP_BAR_OPTIONS } from './top-bar.token';
   styleUrls: ['./top-bar.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
+    TopBarStore,
     tuiButtonOptionsProvider({
       appearance: 'icon',
       size: 'm',
@@ -25,21 +31,24 @@ import { TopBarOptions, TOP_BAR_OPTIONS } from './top-bar.token';
   ],
   animations: [fadeInOut],
 })
-export class TopBarComponent {
+export class TopBarComponent implements OnInit {
   // INPUT
   @Input() isInCommonPage!: boolean;
 
   // PUBLIC PROPERTIES
-  examinations = [
-    'Thi kết thúc học phần kỳ 2 năm học 2022-2023',
-    'Thi kết thúc học phần kỳ 1 năm học 2022-2023',
-  ];
-  selectedExamination = this.examinations[0];
+  selectedExamination: ExaminationSummary | null = null;
+  searchExaminationValue = '';
+  searchValue = '';
   openExaminationDropdown = false;
   openUserDropdown = false;
-  searchExaminationValue = '';
 
   readonly items = TopBarConstants.items;
+  readonly filter = (item: ExaminationSummary, search: string): boolean =>
+    item.name.toLowerCase().includes(search.toLowerCase());
+  readonly examinationStatus$ = this.store.examinationStatus$;
+  readonly examination$ = this.store.examination$;
+  readonly relatedExaminations$ = this.store.relatedExaminations$;
+  readonly relatedStatus$ = this.store.relatedStatus$;
   readonly userName$ = this.appStore.pipe(
     AppSelector.notNullUser,
     map(({ fullName }) => StringHelper.getFirstName(fullName))
@@ -49,12 +58,21 @@ export class TopBarComponent {
   // CONSTRUCTOR
   constructor(
     @Inject(TOP_BAR_OPTIONS) public readonly options: TopBarOptions,
+    private readonly router: Router,
+    private readonly cdr: ChangeDetectorRef,
+    private readonly store: TopBarStore,
     private readonly appStore: Store<AppState>
   ) {}
 
+  // IMPLEMENTATIONS
+  ngOnInit(): void {
+    this.triggerBindCurrentExamination();
+    this.store.getRelatedExaminations();
+  }
+
   // PUBLIC METHODS
-  onClickExaminationDropdownItem(action: string): void {
-    this.selectedExamination = action;
+  onClickExaminationDropdownItem(id: string): void {
+    void this.router.navigateByUrl(`${id}/exam`);
     this.openExaminationDropdown = false;
   }
 
@@ -63,5 +81,18 @@ export class TopBarComponent {
     if (action === TopBarConstants.keys.LOG_OUT) {
       this.appStore.dispatch(AppPageAction.logOut());
     }
+  }
+
+  // PRIVATE METHODS
+  private triggerBindCurrentExamination(): void {
+    this.examinationStatus$
+      .pipe(
+        withLatestFrom(this.examination$),
+        tap(({ 1: examination }) => {
+          this.selectedExamination = examination;
+          this.cdr.markForCheck();
+        })
+      )
+      .subscribe();
   }
 }

@@ -24,9 +24,12 @@ describe('AppSelector', () => {
     roles: [],
   };
   const initialState: AppState = {
-    status: 'success',
+    userStatus: 'success',
     user: mockLoggedInUser,
     showLoader: null,
+    examinationId: null,
+    examination: null,
+    examinationStatus: 'loading',
   };
 
   describe('idle', () => {
@@ -36,7 +39,7 @@ describe('AppSelector', () => {
     });
 
     it('should return the default state', () => {
-      const result = AppSelector.status.projector(initialState);
+      const result = AppSelector.userStatus.projector(initialState);
       expect(result).toEqual('success');
     });
   });

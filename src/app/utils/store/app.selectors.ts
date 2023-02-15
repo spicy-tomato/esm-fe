@@ -13,9 +13,9 @@ export class AppSelector {
     select(this.user),
     ObservableHelper.filterNullish()
   );
-  static readonly status = createSelector(
+  static readonly userStatus = createSelector(
     this.selector,
-    (state) => state.status
+    (state) => state.userStatus
   );
   static readonly permissions = createSelector(this.selector, () => [0]);
 
@@ -35,12 +35,22 @@ export class AppSelector {
 
   static readonly showLoader = createSelector(
     this.selector,
-    this.status,
-    ({ showLoader }, status) => {
-      if (showLoader !== null) {
-        return showLoader;
+    this.userStatus,
+    ({ showLoader: userShowLoader }, status) => {
+      if (userShowLoader !== null) {
+        return userShowLoader;
       }
       return status === 'idle' || status === 'loading';
     }
+  );
+
+  static readonly examinationStatus = createSelector(
+    this.selector,
+    (state) => state.examinationStatus
+  );
+
+  static readonly examination = createSelector(
+    this.selector,
+    (state) => state.examination
   );
 }

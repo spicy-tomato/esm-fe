@@ -1,8 +1,10 @@
+import { FacultySummary } from '../faculty';
 import { SchoolSummary } from '../school';
 
-export type FacultySummary = {
+export type DepartmentSummary = {
   id: string;
   displayId: string | null;
   name: string;
   school: SchoolSummary;
+  faculty: FacultySummary | null;
 };

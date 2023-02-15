@@ -1,1 +1,1 @@
-export * from './simple-department';
+export * from './department-summary';

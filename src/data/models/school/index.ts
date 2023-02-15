@@ -1,1 +1,1 @@
-export * from './simple-school';
+export * from './school-summary';

@@ -4,11 +4,16 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { VarModule } from '@esm/shared/directives';
 import { LetModule } from '@ngrx/component';
-import { TuiActiveZoneModule } from '@taiga-ui/cdk';
+import {
+  TuiActiveZoneModule,
+  TuiFilterPipeModule,
+  TuiLetModule,
+} from '@taiga-ui/cdk';
 import {
   TuiButtonModule,
   TuiDataListModule,
   TuiHostedDropdownModule,
+  TuiLoaderModule,
   TuiSvgModule,
   TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
@@ -22,8 +27,11 @@ export const TAIGA_UI = [
   TuiActiveZoneModule,
   TuiButtonModule,
   TuiDataListModule,
+  TuiFilterPipeModule,
   TuiHostedDropdownModule,
   TuiInputModule,
+  TuiLetModule,
+  TuiLoaderModule,
   TuiSvgModule,
   TuiTextfieldControllerModule,
 ];

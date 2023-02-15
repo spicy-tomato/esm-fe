@@ -25,8 +25,11 @@ describe('appReducer', () => {
       isMale: true,
       roles: [],
     },
-    status: 'success',
+    userStatus: 'success',
     showLoader: null,
+    examination: null,
+    examinationId: null,
+    examinationStatus: 'idle',
   };
 
   describe('unknown action', () => {
@@ -41,9 +44,12 @@ describe('appReducer', () => {
   describe('AppPageAction.getUserInfo', () => {
     it('should patch status to `loading`', () => {
       const newState: AppState = {
-        status: 'loading',
+        userStatus: 'loading',
         user: null,
         showLoader: null,
+        examination: null,
+        examinationId: null,
+        examinationStatus: 'idle',
       };
 
       const action = AppPageAction.getUserInfo();
@@ -57,9 +63,12 @@ describe('appReducer', () => {
   describe('AppPageAction.logOut', () => {
     it('should patch status to `null`', () => {
       const newState: AppState = {
-        status: 'success',
+        userStatus: 'success',
         user: null,
         showLoader: null,
+        examination: null,
+        examinationId: null,
+        examinationStatus: 'idle',
       };
 
       const action = AppPageAction.logOut();
@@ -73,9 +82,12 @@ describe('appReducer', () => {
   describe('AppApiAction.noCacheUserInfo', () => {
     it('should patch user to `success`', () => {
       const newState: AppState = {
-        status: 'success',
+        userStatus: 'success',
         user: null,
         showLoader: null,
+        examination: null,
+        examinationId: null,
+        examinationStatus: 'idle',
       };
 
       const action = AppApiAction.noCacheUserInfo();
@@ -102,8 +114,11 @@ describe('appReducer', () => {
     it('should patch user to `null`, status to `error`', () => {
       const newState: AppState = {
         user: null,
-        status: 'error',
+        userStatus: 'error',
         showLoader: null,
+        examination: null,
+        examinationId: null,
+        examinationStatus: 'idle',
       };
 
       const action = AppApiAction.getUserInfoFailed();

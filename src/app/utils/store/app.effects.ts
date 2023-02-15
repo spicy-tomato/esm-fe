@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TokenService } from '@esm/cdk';
-import { UserService } from '@esm/services';
+import { ExaminationService, UserService } from '@esm/services';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { routerNavigatedAction } from '@ngrx/router-store';
 import { catchError, map, mergeMap, of, tap } from 'rxjs';
 import { AppApiAction } from './app.api.actions';
 import { AppPageAction } from './app.page.actions';
@@ -38,11 +39,50 @@ export class AppEffects {
     { dispatch: false }
   );
 
+  readonly changeRouter$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(routerNavigatedAction),
+      map(({ payload }) => {
+        let firstChild = payload.routerState.root.firstChild;
+        let id: string | null = null;
+        while (firstChild) {
+          if (firstChild.params['examinationId']) {
+            id = firstChild.params['examinationId'];
+            break;
+          }
+          firstChild = firstChild.firstChild;
+        }
+
+        return AppApiAction.changeExaminationId({ id });
+      })
+    );
+  });
+
+  readonly changeExaminationId$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AppApiAction.changeExaminationId),
+      mergeMap(({ id }) => {
+        if (id === null) {
+          return of(
+            AppApiAction.getExaminationSuccessful({ examination: null })
+          );
+        }
+        return this.examinationService.getSummary(id).pipe(
+          map(({ data: examination }) =>
+            AppApiAction.getExaminationSuccessful({ examination })
+          ),
+          catchError(() => of(AppApiAction.getExaminationFailed()))
+        );
+      })
+    );
+  });
+
   // CONSTRUCTOR
   constructor(
     private readonly actions$: Actions,
     private readonly router: Router,
     private readonly userService: UserService,
+    private readonly examinationService: ExaminationService,
     private readonly tokenService: TokenService
   ) {}
 }
