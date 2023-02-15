@@ -1,3 +1,3 @@
 export function emailFactory(): string {
-  return 'Enter a valid email!';
+  return 'Hãy điền email hợp lệ!';
 }

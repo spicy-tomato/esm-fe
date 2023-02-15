@@ -5,7 +5,7 @@ import { ExaminationService } from '@esm/services';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
-import { switchMap, tap } from 'rxjs';
+import { switchMap, takeUntil, tap, withLatestFrom } from 'rxjs';
 
 type TopBarState = {
   relatedExaminations: ExaminationSummary[];
@@ -18,8 +18,12 @@ export class TopBarStore extends ComponentStore<TopBarState> {
   // PROPERTIES
   readonly relatedStatus$ = this.select((s) => s.status);
   readonly relatedExaminations$ = this.select((s) => s.relatedExaminations);
-  readonly examinationStatus$ = this.store.select(AppSelector.examinationStatus);
-  readonly examination$ = this.store.select(AppSelector.examination);
+  readonly examinationStatus$ = this.appStore
+    .select(AppSelector.examinationStatus)
+    .pipe(takeUntil(this.destroy$));
+  readonly examination$ = this.appStore
+    .select(AppSelector.examination)
+    .pipe(takeUntil(this.destroy$));
 
   // EFFECTS
   readonly getRelatedExaminations = this.effect<void>((params$) =>
@@ -48,12 +52,35 @@ export class TopBarStore extends ComponentStore<TopBarState> {
   // CONSTRUCTOR
   constructor(
     private readonly examinationService: ExaminationService,
-    private readonly store: Store<AppState>
+    private readonly appStore: Store<AppState>
   ) {
     super({
       relatedExaminations: [],
       status: 'idle',
       error: null,
     });
+
+    this.handleChangeExaminationId();
+  }
+
+  // PRIVATE METHODS
+  handleChangeExaminationId(): void {
+    this.examination$
+      .pipe(
+        withLatestFrom(this.relatedExaminations$),
+        tap(([newExamination, relatedExaminations]) => {
+          // If navigate to an examination that does not exist in `relatedExaminations`,
+          // then add the new one to it
+          if (
+            newExamination &&
+            !relatedExaminations.find((e) => e.id === newExamination.id)
+          ) {
+            this.patchState({
+              relatedExaminations: [...relatedExaminations, newExamination],
+            });
+          }
+        })
+      )
+      .subscribe();
   }
 }

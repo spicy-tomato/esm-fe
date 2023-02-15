@@ -11,7 +11,7 @@ import { BehaviorSubject, filter, tap } from 'rxjs';
 export class LayoutComponent {
   // PUBLIC PROPERTIES
   readonly isInCommonPage$ = new BehaviorSubject<boolean>(true);
-  readonly commonPages = ['/create'];
+  readonly commonPages = ['/', '/create'];
 
   // CONSTRUCTOR
   constructor(private readonly router: Router) {

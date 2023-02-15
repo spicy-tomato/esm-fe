@@ -1,3 +1,3 @@
 export function requiredFactory(): string {
-  return 'This field is required!';
+  return 'Trường này không được để trống!';
 }
