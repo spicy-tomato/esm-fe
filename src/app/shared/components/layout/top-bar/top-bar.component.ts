@@ -68,7 +68,6 @@ export class TopBarComponent implements OnInit {
   // IMPLEMENTATIONS
   ngOnInit(): void {
     this.triggerBindCurrentExamination();
-    this.store.getRelatedExaminations();
   }
 
   // PUBLIC METHODS

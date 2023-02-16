@@ -29,7 +29,10 @@ describe('AppSelector', () => {
     showLoader: null,
     examinationId: null,
     examination: null,
-    examinationStatus: 'loading',
+    examinationStatus: 'idle',
+    relatedExaminations: [],
+    relatedExaminationsError: null,
+    relatedExaminationsStatus: 'idle',
   };
 
   describe('idle', () => {

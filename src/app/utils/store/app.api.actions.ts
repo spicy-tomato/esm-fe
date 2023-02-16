@@ -23,4 +23,11 @@ export class AppApiAction {
   static readonly getExaminationFailed = createAction(
     '[App/API] Get examination failed'
   );
+  static readonly getRelatedExaminationsSuccessful = createAction(
+    '[App/API] Get related examinations successful',
+    props<{ relatedExaminations: ExaminationSummary[] }>()
+  );
+  static readonly getRelatedExaminationsFailed = createAction(
+    '[App/API] Get related examinations failed'
+  );
 }

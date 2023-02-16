@@ -30,6 +30,9 @@ describe('appReducer', () => {
     examination: null,
     examinationId: null,
     examinationStatus: 'idle',
+    relatedExaminations: [],
+    relatedExaminationsError: null,
+    relatedExaminationsStatus: 'idle',
   };
 
   describe('unknown action', () => {
@@ -50,6 +53,9 @@ describe('appReducer', () => {
         examination: null,
         examinationId: null,
         examinationStatus: 'idle',
+        relatedExaminations: [],
+        relatedExaminationsError: null,
+        relatedExaminationsStatus: 'idle',
       };
 
       const action = AppPageAction.getUserInfo();
@@ -69,6 +75,9 @@ describe('appReducer', () => {
         examination: null,
         examinationId: null,
         examinationStatus: 'idle',
+        relatedExaminations: [],
+        relatedExaminationsError: null,
+        relatedExaminationsStatus: 'idle',
       };
 
       const action = AppPageAction.logOut();
@@ -88,6 +97,9 @@ describe('appReducer', () => {
         examination: null,
         examinationId: null,
         examinationStatus: 'idle',
+        relatedExaminations: [],
+        relatedExaminationsError: null,
+        relatedExaminationsStatus: 'idle',
       };
 
       const action = AppApiAction.noCacheUserInfo();
@@ -119,6 +131,9 @@ describe('appReducer', () => {
         examination: null,
         examinationId: null,
         examinationStatus: 'idle',
+        relatedExaminations: [],
+        relatedExaminationsError: null,
+        relatedExaminationsStatus: 'idle',
       };
 
       const action = AppApiAction.getUserInfoFailed();

@@ -45,6 +45,22 @@ export class AppEffects {
     { dispatch: false }
   );
 
+  readonly getRelatedExaminations$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AppPageAction.getRelatedExaminations),
+      mergeMap(() => {
+        return this.examinationService.getRelated().pipe(
+          map(({ data: relatedExaminations }) =>
+            AppApiAction.getRelatedExaminationsSuccessful({
+              relatedExaminations,
+            })
+          ),
+          catchError(() => of(AppApiAction.getRelatedExaminationsFailed()))
+        );
+      })
+    );
+  });
+
   readonly changeRouter$ = createEffect(
     () => {
       return this.actions$.pipe(

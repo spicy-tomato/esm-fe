@@ -13,4 +13,10 @@ type ExaminationState = {
   examinationStatus: Status;
 };
 
-export type AppState = UserState & ExaminationState;
+type RelatedExaminationsState = {
+  relatedExaminations: ExaminationSummary[];
+  relatedExaminationsStatus: Status;
+  relatedExaminationsError: string | null;
+};
+
+export type AppState = UserState & ExaminationState & RelatedExaminationsState;

@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { LetModule } from '@ngrx/component';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import {
@@ -24,7 +23,6 @@ import { TopBarModule } from './top-bar';
 export const NGRX = [
   StoreModule.forFeature(notificationFeatureKey, notificationReducer),
   EffectsModule.forFeature([NotificationEffects]),
-  LetModule,
 ];
 export const TAIGA_UI = [
   TuiAccordionModule,

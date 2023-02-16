@@ -16,6 +16,11 @@ const routes: Routes = [
     component: LayoutComponent,
     children: [
       {
+        path: '',
+        loadChildren: async () =>
+          (await import('./home/home.module')).HomeModule,
+      },
+      {
         path: 'create',
         loadChildren: async () =>
           (await import('./examination/create/create.module')).CreateModule,
