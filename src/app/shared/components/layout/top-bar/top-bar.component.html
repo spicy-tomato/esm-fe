@@ -17,15 +17,15 @@
         ></tss-mobile-sidebar>
       </div>
     </button> -->
-    <a routerLink="/" class="h-full">
+    <a routerLink="/" class="h-full flex items-center">
       <img
         src="/assets/favicon/logo.png"
         class="block w-12 h-12 object-cover"
         alt="Logo"
       />
-    </a>
 
-    <h3 class="hidden ml-1 text-lg font-bold uppercase md:block">ESM</h3>
+      <h3 class="hidden ml-1 text-lg font-bold uppercase md:block">ESM</h3>
+    </a>
 
     <tui-hosted-dropdown
       *ngIf="!isInCommonPage"
@@ -49,7 +49,7 @@
 
   <div class="right flex items-center">
     <a
-      *ngIf="!isInCommonPage"
+      *ngIf="!isInCommonPage && !hideCreateButton"
       [@fadeInOut]
       tuiButton
       routerLink="/create"

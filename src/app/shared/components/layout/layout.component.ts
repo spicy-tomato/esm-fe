@@ -11,6 +11,7 @@ import { BehaviorSubject, filter, tap } from 'rxjs';
 export class LayoutComponent {
   // PUBLIC PROPERTIES
   readonly isInCommonPage$ = new BehaviorSubject<boolean>(true);
+  readonly hideCreateButton$ = new BehaviorSubject<boolean>(true);
   readonly commonPages = ['/', '/create'];
 
   // CONSTRUCTOR
@@ -26,6 +27,7 @@ export class LayoutComponent {
         tap((e) => {
           e = e as NavigationEnd;
           this.isInCommonPage$.next(this.commonPages.includes(e.url));
+          this.hideCreateButton$.next(e.url === '/create');
         })
       )
       .subscribe();

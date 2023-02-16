@@ -34,6 +34,7 @@ import { TopBarOptions, TOP_BAR_OPTIONS } from './top-bar.token';
 export class TopBarComponent implements OnInit {
   // INPUT
   @Input() isInCommonPage!: boolean;
+  @Input() hideCreateButton!: boolean;
 
   // PUBLIC PROPERTIES
   selectedExamination: ExaminationSummary | null = null;
