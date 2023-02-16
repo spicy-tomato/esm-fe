@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { StatisticComponent } from './statistic.component';
-import { TAIGA_UI } from './statistic.module';
+import { ExaminationProcessComponent } from './process.component';
+import { TAIGA_UI } from './process.module';
 
-describe('StatisticComponent', () => {
-  let component: StatisticComponent;
-  let fixture: ComponentFixture<StatisticComponent>;
+describe('ExaminationProcessComponent', () => {
+  let component: ExaminationProcessComponent;
+  let fixture: ComponentFixture<ExaminationProcessComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [FormsModule, ...TAIGA_UI],
-      declarations: [StatisticComponent],
+      declarations: [ExaminationProcessComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(StatisticComponent);
+    fixture = TestBed.createComponent(ExaminationProcessComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

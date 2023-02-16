@@ -6,10 +6,8 @@ export type SidebarItem = {
     name: string;
     routerLink: string;
     icon: string;
-    useTaigaIcon?: boolean;
   }[];
   permission?: number;
-  useTaigaIcon?: boolean;
   externalLink?: string;
   exactRouterLink?: boolean;
 };
@@ -17,21 +15,42 @@ export type SidebarItem = {
 export class SideBarConstant {
   static items: SidebarItem[] = [
     {
+      name: 'Dữ liệu',
+      icon: 'far fa-database',
+      subItems: [
+        {
+          name: 'Lịch thi',
+          routerLink: '/exam/data',
+          icon: 'far fa-calendar-alt',
+        },
+        {
+          name: 'Cán bộ coi thi',
+          routerLink: '/invigilator/data',
+          icon: 'far fa-users',
+        },
+        {
+          name: 'Thanh toán',
+          routerLink: '/paid/data',
+          icon: 'far fa-money-check',
+        },
+      ],
+    },
+    {
       name: 'Đề thi',
       icon: 'far fa-briefcase',
       routerLink: '/exam',
     },
     {
-      name: 'Phân công CBCT',
+      name: 'Quản lý CBCT',
       icon: 'far fa-user',
       subItems: [
         {
-          name: 'Khối lượng CBCT',
+          name: 'Khối lượng',
           routerLink: '/invigilator/assign-faculty',
           icon: 'far fa-chalkboard',
         },
         {
-          name: 'Phân công CBCT',
+          name: 'Phân công',
           routerLink: '/invigilator/assign-teacher',
           icon: 'far fa-chalkboard',
         },
@@ -45,24 +64,54 @@ export class SideBarConstant {
     {
       name: 'Bàn giao bài thi',
       icon: 'far fa-pencil-paintbrush',
-      routerLink: '/handover',
+      routerLink: '/exam/handover',
     },
     {
-      name: 'Quản lý thanh toán',
+      name: 'Thanh toán',
       icon: 'far fa-wallet',
-      routerLink: '/pay',
+      subItems: [
+        {
+          name: 'Ban coi thi',
+          routerLink: '/paid/invigilator-department',
+          icon: 'far fa-money-bill',
+        },
+        {
+          name: 'Ban đề thi',
+          routerLink: '/paid/exam-department',
+          icon: 'far fa-money-bill',
+        },
+        {
+          name: 'Cán bộ coi thi',
+          routerLink: '/paid/invigilator',
+          icon: 'far fa-money-bill',
+        },
+      ],
     },
     {
-      name: 'Thống kê',
+      name: 'Báo cáo, thống kê',
       icon: 'far fa-chart-pie',
-      routerLink: '/statistic',
-      // permission: PermissionConstant.STATISTICIZE_CHANGE_SCHEDULE,
+      subItems: [
+        {
+          name: 'Tiến độ',
+          routerLink: '/process',
+          icon: 'far fa-tasks',
+        },
+        {
+          name: 'Tổng hợp',
+          routerLink: '/',
+          icon: 'far fa-clipboard-list',
+        },
+        {
+          name: 'Báo cáo',
+          routerLink: '/report',
+          icon: 'far fa-file-chart-pie',
+        },
+      ],
     },
     {
       name: 'Thông báo, tài liệu',
       icon: 'far fa-folders',
       routerLink: '/document',
-      // permission: PermissionConstant.STATISTICIZE_CHANGE_SCHEDULE,
     },
   ];
 }

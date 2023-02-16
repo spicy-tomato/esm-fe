@@ -37,13 +37,31 @@ const routes: Routes = [
         children: [
           {
             path: '',
-            pathMatch: 'full',
-            redirectTo: 'exam',
+            loadChildren: async () =>
+              (await import('./examination/general/general.module'))
+                .ExaminationGeneralModule,
           },
           {
             path: 'exam',
-            loadChildren: async () =>
-              (await import('./examination/exam/exam.module')).ExamModule,
+            children: [
+              {
+                path: '',
+                loadChildren: async () =>
+                  (await import('./examination/exam/exam.module')).ExamModule,
+              },
+              {
+                path: 'data',
+                loadChildren: async () =>
+                  (await import('./examination/data/data.module'))
+                    .ExaminationDataModule,
+              },
+              {
+                path: 'handover',
+                loadChildren: async () =>
+                  (await import('./examination/handover/handover.module'))
+                    .ExaminationHandoverModule,
+              },
+            ],
           },
           {
             path: 'invigilator',
@@ -72,13 +90,65 @@ const routes: Routes = [
                   (await import('./invigilator/assign-room/assign-room.module'))
                     .InvigilatorAssignRoomModule,
               },
+              {
+                path: 'data',
+                loadChildren: async () =>
+                  (await import('./invigilator/data/data.module'))
+                    .InvigilatorDataModule,
+              },
             ],
           },
           {
-            path: 'statistic',
+            path: 'paid',
+            children: [
+              {
+                path: 'data',
+                loadChildren: async () =>
+                  (await import('./paid/data/data.module')).PaidDataModule,
+              },
+              {
+                path: 'invigilator',
+                loadChildren: async () =>
+                  (await import('./paid/invigilator/invigilator.module'))
+                    .PaidInvigilatorModule,
+              },
+              {
+                path: 'invigilator-department',
+                loadChildren: async () =>
+                  (
+                    await import(
+                      './paid/invigilator-department/invigilator-department.module'
+                    )
+                  ).PaidInvigilatorDepartmentModule,
+              },
+              {
+                path: 'exam-department',
+                loadChildren: async () =>
+                  (
+                    await import(
+                      './paid/exam-department/exam-department.module'
+                    )
+                  ).PaidExamDepartmentModule,
+              },
+            ],
+          },
+          {
+            path: 'process',
             loadChildren: async () =>
-              (await import('./examination/statistic/statistic.module'))
-                .StatisticModule,
+              (await import('./examination/process/process.module'))
+                .ExaminationProcessModule,
+          },
+          {
+            path: 'report',
+            loadChildren: async () =>
+              (await import('./examination/report/report.module'))
+                .ExaminationReportModule,
+          },
+          {
+            path: 'document',
+            loadChildren: async () =>
+              (await import('./examination/document/document.module'))
+                .ExaminationDocumentModule,
           },
         ],
       },
