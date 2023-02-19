@@ -17,11 +17,13 @@ import {
   TUI_ANIMATIONS_DURATION,
   TUI_SANITIZER,
 } from '@taiga-ui/core';
+import { TUI_LANGUAGE, TUI_VIETNAMESE_LANGUAGE } from '@taiga-ui/i18n';
 import { TUI_VALIDATION_ERRORS } from '@taiga-ui/kit';
 import { NgDompurifySanitizer } from '@tinkoff/ng-dompurify';
+import { of } from 'rxjs';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
-import { LayoutModule, LoaderModule } from './shared';
+import { LayoutModule, LoaderModule } from './shared/components';
 
 const NGRX = [
   StoreModule.forRoot({ router: routerReducer }, {}),
@@ -55,6 +57,10 @@ const TAIGA_UI = [TuiRootModule, TuiAlertModule, TuiDialogModule];
     {
       provide: TUI_SANITIZER,
       useClass: NgDompurifySanitizer,
+    },
+    {
+      provide: TUI_LANGUAGE,
+      useValue: of(TUI_VIETNAMESE_LANGUAGE),
     },
     {
       provide: TUI_VALIDATION_ERRORS,

@@ -2,7 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Result } from '@esm/cdk';
 import { AppEnv, APP_ENV } from '@esm/core';
-import { CreateExaminationRequest, ExaminationSummary } from '@esm/data';
+import {
+  CreateExaminationRequest,
+  ExaminationSummary,
+  TemporaryExamination,
+} from '@esm/data';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -15,6 +19,14 @@ export class ExaminationService {
   // CONSTRUCTOR
   constructor(private readonly http: HttpClient, @Inject(APP_ENV) env: AppEnv) {
     this.url = env.baseUrl + 'examination/';
+  }
+
+  getData(id: string): Observable<Result<TemporaryExamination[]>> {
+    return this.http.get<Result<TemporaryExamination[]>>(this.url + id);
+  }
+
+  import(id: string, formData: FormData): Observable<Result<boolean>> {
+    return this.http.post<Result<boolean>>(this.url + id, formData);
   }
 
   getRelated(isActive?: boolean): Observable<Result<ExaminationSummary[]>> {

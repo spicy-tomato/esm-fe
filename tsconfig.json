@@ -44,6 +44,9 @@
       "@esm/shared/components": [
         "src/app/shared/components"
       ],
+      "@esm/shared/dialogs": [
+        "src/app/shared/dialogs"
+      ],
       "@esm/shared/directives": [
         "src/app/shared/directives"
       ],

@@ -3,7 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { TuiRootModule } from '@taiga-ui/core';
 import { AppComponent } from './app.component';
-import { LoaderModule } from './shared';
+import { LoaderModule } from './shared/components';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
