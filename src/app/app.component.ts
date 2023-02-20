@@ -33,9 +33,10 @@ export class AppComponent {
     this.user$
       .pipe(
         ObservableHelper.filterNullish(),
-        tap(() =>
-          this.appStore.dispatch(AppPageAction.getRelatedExaminations())
-        )
+        tap(() => {
+          this.appStore.dispatch(AppPageAction.getRelatedExaminations());
+          this.appStore.dispatch(AppPageAction.getDepartments());
+        })
       )
       .subscribe();
   }

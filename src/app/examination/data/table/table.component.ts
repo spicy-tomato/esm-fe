@@ -11,7 +11,7 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { TemporaryExamination } from '@esm/data';
 import { TuiDialogService } from '@taiga-ui/core';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
-import { AddModuleComponent } from '@esm/shared/dialogs';
+import { AddModuleDialogComponent } from '@esm/shared/dialogs';
 
 @Component({
   selector: 'esm-examination-data-table',
@@ -64,6 +64,13 @@ export class ExaminationDataTableComponent implements OnChanges {
   }
 
   onAddModule(rowId: number): void {
+    this.dialogService
+      .open(new PolymorpheusComponent(AddModuleDialogComponent, this.injector), {
+        data: this.form.value.data[rowId],
+        dismissible: true,
+        label: 'Heading',
+      })
+      .subscribe();
   }
 
   // PRIVATE METHODS

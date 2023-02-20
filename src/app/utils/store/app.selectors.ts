@@ -68,4 +68,14 @@ export class AppSelector {
     this.selector,
     (state) => state.relatedExaminations
   );
+
+  static readonly departmentsStatus = createSelector(
+    this.selector,
+    (state) => state.departmentsStatus
+  );
+
+  static readonly departments = createSelector(
+    this.selector,
+    (state) => state.departments
+  );
 }

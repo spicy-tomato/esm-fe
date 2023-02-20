@@ -1,0 +1,66 @@
+<div *ngIf="form" [formGroup]="form">
+  <label tuiLabel="Mã học phần">
+    <tui-input
+      formControlName="moduleId"
+      [tuiTextfieldLabelOutside]="true"
+    ></tui-input>
+  </label>
+  <label tuiLabel="Tên học phần">
+    <tui-input
+      formControlName="moduleName"
+      [tuiTextfieldLabelOutside]="true"
+    ></tui-input>
+  </label>
+  <label tuiLabel="Khoa phụ trách">
+    <tui-select
+      *ngrxLet="faculties$ as faculties"
+      formControlName="faculty"
+      [valueContent]="facultyStringify(faculties)"
+      [tuiTextfieldLabelOutside]="true"
+    >
+      <tui-data-list *tuiDataList>
+        <button
+          *ngFor="let faculty of faculties"
+          tuiOption
+          [value]="faculty.id"
+        >
+          {{ faculty.name }}
+        </button>
+      </tui-data-list>
+    </tui-select>
+  </label>
+  <label tuiLabel="Bộ môn phụ trách (tùy chọn)">
+    <tui-select
+      *ngrxLet="departments$ as departments"
+      formControlName="department"
+      [valueContent]="departmentStringify(departments)"
+      [tuiTextfieldLabelOutside]="true"
+    >
+      <tui-data-list *tuiDataList>
+        <tui-opt-group>
+          <button tuiOption [value]="null">Không có</button>
+        </tui-opt-group>
+        <tui-opt-group>
+          <button
+            *ngFor="let faculty of departments | tuiFilter : departmentMatcher"
+            tuiOption
+            [value]="faculty.id"
+          >
+            {{ faculty.name }}
+          </button>
+        </tui-opt-group>
+      </tui-data-list>
+    </tui-select>
+  </label>
+  <div class="mt-4 flex justify-end">
+    <button
+      *ngrxLet="status$ as status"
+      tuiButton
+      (click)="onCreate()"
+      [showLoader]="status === 'loading'"
+      [disabled]="form.invalid"
+    >
+      Tạo
+    </button>
+  </div>
+</div>

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { TokenService } from '@esm/cdk';
-import { ExaminationService, UserService } from '@esm/services';
+import { ExaminationService, SchoolService, UserService } from '@esm/services';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store } from '@ngrx/store';
@@ -14,7 +14,8 @@ import { AppState } from './app.state';
 @Injectable()
 export class AppEffects {
   // PRIVATE PROPERTIES
-  private id$ = this.appStore.select(AppSelector.examinationId);
+  private examinationId$ = this.appStore.select(AppSelector.examinationId);
+  private user$ = this.appStore.pipe(AppSelector.notNullUser);
 
   // EFFECTS
   readonly getUserInfo$ = createEffect(() => {
@@ -61,11 +62,27 @@ export class AppEffects {
     );
   });
 
+  readonly getDepartments$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AppPageAction.getDepartments),
+      withLatestFrom(this.user$),
+      mergeMap(({ 1: user }) => {
+        const schoolId = user.department.school.id;
+        return this.schoolService.getDepartments(schoolId).pipe(
+          map(({ data: departments }) =>
+            AppApiAction.getDepartmentsSuccessful({ departments })
+          ),
+          catchError(() => of(AppApiAction.getDepartmentsFailed()))
+        );
+      })
+    );
+  });
+
   readonly changeRouter$ = createEffect(
     () => {
       return this.actions$.pipe(
         ofType(routerNavigatedAction),
-        withLatestFrom(this.id$),
+        withLatestFrom(this.examinationId$),
         map(([{ payload }, oldId]) => {
           let firstChild = payload.routerState.root.firstChild;
           let id: string | null = null;
@@ -114,6 +131,7 @@ export class AppEffects {
     private readonly router: Router,
     private readonly userService: UserService,
     private readonly examinationService: ExaminationService,
+    private readonly schoolService: SchoolService,
     private readonly tokenService: TokenService
   ) {}
 }

@@ -6,4 +6,5 @@ export class AppPageAction {
   static readonly getRelatedExaminations = createAction(
     '[App/Page] Get related examinations'
   );
+  static readonly getDepartments = createAction('[App/Page] Get departments');
 }

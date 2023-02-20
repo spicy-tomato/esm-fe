@@ -15,6 +15,10 @@ export const appInitialState: AppState = {
   relatedExaminations: [],
   relatedExaminationsStatus: 'idle',
   relatedExaminationsError: null,
+  //
+  departments: [],
+  departmentsStatus: 'idle',
+  departmentsError: null,
 };
 
 export const appFeatureKey = '[NGRX Key] App';
@@ -32,6 +36,10 @@ export const appReducer = createReducer(
   on(AppPageAction.getRelatedExaminations, (state) => ({
     ...state,
     relatedExaminationsStatus: 'loading',
+  })),
+  on(AppPageAction.getDepartments, (state) => ({
+    ...state,
+    departmentsStatus: 'loading',
   })),
   on(AppApiAction.noCacheUserInfo, (state) => ({
     ...state,
@@ -79,5 +87,15 @@ export const appReducer = createReducer(
     ...state,
     relatedExaminations: [],
     relatedExaminationsStatus: 'error',
+  })),
+  on(AppApiAction.getDepartmentsSuccessful, (state, { departments }) => ({
+    ...state,
+    departments,
+    departmentsStatus: 'success',
+  })),
+  on(AppApiAction.getDepartmentsFailed, (state) => ({
+    ...state,
+    departments: [],
+    departmentsStatus: 'error',
   }))
 );

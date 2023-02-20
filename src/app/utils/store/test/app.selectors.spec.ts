@@ -33,6 +33,9 @@ describe('AppSelector', () => {
     relatedExaminations: [],
     relatedExaminationsError: null,
     relatedExaminationsStatus: 'idle',
+    departments: [],
+    departmentsError: null,
+    departmentsStatus: 'idle',
   };
 
   describe('idle', () => {

@@ -1,5 +1,9 @@
 import { Status } from '@esm/cdk';
-import { ExaminationSummary, UserSummary } from '@esm/data';
+import {
+  ExaminationSummary,
+  FacultyWithDepartments,
+  UserSummary,
+} from '@esm/data';
 
 type UserState = {
   showLoader: boolean | null;
@@ -19,4 +23,13 @@ type RelatedExaminationsState = {
   relatedExaminationsError: string | null;
 };
 
-export type AppState = UserState & ExaminationState & RelatedExaminationsState;
+type DepartmentsState = {
+  departments: FacultyWithDepartments[];
+  departmentsStatus: Status;
+  departmentsError: string | null;
+};
+
+export type AppState = UserState &
+  ExaminationState &
+  RelatedExaminationsState &
+  DepartmentsState;

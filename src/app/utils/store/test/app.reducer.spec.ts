@@ -33,6 +33,9 @@ describe('appReducer', () => {
     relatedExaminations: [],
     relatedExaminationsError: null,
     relatedExaminationsStatus: 'idle',
+    departments: [],
+    departmentsError: null,
+    departmentsStatus: 'idle',
   };
 
   describe('unknown action', () => {
@@ -56,6 +59,9 @@ describe('appReducer', () => {
         relatedExaminations: [],
         relatedExaminationsError: null,
         relatedExaminationsStatus: 'idle',
+        departments: [],
+        departmentsError: null,
+        departmentsStatus: 'idle',
       };
 
       const action = AppPageAction.getUserInfo();
@@ -78,6 +84,9 @@ describe('appReducer', () => {
         relatedExaminations: [],
         relatedExaminationsError: null,
         relatedExaminationsStatus: 'idle',
+        departments: [],
+        departmentsError: null,
+        departmentsStatus: 'idle',
       };
 
       const action = AppPageAction.logOut();
@@ -100,6 +109,9 @@ describe('appReducer', () => {
         relatedExaminations: [],
         relatedExaminationsError: null,
         relatedExaminationsStatus: 'idle',
+        departments: [],
+        departmentsError: null,
+        departmentsStatus: 'idle',
       };
 
       const action = AppApiAction.noCacheUserInfo();
@@ -134,6 +146,9 @@ describe('appReducer', () => {
         relatedExaminations: [],
         relatedExaminationsError: null,
         relatedExaminationsStatus: 'idle',
+        departments: [],
+        departmentsError: null,
+        departmentsStatus: 'idle',
       };
 
       const action = AppApiAction.getUserInfoFailed();
