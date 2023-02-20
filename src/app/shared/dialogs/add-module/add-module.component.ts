@@ -47,7 +47,7 @@ export class AddModuleDialogComponent implements OnInit {
   constructor(
     private readonly fb: FormBuilder,
     @Inject(POLYMORPHEUS_CONTEXT)
-    private readonly context: TuiDialogContext<void, TemporaryExamination>,
+    private readonly context: TuiDialogContext<boolean, TemporaryExamination>,
     @Inject(TuiAlertService) private readonly alertService: TuiAlertService,
     private readonly store: AddModuleDialogStore
   ) {}
@@ -140,7 +140,7 @@ export class AddModuleDialogComponent implements OnInit {
               status: TuiNotification.Success,
             })
             .subscribe();
-          this.context.$implicit.complete();
+          this.context.completeWith(true);
         })
       )
       .subscribe();

@@ -1,10 +1,12 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  EventEmitter,
   Inject,
   Injector,
   Input,
   OnChanges,
+  Output,
   SimpleChanges,
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
@@ -12,6 +14,7 @@ import { TemporaryExamination } from '@esm/data';
 import { TuiDialogService } from '@taiga-ui/core';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { AddModuleDialogComponent } from '@esm/shared/dialogs';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'esm-examination-data-table',
@@ -22,6 +25,9 @@ import { AddModuleDialogComponent } from '@esm/shared/dialogs';
 export class ExaminationDataTableComponent implements OnChanges {
   // INPUT
   @Input() temporaryExamination!: TemporaryExamination[];
+
+  // OUTPUT
+  @Output() readonly changes = new EventEmitter<void>();
 
   // PUBLIC PROPERTIES
   form!: FormGroup;
@@ -65,11 +71,12 @@ export class ExaminationDataTableComponent implements OnChanges {
 
   onAddModule(rowId: number): void {
     this.dialogService
-      .open(new PolymorpheusComponent(AddModuleDialogComponent, this.injector), {
+      .open<boolean>(new PolymorpheusComponent(AddModuleDialogComponent, this.injector), {
         data: this.form.value.data[rowId],
         dismissible: true,
         label: 'Heading',
       })
+      .pipe(tap(() => this.changes.emit()))
       .subscribe();
   }
 

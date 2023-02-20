@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { tuiButtonOptionsProvider } from '@taiga-ui/core';
 import { TuiFileLike } from '@taiga-ui/kit';
 import { filter, tap } from 'rxjs';
 import { ExaminationDataStore } from './data.store';
@@ -7,11 +8,12 @@ import { ExaminationDataStore } from './data.store';
   templateUrl: './data.component.html',
   styleUrls: ['./data.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [ExaminationDataStore],
+  providers: [ExaminationDataStore, tuiButtonOptionsProvider({ size: 'm' })],
 })
 export class ExaminationDataComponent implements OnInit {
   // PUBLIC PROPERTIES
   file: TuiFileLike | null = null;
+  disableReload = true;
   readonly data$ = this.store.data$;
   readonly dataStatus$ = this.store.dataStatus$;
   readonly uploadStatus$ = this.store.uploadStatus$;
@@ -24,10 +26,14 @@ export class ExaminationDataComponent implements OnInit {
 
   // LIFECYCLE
   ngOnInit(): void {
-    this.store.getData();
+    this.getData();
   }
 
   // PUBLIC METHODS
+  getData(): void {
+    this.store.getData();
+  }
+
   removeFile(): void {
     this.file = null;
   }
@@ -41,6 +47,10 @@ export class ExaminationDataComponent implements OnInit {
     const formData = new FormData();
     formData.append('file', file);
     this.store.import(formData);
+  }
+
+  onTableChanges(): void {
+    this.disableReload = false;
   }
 
   // PRIVATE METHODS

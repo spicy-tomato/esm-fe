@@ -1,21 +1,33 @@
-<h1 class="flex-0 mb-4 text-3xl font-bold">Dữ liệu lịch thi</h1>
-
 <ng-container *ngrxLet="dataStatus$ as dataStatus">
-  <tui-loader
-    *ngIf="dataStatus === 'loading'; else loaded"
-    class="h-40"
-  ></tui-loader>
-</ng-container>
-
-<ng-template #loaded>
   <ng-container *ngrxLet="data$ as data">
-    <esm-examination-data-table
-      *ngIf="data.length; else noData"
-      [temporaryExamination]="data"
-      class="flex-1"
-    ></esm-examination-data-table>
+    <div class="flex justify-between">
+      <h1 class="flex-0 mb-4 text-3xl font-bold">Dữ liệu lịch thi</h1>
+      <button
+        tuiButton
+        *ngIf="data.length"
+        (click)="getData()"
+        [showLoader]="dataStatus === 'loading'"
+        [disabled]="disableReload"
+      >
+        Làm mới
+      </button>
+    </div>
+
+    <tui-loader
+      *ngIf="dataStatus === 'loading'; else loaded"
+      class="h-40"
+    ></tui-loader>
+
+    <ng-template #loaded>
+      <esm-examination-data-table
+        *ngIf="data.length; else noData"
+        (changes)="onTableChanges()"
+        [temporaryExamination]="data"
+        class="flex-1"
+      ></esm-examination-data-table>
+    </ng-template>
   </ng-container>
-</ng-template>
+</ng-container>
 
 <ng-template #noData>
   <p class="mb-4 text-base">

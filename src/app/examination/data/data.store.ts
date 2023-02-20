@@ -59,7 +59,7 @@ export class ExaminationDataStore extends ComponentStore<ExaminationDataState> {
   readonly getData = this.effect<void>((params$) =>
     params$.pipe(
       tap(() =>
-        this.patchState({ uploadStatus: 'loading', uploadError: null })
+        this.patchState({ dataStatus: 'loading', dataError: null })
       ),
       withLatestFrom(this.examinationId$),
       switchMap(({ 1: id }) =>

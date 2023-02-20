@@ -97,7 +97,7 @@
             ></esm-error-flag>
           </td>
           <td *tuiCell="'date'" tuiTd>
-            {{ item.value.startAt | date : "dd/MM/y" }}
+            {{ item.value.date | date : "dd/MM/y" }}
             <esm-error-flag
               [error]="item.value.errors['Date']"
             ></esm-error-flag>
