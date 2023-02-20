@@ -22,11 +22,6 @@ describe('AppEffects', () => {
       faculty: null,
       id: 'fac',
       name: 'fn',
-      school: {
-        displayId: null,
-        id: 'sc',
-        name: 'sc',
-      },
     },
     displayId: null,
     id: 'id',

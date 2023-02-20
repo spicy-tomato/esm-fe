@@ -1,17 +1,17 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { APP_ENV } from '@esm/core';
-import { SchoolService } from './school.service';
+import { DepartmentService } from './department.service';
 
-describe('SchoolService', () => {
-  let service: SchoolService;
+describe('DepartmentService', () => {
+  let service: DepartmentService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [SchoolService, { provide: APP_ENV, useValue: {} }],
+      providers: [DepartmentService, { provide: APP_ENV, useValue: {} }],
     });
-    service = TestBed.inject(SchoolService);
+    service = TestBed.inject(DepartmentService);
   });
 
   it('should be created', () => {
