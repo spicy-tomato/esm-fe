@@ -48,14 +48,15 @@
             <div
               #moduleIdDropdownHost="tuiDropdown"
               tuiDropdownContext
-              *ngIf="item.value.errors['ModuleId']; else moduleIdNoError"
+              *ngIf="
+                item.value.errors['moduleId'] as error;
+                else moduleIdNoError
+              "
               [tuiDropdown]="moduleIdDropdown"
               class="absolute inset-0 flex items-center p-[inherit]"
             >
               {{ item.value.moduleId }}
-              <esm-error-flag
-                [error]="item.value.errors['ModuleId']"
-              ></esm-error-flag>
+              <esm-error-flag [error]="error.message"></esm-error-flag>
               <ng-template #moduleIdDropdown>
                 <tui-data-list role="menu">
                   <button
@@ -75,88 +76,107 @@
           <td *tuiCell="'moduleName'" tuiTd class="w-52 max-w-[13rem]">
             {{ item.value.moduleName }}
             <esm-error-flag
-              [error]="item.value.errors['ModuleName']"
+              [error]="item.value.errors['moduleName']"
             ></esm-error-flag>
           </td>
           <td *tuiCell="'moduleClass'" tuiTd class="w-[450px] max-w-[450px]">
             {{ item.value.moduleClass }}
             <esm-error-flag
-              [error]="item.value.errors['ModuleClass']"
+              [error]="item.value.errors['moduleClass']"
             ></esm-error-flag>
           </td>
           <td *tuiCell="'credit'" tuiTd class="!text-center">
             {{ item.value.credit }}
             <esm-error-flag
-              [error]="item.value.errors['Credit']"
+              [error]="item.value.errors['credit']"
             ></esm-error-flag>
           </td>
           <td *tuiCell="'method'" tuiTd>
             {{ item.value.method | examMethod }}
             <esm-error-flag
-              [error]="item.value.errors['Method']"
+              [error]="item.value.errors['method']"
             ></esm-error-flag>
           </td>
           <td *tuiCell="'date'" tuiTd>
             {{ item.value.date | date : "dd/MM/y" }}
             <esm-error-flag
-              [error]="item.value.errors['Date']"
+              [error]="item.value.errors['date']"
             ></esm-error-flag>
           </td>
           <td *tuiCell="'startAt'" tuiTd class="!text-center">
             {{ item.value.startAt | date : "HH:mm" }}
             <esm-error-flag
-              [error]="item.value.errors['StartAt']"
+              [error]="item.value.errors['startAt']"
             ></esm-error-flag>
           </td>
           <td *tuiCell="'endAt'" tuiTd class="!text-center">
             {{ item.value.endAt | date : "HH:mm" }}
             <esm-error-flag
-              [error]="item.value.errors['EndAt']"
+              [error]="item.value.errors['endAt']"
             ></esm-error-flag>
           </td>
           <td *tuiCell="'shift'" tuiTd class="!text-center">
             {{ item.value.shift }}
             <esm-error-flag
-              [error]="item.value.errors['Shift']"
+              [error]="item.value.errors['shift']"
             ></esm-error-flag>
           </td>
           <td *tuiCell="'candidateCount'" tuiTd class="!text-center">
-            <!-- {{ item.candidateCount }} -->
             <tui-input-number
               formControlName="candidateCount"
             ></tui-input-number>
             <esm-error-flag
-              [error]="item.value.errors['CandidateCount']"
+              [error]="item.value.errors['candidateCount']"
             ></esm-error-flag>
           </td>
           <td *tuiCell="'roomsCount'" tuiTd class="!text-center">
             {{ item.value.roomsCount }}
             <esm-error-flag
-              [error]="item.value.errors['RoomsCount']"
+              [error]="item.value.errors['roomsCount']"
             ></esm-error-flag>
           </td>
-          <td *tuiCell="'rooms'" tuiTd>
-            {{ item.value.rooms }}
-            <esm-error-flag
-              [error]="item.value.errors['Rooms']"
-            ></esm-error-flag>
+          <td *tuiCell="'rooms'" tuiTd class="min-w-[12rem]">
+            <div
+              #roomsDropdownHost="tuiDropdown"
+              tuiDropdownContext
+              *ngIf="item.value.errors['rooms'] as error; else roomsNoError"
+              [tuiDropdown]="roomsDropdown"
+              class="absolute inset-0 flex items-center p-[inherit]"
+            >
+              {{ item.value.rooms }}
+              <esm-error-flag [error]="error.message"></esm-error-flag>
+              <ng-template #roomsDropdown>
+                <tui-data-list role="menu">
+                  <button
+                    tuiOption
+                    (click)="onAddRoom(i); roomsDropdownHost.toggle(false)"
+                  >
+                    Thêm phòng
+                    <tui-svg class="ml-1" src="tuiIconPlus"></tui-svg>
+                  </button>
+                </tui-data-list>
+              </ng-template>
+            </div>
+            <ng-template #roomsNoError>
+              {{ item.value.rooms }}
+            </ng-template>
           </td>
           <td *tuiCell="'faculty'" tuiTd>
             {{ item.value.faculty }}
             <esm-error-flag
-              [error]="item.value.errors['Faculty']"
+              [error]="item.value.errors['faculty']"
             ></esm-error-flag>
           </td>
           <td *tuiCell="'department'" tuiTd>
             {{ item.value.department }}
             <esm-error-flag
-              [error]="item.value.errors['Department']"
+              [error]="item.value.errors['department']"
             ></esm-error-flag>
           </td>
           <td *tuiCell="'departmentAssign'" tuiTd>
             {{ item.value.departmentAssign ? "Bộ môn" : "Phòng KT&ĐBCLĐT" }}
             <esm-error-flag
-              [error]="item.value.errors['DepartmentAssign']"
+              [error]="item.value.errors['departmentAssign']"
             ></esm-error-flag>
           </td>
         </tr>

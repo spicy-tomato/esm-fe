@@ -1,2 +1,2 @@
 export * from './add-module.component';
-export * from './add-module.module';
+export { AddModuleDialogModule } from './add-module.module';

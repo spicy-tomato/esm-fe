@@ -9,12 +9,15 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { TemporaryExamination } from '@esm/data';
+import {
+  AddModuleDialogComponent,
+  AddRoomDialogComponent,
+} from '@esm/shared/dialogs';
 import { TuiDialogService } from '@taiga-ui/core';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
-import { AddModuleDialogComponent } from '@esm/shared/dialogs';
-import { tap } from 'rxjs';
+import { filter, tap } from 'rxjs';
 
 @Component({
   selector: 'esm-examination-data-table',
@@ -30,7 +33,13 @@ export class ExaminationDataTableComponent implements OnChanges {
   @Output() readonly changes = new EventEmitter<void>();
 
   // PUBLIC PROPERTIES
-  form!: FormGroup;
+  form!: FormGroup<{
+    data: FormArray<
+      FormGroup<{
+        [K in keyof TemporaryExamination]: FormControl<TemporaryExamination[K]>;
+      }>
+    >;
+  }>;
   readonly columns = [
     'index',
     'moduleId',
@@ -71,12 +80,36 @@ export class ExaminationDataTableComponent implements OnChanges {
 
   onAddModule(rowId: number): void {
     this.dialogService
-      .open<boolean>(new PolymorpheusComponent(AddModuleDialogComponent, this.injector), {
-        data: this.form.value.data[rowId],
-        dismissible: true,
-        label: 'Heading',
-      })
-      .pipe(tap(() => this.changes.emit()))
+      .open<boolean>(
+        new PolymorpheusComponent(AddModuleDialogComponent, this.injector),
+        {
+          data: this.form.value.data?.[rowId],
+        }
+      )
+      .pipe(
+        filter((x) => x),
+        tap(() => this.changes.emit())
+      )
+      .subscribe();
+  }
+
+  onAddRoom(rowId: number): void {
+    const errorRooms = this.form.value.data?.[rowId].errors?.rooms.data;
+    if (!errorRooms) {
+      return;
+    }
+
+    this.dialogService
+      .open<boolean>(
+        new PolymorpheusComponent(AddRoomDialogComponent, this.injector),
+        {
+          data: errorRooms,
+        }
+      )
+      .pipe(
+        filter((x) => x),
+        tap(() => this.changes.emit())
+      )
       .subscribe();
   }
 
@@ -87,12 +120,12 @@ export class ExaminationDataTableComponent implements OnChanges {
         data.map((row) =>
           this.fb.group(
             Object.entries(row).reduce((acc, [key, value]) => {
-              acc[key] = [value];
+              acc[key as keyof TemporaryExamination] = [value as any];
               return acc;
-            }, {} as Record<string, any[]>)
+            }, {} as Record<keyof TemporaryExamination, any[]>)
           )
         )
       ),
-    });
+    }) as any;
   }
 }

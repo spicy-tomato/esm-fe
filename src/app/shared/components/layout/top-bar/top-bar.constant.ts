@@ -1,7 +1,7 @@
 import {
   tuiIconCommentLarge,
   tuiIconHelpCircleLarge,
-  tuiIconLogoutLarge,
+  tuiIconLogOutLarge,
   tuiIconSettingsLarge,
 } from '@taiga-ui/icons';
 
@@ -65,7 +65,7 @@ export class TopBarConstants {
         {
           key: TopBarConstants.keys.LOG_OUT,
           label: 'Đăng xuất',
-          icon: tuiIconLogoutLarge,
+          icon: tuiIconLogOutLarge,
         },
       ],
     },

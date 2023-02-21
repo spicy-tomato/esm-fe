@@ -17,6 +17,11 @@ export type TemporaryExamination = {
   faculty?: string;
   department?: string;
   departmentAssign?: boolean;
-  errors: Record<number, Record<string, string>>;
+  errors: Record<
+    keyof Omit<TemporaryExamination, 'errors' | 'id'>,
+    {
+      data: any[];
+      message: string;
+    }
+  >;
 };
-
