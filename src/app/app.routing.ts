@@ -26,6 +26,11 @@ const routes: Routes = [
           (await import('./examination/create/create.module')).CreateModule,
       },
       {
+        path: 'data',
+        loadChildren: async () =>
+          (await import('./data/data.module')).DataModule,
+      },
+      {
         path: 'notification',
         loadChildren: async () =>
           (await import('./notification/notification.module'))
@@ -90,22 +95,11 @@ const routes: Routes = [
                   (await import('./invigilator/assign-room/assign-room.module'))
                     .InvigilatorAssignRoomModule,
               },
-              {
-                path: 'data',
-                loadChildren: async () =>
-                  (await import('./invigilator/data/data.module'))
-                    .InvigilatorDataModule,
-              },
             ],
           },
           {
             path: 'paid',
             children: [
-              {
-                path: 'data',
-                loadChildren: async () =>
-                  (await import('./paid/data/data.module')).PaidDataModule,
-              },
               {
                 path: 'invigilator',
                 loadChildren: async () =>

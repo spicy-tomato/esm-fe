@@ -16,7 +16,7 @@ type Item = {
   method: string;
   startAt: Date;
   shift: number;
-  room: string;
+  roomsCount: number;
   candidatesCount: number;
   invigilatorsCount: Record<string, number>;
 };
@@ -40,7 +40,7 @@ export class InvigilatorAssignFacultyComponent {
     'method',
     'startAt',
     'shift',
-    'room',
+    'roomsCountsCount',
     'candidatesCount',
     ...this.facultiesId,
   ];
@@ -121,7 +121,7 @@ let data: Item[] = [
     method: 'Trắc nghiệm',
     startAt: new Date(),
     shift: 2,
-    room: '403-A4',
+    roomsCount: 7,
     candidatesCount: 100,
     invigilatorsCount: {
       khcb: 7,
@@ -143,7 +143,7 @@ let data: Item[] = [
     method: 'Trắc nghiệm',
     startAt: new Date(),
     shift: 2,
-    room: '403-A4',
+    roomsCount: 7,
     candidatesCount: 100,
     invigilatorsCount: {
       khcb: 7,
@@ -165,7 +165,7 @@ let data: Item[] = [
     method: 'Trắc nghiệm',
     startAt: new Date(),
     shift: 2,
-    room: '403-A4',
+    roomsCount: 7,
     candidatesCount: 100,
     invigilatorsCount: {
       khcb: 7,
@@ -187,7 +187,7 @@ let data: Item[] = [
     method: 'Trắc nghiệm',
     startAt: new Date(),
     shift: 2,
-    room: '403-A4',
+    roomsCount: 7,
     candidatesCount: 100,
     invigilatorsCount: {
       khcb: 7,
@@ -209,7 +209,7 @@ let data: Item[] = [
     method: 'Tự luận',
     startAt: new Date(),
     shift: 2,
-    room: '403-A4',
+    roomsCount: 7,
     candidatesCount: 55,
     invigilatorsCount: {
       khcb: 7,
@@ -231,7 +231,7 @@ let data: Item[] = [
     method: 'Tự luận',
     startAt: new Date(),
     shift: 2,
-    room: '403-A4',
+    roomsCount: 7,
     candidatesCount: 55,
     invigilatorsCount: {
       khcb: 7,
@@ -253,7 +253,7 @@ let data: Item[] = [
     method: 'Tự luận',
     startAt: new Date(),
     shift: 2,
-    room: '403-A4',
+    roomsCount: 7,
     candidatesCount: 55,
     invigilatorsCount: {
       khcb: 7,
@@ -275,7 +275,7 @@ let data: Item[] = [
     method: 'Tự luận',
     startAt: new Date(),
     shift: 2,
-    room: '403-A4',
+    roomsCount: 7,
     candidatesCount: 55,
     invigilatorsCount: {
       khcb: 7,
@@ -297,7 +297,7 @@ let data: Item[] = [
     method: 'Trắc nghiệm',
     startAt: new Date(),
     shift: 2,
-    room: '403-A4',
+    roomsCount: 7,
     candidatesCount: 100,
     invigilatorsCount: {
       khcb: 7,
@@ -319,7 +319,7 @@ let data: Item[] = [
     method: 'Trắc nghiệm',
     startAt: new Date(),
     shift: 2,
-    room: '403-A4',
+    roomsCount: 7,
     candidatesCount: 100,
     invigilatorsCount: {
       khcb: 7,
@@ -341,7 +341,7 @@ let data: Item[] = [
     method: 'Trắc nghiệm',
     startAt: new Date(),
     shift: 2,
-    room: '403-A4',
+    roomsCount: 7,
     candidatesCount: 100,
     invigilatorsCount: {
       khcb: 7,
@@ -363,7 +363,7 @@ let data: Item[] = [
     method: 'Trắc nghiệm',
     startAt: new Date(),
     shift: 2,
-    room: '403-A4',
+    roomsCount: 7,
     candidatesCount: 100,
     invigilatorsCount: {
       khcb: 7,
@@ -385,7 +385,7 @@ let data: Item[] = [
     method: 'Tự luận',
     startAt: new Date(),
     shift: 2,
-    room: '403-A4',
+    roomsCount: 7,
     candidatesCount: 55,
     invigilatorsCount: {
       khcb: 7,
@@ -407,7 +407,7 @@ let data: Item[] = [
     method: 'Tự luận',
     startAt: new Date(),
     shift: 2,
-    room: '403-A4',
+    roomsCount: 7,
     candidatesCount: 55,
     invigilatorsCount: {
       khcb: 7,
@@ -429,7 +429,7 @@ let data: Item[] = [
     method: 'Tự luận',
     startAt: new Date(),
     shift: 2,
-    room: '403-A4',
+    roomsCount: 7,
     candidatesCount: 55,
     invigilatorsCount: {
       khcb: 7,
@@ -451,7 +451,7 @@ let data: Item[] = [
     method: 'Tự luận',
     startAt: new Date(),
     shift: 2,
-    room: '403-A4',
+    roomsCount: 7,
     candidatesCount: 55,
     invigilatorsCount: {
       khcb: 7,
@@ -473,7 +473,7 @@ let data: Item[] = [
     method: 'Trắc nghiệm',
     startAt: new Date(),
     shift: 2,
-    room: '403-A4',
+    roomsCount: 7,
     candidatesCount: 100,
     invigilatorsCount: {
       khcb: 7,
@@ -495,7 +495,7 @@ let data: Item[] = [
     method: 'Trắc nghiệm',
     startAt: new Date(),
     shift: 2,
-    room: '403-A4',
+    roomsCount: 7,
     candidatesCount: 100,
     invigilatorsCount: {
       khcb: 7,
@@ -517,7 +517,7 @@ let data: Item[] = [
     method: 'Trắc nghiệm',
     startAt: new Date(),
     shift: 2,
-    room: '403-A4',
+    roomsCount: 7,
     candidatesCount: 100,
     invigilatorsCount: {
       khcb: 7,
@@ -539,7 +539,7 @@ let data: Item[] = [
     method: 'Trắc nghiệm',
     startAt: new Date(),
     shift: 2,
-    room: '403-A4',
+    roomsCount: 7,
     candidatesCount: 100,
     invigilatorsCount: {
       khcb: 7,
@@ -561,7 +561,7 @@ let data: Item[] = [
     method: 'Tự luận',
     startAt: new Date(),
     shift: 2,
-    room: '403-A4',
+    roomsCount: 7,
     candidatesCount: 55,
     invigilatorsCount: {
       khcb: 7,
@@ -583,7 +583,7 @@ let data: Item[] = [
     method: 'Tự luận',
     startAt: new Date(),
     shift: 2,
-    room: '403-A4',
+    roomsCount: 7,
     candidatesCount: 55,
     invigilatorsCount: {
       khcb: 7,
@@ -605,7 +605,7 @@ let data: Item[] = [
     method: 'Tự luận',
     startAt: new Date(),
     shift: 2,
-    room: '403-A4',
+    roomsCount: 7,
     candidatesCount: 55,
     invigilatorsCount: {
       khcb: 7,
@@ -627,7 +627,7 @@ let data: Item[] = [
     method: 'Tự luận',
     startAt: new Date(),
     shift: 2,
-    room: '403-A4',
+    roomsCount: 7,
     candidatesCount: 55,
     invigilatorsCount: {
       khcb: 7,
@@ -649,7 +649,7 @@ let data: Item[] = [
     method: 'Trắc nghiệm',
     startAt: new Date(),
     shift: 2,
-    room: '403-A4',
+    roomsCount: 7,
     candidatesCount: 100,
     invigilatorsCount: {
       khcb: 7,
@@ -671,7 +671,7 @@ let data: Item[] = [
     method: 'Trắc nghiệm',
     startAt: new Date(),
     shift: 2,
-    room: '403-A4',
+    roomsCount: 7,
     candidatesCount: 100,
     invigilatorsCount: {
       khcb: 7,
@@ -693,7 +693,7 @@ let data: Item[] = [
     method: 'Trắc nghiệm',
     startAt: new Date(),
     shift: 2,
-    room: '403-A4',
+    roomsCount: 7,
     candidatesCount: 100,
     invigilatorsCount: {
       khcb: 7,
@@ -715,7 +715,7 @@ let data: Item[] = [
     method: 'Trắc nghiệm',
     startAt: new Date(),
     shift: 2,
-    room: '403-A4',
+    roomsCount: 7,
     candidatesCount: 100,
     invigilatorsCount: {
       khcb: 7,
@@ -737,7 +737,7 @@ let data: Item[] = [
     method: 'Tự luận',
     startAt: new Date(),
     shift: 2,
-    room: '403-A4',
+    roomsCount: 7,
     candidatesCount: 55,
     invigilatorsCount: {
       khcb: 7,
@@ -759,7 +759,7 @@ let data: Item[] = [
     method: 'Tự luận',
     startAt: new Date(),
     shift: 2,
-    room: '403-A4',
+    roomsCount: 7,
     candidatesCount: 55,
     invigilatorsCount: {
       khcb: 7,
@@ -781,7 +781,7 @@ let data: Item[] = [
     method: 'Tự luận',
     startAt: new Date(),
     shift: 2,
-    room: '403-A4',
+    roomsCount: 7,
     candidatesCount: 55,
     invigilatorsCount: {
       khcb: 7,
@@ -803,7 +803,7 @@ let data: Item[] = [
     method: 'Tự luận',
     startAt: new Date(),
     shift: 2,
-    room: '403-A4',
+    roomsCount: 7,
     candidatesCount: 55,
     invigilatorsCount: {
       khcb: 7,

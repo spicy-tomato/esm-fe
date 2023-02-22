@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { InvigilatorDataComponent } from './data.component';
+import { DataInvigilatorComponent } from './invigilator.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: InvigilatorDataComponent,
+    component: DataInvigilatorComponent,
   },
 ];
 
@@ -13,4 +13,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class InvigilatorDataRoutingModule {}
+export class DataInvigilatorRoutingModule {}

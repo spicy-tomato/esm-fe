@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { InvigilatorDataComponent } from './data.component';
+import { DataDepartmentComponent } from './department.component';
 
-describe('DataComponent', () => {
-  let component: InvigilatorDataComponent;
-  let fixture: ComponentFixture<InvigilatorDataComponent>;
+describe('DataDepartmentComponent', () => {
+  let component: DataDepartmentComponent;
+  let fixture: ComponentFixture<DataDepartmentComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [InvigilatorDataComponent],
+      declarations: [DataDepartmentComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(InvigilatorDataComponent);
+    fixture = TestBed.createComponent(DataDepartmentComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,16 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Status } from '@esm/cdk';
-import { ObservableHelper } from '@esm/core';
-import {
-  DepartmentSimple,
-  FacultyWithDepartments,
-  TemporaryExamination,
-} from '@esm/data';
+import { DepartmentSimple, FacultyWithDepartments } from '@esm/data';
 import { FacultyService } from '@esm/services';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
-import { map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs';
+import { map, switchMap, takeUntil, tap } from 'rxjs';
 
 type AddModuleDialogState = {
   status: Status;

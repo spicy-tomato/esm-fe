@@ -15,25 +15,26 @@ export type SidebarItem = {
 export class SideBarConstant {
   static items: SidebarItem[] = [
     {
-      name: 'Dữ liệu',
-      icon: 'far fa-database',
-      subItems: [
-        {
-          name: 'Lịch thi',
-          routerLink: '/exam/data',
-          icon: 'far fa-calendar-alt',
-        },
-        {
-          name: 'Cán bộ coi thi',
-          routerLink: '/invigilator/data',
-          icon: 'far fa-users',
-        },
-        {
-          name: 'Thanh toán',
-          routerLink: '/paid/data',
-          icon: 'far fa-money-check',
-        },
-      ],
+      name: 'Lịch thi',
+      routerLink: '/exam/data',
+      icon: 'far fa-calendar-alt',
+      // subItems: [
+      //   {
+      //     name: 'Lịch thi',
+      //     routerLink: '/exam/data',
+      //     icon: 'far fa-calendar-alt',
+      //   },
+        // {
+        //   name: 'Cán bộ coi thi',
+        //   routerLink: '/invigilator/data',
+        //   icon: 'far fa-users',
+        // },
+        // {
+        //   name: 'Thanh toán',
+        //   routerLink: '/paid/data',
+        //   icon: 'far fa-money-check',
+        // },
+      // ],
     },
     {
       name: 'Đề thi',

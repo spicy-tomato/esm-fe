@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  templateUrl: './data.component.html',
-  styleUrls: ['./data.component.less'],
+  templateUrl: './invigilator.component.html',
+  styleUrls: ['./invigilator.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PaidDataComponent {}
+export class DataInvigilatorComponent {}

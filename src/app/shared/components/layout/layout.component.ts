@@ -12,7 +12,7 @@ export class LayoutComponent {
   // PUBLIC PROPERTIES
   readonly isInCommonPage$ = new BehaviorSubject<boolean>(true);
   readonly hideCreateButton$ = new BehaviorSubject<boolean>(true);
-  readonly commonPages = ['/', '/create'];
+  readonly commonPages = ['/create', '/data'];
 
   // CONSTRUCTOR
   constructor(private readonly router: Router) {
@@ -26,10 +26,17 @@ export class LayoutComponent {
         filter((e) => e instanceof NavigationEnd),
         tap((e) => {
           e = e as NavigationEnd;
-          this.isInCommonPage$.next(this.commonPages.includes(e.url));
+          this.isInCommonPage$.next(this.isCommonPage(e.url));
           this.hideCreateButton$.next(e.url === '/create');
         })
       )
       .subscribe();
+  }
+
+  private isCommonPage(url: string): boolean {
+    return (
+      url === '/' ||
+      this.commonPages.find((p) => url.indexOf(p) === 0) !== undefined
+    );
   }
 }

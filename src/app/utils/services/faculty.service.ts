@@ -2,7 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Result } from '@esm/cdk';
 import { AppEnv, APP_ENV } from '@esm/core';
-import { CreateModuleRequest, ModuleSimple } from '@esm/data';
+import {
+  CreateFacultyRequest,
+  CreateModuleRequest,
+  FacultySummary,
+  ModuleSimple,
+} from '@esm/data';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -18,6 +23,12 @@ export class FacultyService {
   }
 
   // PUBLIC METHODS
+  createFaculty(
+    request: CreateFacultyRequest
+  ): Observable<Result<FacultySummary>> {
+    return this.http.post<Result<FacultySummary>>(this.url, request);
+  }
+
   createModule(
     facultyId: string,
     request: CreateModuleRequest
