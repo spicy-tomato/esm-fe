@@ -1,13 +1,13 @@
 <div class="flex justify-between mb-6">
   <h1 class="text-3xl font-bold">Dữ liệu khoa</h1>
-  <button tuiButton (click)="onAddFaculty()" icon="tuiIconPlusCircleLarge">
+  <button tuiButton (click)="openDialog()" icon="tuiIconPlusCircleLarge">
     Thêm
   </button>
 </div>
 
 <ng-container *ngrxLet="status$ as status">
   <ng-container *ngIf="status === 'loading'; else loaded">
-    <tui-loader #loader class="w-20"></tui-loader>
+    <tui-loader #loader class="h-20"></tui-loader>
   </ng-container>
 </ng-container>
 
@@ -32,7 +32,7 @@
             <div class="flex justify-center">
               <button
                 tuiIconButton
-                (click)="onEditFaculty(faculty)"
+                (click)="openDialog(faculty)"
                 tuiHint="Chỉnh sửa"
                 appearance="icon"
                 icon="tuiIconEditLarge"

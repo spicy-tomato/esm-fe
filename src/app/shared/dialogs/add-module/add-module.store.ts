@@ -28,7 +28,7 @@ export type AddModuleDialogCreateParams = {
 @Injectable()
 export class AddModuleDialogStore extends ComponentStore<AddModuleDialogState> {
   private readonly facultiesWithDepartment$ = this.appStore
-    .select(AppSelector.departments)
+    .select(AppSelector.facultiesWithDepartment)
     .pipe(takeUntil(this.destroy$));
   readonly faculties$ = this.facultiesWithDepartment$.pipe(
     map((e) => e.map(({ departments, ...rest }) => rest))

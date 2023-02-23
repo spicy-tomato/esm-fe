@@ -1,3 +1,4 @@
+export * from './department.service';
 export * from './examination.service';
 export * from './faculty.service';
 export * from './notification.service';

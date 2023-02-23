@@ -1,1 +1,54 @@
-<p>department works!</p>
+<div class="flex justify-between mb-6">
+  <h1 class="text-3xl font-bold">Dữ liệu bộ môn</h1>
+  <button tuiButton (click)="openDialog()" icon="tuiIconPlusCircleLarge">
+    Thêm
+  </button>
+</div>
+
+<ng-container *ngrxLet="status$ as status">
+  <ng-container *ngIf="status === 'loading'; else loaded">
+    <tui-loader #loader class="h-20"></tui-loader>
+  </ng-container>
+</ng-container>
+
+<ng-template #loaded>
+  <ng-container *ngrxLet="departments$ as departments">
+    <table
+      tuiTable
+      *ngIf="departments.length; else noData"
+      [columns]="columns"
+      class="w-full"
+    >
+      <thead>
+        <tr tuiThGroup>
+          <th tuiTh>Mã bộ môn</th>
+          <th tuiTh>Tên bộ môn</th>
+          <th tuiTh>Khoa</th>
+          <th tuiTh class="!text-center">Thao tác</th>
+        </tr>
+      </thead>
+      <tbody tuiTbody [data]="departments">
+        <tr *ngFor="let department of departments" tuiTr>
+          <td *tuiCell="'facultyName'" tuiTd>
+            {{ department.faculty?.name }}
+          </td>
+          <td *tuiCell="'action'" tuiTd class="w-40">
+            <div class="flex justify-center">
+              <button
+                tuiIconButton
+                (click)="openDialog(department)"
+                tuiHint="Chỉnh sửa"
+                appearance="icon"
+                icon="tuiIconEditLarge"
+              ></button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+</ng-template>
+
+<ng-template #noData>
+  <div class="text-base text-center">Chưa có dữ liệu</div>
+</ng-template>

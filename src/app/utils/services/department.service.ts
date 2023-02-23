@@ -2,7 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Result } from '@esm/cdk';
 import { AppEnv, APP_ENV } from '@esm/core';
-import { FacultyWithDepartments } from '@esm/data';
+import {
+  DepartmentSummary,
+  EditDepartmentRequest,
+  FacultyWithDepartments,
+} from '@esm/data';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -20,5 +24,21 @@ export class DepartmentService {
   // PUBLIC METHODS
   getAll(): Observable<Result<FacultyWithDepartments[]>> {
     return this.http.get<Result<FacultyWithDepartments[]>>(this.url);
+  }
+
+  create(
+    request: EditDepartmentRequest
+  ): Observable<Result<DepartmentSummary>> {
+    return this.http.post<Result<DepartmentSummary>>(this.url, request);
+  }
+
+  update(
+    departmentId: string,
+    request: EditDepartmentRequest
+  ): Observable<Result<DepartmentSummary>> {
+    return this.http.put<Result<DepartmentSummary>>(
+      this.url + departmentId,
+      request
+    );
   }
 }

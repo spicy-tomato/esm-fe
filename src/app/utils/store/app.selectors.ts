@@ -1,4 +1,5 @@
 import { ObservableHelper } from '@esm/core';
+import { DepartmentSummary, FacultySummary } from '@esm/data';
 import { createFeatureSelector, createSelector, select } from '@ngrx/store';
 import { map, Observable, pipe, UnaryFunction } from 'rxjs';
 import { appFeatureKey } from './app.reducer';
@@ -74,8 +75,30 @@ export class AppSelector {
     (state) => state.departmentsStatus
   );
 
-  static readonly departments = createSelector(
+  static readonly facultiesWithDepartment = createSelector(
     this.selector,
     (state) => state.departments
+  );
+
+  static readonly faculties = createSelector(this.selector, (state) =>
+    state.departments.map((f) => {
+      const { departments, ...rest } = f;
+      return rest as FacultySummary;
+    })
+  );
+
+  static readonly departmentsWithFaculty = createSelector(
+    this.selector,
+    (state) =>
+      state.departments.reduce((acc, curr) => {
+        acc = [
+          ...acc,
+          ...curr.departments.map((f) => {
+            const { departments, ...faculty } = curr;
+            return { ...f, faculty };
+          }),
+        ];
+        return acc;
+      }, [] as DepartmentSummary[])
   );
 }
