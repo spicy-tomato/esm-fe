@@ -23,11 +23,23 @@
         <tr tuiThGroup>
           <th tuiTh>Mã khoa</th>
           <th tuiTh>Tên khoa</th>
-          <th tuiTh>Thao tác</th>
+          <th tuiTh class="!text-center">Thao tác</th>
         </tr>
       </thead>
       <tbody tuiTbody [data]="faculties">
-        <tr *ngFor="let item of faculties" tuiTr></tr>
+        <tr *ngFor="let faculty of faculties" tuiTr>
+          <td *tuiCell="'action'" tuiTd class="w-40">
+            <div class="flex justify-center">
+              <button
+                tuiIconButton
+                (click)="onEditFaculty(faculty)"
+                tuiHint="Chỉnh sửa"
+                appearance="icon"
+                icon="tuiIconEditLarge"
+              ></button>
+            </div>
+          </td>
+        </tr>
       </tbody>
     </table>
   </ng-container>

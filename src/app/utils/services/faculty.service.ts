@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Result } from '@esm/cdk';
 import { AppEnv, APP_ENV } from '@esm/core';
 import {
-  CreateFacultyRequest,
+  EditFacultyRequest,
   CreateModuleRequest,
   FacultySummary,
   ModuleSimple,
@@ -23,10 +23,15 @@ export class FacultyService {
   }
 
   // PUBLIC METHODS
-  createFaculty(
-    request: CreateFacultyRequest
-  ): Observable<Result<FacultySummary>> {
+  create(request: EditFacultyRequest): Observable<Result<FacultySummary>> {
     return this.http.post<Result<FacultySummary>>(this.url, request);
+  }
+
+  update(
+    facultyId: string,
+    request: EditFacultyRequest
+  ): Observable<Result<FacultySummary>> {
+    return this.http.put<Result<FacultySummary>>(this.url + facultyId, request);
   }
 
   createModule(

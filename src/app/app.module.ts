@@ -2,7 +2,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { inject, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { emailFactory, requiredFactory } from '@esm/cdk';
+import { duplicatedFactory, emailFactory, requiredFactory } from '@esm/cdk';
 import { AuthInterceptor } from '@esm/interceptors';
 import { AppEffects, appFeatureKey, appReducer } from '@esm/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -67,6 +67,7 @@ const TAIGA_UI = [TuiRootModule, TuiAlertModule, TuiDialogModule];
       useValue: {
         required: requiredFactory,
         email: emailFactory,
+        duplicated: duplicatedFactory,
       },
     },
     {

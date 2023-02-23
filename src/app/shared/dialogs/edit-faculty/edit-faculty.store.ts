@@ -1,35 +1,37 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Status } from '@esm/cdk';
-import { CreateFacultyRequest } from '@esm/data';
+import { ErrorResult, Status } from '@esm/cdk';
+import { EditFacultyRequest } from '@esm/data';
 import { FacultyService } from '@esm/services';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { switchMap, tap } from 'rxjs';
+import { EsmHttpErrorResponse } from 'src/cdk/models/http-error-response';
 
 type EditFacultyDialogState = {
   status: Status;
-  error: string | null;
+  errors: ErrorResult[] | null;
 };
 
 @Injectable()
 export class EditFacultyDialogStore extends ComponentStore<EditFacultyDialogState> {
   // PUBLIC PROPERTIES
   readonly status$ = this.select((s) => s.status);
-  readonly error$ = this.select((s) => s.error);
+  readonly errors$ = this.select((s) => s.errors);
 
   // EFFECTS
-  readonly create = this.effect<CreateFacultyRequest>((params$) =>
+  readonly create = this.effect<EditFacultyRequest>((params$) =>
     params$.pipe(
-      tap(() => this.patchState({ status: 'loading', error: null })),
+      tap(() => this.patchState({ status: 'loading', errors: null })),
       switchMap((param) =>
-        this.facultyService.createFaculty(param).pipe(
+        this.facultyService.create(param).pipe(
           tapResponse(
             () => {
               this.patchState({ status: 'success' });
             },
-            (error) =>
+            (res: EsmHttpErrorResponse) =>
               this.patchState({
                 status: 'error',
-                error: error as string,
+                errors: res.error.errors,
               })
           )
         )
@@ -37,11 +39,32 @@ export class EditFacultyDialogStore extends ComponentStore<EditFacultyDialogStat
     )
   );
 
+  readonly update = this.effect<{ id: string; request: EditFacultyRequest }>(
+    (params$) =>
+      params$.pipe(
+        tap(() => this.patchState({ status: 'loading', errors: null })),
+        switchMap(({ id, request }) =>
+          this.facultyService.update(id, request).pipe(
+            tapResponse(
+              () => {
+                this.patchState({ status: 'success' });
+              },
+              (res: EsmHttpErrorResponse) =>
+                this.patchState({
+                  status: 'error',
+                  errors: res.error.errors,
+                })
+            )
+          )
+        )
+      )
+  );
+
   // CONSTRUCTOR
   constructor(private readonly facultyService: FacultyService) {
     super({
       status: 'idle',
-      error: null,
+      errors: null,
     });
   }
 }

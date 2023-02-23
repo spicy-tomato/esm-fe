@@ -8,6 +8,10 @@
       formControlName="displayId"
       [tuiTextfieldLabelOutside]="true"
     ></tui-input>
+    <tui-error
+      formControlName="displayId"
+      [error]="[] | tuiFieldError | async"
+    ></tui-error>
   </label>
 
   <label tuiLabel="Tên khoa">
@@ -15,14 +19,19 @@
       formControlName="name"
       [tuiTextfieldLabelOutside]="true"
     ></tui-input>
+    <tui-error
+      formControlName="name"
+      [error]="[] | tuiFieldError | async"
+    ></tui-error>
   </label>
 
   <div class="flex justify-end mt-6">
     <button
       tuiButton
       *ngrxLet="status$ as status"
-      (click)="onCreate()"
+      (click)="onFinish()"
       [showLoader]="status === 'loading'"
+      [disabled]="form.pristine || form.invalid"
       icon="tuiIconCheck"
     >
       Hoàn thành

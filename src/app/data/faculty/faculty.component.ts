@@ -11,6 +11,7 @@ import { filter, map, takeUntil, tap } from 'rxjs';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { EditFacultyDialogComponent } from '@esm/shared/dialogs';
 import { TuiDestroyService } from '@taiga-ui/cdk';
+import { FacultySummary } from '@esm/data';
 
 @Component({
   templateUrl: './faculty.component.html',
@@ -42,10 +43,26 @@ export class DataFacultyComponent {
     private readonly destroy$: TuiDestroyService
   ) {}
 
+  // PUBLIC METHODS
   onAddFaculty(): void {
     this.dialogService
       .open<boolean>(
         new PolymorpheusComponent(EditFacultyDialogComponent, this.injector)
+      )
+      .pipe(
+        filter((x) => x),
+        tap(() => this.appStore.dispatch(AppPageAction.getDepartments()))
+      )
+      .subscribe();
+  }
+
+  onEditFaculty(faculty: FacultySummary): void {
+    this.dialogService
+      .open<boolean>(
+        new PolymorpheusComponent(EditFacultyDialogComponent, this.injector),
+        {
+          data: faculty,
+        }
       )
       .pipe(
         filter((x) => x),
