@@ -5,7 +5,7 @@ import { DepartmentService, FacultyService } from '@esm/services';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
-import { switchMap, tap } from 'rxjs';
+import { switchMap, takeUntil, tap } from 'rxjs';
 import { EsmHttpErrorResponse } from 'src/cdk/models/http-error-response';
 
 type EditDepartmentDialogState = {
@@ -16,7 +16,9 @@ type EditDepartmentDialogState = {
 @Injectable()
 export class EditDepartmentDialogStore extends ComponentStore<EditDepartmentDialogState> {
   // PUBLIC PROPERTIES
-  readonly faculties$ = this.appStore.select(AppSelector.faculties);
+  readonly faculties$ = this.appStore
+    .select(AppSelector.faculties)
+    .pipe(takeUntil(this.destroy$));
   readonly status$ = this.select((s) => s.status);
   readonly errors$ = this.select((s) => s.errors);
 

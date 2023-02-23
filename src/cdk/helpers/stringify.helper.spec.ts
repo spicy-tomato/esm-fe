@@ -1,0 +1,27 @@
+import { FacultySummary } from '@esm/data';
+import { StringifyHelper } from './stringify.helper';
+
+describe('StringifyHelper', () => {
+  describe('faculty', () => {
+    it('should work', () => {
+      const faculties: FacultySummary[] = [
+        {
+          id: '1',
+          displayId: 'mock-id-1',
+          name: 'mock-name-1',
+        },
+        {
+          id: '2',
+          displayId: 'mock-id-2',
+          name: 'mock-name-2',
+        },
+      ];
+      expect(StringifyHelper.faculty(faculties)({ $implicit: '1' })).toEqual(
+        'mock-name-1'
+      );
+      expect(StringifyHelper.faculty(faculties)({ $implicit: '2' })).toEqual(
+        'mock-name-2'
+      );
+    });
+  });
+});

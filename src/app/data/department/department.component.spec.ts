@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { DataDepartmentComponent } from './department.component';
@@ -10,7 +12,7 @@ describe('DataDepartmentComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [...NGRX, ...TAIGA_UI],
+      imports: [RouterTestingModule, FormsModule, ...NGRX, ...TAIGA_UI],
       declarations: [DataDepartmentComponent],
       providers: [
         provideMockStore({

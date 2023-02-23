@@ -5,13 +5,8 @@ import {
   OnInit,
 } from '@angular/core';
 import { NonNullableFormBuilder, Validators } from '@angular/forms';
-import { ObservableHelper } from '@esm/cdk';
-import { DepartmentSummary, FacultySummary } from '@esm/data';
-import {
-  TuiContextWithImplicit,
-  tuiPure,
-  TuiStringHandler,
-} from '@taiga-ui/cdk';
+import { ObservableHelper, StringifyHelper } from '@esm/cdk';
+import { DepartmentSummary } from '@esm/data';
 import {
   TuiAlertService,
   TuiDialogContext,
@@ -37,6 +32,7 @@ export class EditDepartmentDialogComponent implements OnInit {
   readonly faculties$ = this.store.faculties$;
   readonly status$ = this.store.status$;
   readonly errors$ = this.store.errors$;
+  readonly facultyStringify = StringifyHelper.faculty;
 
   // CONSTRUCTOR
   constructor(
@@ -65,18 +61,6 @@ export class EditDepartmentDialogComponent implements OnInit {
     } else {
       this.store.create(formValue);
     }
-  }
-
-  @tuiPure
-  facultyStringify(
-    items: FacultySummary[]
-  ): TuiStringHandler<TuiContextWithImplicit<string>> {
-    const map = new Map(
-      items.map(({ id, name }) => [id, name] as [string, string])
-    );
-
-    return ({ $implicit }: TuiContextWithImplicit<string>) =>
-      map.get($implicit) || '';
   }
 
   // PRIVATE METHODS

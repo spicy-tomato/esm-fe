@@ -1,8 +1,49 @@
-<div class="flex justify-between mb-6">
-  <h1 class="text-3xl font-bold">Dữ liệu bộ môn</h1>
-  <button tuiButton (click)="openDialog()" icon="tuiIconPlusCircleLarge">
-    Thêm
-  </button>
+<div class="flex justify-between items-center mb-6">
+  <h1
+    *ngrxLet="selectedFacultyName$ as selectedFacultyName"
+    class="text-3xl font-bold"
+  >
+    {{
+      selectedFaculty
+        ? "Dữ liệu các bộ môn thuộc khoa " + selectedFacultyName
+        : "Dữ liệu tất cả bộ môn"
+    }}
+  </h1>
+  <div class="flex items-center">
+    <tui-select
+      *ngrxLet="faculties$ as faculties"
+      [(ngModel)]="selectedFaculty"
+      [valueContent]="facultyStringify(faculties)"
+      [tuiTextfieldLabelOutside]="true"
+      class="w-60 mr-4"
+    >
+      <tui-data-list *tuiDataList>
+        <a
+          tuiOption
+          routerLink="/data/department"
+          routerLinkActive
+          [value]="''"
+          role="menuitemradio"
+        >
+          Tất cả
+        </a>
+        <a
+          *ngFor="let faculty of faculties"
+          tuiOption
+          routerLink="/data/department"
+          routerLinkActive
+          [queryParams]="{ facultyId: faculty.id }"
+          [value]="faculty.id"
+          role="menuitemradio"
+        >
+          {{ faculty.name }}
+        </a>
+      </tui-data-list>
+    </tui-select>
+    <button tuiButton (click)="openDialog()" icon="tuiIconPlusCircleLarge">
+      Thêm
+    </button>
+  </div>
 </div>
 
 <ng-container *ngrxLet="status$ as status">
@@ -28,7 +69,19 @@
         </tr>
       </thead>
       <tbody tuiTbody [data]="departments">
-        <tr *ngFor="let department of departments" tuiTr>
+        <tr
+          *ngFor="
+            let department of departments
+              | tuiFilter : departmentMatcher : selectedFaculty
+          "
+          tuiTr
+        >
+          <td *tuiCell="'displayId'" tuiTd>
+            {{ department.displayId }}
+          </td>
+          <td *tuiCell="'name'" tuiTd>
+            {{ department.name }}
+          </td>
           <td *tuiCell="'facultyName'" tuiTd>
             {{ department.faculty?.name }}
           </td>

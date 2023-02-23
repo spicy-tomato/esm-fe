@@ -7,6 +7,9 @@ import { takeUntil } from 'rxjs';
 @Injectable()
 export class DataDepartmentStore extends ComponentStore<{}> {
   // PUBLIC PROPERTIES
+  readonly faculties$ = this.appStore
+    .select(AppSelector.faculties)
+    .pipe(takeUntil(this.destroy$));
   readonly departments$ = this.appStore
     .select(AppSelector.departmentsWithFaculty)
     .pipe(takeUntil(this.destroy$));
