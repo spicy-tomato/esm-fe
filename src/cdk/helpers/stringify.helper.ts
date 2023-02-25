@@ -7,7 +7,7 @@ import {
 
 export class StringifyHelper {
   @tuiPure
-  static faculty(
+  static idName(
     items: FacultySummary[]
   ): TuiStringHandler<TuiContextWithImplicit<string>> {
     const map = new Map(

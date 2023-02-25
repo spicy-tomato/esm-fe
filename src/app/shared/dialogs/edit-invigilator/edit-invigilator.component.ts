@@ -14,15 +14,15 @@ import {
 } from '@taiga-ui/core';
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
 import { filter, tap } from 'rxjs';
-import { EditDepartmentDialogStore } from './edit-department.store';
+import { EditInvigilatorDialogStore } from './edit-invigilator.store';
 
 @Component({
-  templateUrl: './edit-department.component.html',
-  styleUrls: ['./edit-department.component.less'],
+  templateUrl: './edit-invigilator.component.html',
+  styleUrls: ['./edit-invigilator.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [EditDepartmentDialogStore],
+  providers: [EditInvigilatorDialogStore],
 })
-export class EditDepartmentDialogComponent implements OnInit {
+export class EditInvigilatorDialogComponent implements OnInit {
   form = this.fb.group({
     displayId: [this.context.data?.displayId || '', Validators.required],
     name: [this.context.data?.name || '', Validators.required],
@@ -43,7 +43,7 @@ export class EditDepartmentDialogComponent implements OnInit {
       DepartmentSummary | undefined
     >,
     @Inject(TuiAlertService) private readonly alertService: TuiAlertService,
-    private readonly store: EditDepartmentDialogStore
+    private readonly store: EditInvigilatorDialogStore
   ) {}
 
   // LIFECYCLE

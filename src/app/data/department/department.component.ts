@@ -25,28 +25,10 @@ export class DataDepartmentComponent implements OnInit {
   readonly columns = ['displayId', 'name', 'facultyName', 'action'];
   readonly faculties$ = this.store.faculties$;
   readonly departments$ = this.store.departments$;
+  readonly selectedFacultyId$ = this.store.selectedFacultyId$;
+  readonly selectedFacultyName$ = this.store.selectedFacultyName$;
   readonly status$ = this.store.status$;
-  readonly facultyStringify = StringifyHelper.faculty;
-
-  // GETTER, SETTERS
-  private _selectedFaculty: string = '';
-  get selectedFaculty(): string {
-    return this._selectedFaculty;
-  }
-  set selectedFaculty(value: string) {
-    this._selectedFaculty = value;
-    this.selectedFacultyId$.next(value);
-  }
-
-  // PRIVATE PROPERTIES
-  private readonly selectedFacultyId$ = new BehaviorSubject<string>('');
-
-  readonly selectedFacultyName$ = combineLatest([
-    this.faculties$,
-    this.selectedFacultyId$,
-  ]).pipe(
-    map(([faculties, id]) => faculties.find((f) => f.id === id)?.name || '')
-  );
+  readonly facultyStringify = StringifyHelper.idName;
 
   // CONSTRUCTOR
   constructor(
@@ -58,10 +40,16 @@ export class DataDepartmentComponent implements OnInit {
 
   // LIFECYCLE
   ngOnInit(): void {
-    this.selectedFaculty = this.route.snapshot.queryParams['facultyId'] || '';
+    const facultyIdFromRoute =
+      this.route.snapshot.queryParams['facultyId'] || '';
+    this.store.changeSelectedFaculty(facultyIdFromRoute);
   }
 
   // PUBLIC METHODS
+  onChangeSelectedFaculty(facultyId: string): void {
+    this.store.changeSelectedFaculty(facultyId);
+  }
+
   openDialog(data?: DepartmentSummary): void {
     this.dialogService
       .open<boolean>(

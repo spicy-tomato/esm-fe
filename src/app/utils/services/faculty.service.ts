@@ -3,10 +3,11 @@ import { Inject, Injectable } from '@angular/core';
 import { Result } from '@esm/cdk';
 import { AppEnv, APP_ENV } from '@esm/core';
 import {
-  EditFacultyRequest,
   CreateModuleRequest,
+  EditFacultyRequest,
   FacultySummary,
   ModuleSimple,
+  UserSummary,
 } from '@esm/data';
 import { Observable } from 'rxjs';
 
@@ -32,6 +33,10 @@ export class FacultyService {
     request: EditFacultyRequest
   ): Observable<Result<FacultySummary>> {
     return this.http.put<Result<FacultySummary>>(this.url + facultyId, request);
+  }
+
+  getUsers(facultyId: string): Observable<Result<UserSummary[]>> {
+    return this.http.get<Result<UserSummary[]>>(this.url + facultyId + '/user');
   }
 
   createModule(

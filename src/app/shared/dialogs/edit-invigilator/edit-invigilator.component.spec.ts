@@ -1,27 +1,26 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { APP_ENV } from '@esm/core';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { DataInvigilatorComponent } from './invigilator.component';
-import { NGRX, TAIGA_UI } from './invigilator.module';
+import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
+import { EditInvigilatorDialogComponent } from './edit-invigilator.component';
+import { NGRX, TAIGA_UI } from './edit-invigilator.module';
 
-describe('DataInvigilatorComponent', () => {
-  let component: DataInvigilatorComponent;
-  let fixture: ComponentFixture<DataInvigilatorComponent>;
+describe('EditInvigilatorDialogComponent', () => {
+  let component: EditInvigilatorDialogComponent;
+  let fixture: ComponentFixture<EditInvigilatorDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule,
         HttpClientTestingModule,
-        FormsModule,
+        ReactiveFormsModule,
         ...NGRX,
         ...TAIGA_UI,
       ],
-      declarations: [DataInvigilatorComponent],
+      declarations: [EditInvigilatorDialogComponent],
       providers: [
         provideMockStore({
           initialState: {
@@ -29,10 +28,20 @@ describe('DataInvigilatorComponent', () => {
           },
         }),
         { provide: APP_ENV, useValue: {} },
+        {
+          provide: POLYMORPHEUS_CONTEXT,
+          useValue: {
+            data: {
+              moduleId: null,
+              moduleName: null,
+              department: null,
+            },
+          },
+        },
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DataInvigilatorComponent);
+    fixture = TestBed.createComponent(EditInvigilatorDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

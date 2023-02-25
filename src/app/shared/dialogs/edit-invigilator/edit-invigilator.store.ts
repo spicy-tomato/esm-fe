@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
 import { ErrorResult, Status } from '@esm/cdk';
 import { EditDepartmentRequest } from '@esm/data';
-import { DepartmentService } from '@esm/services';
+import { DepartmentService, FacultyService } from '@esm/services';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
 import { switchMap, takeUntil, tap } from 'rxjs';
 import { EsmHttpErrorResponse } from 'src/cdk/models/http-error-response';
 
-type EditDepartmentDialogState = {
+type EditInvigilatorDialogState = {
   status: Status;
   errors: ErrorResult[] | null;
 };
 
 @Injectable()
-export class EditDepartmentDialogStore extends ComponentStore<EditDepartmentDialogState> {
+export class EditInvigilatorDialogStore extends ComponentStore<EditInvigilatorDialogState> {
   // PUBLIC PROPERTIES
   readonly faculties$ = this.appStore
     .select(AppSelector.faculties)

@@ -12,7 +12,6 @@ import {
   TuiHintModule,
   TuiHostedDropdownModule,
   TuiLoaderModule,
-  TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
 import { TuiSelectModule } from '@taiga-ui/kit';
 import { DataDepartmentComponent } from './department.component';
@@ -28,7 +27,6 @@ export const TAIGA_UI = [
   TuiLoaderModule,
   TuiSelectModule,
   TuiTableModule,
-  TuiTextfieldControllerModule,
 ];
 
 @NgModule({

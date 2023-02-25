@@ -7,7 +7,7 @@ export type UserSummary = {
   fullName: string;
   email: string;
   createdAt: Date;
-  department: DepartmentSummary;
+  department: DepartmentSummary | null;
   roles: Role[];
   isMale: boolean;
 };

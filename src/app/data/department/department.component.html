@@ -4,19 +4,23 @@
     class="text-3xl font-bold"
   >
     {{
-      selectedFaculty
+      selectedFacultyName
         ? "Dữ liệu các bộ môn thuộc khoa " + selectedFacultyName
         : "Dữ liệu tất cả bộ môn"
     }}
   </h1>
-  <div class="flex items-center">
+  <div
+    *ngrxLet="selectedFacultyId$ as selectedFacultyId"
+    class="flex items-center"
+  >
     <tui-select
       *ngrxLet="faculties$ as faculties"
-      [(ngModel)]="selectedFaculty"
+      (ngModelChange)="onChangeSelectedFaculty($event)"
+      [ngModel]="selectedFacultyId"
       [valueContent]="facultyStringify(faculties)"
-      [tuiTextfieldLabelOutside]="true"
       class="w-60 mr-4"
     >
+      Khoa
       <tui-data-list *tuiDataList>
         <a
           tuiOption
@@ -68,11 +72,15 @@
           <th tuiTh class="!text-center">Thao tác</th>
         </tr>
       </thead>
-      <tbody tuiTbody [data]="departments">
+      <tbody
+        tuiTbody
+        *ngrxLet="selectedFacultyId$ as selectedFacultyId"
+        [data]="departments"
+      >
         <tr
           *ngFor="
             let department of departments
-              | tuiFilter : departmentMatcher : selectedFaculty
+              | tuiFilter : departmentMatcher : selectedFacultyId
           "
           tuiTr
         >

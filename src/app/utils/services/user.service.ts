@@ -18,6 +18,14 @@ export class UserService {
   }
 
   // PUBLIC METHODS
+  getAllInvigilators(): Observable<Result<UserSummary[]>> {
+    return this.http.get<Result<UserSummary[]>>(this.url, {
+      params: {
+        isInvigilator: true,
+      },
+    });
+  }
+
   register(request: LoginRequest): Observable<Result<GeneratedToken>> {
     return this.http.post<Result<GeneratedToken>>(this.url, request);
   }

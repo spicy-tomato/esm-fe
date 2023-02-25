@@ -1,1 +1,162 @@
-<p>invigilator works!</p>
+<div class="flex justify-between items-center mb-6">
+  <h1
+    *ngrxLet="selectedFacultyName$ as selectedFacultyName"
+    class="text-3xl font-bold"
+  >
+    {{
+      selectedFacultyName
+        ? "Dữ liệu CBCT thuộc khoa " + selectedFacultyName
+        : "Dữ liệu CBCT"
+    }}
+    <ng-container *ngrxLet="selectedDepartmentName$ as selectedDepartmentName">
+      <ng-container *ngIf="selectedDepartmentName">
+        , bộ môn {{ selectedDepartmentName }}
+      </ng-container>
+    </ng-container>
+  </h1>
+  <div
+    *ngrxLet="selectedFacultyId$ as selectedFacultyId"
+    class="header-right flex items-center"
+  >
+    <tui-select
+      *ngrxLet="faculties$ as faculties"
+      [ngModel]="selectedFacultyId"
+      [valueContent]="facultyStringify(faculties)"
+    >
+      Khoa
+      <tui-data-list *tuiDataList>
+        <a
+          tuiOption
+          routerLinkActive
+          [routerLink]="routerLink"
+          [value]="''"
+          role="menuitemradio"
+        >
+          Tất cả
+        </a>
+        <a
+          *ngFor="let faculty of faculties"
+          tuiOption
+          routerLinkActive
+          [routerLink]="routerLink"
+          queryParamsHandling="merge"
+          [queryParams]="{ facultyId: faculty.id }"
+          [value]="faculty.id"
+          role="menuitemradio"
+        >
+          {{ faculty.name }}
+        </a>
+      </tui-data-list>
+    </tui-select>
+    <ng-container *ngrxLet="departments$ as departments">
+      <tui-select
+        *ngrxLet="selectedDepartmentId$ as selectedDepartmentId"
+        [ngModel]="selectedDepartmentId"
+        [valueContent]="facultyStringify(departments)"
+      >
+        Bộ môn
+        <tui-data-list *tuiDataList>
+          <a
+            tuiOption
+            routerLinkActive
+            [routerLink]="routerLink"
+            [queryParams]="{ departmentId: '' }"
+            queryParamsHandling="merge"
+            [value]="''"
+            role="menuitemradio"
+          >
+            Tất cả
+          </a>
+          <a
+            *ngFor="let department of departments"
+            tuiOption
+            routerLinkActive
+            [routerLink]="routerLink"
+            [queryParams]="{ departmentId: department.id }"
+            queryParamsHandling="merge"
+            [value]="department.id"
+            role="menuitemradio"
+          >
+            {{ department.name }}
+          </a>
+        </tui-data-list>
+      </tui-select>
+    </ng-container>
+    <button tuiButton (click)="openDialog()" icon="tuiIconPlusCircleLarge">
+      Thêm
+    </button>
+  </div>
+</div>
+
+<ng-container *ngrxLet="status$ as status">
+  <ng-container *ngIf="status === 'loading'; else loaded">
+    <tui-loader #loader class="h-20"></tui-loader>
+  </ng-container>
+</ng-container>
+
+<ng-template #loaded>
+  <ng-container *ngrxLet="invigilators$ as invigilators">
+    <table
+      tuiTable
+      *ngIf="invigilators.length; else noData"
+      [columns]="columns"
+      class="w-full"
+    >
+      <thead>
+        <tr tuiThGroup>
+          <th tuiTh>Mã CBCT</th>
+          <th tuiTh>Tên CBCT</th>
+          <th tuiTh>Khoa</th>
+          <th tuiTh>Bộ môn</th>
+          <th tuiTh class="!text-center">Thao tác</th>
+        </tr>
+      </thead>
+      <ng-container *ngrxLet="selectedDepartmentId$ as selectedDepartmentId">
+        <tbody
+          *ngrxLet="selectedFacultyId$ as selectedFacultyId"
+          tuiTbody
+          [data]="invigilators"
+        >
+          <tr
+            tuiTr
+            *ngFor="
+              let invigilator of invigilators
+                | tuiFilter
+                  : userMatcher
+                  : selectedFacultyId
+                  : selectedDepartmentId
+            "
+          >
+            <td *tuiCell="'displayId'" tuiTd>
+              {{ invigilator.displayId }}
+            </td>
+            <td *tuiCell="'name'" tuiTd>
+              {{ invigilator.fullName }}
+            </td>
+            <td *tuiCell="'facultyName'" tuiTd>
+              {{ invigilator.department?.faculty?.name }}
+            </td>
+            <td *tuiCell="'departmentName'" tuiTd>
+              {{ invigilator.department?.name }}
+            </td>
+            <td *tuiCell="'action'" tuiTd class="w-40">
+              <div class="flex justify-center">
+                <button
+                  tuiIconButton
+                  (click)="openDialog(invigilator)"
+                  tuiHint="Chỉnh sửa"
+                  appearance="icon"
+                  icon="tuiIconEditLarge"
+                ></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </ng-container>
+    </table>
+  </ng-container>
+</ng-template>
+
+<ng-template #noData>
+  <div class="text-base text-center">Chưa có dữ liệu</div>
+</ng-template>
