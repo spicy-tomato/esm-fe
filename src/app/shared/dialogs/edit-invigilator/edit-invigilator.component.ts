@@ -70,12 +70,15 @@ export class EditInvigilatorDialogComponent implements OnInit {
   // PUBLIC METHODS
   onFinish(): void {
     this.form.markAllAsTouched();
-    const { departmentId, ...request } = this.form.getRawValue();
+    const request = this.form.getRawValue();
 
     if (this.isEditDialog) {
-      // this.store.update({ id: this.context.data!.id, request });
+      this.store.update({ id: this.context.data!.id, request });
     } else {
-      this.store.create({ departmentId, request });
+      this.store.create({
+        departmentId: request.departmentId,
+        request,
+      });
     }
   }
 

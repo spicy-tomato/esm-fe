@@ -2,7 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Result } from '@esm/cdk';
 import { AppEnv, APP_ENV } from '@esm/core';
-import { GeneratedToken, LoginRequest, UserSummary } from '@esm/data';
+import {
+  GeneratedToken,
+  LoginRequest,
+  UpdateUserRequest,
+  UserSummary,
+} from '@esm/data';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -26,10 +31,6 @@ export class UserService {
     });
   }
 
-  register(request: LoginRequest): Observable<Result<GeneratedToken>> {
-    return this.http.post<Result<GeneratedToken>>(this.url, request);
-  }
-
   login(request: LoginRequest): Observable<Result<GeneratedToken>> {
     return this.http.post<Result<GeneratedToken>>(this.url + 'login', request);
   }
@@ -42,12 +43,10 @@ export class UserService {
     return this.http.get<Result<UserSummary>>(this.url + userName);
   }
 
-  checkExist(
-    data: string,
-    type: 'userName' | 'email'
-  ): Observable<Result<boolean>> {
-    return this.http.get<Result<boolean>>(this.url + 'check-exist', {
-      params: { [type]: data },
-    });
+  update(
+    userId: string,
+    request: UpdateUserRequest
+  ): Observable<Result<UserSummary>> {
+    return this.http.put<Result<UserSummary>>(this.url + userId, request);
   }
 }

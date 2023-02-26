@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ErrorResult, Status } from '@esm/cdk';
-import { CreateUserRequest, EditDepartmentRequest } from '@esm/data';
-import { DepartmentService, FacultyService } from '@esm/services';
+import { CreateUserRequest, UpdateUserRequest } from '@esm/data';
+import { DepartmentService, UserService } from '@esm/services';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
@@ -44,12 +44,12 @@ export class EditInvigilatorDialogStore extends ComponentStore<EditInvigilatorDi
     )
   );
 
-  readonly update = this.effect<{ id: string; request: EditDepartmentRequest }>(
+  readonly update = this.effect<{ id: string; request: UpdateUserRequest }>(
     (params$) =>
       params$.pipe(
         tap(() => this.patchState({ status: 'loading', errors: null })),
         switchMap(({ id, request }) =>
-          this.departmentService.update(id, request).pipe(
+          this.userService.update(id, request).pipe(
             tapResponse(
               () => this.patchState({ status: 'success' }),
               (res: EsmHttpErrorResponse) =>
@@ -65,6 +65,7 @@ export class EditInvigilatorDialogStore extends ComponentStore<EditInvigilatorDi
 
   // CONSTRUCTOR
   constructor(
+    private readonly userService: UserService,
     private readonly departmentService: DepartmentService,
     private readonly appStore: Store<AppState>
   ) {
