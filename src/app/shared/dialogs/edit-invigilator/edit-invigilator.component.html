@@ -1,9 +1,9 @@
 <h2 class="text-3xl font-bold">
-  {{ isEditDialog ? "Chỉnh sửa thông tin" : "Thêm bộ môn mới" }}
+  {{ isEditDialog ? "Chỉnh sửa thông tin" : "Thêm CBCT" }}
 </h2>
 
 <div [formGroup]="form" class="mt-6">
-  <label tuiLabel="Mã bộ môn">
+  <label tuiLabel="Mã CBCT">
     <tui-input
       formControlName="displayId"
       [tuiTextfieldLabelOutside]="true"
@@ -14,13 +14,48 @@
     ></tui-error>
   </label>
 
-  <label tuiLabel="Tên bộ môn">
+  <label tuiLabel="Họ tên">
     <tui-input
-      formControlName="name"
+      formControlName="fullName"
       [tuiTextfieldLabelOutside]="true"
     ></tui-input>
     <tui-error
-      formControlName="name"
+      formControlName="fullName"
+      [error]="[] | tuiFieldError | async"
+    ></tui-error>
+  </label>
+
+  <label tuiLabel="Email">
+    <tui-input formControlName="email" [tuiTextfieldLabelOutside]="true">
+      <input tuiTextfield type="email" />
+    </tui-input>
+    <tui-error
+      formControlName="email"
+      [error]="[] | tuiFieldError | async"
+    ></tui-error>
+  </label>
+
+  <label tuiLabel="Giới tính">
+    <div class="mt-2 flex">
+      <tui-radio-labeled
+        formControlName="isMale"
+        [item]="true"
+        size="l"
+        class="flex-1"
+      >
+        Nam
+      </tui-radio-labeled>
+      <tui-radio-labeled
+        formControlName="isMale"
+        [item]="false"
+        size="l"
+        class="flex-1"
+      >
+        Nữ
+      </tui-radio-labeled>
+    </div>
+    <tui-error
+      formControlName="isMale"
       [error]="[] | tuiFieldError | async"
     ></tui-error>
   </label>
@@ -28,22 +63,24 @@
   <label tuiLabel="Khoa">
     <tui-select
       *ngrxLet="faculties$ as faculties"
-      formControlName="facultyId"
-      [valueContent]="facultyStringify(faculties)"
+      formControlName="departmentId"
+      [valueContent]="departmentStringify(faculties)"
       [tuiTextfieldLabelOutside]="true"
     >
       <tui-data-list *tuiDataList>
-        <button
-          *ngFor="let faculty of faculties"
-          tuiOption
-          [value]="faculty.id"
-        >
-          {{ faculty.name }}
-        </button>
+        <tui-opt-group *ngFor="let faculty of faculties" [label]="faculty.name">
+          <button
+            *ngFor="let department of faculty.departments"
+            tuiOption
+            [value]="department.id"
+          >
+            {{ department.name }}
+          </button>
+        </tui-opt-group>
       </tui-data-list>
     </tui-select>
     <tui-error
-      formControlName="facultyId"
+      formControlName="departmentId"
       [error]="[] | tuiFieldError | async"
     ></tui-error>
   </label>

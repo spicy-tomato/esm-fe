@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { EditInvigilatorDialogModule } from '@esm/shared/dialogs';
 import { LetModule } from '@ngrx/component';
 import { TuiTableModule } from '@taiga-ui/addon-table';
 import { TuiFilterPipeModule } from '@taiga-ui/cdk';
@@ -32,6 +33,7 @@ export const TAIGA_UI = [
   imports: [
     CommonModule,
     DataInvigilatorRoutingModule,
+    EditInvigilatorDialogModule,
     RouterModule,
     FormsModule,
     ...NGRX,

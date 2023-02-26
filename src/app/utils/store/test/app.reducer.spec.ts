@@ -15,7 +15,10 @@ describe('appReducer', () => {
         id: 'fac',
         name: 'fn',
       },
-      displayId: null,
+      invigilator: {
+        displayId: '',
+        id: '',
+      },
       id: 'id',
       isMale: true,
       roles: [],

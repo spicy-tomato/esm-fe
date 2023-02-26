@@ -1,2 +1,2 @@
-export * from './edit-department.component';
-export { EditDepartmentDialogModule } from './edit-department.module';
+export * from './edit-invigilator.component';
+export { EditInvigilatorDialogModule } from './edit-invigilator.module';

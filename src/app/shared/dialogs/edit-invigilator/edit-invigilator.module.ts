@@ -7,9 +7,14 @@ import {
   TuiDataListModule,
   TuiErrorModule,
   TuiLabelModule,
-  TuiTextfieldControllerModule
+  TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
-import { TuiFieldErrorPipeModule, TuiInputModule, TuiSelectModule } from '@taiga-ui/kit';
+import {
+  TuiFieldErrorPipeModule,
+  TuiInputModule,
+  TuiRadioLabeledModule,
+  TuiSelectModule,
+} from '@taiga-ui/kit';
 import { EditInvigilatorDialogComponent } from './edit-invigilator.component';
 
 export const NGRX = [LetModule];
@@ -20,6 +25,7 @@ export const TAIGA_UI = [
   TuiFieldErrorPipeModule,
   TuiInputModule,
   TuiLabelModule,
+  TuiRadioLabeledModule,
   TuiSelectModule,
   TuiTextfieldControllerModule,
 ];

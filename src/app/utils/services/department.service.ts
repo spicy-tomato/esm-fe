@@ -3,9 +3,11 @@ import { Inject, Injectable } from '@angular/core';
 import { Result } from '@esm/cdk';
 import { AppEnv, APP_ENV } from '@esm/core';
 import {
+  CreateUserRequest,
   DepartmentSummary,
   EditDepartmentRequest,
   FacultyWithDepartments,
+  InvigilatorSimple,
 } from '@esm/data';
 import { Observable } from 'rxjs';
 
@@ -38,6 +40,16 @@ export class DepartmentService {
   ): Observable<Result<DepartmentSummary>> {
     return this.http.put<Result<DepartmentSummary>>(
       this.url + departmentId,
+      request
+    );
+  }
+
+  createUser(
+    departmentId: string,
+    request: CreateUserRequest
+  ): Observable<Result<InvigilatorSimple>> {
+    return this.http.post<Result<InvigilatorSimple>>(
+      this.url + departmentId + '/user',
       request
     );
   }

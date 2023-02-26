@@ -8,7 +8,7 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { StringifyHelper } from '@esm/cdk';
 import { UserSummary } from '@esm/data';
-import { EditDepartmentDialogComponent } from '@esm/shared/dialogs';
+import { EditInvigilatorDialogComponent } from '@esm/shared/dialogs';
 import { TuiDialogService } from '@taiga-ui/core';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { filter, tap } from 'rxjs';
@@ -63,15 +63,18 @@ export class DataInvigilatorComponent implements OnInit {
   }
 
   // PUBLIC METHODS
-  openDialog(data?: any): void {
+  openDialog(data?: UserSummary): void {
     this.dialogService
       .open<boolean>(
-        new PolymorpheusComponent(EditDepartmentDialogComponent, this.injector),
+        new PolymorpheusComponent(
+          EditInvigilatorDialogComponent,
+          this.injector
+        ),
         { data }
       )
       .pipe(
         filter((x) => x),
-        tap(() => this.store.load())
+        tap(() => this.store.loadAfterCreated())
       )
       .subscribe();
   }

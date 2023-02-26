@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ErrorResult, Status } from '@esm/cdk';
-import { EditDepartmentRequest } from '@esm/data';
+import { CreateUserRequest, EditDepartmentRequest } from '@esm/data';
 import { DepartmentService, FacultyService } from '@esm/services';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
@@ -17,17 +17,20 @@ type EditInvigilatorDialogState = {
 export class EditInvigilatorDialogStore extends ComponentStore<EditInvigilatorDialogState> {
   // PUBLIC PROPERTIES
   readonly faculties$ = this.appStore
-    .select(AppSelector.faculties)
+    .select(AppSelector.facultiesWithDepartment)
     .pipe(takeUntil(this.destroy$));
   readonly status$ = this.select((s) => s.status);
   readonly errors$ = this.select((s) => s.errors);
 
   // EFFECTS
-  readonly create = this.effect<EditDepartmentRequest>((params$) =>
+  readonly create = this.effect<{
+    departmentId: string;
+    request: CreateUserRequest;
+  }>((params$) =>
     params$.pipe(
       tap(() => this.patchState({ status: 'loading', errors: null })),
-      switchMap((param) =>
-        this.departmentService.create(param).pipe(
+      switchMap(({ departmentId, request }) =>
+        this.departmentService.createUser(departmentId, request).pipe(
           tapResponse(
             () => this.patchState({ status: 'success' }),
             (res: EsmHttpErrorResponse) =>

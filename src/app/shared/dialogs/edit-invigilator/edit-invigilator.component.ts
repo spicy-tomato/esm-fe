@@ -5,8 +5,13 @@ import {
   OnInit,
 } from '@angular/core';
 import { NonNullableFormBuilder, Validators } from '@angular/forms';
-import { ObservableHelper, StringifyHelper } from '@esm/cdk';
-import { DepartmentSummary } from '@esm/data';
+import { ObservableHelper } from '@esm/cdk';
+import { FacultyWithDepartments, UserSummary } from '@esm/data';
+import {
+  TuiContextWithImplicit,
+  tuiPure,
+  TuiStringHandler,
+} from '@taiga-ui/cdk';
 import {
   TuiAlertService,
   TuiDialogContext,
@@ -24,15 +29,25 @@ import { EditInvigilatorDialogStore } from './edit-invigilator.store';
 })
 export class EditInvigilatorDialogComponent implements OnInit {
   form = this.fb.group({
-    displayId: [this.context.data?.displayId || '', Validators.required],
-    name: [this.context.data?.name || '', Validators.required],
-    facultyId: [this.context.data?.faculty?.id || '', Validators.required],
+    displayId: [
+      this.context.data?.invigilator.displayId || '',
+      Validators.required,
+    ],
+    fullName: [this.context.data?.fullName || '', Validators.required],
+    email: [
+      this.context.data?.email || '',
+      [Validators.required, Validators.email],
+    ],
+    isMale: [this.context.data?.isMale || true, Validators.required],
+    departmentId: [
+      this.context.data?.department?.faculty?.id || '',
+      Validators.required,
+    ],
   });
   readonly isEditDialog = this.context.data !== undefined;
   readonly faculties$ = this.store.faculties$;
   readonly status$ = this.store.status$;
   readonly errors$ = this.store.errors$;
-  readonly facultyStringify = StringifyHelper.idName;
 
   // CONSTRUCTOR
   constructor(
@@ -40,7 +55,7 @@ export class EditInvigilatorDialogComponent implements OnInit {
     @Inject(POLYMORPHEUS_CONTEXT)
     private readonly context: TuiDialogContext<
       boolean,
-      DepartmentSummary | undefined
+      UserSummary | undefined
     >,
     @Inject(TuiAlertService) private readonly alertService: TuiAlertService,
     private readonly store: EditInvigilatorDialogStore
@@ -55,12 +70,33 @@ export class EditInvigilatorDialogComponent implements OnInit {
   // PUBLIC METHODS
   onFinish(): void {
     this.form.markAllAsTouched();
-    const formValue = this.form.getRawValue();
+    const { departmentId, ...request } = this.form.getRawValue();
+
     if (this.isEditDialog) {
-      this.store.update({ id: this.context.data!.id, request: formValue });
+      // this.store.update({ id: this.context.data!.id, request: formValue });
     } else {
-      this.store.create(formValue);
+      this.store.create({ departmentId, request });
     }
+  }
+
+  @tuiPure
+  departmentStringify(
+    items: FacultyWithDepartments[]
+  ): TuiStringHandler<TuiContextWithImplicit<string>> {
+    const map = new Map(
+      items.reduce((acc, curr) => {
+        acc = [
+          ...acc,
+          ...curr.departments.map(
+            ({ id, name }) => [id, name] as [string, string]
+          ),
+        ];
+        return acc;
+      }, [] as [string, string][])
+    );
+
+    return ({ $implicit }: TuiContextWithImplicit<string>) =>
+      map.get($implicit) || '';
   }
 
   // PRIVATE METHODS
@@ -71,7 +107,7 @@ export class EditInvigilatorDialogComponent implements OnInit {
         tap(() => {
           const message = this.isEditDialog
             ? 'Cập nhật thông tin thành công!'
-            : 'Thêm khoa thành công!';
+            : 'Thêm CBCT công!';
           this.alertService
             .open(message, { status: TuiNotification.Success })
             .subscribe();

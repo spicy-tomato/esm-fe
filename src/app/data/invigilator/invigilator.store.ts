@@ -79,30 +79,34 @@ export class DataInvigilatorStore extends ComponentStore<DataInvigilatorState> {
             (facultyId === selectedFacultyId &&
               departmentId === selectedDepartmentId)
           ) {
-            this.changeSelectedFaculty({ facultyId, departmentId });
+            this.loadFaculty({ facultyId, departmentId });
           } else if (departmentId !== selectedDepartmentId) {
-            this.changeSelectedDepartment(departmentId);
+            this.loadDepartment(departmentId);
           }
         }
       )
     )
   );
 
-  private readonly changeSelectedFaculty = this.effect<{
+  private readonly loadFaculty = this.effect<{
     facultyId: string;
     departmentId: string;
+    force?: boolean;
   }>((params$) =>
     params$.pipe(
-      tap(({ facultyId, departmentId }) =>
+      tap(({ facultyId, departmentId, force }) =>
         this.patchState({
-          selectedFacultyId: facultyId,
-          selectedDepartmentId: departmentId,
+          selectedFacultyId: force ? undefined : facultyId,
+          selectedDepartmentId: force ? undefined : departmentId,
           status: 'loading',
         })
       ),
       withLatestFrom(this.cachedFacultyIds$, this.faculties$),
-      switchMap(([{ facultyId }, cached, faculties]) => {
-        if (cached.length === faculties.length || cached.includes(facultyId)) {
+      switchMap(([{ facultyId, force }, cached, faculties]) => {
+        if (
+          !force &&
+          (cached.length === faculties.length || cached.includes(facultyId))
+        ) {
           this.patchState({ status: 'success' });
           return of(null);
         }
@@ -131,7 +135,7 @@ export class DataInvigilatorStore extends ComponentStore<DataInvigilatorState> {
     )
   );
 
-  private readonly changeSelectedDepartment = this.effect<string>((params$) =>
+  private readonly loadDepartment = this.effect<string>((params$) =>
     params$.pipe(tap((id) => this.patchState({ selectedDepartmentId: id })))
   );
 
@@ -151,7 +155,11 @@ export class DataInvigilatorStore extends ComponentStore<DataInvigilatorState> {
   }
 
   // PUBLIC METHODS
-  load(): void {
-    this.appStore.dispatch(AppPageAction.getDepartments());
+  loadAfterCreated(): void {
+    this.loadFaculty({
+      departmentId: '',
+      facultyId: '',
+      force: true,
+    });
   }
 }

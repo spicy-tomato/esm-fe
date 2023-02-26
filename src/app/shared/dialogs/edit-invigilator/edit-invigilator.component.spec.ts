@@ -1,6 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { APP_ENV } from '@esm/core';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -16,6 +17,7 @@ describe('EditInvigilatorDialogComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
+        NoopAnimationsModule,
         ReactiveFormsModule,
         ...NGRX,
         ...TAIGA_UI,
@@ -35,6 +37,10 @@ describe('EditInvigilatorDialogComponent', () => {
               moduleId: null,
               moduleName: null,
               department: null,
+              invigilator: {
+                displayId: '',
+                id: '',
+              },
             },
           },
         },
