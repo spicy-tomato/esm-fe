@@ -1,10 +1,9 @@
 import { DepartmentSummary } from '../department';
-import { InvigilatorSimple } from './invigilator-simple';
 import { Role } from './role';
 
 export type UserSummary = {
   id: string;
-  invigilator: InvigilatorSimple;
+  invigilatorId: string;
   fullName: string;
   email: string;
   createdAt: Date;

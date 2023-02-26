@@ -5,11 +5,11 @@
 <div [formGroup]="form" class="mt-6">
   <label tuiLabel="Mã CBCT">
     <tui-input
-      formControlName="displayId"
+      formControlName="invigilatorId"
       [tuiTextfieldLabelOutside]="true"
     ></tui-input>
     <tui-error
-      formControlName="displayId"
+      formControlName="invigilatorId"
       [error]="[] | tuiFieldError | async"
     ></tui-error>
   </label>

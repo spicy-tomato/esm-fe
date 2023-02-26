@@ -13,10 +13,7 @@ describe('AppSelector', () => {
       id: 'fac',
       name: 'fn',
     },
-    invigilator: {
-      displayId: '',
-      id: '',
-    },
+    invigilatorId: '',
     id: 'id',
     isMale: true,
     roles: [],

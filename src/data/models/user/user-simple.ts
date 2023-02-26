@@ -1,5 +1,3 @@
-import { InvigilatorSimple } from "./invigilator-simple";
-
 export type UserSimple = {
   id: string;
   displayId: string | null;
@@ -7,5 +5,5 @@ export type UserSimple = {
   email: string;
   createdAt: Date;
   isMale: boolean;
-  invigilator: InvigilatorSimple;
+  invigilatorId: string | null;
 };

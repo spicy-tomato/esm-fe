@@ -29,8 +29,8 @@ import { EditInvigilatorDialogStore } from './edit-invigilator.store';
 })
 export class EditInvigilatorDialogComponent implements OnInit {
   form = this.fb.group({
-    displayId: [
-      this.context.data?.invigilator.displayId || '',
+    invigilatorId: [
+      this.context.data?.invigilatorId || '',
       Validators.required,
     ],
     fullName: [this.context.data?.fullName || '', Validators.required],
@@ -40,7 +40,7 @@ export class EditInvigilatorDialogComponent implements OnInit {
     ],
     isMale: [this.context.data?.isMale || true, Validators.required],
     departmentId: [
-      this.context.data?.department?.faculty?.id || '',
+      this.context.data?.department?.id || '',
       Validators.required,
     ],
   });
@@ -73,7 +73,7 @@ export class EditInvigilatorDialogComponent implements OnInit {
     const { departmentId, ...request } = this.form.getRawValue();
 
     if (this.isEditDialog) {
-      // this.store.update({ id: this.context.data!.id, request: formValue });
+      // this.store.update({ id: this.context.data!.id, request });
     } else {
       this.store.create({ departmentId, request });
     }

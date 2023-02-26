@@ -7,7 +7,7 @@ import {
   DepartmentSummary,
   EditDepartmentRequest,
   FacultyWithDepartments,
-  InvigilatorSimple,
+  UserSummary,
 } from '@esm/data';
 import { Observable } from 'rxjs';
 
@@ -47,8 +47,8 @@ export class DepartmentService {
   createUser(
     departmentId: string,
     request: CreateUserRequest
-  ): Observable<Result<InvigilatorSimple>> {
-    return this.http.post<Result<InvigilatorSimple>>(
+  ): Observable<Result<UserSummary>> {
+    return this.http.post<Result<UserSummary>>(
       this.url + departmentId + '/user',
       request
     );

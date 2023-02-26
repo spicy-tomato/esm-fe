@@ -1,6 +1,6 @@
 export type CreateUserRequest = {
   email: string;
-  displayId: string | null;
+  invigilatorId: string | null;
   fullName: string;
   isMale: boolean;
 };
