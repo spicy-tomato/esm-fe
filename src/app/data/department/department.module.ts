@@ -11,6 +11,7 @@ import {
   TuiDataListModule,
   TuiHintModule,
   TuiHostedDropdownModule,
+  TuiLinkModule,
   TuiLoaderModule,
 } from '@taiga-ui/core';
 import { TuiSelectModule } from '@taiga-ui/kit';
@@ -24,6 +25,7 @@ export const TAIGA_UI = [
   TuiFilterPipeModule,
   TuiHintModule,
   TuiHostedDropdownModule,
+  TuiLinkModule,
   TuiLoaderModule,
   TuiSelectModule,
   TuiTableModule,

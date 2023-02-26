@@ -85,13 +85,37 @@
           tuiTr
         >
           <td *tuiCell="'displayId'" tuiTd>
-            {{ department.displayId }}
+            <a
+              tuiLink
+              [routerLink]="invigilatorRouterLink"
+              [queryParams]="{
+                facultyId: department.faculty?.id,
+                departmentId: department.id
+              }"
+            >
+              {{ department.displayId }}
+            </a>
           </td>
           <td *tuiCell="'name'" tuiTd>
-            {{ department.name }}
+            <a
+              tuiLink
+              [routerLink]="invigilatorRouterLink"
+              [queryParams]="{
+                facultyId: department.faculty?.id,
+                departmentId: department.id
+              }"
+            >
+              {{ department.name }}
+            </a>
           </td>
           <td *tuiCell="'facultyName'" tuiTd>
-            {{ department.faculty?.name }}
+            <a
+              tuiLink
+              [routerLink]="invigilatorRouterLink"
+              [queryParams]="{ facultyId: department.faculty?.id }"
+            >
+              {{ department.faculty?.name }}
+            </a>
           </td>
           <td *tuiCell="'action'" tuiTd class="w-40">
             <div class="flex justify-center">

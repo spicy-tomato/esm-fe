@@ -11,7 +11,7 @@ import { DepartmentSummary } from '@esm/data';
 import { EditDepartmentDialogComponent } from '@esm/shared/dialogs';
 import { TuiDialogService } from '@taiga-ui/core';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
-import { BehaviorSubject, combineLatest, filter, map, tap } from 'rxjs';
+import { filter, tap } from 'rxjs';
 import { DataDepartmentStore } from './department.store';
 
 @Component({
@@ -22,6 +22,7 @@ import { DataDepartmentStore } from './department.store';
 })
 export class DataDepartmentComponent implements OnInit {
   // PUBLIC PROPERTIES
+  readonly invigilatorRouterLink = '/data/invigilator';
   readonly columns = ['displayId', 'name', 'facultyName', 'action'];
   readonly faculties$ = this.store.faculties$;
   readonly departments$ = this.store.departments$;

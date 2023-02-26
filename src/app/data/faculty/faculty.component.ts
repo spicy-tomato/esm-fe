@@ -19,9 +19,10 @@ import { DataFacultyStore } from './faculty.store';
 })
 export class DataFacultyComponent {
   // PUBLIC PROPERTIES
+  readonly departmentRouterLink = '/data/department';
+  readonly columns = ['displayId', 'name', 'action'];
   readonly faculties$ = this.store.faculties$;
   readonly status$ = this.store.status$;
-  readonly columns = ['displayId', 'name', 'action'];
 
   // CONSTRUCTOR
   constructor(

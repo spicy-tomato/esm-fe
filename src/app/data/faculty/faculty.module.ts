@@ -6,6 +6,7 @@ import { TuiTableModule } from '@taiga-ui/addon-table';
 import {
   TuiButtonModule,
   TuiHintModule,
+  TuiLinkModule,
   TuiLoaderModule,
 } from '@taiga-ui/core';
 import { DataFacultyComponent } from './faculty.component';
@@ -15,6 +16,7 @@ export const NGRX = [LetModule];
 export const TAIGA_UI = [
   TuiButtonModule,
   TuiHintModule,
+  TuiLinkModule,
   TuiLoaderModule,
   TuiTableModule,
 ];
