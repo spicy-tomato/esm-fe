@@ -1,74 +1,14 @@
-<ng-container *ngrxLet="dataStatus$ as dataStatus">
-  <ng-container *ngrxLet="data$ as data">
-    <div class="flex justify-between">
-      <h1 class="flex-0 mb-4 text-3xl font-bold">Dữ liệu lịch thi</h1>
-      <button
-        tuiButton
-        *ngIf="data.length"
-        (click)="getData()"
-        [showLoader]="dataStatus === 'loading'"
-        [disabled]="disableReload"
-        icon="tuiIconRefreshCcw"
-      >
-        Làm mới
-      </button>
-    </div>
+<ng-container *ngrxLet="examination$ as examination">
+  <h1 class="absolute text-3xl font-bold">Dữ liệu lịch thi</h1>
 
-    <tui-loader
-      *ngIf="dataStatus === 'loading'; else loaded"
-      class="h-40"
-    ></tui-loader>
+  <ng-container [ngSwitch]="examination.status">
+    <esm-examination-data-import
+      *ngSwitchCase="ExaminationStatus.Idle"
+    ></esm-examination-data-import>
 
-    <ng-template #loaded>
-      <esm-examination-data-table
-        *ngIf="data.length; else noData"
-        (changes)="onTableChanges()"
-        [temporaryExamination]="data"
-        class="flex-1"
-      ></esm-examination-data-table>
-    </ng-template>
+    <esm-examination-data-temporary-table
+      *ngSwitchCase="ExaminationStatus.Setup"
+      class="flex-1"
+    ></esm-examination-data-temporary-table>
   </ng-container>
 </ng-container>
-
-<ng-template #noData>
-  <p class="mb-4 text-base">
-    Chưa có dữ liệu lịch thi, vui lòng import tệp dữ liệu
-  </p>
-
-  <tui-files *ngIf="file; else inputFile">
-    <ng-container
-      *ngrxLet="uploadStatus$ as uploadStatus"
-      [ngSwitch]="uploadStatus"
-    >
-      <tui-file
-        *ngSwitchCase="'loading'"
-        [file]="file"
-        state="loading"
-        size="l"
-      ></tui-file>
-
-      <tui-file
-        *ngSwitchCase="'success'"
-        (removed)="removeFile()"
-        [file]="file"
-        size="l"
-      ></tui-file>
-
-      <tui-file
-        *ngSwitchCase="'error'"
-        (removed)="clearRejected()"
-        [file]="file"
-        state="error"
-        size="l"
-      ></tui-file>
-    </ng-container>
-  </tui-files>
-
-  <ng-template #inputFile>
-    <tui-input-files
-      [(ngModel)]="file"
-      (ngModelChange)="makeRequest($event)"
-      accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    ></tui-input-files>
-  </ng-template>
-</ng-template>

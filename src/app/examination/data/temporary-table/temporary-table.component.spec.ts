@@ -1,19 +1,27 @@
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { APP_ENV } from '@esm/core';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { ExaminationDataComponent } from './data.component';
-import { NGRX } from './data.module';
+import { ExaminationDataTemporaryTableComponent } from './temporary-table.component';
+import { NGRX, TAIGA_UI } from './temporary-table.module';
 
-describe('DataComponent', () => {
-  let component: ExaminationDataComponent;
-  let fixture: ComponentFixture<ExaminationDataComponent>;
+describe('ExaminationDataTemporaryTableComponent', () => {
+  let component: ExaminationDataTemporaryTableComponent;
+  let fixture: ComponentFixture<ExaminationDataTemporaryTableComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, ...NGRX],
-      declarations: [ExaminationDataComponent],
+      imports: [
+        HttpClientTestingModule,
+        ReactiveFormsModule,
+        ScrollingModule,
+        ...NGRX,
+        ...TAIGA_UI,
+      ],
+      declarations: [ExaminationDataTemporaryTableComponent],
       providers: [
         provideMockStore({
           initialState: {
@@ -24,7 +32,7 @@ describe('DataComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ExaminationDataComponent);
+    fixture = TestBed.createComponent(ExaminationDataTemporaryTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

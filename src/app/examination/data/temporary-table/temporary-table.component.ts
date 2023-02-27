@@ -1,13 +1,9 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
   Inject,
   Injector,
-  Input,
-  OnChanges,
-  Output,
-  SimpleChanges,
+  OnInit,
 } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { TemporaryExamination } from '@esm/data';
@@ -18,19 +14,20 @@ import {
 import { TuiDialogService } from '@taiga-ui/core';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { filter, tap } from 'rxjs';
+import { ExaminationDataTemporaryTableStore } from './temporary-table.store';
 
 @Component({
-  selector: 'esm-examination-data-table',
-  templateUrl: './table.component.html',
-  styleUrls: ['./table.component.less'],
+  selector: 'esm-examination-data-temporary-table',
+  templateUrl: './temporary-table.component.html',
+  styleUrls: ['./temporary-table.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [ExaminationDataTemporaryTableStore],
 })
-export class ExaminationDataTableComponent implements OnChanges {
-  // INPUT
-  @Input() temporaryExamination!: TemporaryExamination[];
-
+export class ExaminationDataTemporaryTableComponent implements OnInit {
   // OUTPUT
-  @Output() readonly changes = new EventEmitter<void>();
+  // @Output() readonly dataChanges = new EventEmitter<void>();
+  // @Output() readonly statusChanges = new EventEmitter<Status>();
+  // @Output() readonly hasError = new EventEmitter<boolean>();
 
   // PUBLIC PROPERTIES
   form!: FormGroup<{
@@ -40,6 +37,7 @@ export class ExaminationDataTableComponent implements OnChanges {
       }>
     >;
   }>;
+  disableReload = true;
   readonly columns = [
     'index',
     'moduleId',
@@ -58,24 +56,36 @@ export class ExaminationDataTableComponent implements OnChanges {
     'department',
     'departmentAssign',
   ];
+  readonly data$ = this.store.data$;
+  readonly dataStatus$ = this.store.dataStatus$;
+  readonly activateStatus$ = this.store.activateStatus$;
+  readonly hasError$ = this.store.hasError$;
 
   // CONSTRUCTOR
   constructor(
     private readonly fb: FormBuilder,
     @Inject(TuiDialogService) private readonly dialogService: TuiDialogService,
-    @Inject(Injector) private readonly injector: Injector
+    @Inject(Injector) private readonly injector: Injector,
+    private readonly store: ExaminationDataTemporaryTableStore
   ) {}
 
   // LIFECYCLE
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['temporaryExamination']) {
-      this.buildForm(changes['temporaryExamination'].currentValue);
-    }
+  ngOnInit(): void {
+    this.handleDataChanges();
+    this.getData();
   }
 
   // PUBLIC METHODS
   get formControl(): FormArray {
     return this.form.controls['data'] as FormArray;
+  }
+
+  activate(): void {
+    this.store.activate();
+  }
+
+  getData(): void {
+    this.store.getData();
   }
 
   onAddModule(rowId: number): void {
@@ -88,7 +98,7 @@ export class ExaminationDataTableComponent implements OnChanges {
       )
       .pipe(
         filter((x) => x),
-        tap(() => this.changes.emit())
+        tap(() => this.markLoadable())
       )
       .subscribe();
   }
@@ -108,12 +118,16 @@ export class ExaminationDataTableComponent implements OnChanges {
       )
       .pipe(
         filter((x) => x),
-        tap(() => this.changes.emit())
+        tap(() => this.markLoadable())
       )
       .subscribe();
   }
 
   // PRIVATE METHODS
+  private handleDataChanges(): void {
+    this.data$.pipe(tap((data) => this.buildForm(data))).subscribe();
+  }
+
   private buildForm(data: TemporaryExamination[]): void {
     this.form = this.fb.group({
       data: this.fb.array(
@@ -127,5 +141,9 @@ export class ExaminationDataTableComponent implements OnChanges {
         )
       ),
     }) as any;
+  }
+
+  private markLoadable(): void {
+    this.disableReload = false;
   }
 }

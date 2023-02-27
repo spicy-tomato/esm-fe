@@ -1,4 +1,5 @@
 import { UserSummary } from "../user";
+import { ExaminationStatus } from "./examination-status";
 
 export type ExaminationSummary = {
   id: string;
@@ -7,7 +8,7 @@ export type ExaminationSummary = {
   description: string | null;
   expectStartAt: Date | null;
   expectEndAt: Date | null;
-  isActive: boolean;
+  status: ExaminationStatus;
   createdAt: Date;
   updatedAt: Date | null;
   createdBy: UserSummary;

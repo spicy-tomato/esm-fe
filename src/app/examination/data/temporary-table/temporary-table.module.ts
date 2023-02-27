@@ -4,27 +4,31 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ExamMethodPipeModule } from '@esm/core';
 import { ErrorFlagModule } from '@esm/shared/components';
+import {
+  AddModuleDialogModule,
+  AddRoomDialogModule,
+} from '@esm/shared/dialogs';
 import { VarModule } from '@esm/shared/directives';
 import { LetModule } from '@ngrx/component';
 import { TuiTableModule } from '@taiga-ui/addon-table';
 import {
+  TuiButtonModule,
   TuiDataListModule,
   TuiDropdownModule,
+  TuiLoaderModule,
   TuiScrollbarModule,
   TuiSvgModule,
 } from '@taiga-ui/core';
-import {
-  TuiDataListDropdownManagerModule,
-  TuiInputNumberModule,
-} from '@taiga-ui/kit';
-import { ExaminationDataTableComponent } from './table.component';
+import { TuiInputNumberModule } from '@taiga-ui/kit';
+import { ExaminationDataTemporaryTableComponent } from './temporary-table.component';
 
 export const NGRX = [LetModule];
 export const TAIGA_UI = [
+  TuiButtonModule,
   TuiDataListModule,
-  TuiDataListDropdownManagerModule,
   TuiDropdownModule,
   TuiInputNumberModule,
+  TuiLoaderModule,
   TuiScrollbarModule,
   TuiSvgModule,
   TuiTableModule,
@@ -38,10 +42,12 @@ export const TAIGA_UI = [
     ExamMethodPipeModule,
     ScrollingModule,
     ErrorFlagModule,
+    AddModuleDialogModule,
+    AddRoomDialogModule,
     ...NGRX,
     ...TAIGA_UI,
   ],
-  declarations: [ExaminationDataTableComponent],
-  exports: [ExaminationDataTableComponent],
+  declarations: [ExaminationDataTemporaryTableComponent],
+  exports: [ExaminationDataTemporaryTableComponent],
 })
-export class ExaminationDataTableModule {}
+export class ExaminationDataTemporaryTableModule {}

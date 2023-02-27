@@ -1,4 +1,4 @@
-import { ExamMethod } from './examination-method';
+import { ExamMethod } from './exam-method';
 
 export type TemporaryExamination = {
   id: string;

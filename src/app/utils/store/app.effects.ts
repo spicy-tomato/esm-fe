@@ -113,6 +113,15 @@ export class AppEffects {
             AppApiAction.getExaminationSuccessful({ examination: null })
           );
         }
+        return of(AppPageAction.getExaminationSummary({ id }));
+      })
+    );
+  });
+
+  readonly getExaminationSummary$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AppPageAction.getExaminationSummary),
+      mergeMap(({ id }) => {
         return this.examinationService.getSummary(id).pipe(
           map(({ data: examination }) =>
             AppApiAction.getExaminationSuccessful({ examination })
