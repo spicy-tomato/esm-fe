@@ -60,7 +60,7 @@ export class ExaminationDataTemporaryTableStore extends ComponentStore<Examinati
       tap(() => this.patchState({ dataStatus: 'loading', dataError: null })),
       withLatestFrom(this.examinationId$),
       switchMap(({ 1: id }) =>
-        this.examinationService.getData(id).pipe(
+        this.examinationService.getTemporaryData(id).pipe(
           tapResponse(
             ({ data }) =>
               this.patchState({

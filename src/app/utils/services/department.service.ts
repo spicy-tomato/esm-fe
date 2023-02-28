@@ -23,17 +23,19 @@ export class DepartmentService {
     this.url = env.baseUrl + 'department/';
   }
 
-  // PUBLIC METHODS
+  // [GET] /department
   getAll(): Observable<Result<FacultyWithDepartments[]>> {
     return this.http.get<Result<FacultyWithDepartments[]>>(this.url);
   }
 
+  // [POST] /department
   create(
     request: EditDepartmentRequest
   ): Observable<Result<DepartmentSummary>> {
     return this.http.post<Result<DepartmentSummary>>(this.url, request);
   }
 
+  // [PUT] /department/{departmentId}
   update(
     departmentId: string,
     request: EditDepartmentRequest
@@ -44,6 +46,7 @@ export class DepartmentService {
     );
   }
 
+  // [POST] /department/{departmentId}/user
   createUser(
     departmentId: string,
     request: CreateUserRequest

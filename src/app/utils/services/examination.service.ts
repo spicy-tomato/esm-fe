@@ -4,6 +4,7 @@ import { Result } from '@esm/cdk';
 import { AppEnv, APP_ENV } from '@esm/core';
 import {
   CreateExaminationRequest,
+  ExaminationShiftSimple,
   ExaminationSummary,
   TemporaryExamination,
 } from '@esm/data';
@@ -36,8 +37,8 @@ export class ExaminationService {
   }
 
   // [GET] /examination/{examinationId}
-  getData(id: string): Observable<Result<TemporaryExamination[]>> {
-    return this.http.get<Result<TemporaryExamination[]>>(this.url + id);
+  getData(id: string): Observable<Result<ExaminationShiftSimple[]>> {
+    return this.http.get<Result<ExaminationShiftSimple[]>>(this.url + id);
   }
 
   // [POST] /examination/{examinationId}
@@ -47,10 +48,7 @@ export class ExaminationService {
 
   // [PATCH] /examination/{examinationId}/activate
   activate(id: string): Observable<Result<boolean>> {
-    return this.http.patch<Result<boolean>>(
-      this.url + `${id}/activate`,
-      {}
-    );
+    return this.http.patch<Result<boolean>>(this.url + `${id}/activate`, {});
   }
 
   // [GET] /examination/{examinationId}/summary
@@ -58,5 +56,10 @@ export class ExaminationService {
     return this.http.get<Result<ExaminationSummary>>(
       this.url + `${id}/summary`
     );
+  }
+
+  // [GET] /examination/{examinationId}/temporary
+  getTemporaryData(id: string): Observable<Result<TemporaryExamination[]>> {
+    return this.http.get<Result<TemporaryExamination[]>>(this.url + id);
   }
 }

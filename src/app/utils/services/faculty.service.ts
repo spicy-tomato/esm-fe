@@ -23,11 +23,12 @@ export class FacultyService {
     this.url = env.baseUrl + 'faculty/';
   }
 
-  // PUBLIC METHODS
+  // [GET] /faculty
   create(request: EditFacultyRequest): Observable<Result<FacultySummary>> {
     return this.http.post<Result<FacultySummary>>(this.url, request);
   }
 
+  // [PUT] /faculty/{facultyId}
   update(
     facultyId: string,
     request: EditFacultyRequest
@@ -35,17 +36,19 @@ export class FacultyService {
     return this.http.put<Result<FacultySummary>>(this.url + facultyId, request);
   }
 
-  getUsers(facultyId: string): Observable<Result<UserSummary[]>> {
-    return this.http.get<Result<UserSummary[]>>(this.url + facultyId + '/user');
-  }
-
+  // [POST] /faculty/{facultyId}/module
   createModule(
     facultyId: string,
     request: CreateModuleRequest
   ): Observable<Result<ModuleSimple>> {
     return this.http.post<Result<ModuleSimple>>(
-      this.url + facultyId + '/modules',
+      this.url + facultyId + '/module',
       request
     );
+  }
+
+  // [GET] /faculty/{facultyId}/user
+  getUsers(facultyId: string): Observable<Result<UserSummary[]>> {
+    return this.http.get<Result<UserSummary[]>>(this.url + facultyId + '/user');
   }
 }

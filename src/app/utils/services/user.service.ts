@@ -22,7 +22,7 @@ export class UserService {
     this.url = env.baseUrl + 'user/';
   }
 
-  // PUBLIC METHODS
+  // [GET] /user
   getAllInvigilators(): Observable<Result<UserSummary[]>> {
     return this.http.get<Result<UserSummary[]>>(this.url, {
       params: {
@@ -31,18 +31,22 @@ export class UserService {
     });
   }
 
+  // [POST] /user/login
   login(request: LoginRequest): Observable<Result<GeneratedToken>> {
     return this.http.post<Result<GeneratedToken>>(this.url + 'login', request);
   }
 
+  // [GET] /user/summary
   me(): Observable<Result<UserSummary>> {
     return this.http.get<Result<UserSummary>>(this.url + 'summary');
   }
 
+  // [GET] /user/{userId}
   getByUserName(userName: string): Observable<Result<UserSummary>> {
     return this.http.get<Result<UserSummary>>(this.url + userName);
   }
 
+  // [PUT] /user/{userId}
   update(
     userId: string,
     request: UpdateUserRequest

@@ -17,7 +17,7 @@ export class RoomService {
     this.url = env.baseUrl + 'room/';
   }
 
-  // PUBLIC METHODS
+  // [POST] /room
   create(request: CreateRoomRequest): Observable<Result<RoomSummary>> {
     return this.http.post<Result<RoomSummary>>(this.url, request);
   }
