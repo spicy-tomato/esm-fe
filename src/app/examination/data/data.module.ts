@@ -4,6 +4,7 @@ import { LetModule } from '@ngrx/component';
 import { ExaminationDataComponent } from './data.component';
 import { ExaminationDataRoutingModule } from './data.routing';
 import { ExaminationDataImportModule } from './import/import.module';
+import { ExaminationDataTableModule } from './table/table.module';
 import { ExaminationDataTemporaryTableModule } from './temporary-table/temporary-table.module';
 
 export const NGRX = [LetModule];
@@ -13,6 +14,7 @@ export const NGRX = [LetModule];
   imports: [
     CommonModule,
     ExaminationDataImportModule,
+    ExaminationDataTableModule,
     ExaminationDataTemporaryTableModule,
     ExaminationDataRoutingModule,
     ...NGRX,

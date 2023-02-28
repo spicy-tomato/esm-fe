@@ -24,11 +24,6 @@ import { ExaminationDataTemporaryTableStore } from './temporary-table.store';
   providers: [ExaminationDataTemporaryTableStore],
 })
 export class ExaminationDataTemporaryTableComponent implements OnInit {
-  // OUTPUT
-  // @Output() readonly dataChanges = new EventEmitter<void>();
-  // @Output() readonly statusChanges = new EventEmitter<Status>();
-  // @Output() readonly hasError = new EventEmitter<boolean>();
-
   // PUBLIC PROPERTIES
   form!: FormGroup<{
     data: FormArray<
@@ -49,17 +44,19 @@ export class ExaminationDataTemporaryTableComponent implements OnInit {
     'startAt',
     'endAt',
     'shift',
-    'candidateCount',
+    'candidatesCount',
     'roomsCount',
     'rooms',
     'faculty',
     'department',
     'departmentAssign',
   ];
-  readonly data$ = this.store.data$;
   readonly dataStatus$ = this.store.dataStatus$;
   readonly activateStatus$ = this.store.activateStatus$;
   readonly hasError$ = this.store.hasError$;
+
+  // PRIVATE PROPERTIES
+  private readonly data$ = this.store.data$;
 
   // CONSTRUCTOR
   constructor(

@@ -11,7 +11,7 @@ export type TemporaryExamination = {
   startAt?: Date;
   endAt?: Date;
   shift?: number;
-  candidateCount?: number;
+  candidatesCount?: number;
   roomsCount?: number;
   rooms?: string;
   faculty?: string;

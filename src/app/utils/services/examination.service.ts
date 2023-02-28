@@ -60,6 +60,8 @@ export class ExaminationService {
 
   // [GET] /examination/{examinationId}/temporary
   getTemporaryData(id: string): Observable<Result<TemporaryExamination[]>> {
-    return this.http.get<Result<TemporaryExamination[]>>(this.url + id);
+    return this.http.get<Result<TemporaryExamination[]>>(
+      this.url + id + '/temporary'
+    );
   }
 }

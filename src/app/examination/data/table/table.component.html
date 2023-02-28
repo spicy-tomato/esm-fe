@@ -1,0 +1,108 @@
+<ng-container *ngrxLet="dataStatus$ as dataStatus">
+  <div class="mt-10 mb-4 flex justify-end"></div>
+
+  <tui-loader
+    *ngIf="dataStatus === 'loading'; else loaded"
+    class="h-40"
+  ></tui-loader>
+</ng-container>
+
+<ng-template #loaded>
+  <tui-scrollbar class="h-full">
+    <cdk-virtual-scroll-viewport
+      #viewport
+      tuiScrollable
+      class="h-full tui-zero-scrollbar"
+      [itemSize]="45"
+      [maxBufferPx]="1000"
+      [minBufferPx]="700"
+    >
+      <table
+        tuiTable
+        *ngIf="form"
+        [formGroup]="form"
+        [columns]="columns"
+        class="w-full"
+      >
+        <thead>
+          <tr
+            tuiThGroup
+            *esmVar="0 - viewport['_renderedContentOffset'] as offset"
+          >
+            <th tuiTh [sticky]="true" [style.top.px]="offset">STT</th>
+            <th tuiTh [sticky]="true" [style.top.px]="offset">Mã học phần</th>
+            <th tuiTh [sticky]="true" [style.top.px]="offset">Tên học phần</th>
+            <th
+              tuiTh
+              [sticky]="true"
+              [style.top.px]="offset"
+              class="!text-center"
+            >
+              Số TC
+            </th>
+            <th tuiTh [sticky]="true" [style.top.px]="offset">Hình thức</th>
+            <th tuiTh [sticky]="true" [style.top.px]="offset">Ngày thi</th>
+            <th
+              tuiTh
+              [sticky]="true"
+              [style.top.px]="offset"
+              class="!text-center"
+            >
+              Bắt đầu
+            </th>
+            <th
+              tuiTh
+              [sticky]="true"
+              [style.top.px]="offset"
+              class="!text-center"
+            >
+              Ca
+            </th>
+            <th tuiTh [sticky]="true" [style.top.px]="offset">Phòng</th>
+            <th tuiTh [sticky]="true" [style.top.px]="offset">Số thí sinh</th>
+            <th tuiTh [sticky]="true" [style.top.px]="offset">Phụ trách</th>
+          </tr>
+        </thead>
+        <tbody tuiTbody formArrayName="data">
+          <tr
+            *cdkVirtualFor="let item of formControl.controls; let i = index"
+            tuiTr
+            [formGroupName]="i"
+          >
+            <td *tuiCell="'index'" tuiTd>{{ i + 1 }}</td>
+            <td *tuiCell="'moduleId'" tuiTd class="w-24 max-w-[6rem]">
+              {{ item.value.module.displayId }}
+            </td>
+            <td *tuiCell="'moduleName'" tuiTd class="w-52 max-w-[13rem]">
+              {{ item.value.module.name }}
+            </td>
+            <td *tuiCell="'credit'" tuiTd class="!text-center">
+              {{ item.value.module.credits }}
+            </td>
+            <td *tuiCell="'method'" tuiTd>
+              {{ item.value.method | examMethod }}
+            </td>
+            <td *tuiCell="'date'" tuiTd>
+              {{ item.value.startAt | date : "dd/MM/y" }}
+            </td>
+            <td *tuiCell="'startAt'" tuiTd class="!text-center">
+              {{ item.value.startAt | date : "HH:mm" }}
+            </td>
+            <td *tuiCell="'shift'" tuiTd class="!text-center">
+              {{ item.value.shift }}
+            </td>
+            <td *tuiCell="'room'" tuiTd>
+              {{ item.value.room.displayId }}
+            </td>
+            <td *tuiCell="'candidatesCount'" tuiTd>
+              {{ item.value.candidatesCount }}
+            </td>
+            <td *tuiCell="'departmentAssign'" tuiTd>
+              {{ item.value.departmentAssign ? "Bộ môn" : "Phòng KT&ĐBCLĐT" }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </cdk-virtual-scroll-viewport>
+  </tui-scrollbar>
+</ng-template>

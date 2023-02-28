@@ -10,5 +10,10 @@
       *ngSwitchCase="ExaminationStatus.Setup"
       class="flex-1"
     ></esm-examination-data-temporary-table>
+
+    <esm-examination-data-table
+      *ngSwitchCase="ExaminationStatus.Active"
+      class="flex-1"
+    ></esm-examination-data-table>
   </ng-container>
 </ng-container>
