@@ -24,7 +24,7 @@ export class CreateStore extends ComponentStore<TopBarState> {
         this.examinationService.create(param).pipe(
           tapResponse(
             ({ data }) => {
-              void this.router.navigateByUrl(`${data.id}/exam`);
+              void this.router.navigateByUrl(`${data.id}/exam/data`);
             },
             (error) =>
               this.patchState({

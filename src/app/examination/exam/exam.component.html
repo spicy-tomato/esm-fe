@@ -93,16 +93,16 @@
           <tr *ngFor="let item of data; let i = index" tuiTr>
             <td *tuiCell="'index'" tuiTd>{{ i + 1 }}</td>
             <td *tuiCell="'moduleId'" tuiTd class="w-24 max-w-[6rem]">
-              {{ item.module.displayId }}
+              {{ item.examinationShiftGroup.module.displayId }}
             </td>
             <td *tuiCell="'moduleName'" tuiTd class="w-52 max-w-[13rem]">
-              {{ item.module.name }}
+              {{ item.examinationShiftGroup.module.name }}
             </td>
             <td *tuiCell="'credit'" tuiTd class="!text-center">
-              {{ item.module.credits }}
+              {{ item.examinationShiftGroup.module.credits }}
             </td>
             <td *tuiCell="'method'" tuiTd>
-              {{ item.method | examMethod }}
+              {{ item.examinationShiftGroup.method | examMethod }}
             </td>
             <td *tuiCell="'date'" tuiTd>
               {{ item.startAt | date : "dd/MM/y" }}
@@ -111,7 +111,7 @@
               {{ item.startAt | date : "HH:mm" }}
             </td>
             <td *tuiCell="'shift'" tuiTd class="!text-center">
-              {{ item.shift }}
+              {{ item.examinationShiftGroup.shift }}
             </td>
             <td *tuiCell="'room'" tuiTd>
               {{ item.room.displayId }}

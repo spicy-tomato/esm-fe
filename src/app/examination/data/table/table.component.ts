@@ -11,13 +11,11 @@ import { ExaminationDataTableStore } from './table.store';
 
 const FormFieldList = [
   'id',
-  'method',
   'candidatesCount',
+  'invigilatorsCount',
   'startAt',
-  'shift',
-  'module',
   'room',
-  'departmentAssign',
+  'examinationShiftGroup',
 ] as const;
 type FormFieldTuple = typeof FormFieldList;
 type FormFields = FormFieldTuple[number];
