@@ -52,7 +52,7 @@ const routes: Routes = [
               {
                 path: '',
                 loadChildren: async () =>
-                  (await import('./examination/exam/exam.module')).ExamModule,
+                  (await import('./examination/exam/exam.module')).ExaminationExamModule,
               },
               {
                 path: 'data',

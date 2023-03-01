@@ -37,8 +37,17 @@ export class ExaminationService {
   }
 
   // [GET] /examination/{examinationId}
-  getData(id: string): Observable<Result<ExaminationShiftSimple[]>> {
-    return this.http.get<Result<ExaminationShiftSimple[]>>(this.url + id);
+  getData(
+    id: string,
+    departmentAssign?: boolean
+  ): Observable<Result<ExaminationShiftSimple[]>> {
+    return this.http.get<Result<ExaminationShiftSimple[]>>(this.url + id, {
+      params: departmentAssign
+        ? {
+            departmentAssign,
+          }
+        : {},
+    });
   }
 
   // [POST] /examination/{examinationId}
@@ -49,6 +58,17 @@ export class ExaminationService {
   // [PATCH] /examination/{examinationId}/activate
   activate(id: string): Observable<Result<boolean>> {
     return this.http.patch<Result<boolean>>(this.url + `${id}/activate`, {});
+  }
+
+  // [PATCH] /examination/{examinationId}/exams-number
+  updateExamsNumber(
+    id: string,
+    params: Record<string, number>
+  ): Observable<Result<boolean>> {
+    return this.http.patch<Result<boolean>>(
+      this.url + `${id}/exams-number`,
+      params
+    );
   }
 
   // [GET] /examination/{examinationId}/summary

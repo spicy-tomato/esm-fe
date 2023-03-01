@@ -19,9 +19,6 @@ type ExaminationDataTemporaryTableState = {
 @Injectable()
 export class ExaminationDataTemporaryTableStore extends ComponentStore<ExaminationDataTemporaryTableState> {
   // PUBLIC PROPERTIES
-  readonly examination$ = this.appStore
-    .select(AppSelector.examination)
-    .pipe(takeUntil(this.destroy$));
   readonly data$ = this.select((s) => s.data);
   readonly hasError$ = this.select(
     (s) => !!s.data.find((d) => Object.keys(d.errors).length > 0)

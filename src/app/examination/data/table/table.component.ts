@@ -1,14 +1,26 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormGroup, FormArray, FormControl, FormBuilder } from '@angular/forms';
 import {
-  ExaminationShiftSimple,
-  ExamMethod,
-  ModuleSimple,
-  RoomSummary,
-  TemporaryExamination,
-} from '@esm/data';
+  FormArray,
+  FormControl,
+  FormGroup,
+  NonNullableFormBuilder,
+} from '@angular/forms';
+import { ExaminationShiftSimple } from '@esm/data';
 import { tap } from 'rxjs';
 import { ExaminationDataTableStore } from './table.store';
+
+const FormFieldList = [
+  'id',
+  'method',
+  'candidatesCount',
+  'startAt',
+  'shift',
+  'module',
+  'room',
+  'departmentAssign',
+] as const;
+type FormFieldTuple = typeof FormFieldList;
+type FormFields = FormFieldTuple[number];
 
 @Component({
   selector: 'esm-examination-data-table',
@@ -21,16 +33,10 @@ export class ExaminationDataTemporaryTableComponent implements OnInit {
   // PUBLIC PROPERTIES
   form!: FormGroup<{
     data: FormArray<
-      FormGroup<{
-        id: FormControl<number>;
-        method: FormControl<ExamMethod>;
-        examsCount: FormControl<number>;
-        startAt: FormControl<Date>;
-        module: FormControl<ModuleSimple>;
-        room: FormControl<RoomSummary>;
-      }>
+      FormGroup<{ [F in FormFields]: FormControl<ExaminationShiftSimple[F]> }>
     >;
   }>;
+
   readonly columns = [
     'index',
     'moduleId',
@@ -44,34 +50,26 @@ export class ExaminationDataTemporaryTableComponent implements OnInit {
     'candidatesCount',
     'departmentAssign',
   ];
-  readonly dataStatus$ = this.store.dataStatus$;
-  
+  readonly status$ = this.store.status$;
+
   // PRIVATE PROPERTIES
   private readonly data$ = this.store.data$;
 
   // CONSTRUCTOR
   constructor(
-    private readonly fb: FormBuilder,
+    private readonly fb: NonNullableFormBuilder,
     private readonly store: ExaminationDataTableStore
   ) {}
 
   // LIFECYCLE
   ngOnInit(): void {
     this.handleDataChanges();
-    this.getData();
+    this.store.getData();
   }
 
   // PUBLIC METHODS
   get formControl(): FormArray {
     return this.form.controls.data;
-  }
-
-  activate(): void {
-    this.store.activate();
-  }
-
-  getData(): void {
-    this.store.getData();
   }
 
   // PRIVATE METHODS
@@ -84,10 +82,10 @@ export class ExaminationDataTemporaryTableComponent implements OnInit {
       data: this.fb.array(
         data.map((row) =>
           this.fb.group(
-            Object.entries(row).reduce((acc, [key, value]) => {
-              acc[key as keyof ExaminationShiftSimple] = [value as any];
+            FormFieldList.reduce((acc, curr) => {
+              acc[curr] = [row[curr]] as never;
               return acc;
-            }, {} as Record<keyof ExaminationShiftSimple, any[]>)
+            }, {} as { [F in FormFields]: ExaminationShiftSimple[F] })
           )
         )
       ),

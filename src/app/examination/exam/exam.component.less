@@ -1,9 +1,18 @@
 :host {
   @apply relative h-content-h flex flex-col;
+}
 
-  table {
-    tbody ::ng-deep td.colored {
-      @apply bg-tui-base-02;
-    }
+tui-scrollbar ::ng-deep .t-content {
+  @apply h-full;
+}
+
+table ::ng-deep {
+  th,
+  td {
+    @apply whitespace-nowrap;
+  }
+
+  td {
+    @apply overflow-hidden text-ellipsis;
   }
 }

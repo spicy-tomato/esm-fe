@@ -1,8 +1,8 @@
-<ng-container *ngrxLet="dataStatus$ as dataStatus">
+<ng-container *ngrxLet="status$ as status">
   <div class="mt-10 mb-4 flex justify-end"></div>
 
   <tui-loader
-    *ngIf="dataStatus === 'loading'; else loaded"
+    *ngIf="status === 'loading'; else loaded"
     class="h-40"
   ></tui-loader>
 </ng-container>

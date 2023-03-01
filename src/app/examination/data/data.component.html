@@ -4,6 +4,7 @@
   <ng-container [ngSwitch]="examination.status">
     <esm-examination-data-import
       *ngSwitchCase="ExaminationStatus.Idle"
+      class="flex-1"
     ></esm-examination-data-import>
 
     <esm-examination-data-temporary-table
