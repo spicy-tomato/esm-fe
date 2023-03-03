@@ -90,7 +90,7 @@
           [data]="data"
           formArrayName="data"
         >
-          <tr *ngFor="let item of data; let i = index" tuiTr>
+          <tr *cdkVirtualFor="let item of data; let i = index" tuiTr>
             <td *tuiCell="'index'" tuiTd>{{ i + 1 }}</td>
             <td *tuiCell="'moduleId'" tuiTd class="w-24 max-w-[6rem]">
               {{ item.examinationShiftGroup.module.displayId }}
@@ -123,7 +123,9 @@
               {{ item.candidatesCount }}
             </td>
             <td *tuiCell="'examsCount'" tuiTd>
-              <tui-input-number [formControlName]="i"></tui-input-number>
+              <tui-input-number
+                [formControl]="examsCountControl(i)"
+              ></tui-input-number>
             </td>
           </tr>
         </tbody>

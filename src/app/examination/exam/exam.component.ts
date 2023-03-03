@@ -70,6 +70,10 @@ export class ExaminationExamComponent implements OnInit {
   }
 
   // PUBLIC METHODS
+  examsCountControl(index: number): FormControl{
+    return this.form.controls.data.controls.at(index) as FormControl
+  }
+  
   save(): void {
     this.store.save(this.form.controls.data.value);
   }
