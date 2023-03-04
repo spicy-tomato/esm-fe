@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import { ErrorResult, Status } from '@esm/cdk';
+import { ErrorResult, EsmHttpErrorResponse, Status } from '@esm/cdk';
 import { EditDepartmentRequest } from '@esm/data';
 import { DepartmentService } from '@esm/services';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
 import { switchMap, takeUntil, tap } from 'rxjs';
-import { EsmHttpErrorResponse } from 'src/cdk/models/http-error-response';
 
 type EditDepartmentDialogState = {
   status: Status;

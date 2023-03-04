@@ -1,19 +1,29 @@
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ArrayPipeModule, ExamMethodPipeModule } from '@esm/core';
+import { VarModule } from '@esm/shared/directives';
 import { LetModule } from '@ngrx/component';
 import { TuiTableModule } from '@taiga-ui/addon-table';
-import { TuiButtonModule, TuiScrollbarModule } from '@taiga-ui/core';
+import {
+  TuiButtonModule,
+  TuiLoaderModule,
+  TuiScrollbarModule,
+  TuiTooltipModule,
+} from '@taiga-ui/core';
 import { TuiInputNumberModule } from '@taiga-ui/kit';
-import { AssignFacultyRoutingModule } from './assign-faculty.routing';
 import { InvigilatorAssignFacultyComponent } from './assign-faculty.component';
+import { AssignFacultyRoutingModule } from './assign-faculty.routing';
 
 export const NGRX = [LetModule];
 export const TAIGA_UI = [
   TuiButtonModule,
   TuiInputNumberModule,
+  TuiLoaderModule,
   TuiScrollbarModule,
   TuiTableModule,
+  TuiTooltipModule,
 ];
 
 @NgModule({
@@ -22,6 +32,10 @@ export const TAIGA_UI = [
     FormsModule,
     ReactiveFormsModule,
     AssignFacultyRoutingModule,
+    ScrollingModule,
+    ArrayPipeModule,
+    ExamMethodPipeModule,
+    VarModule,
     ...NGRX,
     ...TAIGA_UI,
   ],

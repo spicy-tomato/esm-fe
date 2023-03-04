@@ -1,821 +1,198 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import {
   FormArray,
   FormControl,
   FormGroup,
   NonNullableFormBuilder,
-  Validators,
 } from '@angular/forms';
+import { ExaminationShiftGroupSimple, FacultySummary } from '@esm/data';
 import { tuiButtonOptionsProvider } from '@taiga-ui/core';
-import { BehaviorSubject } from 'rxjs';
-
-type Item = {
-  id: string;
-  moduleId: string;
-  moduleName: string;
-  method: string;
-  startAt: Date;
-  shift: number;
-  roomsCount: number;
-  candidatesCount: number;
-  invigilatorsCount: Record<string, number>;
-};
+import { TuiInputNumberComponent } from '@taiga-ui/kit';
+import { combineLatest, map, tap } from 'rxjs';
+import { InvigilatorAssignFacultyStore } from './assign-faculty.store';
 
 @Component({
   templateUrl: './assign-faculty.component.html',
   styleUrls: ['./assign-faculty.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [tuiButtonOptionsProvider({ size: 'm' })],
+  providers: [
+    InvigilatorAssignFacultyStore,
+    tuiButtonOptionsProvider({ size: 'm' }),
+  ],
 })
-export class InvigilatorAssignFacultyComponent {
-  // PUBLIC PROPERTIES
-  data: Item[] = data;
-  isEditing = false;
-  readonly isSaving$ = new BehaviorSubject<boolean>(false);
-  readonly facultiesId = Object.keys(this.data[0].invigilatorsCount);
+export class InvigilatorAssignFacultyComponent implements OnInit {
+  // VIEWCHILD
+  @ViewChild('input') input!: TuiInputNumberComponent;
+  @ViewChild('viewport') viewport!: CdkVirtualScrollViewport;
 
-  columns = [
-    'moduleId',
-    'moduleName',
-    'method',
-    'startAt',
-    'shift',
-    'roomsCountsCount',
-    'candidatesCount',
-    ...this.facultiesId,
-  ];
-  readonly form!: FormGroup;
+  // PUBLIC PROPERTIES
+  form!: FormGroup;
+  inputValue = 0;
+  inputOldValue = 0;
+  inputStyle: {
+    top: string;
+    left: string;
+    width: string;
+    height: string;
+  } | null = null;
+  focusedCellData: {
+    rowId: number;
+    facultyId: string;
+  } | null = null;
+  focusedControl: FormControl | null = null;
+
+  readonly data$ = this.store.data$;
+  readonly faculties$ = this.store.faculties$;
+  readonly updateRows$ = this.store.updateRows$;
+  readonly showLoader$ = combineLatest([
+    this.store.dataStatus$,
+    this.store.calculateStatus$,
+  ]).pipe(map((statuses) => statuses.includes('loading')));
+  readonly columns$ = this.store.faculties$.pipe(
+    map((faculties) => [
+      'moduleId',
+      'moduleName',
+      'method',
+      'startAt',
+      'shift',
+      'facultyName',
+      'roomsCount',
+      'invigilatorsCount',
+      ...faculties.map((f) => f.id),
+      'total',
+      'difference',
+    ])
+  );
 
   // CONSTRUCTOR
-  constructor(private readonly fb: NonNullableFormBuilder) {
-    this.form = this.fb.group({
-      invigilatorsCount: this.fb.array(
-        this.data.map((item) =>
-          this.fb.group(
-            Object.entries(item.invigilatorsCount).reduce(
-              (acc, [key, value]) => {
-                acc[key] = [value, [Validators.required, Validators.min(0)]];
-                return acc;
-              },
-              {} as Record<string, any>
-            )
-          )
-        )
-      ),
-    });
+  constructor(
+    private readonly fb: NonNullableFormBuilder,
+    private readonly store: InvigilatorAssignFacultyStore
+  ) {}
 
-    this.form.disable();
+  // LIFECYCLE
+  ngOnInit(): void {
+    this.handleBuildForm();
+    this.store.getData();
   }
 
   // PUBLIC METHODS
-  onValueChange(id: string, value: number): void {
-    for (const item of this.data) {
-      if (item.id === id) {
-        item.candidatesCount = value;
-        break;
-      }
-    }
-
-    this.data = this.data;
+  get formControl(): FormArray {
+    return this.form.controls['data'] as FormArray;
   }
 
-  invigilatorsCount(index: number): FormGroup {
-    return (this.form.controls['invigilatorsCount'] as FormArray).at(
-      index
-    ) as FormGroup;
+  facultyControl(index: number, facultyId: string): FormControl {
+    return (this.form.controls['data'] as FormArray)
+      .at(index)
+      .get(facultyId) as FormControl;
   }
 
-  control(index: number, controlName: string): FormControl {
-    return this.invigilatorsCount(index).controls[controlName] as FormControl;
+  calculate(): void {
+    this.store.calculate();
   }
 
-  saveChange(): void {
-    this.isSaving$.next(true);
+  onDoubleClickCell(evt: MouseEvent, rowId: number, facultyId: string): void {
+    this.focusedControl = this.facultyControl(rowId, facultyId);
+    this.inputValue = this.inputOldValue = this.focusedControl.value.actual;
+    this.focusedCellData = { rowId, facultyId };
+
+    const boundingRect = (
+      evt.target as HTMLTableCellElement
+    ).getBoundingClientRect();
+    const target = evt.target as HTMLTableCellElement;
+
+    this.inputStyle = {
+      top: target.offsetTop + 'px',
+      left: target.offsetLeft + 'px',
+      width: boundingRect.width + 'px',
+      height: boundingRect.height + 'px',
+    };
+
     setTimeout(() => {
-      data = (this.form.controls['invigilatorsCount'] as FormArray).value;
-      this.toggleEdit(false);
-      this.isSaving$.next(false);
-    }, 1000);
+      this.input.nativeFocusableElement?.select();
+    });
   }
 
-  cancelEdit(): void {
-    (this.form.controls['invigilatorsCount'] as FormArray).patchValue(data);
-    this.toggleEdit(false);
-  }
+  onFocusedChange(focus: boolean): void {
+    if (!focus && this.focusedCellData) {
+      if (this.inputValue !== this.inputOldValue) {
+        const { rowId, facultyId } = this.focusedCellData;
+        this.store.save({
+          rowId,
+          facultyId,
+          numberOfInvigilator: this.inputValue,
+        });
+      }
 
-  toggleEdit(isEditing: boolean): void {
-    this.isEditing = isEditing;
-    if (isEditing) {
-      this.form.enable();
-    } else {
-      this.form.disable();
+      this.inputStyle = null;
+      this.focusedControl = null;
+      this.focusedCellData = null;
     }
+  }
+
+  // PRIVATE METHODS
+  private handleBuildForm(): void {
+    combineLatest([this.faculties$, this.data$])
+      .pipe(tap(([faculties, data]) => this.buildForm(faculties, data)))
+      .subscribe();
+  }
+
+  private buildForm(
+    faculties: FacultySummary[],
+    data: ExaminationShiftGroupSimple[]
+  ): void {
+    this.form = this.fb.group({
+      data: this.fb.array(
+        data.map((row) =>
+          this.fb.group({
+            ...this.buildFormDataPart(row),
+            ...this.buildFormFacultyPart(row, faculties),
+            ...this.buildFormCalculatePart(row),
+          })
+        )
+      ),
+    }) as any;
+  }
+
+  private buildFormDataPart(
+    group: ExaminationShiftGroupSimple
+  ): Record<string, any[]> {
+    const columns: (keyof ExaminationShiftGroupSimple)[] = [
+      'module',
+      'method',
+      'startAt',
+      'shift',
+      'roomsCount',
+      'invigilatorsCount',
+    ];
+
+    return columns.reduce((acc, curr) => {
+      acc[curr] = [group[curr]];
+      return acc;
+    }, {} as Record<string, any[]>);
+  }
+
+  private buildFormFacultyPart(
+    group: ExaminationShiftGroupSimple,
+    faculties: FacultySummary[]
+  ): Record<string, any[]> {
+    return faculties.reduce((acc, { id }) => {
+      acc[id] = [group.assignNumerate[id] || 0];
+      return acc;
+    }, {} as Record<string, any[]>);
+  }
+
+  private buildFormCalculatePart(
+    group: ExaminationShiftGroupSimple
+  ): Record<string, any[]> {
+    return {
+      total: [group.assignNumerate['total']],
+    };
   }
 }
-
-let data: Item[] = [
-  {
-    id: '1',
-    moduleId: 'BS0.001.2',
-    moduleName: 'Giải tích 1',
-    method: 'Trắc nghiệm',
-    startAt: new Date(),
-    shift: 2,
-    roomsCount: 7,
-    candidatesCount: 100,
-    invigilatorsCount: {
-      khcb: 7,
-      ck: 1,
-      ct: 3,
-      ddt: 1,
-      ktxd: 1,
-      vtkt: 1,
-      mtatgt: 1,
-      llct: 1,
-      qlxd: 0,
-      cntt: 0,
-    },
-  },
-  {
-    id: '2',
-    moduleId: 'BS0.001.2',
-    moduleName: 'Giải tích 1',
-    method: 'Trắc nghiệm',
-    startAt: new Date(),
-    shift: 2,
-    roomsCount: 7,
-    candidatesCount: 100,
-    invigilatorsCount: {
-      khcb: 7,
-      ck: 1,
-      ct: 3,
-      ddt: 1,
-      ktxd: 1,
-      vtkt: 1,
-      mtatgt: 1,
-      llct: 1,
-      qlxd: 0,
-      cntt: 0,
-    },
-  },
-  {
-    id: '3',
-    moduleId: 'BS0.001.2',
-    moduleName: 'Giải tích 1',
-    method: 'Trắc nghiệm',
-    startAt: new Date(),
-    shift: 2,
-    roomsCount: 7,
-    candidatesCount: 100,
-    invigilatorsCount: {
-      khcb: 7,
-      ck: 1,
-      ct: 3,
-      ddt: 1,
-      ktxd: 1,
-      vtkt: 1,
-      mtatgt: 1,
-      llct: 1,
-      qlxd: 0,
-      cntt: 0,
-    },
-  },
-  {
-    id: '4',
-    moduleId: 'BS0.001.2',
-    moduleName: 'Giải tích 1',
-    method: 'Trắc nghiệm',
-    startAt: new Date(),
-    shift: 2,
-    roomsCount: 7,
-    candidatesCount: 100,
-    invigilatorsCount: {
-      khcb: 7,
-      ck: 1,
-      ct: 3,
-      ddt: 1,
-      ktxd: 1,
-      vtkt: 1,
-      mtatgt: 1,
-      llct: 1,
-      qlxd: 0,
-      cntt: 0,
-    },
-  },
-  {
-    id: '5',
-    moduleId: 'BS0.101.3',
-    moduleName: 'Đại số tuyến tính',
-    method: 'Tự luận',
-    startAt: new Date(),
-    shift: 2,
-    roomsCount: 7,
-    candidatesCount: 55,
-    invigilatorsCount: {
-      khcb: 7,
-      ck: 1,
-      ct: 3,
-      ddt: 1,
-      ktxd: 1,
-      vtkt: 1,
-      mtatgt: 1,
-      llct: 1,
-      qlxd: 0,
-      cntt: 0,
-    },
-  },
-  {
-    id: '6',
-    moduleId: 'BS0.101.3',
-    moduleName: 'Đại số tuyến tính',
-    method: 'Tự luận',
-    startAt: new Date(),
-    shift: 2,
-    roomsCount: 7,
-    candidatesCount: 55,
-    invigilatorsCount: {
-      khcb: 7,
-      ck: 1,
-      ct: 3,
-      ddt: 1,
-      ktxd: 1,
-      vtkt: 1,
-      mtatgt: 1,
-      llct: 1,
-      qlxd: 0,
-      cntt: 0,
-    },
-  },
-  {
-    id: '7',
-    moduleId: 'BS0.101.3',
-    moduleName: 'Đại số tuyến tính',
-    method: 'Tự luận',
-    startAt: new Date(),
-    shift: 2,
-    roomsCount: 7,
-    candidatesCount: 55,
-    invigilatorsCount: {
-      khcb: 7,
-      ck: 1,
-      ct: 3,
-      ddt: 1,
-      ktxd: 1,
-      vtkt: 1,
-      mtatgt: 1,
-      llct: 1,
-      qlxd: 0,
-      cntt: 0,
-    },
-  },
-  {
-    id: '8',
-    moduleId: 'BS0.101.3',
-    moduleName: 'Đại số tuyến tính',
-    method: 'Tự luận',
-    startAt: new Date(),
-    shift: 2,
-    roomsCount: 7,
-    candidatesCount: 55,
-    invigilatorsCount: {
-      khcb: 7,
-      ck: 1,
-      ct: 3,
-      ddt: 1,
-      ktxd: 1,
-      vtkt: 1,
-      mtatgt: 1,
-      llct: 1,
-      qlxd: 0,
-      cntt: 0,
-    },
-  },
-  {
-    id: '9',
-    moduleId: 'BS0.001.2',
-    moduleName: 'Giải tích 1',
-    method: 'Trắc nghiệm',
-    startAt: new Date(),
-    shift: 2,
-    roomsCount: 7,
-    candidatesCount: 100,
-    invigilatorsCount: {
-      khcb: 7,
-      ck: 1,
-      ct: 3,
-      ddt: 1,
-      ktxd: 1,
-      vtkt: 1,
-      mtatgt: 1,
-      llct: 1,
-      qlxd: 0,
-      cntt: 0,
-    },
-  },
-  {
-    id: '10',
-    moduleId: 'BS0.001.2',
-    moduleName: 'Giải tích 1',
-    method: 'Trắc nghiệm',
-    startAt: new Date(),
-    shift: 2,
-    roomsCount: 7,
-    candidatesCount: 100,
-    invigilatorsCount: {
-      khcb: 7,
-      ck: 1,
-      ct: 3,
-      ddt: 1,
-      ktxd: 1,
-      vtkt: 1,
-      mtatgt: 1,
-      llct: 1,
-      qlxd: 0,
-      cntt: 0,
-    },
-  },
-  {
-    id: '13',
-    moduleId: 'BS0.001.2',
-    moduleName: 'Giải tích 1',
-    method: 'Trắc nghiệm',
-    startAt: new Date(),
-    shift: 2,
-    roomsCount: 7,
-    candidatesCount: 100,
-    invigilatorsCount: {
-      khcb: 7,
-      ck: 1,
-      ct: 3,
-      ddt: 1,
-      ktxd: 1,
-      vtkt: 1,
-      mtatgt: 1,
-      llct: 1,
-      qlxd: 0,
-      cntt: 0,
-    },
-  },
-  {
-    id: '14',
-    moduleId: 'BS0.001.2',
-    moduleName: 'Giải tích 1',
-    method: 'Trắc nghiệm',
-    startAt: new Date(),
-    shift: 2,
-    roomsCount: 7,
-    candidatesCount: 100,
-    invigilatorsCount: {
-      khcb: 7,
-      ck: 1,
-      ct: 3,
-      ddt: 1,
-      ktxd: 1,
-      vtkt: 1,
-      mtatgt: 1,
-      llct: 1,
-      qlxd: 0,
-      cntt: 0,
-    },
-  },
-  {
-    id: '15',
-    moduleId: 'BS0.101.3',
-    moduleName: 'Đại số tuyến tính',
-    method: 'Tự luận',
-    startAt: new Date(),
-    shift: 2,
-    roomsCount: 7,
-    candidatesCount: 55,
-    invigilatorsCount: {
-      khcb: 7,
-      ck: 1,
-      ct: 3,
-      ddt: 1,
-      ktxd: 1,
-      vtkt: 1,
-      mtatgt: 1,
-      llct: 1,
-      qlxd: 0,
-      cntt: 0,
-    },
-  },
-  {
-    id: '16',
-    moduleId: 'BS0.101.3',
-    moduleName: 'Đại số tuyến tính',
-    method: 'Tự luận',
-    startAt: new Date(),
-    shift: 2,
-    roomsCount: 7,
-    candidatesCount: 55,
-    invigilatorsCount: {
-      khcb: 7,
-      ck: 1,
-      ct: 3,
-      ddt: 1,
-      ktxd: 1,
-      vtkt: 1,
-      mtatgt: 1,
-      llct: 1,
-      qlxd: 0,
-      cntt: 0,
-    },
-  },
-  {
-    id: '17',
-    moduleId: 'BS0.101.3',
-    moduleName: 'Đại số tuyến tính',
-    method: 'Tự luận',
-    startAt: new Date(),
-    shift: 2,
-    roomsCount: 7,
-    candidatesCount: 55,
-    invigilatorsCount: {
-      khcb: 7,
-      ck: 1,
-      ct: 3,
-      ddt: 1,
-      ktxd: 1,
-      vtkt: 1,
-      mtatgt: 1,
-      llct: 1,
-      qlxd: 0,
-      cntt: 0,
-    },
-  },
-  {
-    id: '18',
-    moduleId: 'BS0.101.3',
-    moduleName: 'Đại số tuyến tính',
-    method: 'Tự luận',
-    startAt: new Date(),
-    shift: 2,
-    roomsCount: 7,
-    candidatesCount: 55,
-    invigilatorsCount: {
-      khcb: 7,
-      ck: 1,
-      ct: 3,
-      ddt: 1,
-      ktxd: 1,
-      vtkt: 1,
-      mtatgt: 1,
-      llct: 1,
-      qlxd: 0,
-      cntt: 0,
-    },
-  },
-  {
-    id: '11',
-    moduleId: 'BS0.001.2',
-    moduleName: 'Giải tích 1',
-    method: 'Trắc nghiệm',
-    startAt: new Date(),
-    shift: 2,
-    roomsCount: 7,
-    candidatesCount: 100,
-    invigilatorsCount: {
-      khcb: 7,
-      ck: 1,
-      ct: 3,
-      ddt: 1,
-      ktxd: 1,
-      vtkt: 1,
-      mtatgt: 1,
-      llct: 1,
-      qlxd: 0,
-      cntt: 0,
-    },
-  },
-  {
-    id: '12',
-    moduleId: 'BS0.001.2',
-    moduleName: 'Giải tích 1',
-    method: 'Trắc nghiệm',
-    startAt: new Date(),
-    shift: 2,
-    roomsCount: 7,
-    candidatesCount: 100,
-    invigilatorsCount: {
-      khcb: 7,
-      ck: 1,
-      ct: 3,
-      ddt: 1,
-      ktxd: 1,
-      vtkt: 1,
-      mtatgt: 1,
-      llct: 1,
-      qlxd: 0,
-      cntt: 0,
-    },
-  },
-  {
-    id: '13',
-    moduleId: 'BS0.001.2',
-    moduleName: 'Giải tích 1',
-    method: 'Trắc nghiệm',
-    startAt: new Date(),
-    shift: 2,
-    roomsCount: 7,
-    candidatesCount: 100,
-    invigilatorsCount: {
-      khcb: 7,
-      ck: 1,
-      ct: 3,
-      ddt: 1,
-      ktxd: 1,
-      vtkt: 1,
-      mtatgt: 1,
-      llct: 1,
-      qlxd: 0,
-      cntt: 0,
-    },
-  },
-  {
-    id: '14',
-    moduleId: 'BS0.001.2',
-    moduleName: 'Giải tích 1',
-    method: 'Trắc nghiệm',
-    startAt: new Date(),
-    shift: 2,
-    roomsCount: 7,
-    candidatesCount: 100,
-    invigilatorsCount: {
-      khcb: 7,
-      ck: 1,
-      ct: 3,
-      ddt: 1,
-      ktxd: 1,
-      vtkt: 1,
-      mtatgt: 1,
-      llct: 1,
-      qlxd: 0,
-      cntt: 0,
-    },
-  },
-  {
-    id: '15',
-    moduleId: 'BS0.101.3',
-    moduleName: 'Đại số tuyến tính',
-    method: 'Tự luận',
-    startAt: new Date(),
-    shift: 2,
-    roomsCount: 7,
-    candidatesCount: 55,
-    invigilatorsCount: {
-      khcb: 7,
-      ck: 1,
-      ct: 3,
-      ddt: 1,
-      ktxd: 1,
-      vtkt: 1,
-      mtatgt: 1,
-      llct: 1,
-      qlxd: 0,
-      cntt: 0,
-    },
-  },
-  {
-    id: '16',
-    moduleId: 'BS0.101.3',
-    moduleName: 'Đại số tuyến tính',
-    method: 'Tự luận',
-    startAt: new Date(),
-    shift: 2,
-    roomsCount: 7,
-    candidatesCount: 55,
-    invigilatorsCount: {
-      khcb: 7,
-      ck: 1,
-      ct: 3,
-      ddt: 1,
-      ktxd: 1,
-      vtkt: 1,
-      mtatgt: 1,
-      llct: 1,
-      qlxd: 0,
-      cntt: 0,
-    },
-  },
-  {
-    id: '17',
-    moduleId: 'BS0.101.3',
-    moduleName: 'Đại số tuyến tính',
-    method: 'Tự luận',
-    startAt: new Date(),
-    shift: 2,
-    roomsCount: 7,
-    candidatesCount: 55,
-    invigilatorsCount: {
-      khcb: 7,
-      ck: 1,
-      ct: 3,
-      ddt: 1,
-      ktxd: 1,
-      vtkt: 1,
-      mtatgt: 1,
-      llct: 1,
-      qlxd: 0,
-      cntt: 0,
-    },
-  },
-  {
-    id: '18',
-    moduleId: 'BS0.101.3',
-    moduleName: 'Đại số tuyến tính',
-    method: 'Tự luận',
-    startAt: new Date(),
-    shift: 2,
-    roomsCount: 7,
-    candidatesCount: 55,
-    invigilatorsCount: {
-      khcb: 7,
-      ck: 1,
-      ct: 3,
-      ddt: 1,
-      ktxd: 1,
-      vtkt: 1,
-      mtatgt: 1,
-      llct: 1,
-      qlxd: 0,
-      cntt: 0,
-    },
-  },
-  {
-    id: '19',
-    moduleId: 'BS0.001.2',
-    moduleName: 'Giải tích 1',
-    method: 'Trắc nghiệm',
-    startAt: new Date(),
-    shift: 2,
-    roomsCount: 7,
-    candidatesCount: 100,
-    invigilatorsCount: {
-      khcb: 7,
-      ck: 1,
-      ct: 3,
-      ddt: 1,
-      ktxd: 1,
-      vtkt: 1,
-      mtatgt: 1,
-      llct: 1,
-      qlxd: 0,
-      cntt: 0,
-    },
-  },
-  {
-    id: '110',
-    moduleId: 'BS0.001.2',
-    moduleName: 'Giải tích 1',
-    method: 'Trắc nghiệm',
-    startAt: new Date(),
-    shift: 2,
-    roomsCount: 7,
-    candidatesCount: 100,
-    invigilatorsCount: {
-      khcb: 7,
-      ck: 1,
-      ct: 3,
-      ddt: 1,
-      ktxd: 1,
-      vtkt: 1,
-      mtatgt: 1,
-      llct: 1,
-      qlxd: 0,
-      cntt: 0,
-    },
-  },
-  {
-    id: '113',
-    moduleId: 'BS0.001.2',
-    moduleName: 'Giải tích 1',
-    method: 'Trắc nghiệm',
-    startAt: new Date(),
-    shift: 2,
-    roomsCount: 7,
-    candidatesCount: 100,
-    invigilatorsCount: {
-      khcb: 7,
-      ck: 1,
-      ct: 3,
-      ddt: 1,
-      ktxd: 1,
-      vtkt: 1,
-      mtatgt: 1,
-      llct: 1,
-      qlxd: 0,
-      cntt: 0,
-    },
-  },
-  {
-    id: '114',
-    moduleId: 'BS0.001.2',
-    moduleName: 'Giải tích 1',
-    method: 'Trắc nghiệm',
-    startAt: new Date(),
-    shift: 2,
-    roomsCount: 7,
-    candidatesCount: 100,
-    invigilatorsCount: {
-      khcb: 7,
-      ck: 1,
-      ct: 3,
-      ddt: 1,
-      ktxd: 1,
-      vtkt: 1,
-      mtatgt: 1,
-      llct: 1,
-      qlxd: 0,
-      cntt: 0,
-    },
-  },
-  {
-    id: '115',
-    moduleId: 'BS0.101.3',
-    moduleName: 'Đại số tuyến tính',
-    method: 'Tự luận',
-    startAt: new Date(),
-    shift: 2,
-    roomsCount: 7,
-    candidatesCount: 55,
-    invigilatorsCount: {
-      khcb: 7,
-      ck: 1,
-      ct: 3,
-      ddt: 1,
-      ktxd: 1,
-      vtkt: 1,
-      mtatgt: 1,
-      llct: 1,
-      qlxd: 0,
-      cntt: 0,
-    },
-  },
-  {
-    id: '116',
-    moduleId: 'BS0.101.3',
-    moduleName: 'Đại số tuyến tính',
-    method: 'Tự luận',
-    startAt: new Date(),
-    shift: 2,
-    roomsCount: 7,
-    candidatesCount: 55,
-    invigilatorsCount: {
-      khcb: 7,
-      ck: 1,
-      ct: 3,
-      ddt: 1,
-      ktxd: 1,
-      vtkt: 1,
-      mtatgt: 1,
-      llct: 1,
-      qlxd: 0,
-      cntt: 0,
-    },
-  },
-  {
-    id: '117',
-    moduleId: 'BS0.101.3',
-    moduleName: 'Đại số tuyến tính',
-    method: 'Tự luận',
-    startAt: new Date(),
-    shift: 2,
-    roomsCount: 7,
-    candidatesCount: 55,
-    invigilatorsCount: {
-      khcb: 7,
-      ck: 1,
-      ct: 3,
-      ddt: 1,
-      ktxd: 1,
-      vtkt: 1,
-      mtatgt: 1,
-      llct: 1,
-      qlxd: 0,
-      cntt: 0,
-    },
-  },
-  {
-    id: '118',
-    moduleId: 'BS0.101.3',
-    moduleName: 'Đại số tuyến tính',
-    method: 'Tự luận',
-    startAt: new Date(),
-    shift: 2,
-    roomsCount: 7,
-    candidatesCount: 55,
-    invigilatorsCount: {
-      khcb: 7,
-      ck: 1,
-      ct: 3,
-      ddt: 1,
-      ktxd: 1,
-      vtkt: 1,
-      mtatgt: 1,
-      llct: 1,
-      qlxd: 0,
-      cntt: 0,
-    },
-  },
-];

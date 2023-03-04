@@ -1,11 +1,9 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ErrorResult, Status } from '@esm/cdk';
+import { ErrorResult, EsmHttpErrorResponse, Status } from '@esm/cdk';
 import { EditFacultyRequest } from '@esm/data';
 import { FacultyService } from '@esm/services';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { switchMap, tap } from 'rxjs';
-import { EsmHttpErrorResponse } from 'src/cdk/models/http-error-response';
 
 type EditFacultyDialogState = {
   status: Status;

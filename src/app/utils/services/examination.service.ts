@@ -4,6 +4,7 @@ import { Result } from '@esm/cdk';
 import { AppEnv, APP_ENV } from '@esm/core';
 import {
   CreateExaminationRequest,
+  ExaminationShiftGroupSimple,
   ExaminationShiftSimple,
   ExaminationSummary,
   TemporaryExamination,
@@ -68,6 +69,34 @@ export class ExaminationService {
     return this.http.patch<Result<boolean>>(
       this.url + `${id}/exams-number`,
       params
+    );
+  }
+
+  // [GET] /examination/{examinationId}/group
+  getAllGroups(id: string): Observable<Result<ExaminationShiftGroupSimple[]>> {
+    return this.http.get<Result<ExaminationShiftGroupSimple[]>>(
+      this.url + id + '/group'
+    );
+  }
+
+  // [POST] /examination/{examinationId}/group
+  calculate(id: string): Observable<Result<ExaminationShiftGroupSimple[]>> {
+    return this.http.post<Result<ExaminationShiftGroupSimple[]>>(
+      this.url + id + '/group',
+      {}
+    );
+  }
+
+  // [POST] /examination/{examinationId}/group/{groupId}/{facultyId}
+  assignInvigilatorNumerateOfShiftToFaculty(
+    examinationId: string,
+    groupId: string,
+    facultyId: string,
+    numberOfInvigilator: number
+  ): Observable<Result<ExaminationShiftGroupSimple>> {
+    return this.http.post<Result<ExaminationShiftGroupSimple>>(
+      `${this.url}${examinationId}/group/${groupId}/${facultyId}`,
+      numberOfInvigilator
     );
   }
 
