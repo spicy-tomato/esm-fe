@@ -57,9 +57,12 @@ export class ExaminationService {
     return this.http.post<Result<boolean>>(this.url + id, formData);
   }
 
-  // [PATCH] /examination/{examinationId}/activate
-  updateStatus(id: string, status: ExaminationStatus): Observable<Result<boolean>> {
-    return this.http.patch<Result<boolean>>(this.url + `${id}/activate`, status);
+  // [PATCH] /examination/{examinationId}/status
+  changeStatus(
+    id: string,
+    status: ExaminationStatus
+  ): Observable<Result<boolean>> {
+    return this.http.patch<Result<boolean>>(this.url + `${id}/status`, status);
   }
 
   // [PATCH] /examination/{examinationId}/exams-number

@@ -97,6 +97,10 @@ export class InvigilatorAssignFacultyComponent implements OnInit {
     this.store.calculate();
   }
 
+  finishAssign(): void {
+    this.store.finishAssign();
+  }
+
   onDoubleClickCell(evt: MouseEvent, rowId: number, facultyId: string): void {
     this.focusedControl = this.facultyControl(rowId, facultyId);
     this.inputValue = this.inputOldValue = this.focusedControl.value.actual;

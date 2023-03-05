@@ -3,4 +3,5 @@ export enum ExaminationStatus {
   Idle = 1,
   Setup = 2,
   AssignFaculty = 3,
+  AssignInvigilator = 4,
 }
