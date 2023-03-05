@@ -9,7 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { StringifyHelper } from '@esm/cdk';
 import { UserSummary } from '@esm/data';
 import { EditInvigilatorDialogComponent } from '@esm/shared/dialogs';
-import { TuiDialogService } from '@taiga-ui/core';
+import { tuiButtonOptionsProvider, TuiDialogService } from '@taiga-ui/core';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { filter, tap } from 'rxjs';
 import { DataInvigilatorStore } from './invigilator.store';
@@ -18,7 +18,7 @@ import { DataInvigilatorStore } from './invigilator.store';
   templateUrl: './invigilator.component.html',
   styleUrls: ['./invigilator.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [DataInvigilatorStore],
+  providers: [DataInvigilatorStore, tuiButtonOptionsProvider({ size: 'm' })],
 })
 export class DataInvigilatorComponent implements OnInit {
   // PUBLIC PROPERTIES

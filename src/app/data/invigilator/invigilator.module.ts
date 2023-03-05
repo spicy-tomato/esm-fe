@@ -1,8 +1,10 @@
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { EditInvigilatorDialogModule } from '@esm/shared/dialogs';
+import { VarModule } from '@esm/shared/directives';
 import { LetModule } from '@ngrx/component';
 import { TuiTableModule } from '@taiga-ui/addon-table';
 import { TuiFilterPipeModule } from '@taiga-ui/cdk';
@@ -12,6 +14,7 @@ import {
   TuiHintModule,
   TuiHostedDropdownModule,
   TuiLoaderModule,
+  TuiScrollbarModule,
 } from '@taiga-ui/core';
 import { TuiSelectModule } from '@taiga-ui/kit';
 import { DataInvigilatorComponent } from './invigilator.component';
@@ -25,6 +28,7 @@ export const TAIGA_UI = [
   TuiHintModule,
   TuiHostedDropdownModule,
   TuiLoaderModule,
+  TuiScrollbarModule,
   TuiSelectModule,
   TuiTableModule,
 ];
@@ -32,10 +36,12 @@ export const TAIGA_UI = [
 @NgModule({
   imports: [
     CommonModule,
-    DataInvigilatorRoutingModule,
-    EditInvigilatorDialogModule,
     RouterModule,
     FormsModule,
+    DataInvigilatorRoutingModule,
+    EditInvigilatorDialogModule,
+    ScrollingModule,
+    VarModule,
     ...NGRX,
     ...TAIGA_UI,
   ],

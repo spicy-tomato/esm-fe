@@ -32,12 +32,10 @@ export class DataInvigilatorStore extends ComponentStore<DataInvigilatorState> {
   readonly facultiesWithDepartment$ = this.appStore
     .select(AppSelector.facultiesWithDepartment)
     .pipe(takeUntil(this.destroy$));
-  readonly status$ = this.appStore
-    .select(AppSelector.departmentsStatus)
-    .pipe(takeUntil(this.destroy$));
   readonly selectedFacultyId$ = this.select((s) => s.selectedFacultyId);
   readonly cachedFacultyIds$ = this.select((s) => s.cachedFacultyIds);
   readonly invigilators$ = this.select((s) => s.invigilators);
+  readonly status$ = this.select((s) => s.status);
   readonly selectedFacultyName$ = combineLatest([
     this.faculties$,
     this.selectedFacultyId$,
