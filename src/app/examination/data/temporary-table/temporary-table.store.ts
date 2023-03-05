@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Status } from '@esm/cdk';
 import { ObservableHelper } from '@esm/core';
-import { TemporaryExamination } from '@esm/data';
+import { ExaminationStatus, TemporaryExamination } from '@esm/data';
 import { ExaminationService } from '@esm/services';
 import { AppPageAction, AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
@@ -37,17 +37,19 @@ export class ExaminationDataTemporaryTableStore extends ComponentStore<Examinati
       tap(() => this.patchState({ activateStatus: 'loading' })),
       withLatestFrom(this.examinationId$),
       switchMap(({ 1: id }) =>
-        this.examinationService.activate(id).pipe(
-          tapResponse(
-            () => {
-              this.patchState({ activateStatus: 'success' });
-              this.appStore.dispatch(
-                AppPageAction.getExaminationSummary({ id })
-              );
-            },
-            () => this.patchState({ activateStatus: 'error' })
+        this.examinationService
+          .updateStatus(id, ExaminationStatus.AssignFaculty)
+          .pipe(
+            tapResponse(
+              () => {
+                this.patchState({ activateStatus: 'success' });
+                this.appStore.dispatch(
+                  AppPageAction.getExaminationSummary({ id })
+                );
+              },
+              () => this.patchState({ activateStatus: 'error' })
+            )
           )
-        )
       )
     )
   );

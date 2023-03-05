@@ -6,7 +6,14 @@ import { ExaminationService } from '@esm/services';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
-import { switchMap, takeUntil, tap, withLatestFrom } from 'rxjs';
+import {
+  combineLatest,
+  filter,
+  switchMap,
+  takeUntil,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
 
 type ExaminationExamState = {
   data: ExaminationShiftSimple[];
@@ -25,12 +32,18 @@ export class ExaminationExamStore extends ComponentStore<ExaminationExamState> {
   private readonly examinationId$ = this.appStore
     .select(AppSelector.examinationId)
     .pipe(ObservableHelper.filterNullish(), takeUntil(this.destroy$));
+  private readonly examination$ = this.appStore
+    .select(AppSelector.examination)
+    .pipe(ObservableHelper.filterNullish(), takeUntil(this.destroy$));
 
   // EFFECTS
   readonly getData = this.effect<void>((params$) =>
-    params$.pipe(
-      tap(() => this.patchState({ dataStatus: 'loading' })),
+    combineLatest([
+      params$.pipe(tap(() => this.patchState({ dataStatus: 'loading' }))),
+      this.examination$,
+    ]).pipe(
       withLatestFrom(this.examinationId$),
+      filter(([{ 1: examination }, id]) => examination.id === id),
       switchMap(({ 1: id }) =>
         this.examinationService.getData(id, true).pipe(
           tapResponse(
@@ -39,7 +52,7 @@ export class ExaminationExamStore extends ComponentStore<ExaminationExamState> {
                 data,
                 dataStatus: 'success',
               }),
-            () => this.patchState({ dataStatus: 'error' })
+            () => this.patchState({ data: [], dataStatus: 'error' })
           )
         )
       )

@@ -6,6 +6,7 @@ import {
   CreateExaminationRequest,
   ExaminationShiftGroupSimple,
   ExaminationShiftSimple,
+  ExaminationStatus,
   ExaminationSummary,
   TemporaryExamination,
 } from '@esm/data';
@@ -57,8 +58,8 @@ export class ExaminationService {
   }
 
   // [PATCH] /examination/{examinationId}/activate
-  activate(id: string): Observable<Result<boolean>> {
-    return this.http.patch<Result<boolean>>(this.url + `${id}/activate`, {});
+  updateStatus(id: string, status: ExaminationStatus): Observable<Result<boolean>> {
+    return this.http.patch<Result<boolean>>(this.url + `${id}/activate`, status);
   }
 
   // [PATCH] /examination/{examinationId}/exams-number

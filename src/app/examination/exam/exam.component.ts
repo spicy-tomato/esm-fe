@@ -11,20 +11,26 @@ import {
   NonNullableFormBuilder,
   Validators,
 } from '@angular/forms';
+import { NavigationEnd, Router } from '@angular/router';
 import { ExaminationShiftSimple } from '@esm/data';
+import { TuiDestroyService } from '@taiga-ui/cdk';
 import {
   TuiAlertService,
   tuiButtonOptionsProvider,
   TuiNotification,
 } from '@taiga-ui/core';
-import { combineLatest, filter, map, switchMap, tap } from 'rxjs';
+import { combineLatest, filter, map, switchMap, takeUntil, tap } from 'rxjs';
 import { ExaminationExamStore } from './exam.store';
 
 @Component({
   templateUrl: './exam.component.html',
   styleUrls: ['./exam.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [ExaminationExamStore, tuiButtonOptionsProvider({ size: 'm' })],
+  providers: [
+    ExaminationExamStore,
+    TuiDestroyService,
+    tuiButtonOptionsProvider({ size: 'm' }),
+  ],
 })
 export class ExaminationExamComponent implements OnInit {
   // PUBLIC PROPERTIES
@@ -57,9 +63,11 @@ export class ExaminationExamComponent implements OnInit {
 
   // CONSTRUCTOR
   constructor(
+    private readonly router: Router,
     private readonly fb: NonNullableFormBuilder,
     @Inject(TuiAlertService) private readonly alertService: TuiAlertService,
-    private readonly store: ExaminationExamStore
+    private readonly store: ExaminationExamStore,
+    private readonly destroy$: TuiDestroyService
   ) {}
 
   // LIFECYCLE
@@ -67,13 +75,20 @@ export class ExaminationExamComponent implements OnInit {
     this.handleDataChanges();
     this.handleUpdateSuccess();
     this.store.getData();
+    this.router.events
+      .pipe(
+        filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+        tap(() => this.store.getData()),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 
   // PUBLIC METHODS
-  examsCountControl(index: number): FormControl{
-    return this.form.controls.data.controls.at(index) as FormControl
+  examsCountControl(index: number): FormControl {
+    return this.form.controls.data.controls.at(index) as FormControl;
   }
-  
+
   save(): void {
     this.store.save(this.form.controls.data.value);
   }
