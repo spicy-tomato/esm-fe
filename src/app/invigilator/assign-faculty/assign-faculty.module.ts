@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ArrayPipeModule, ExamMethodPipeModule } from '@esm/core';
+import { ConfirmDialogModule } from '@esm/shared/dialogs';
 import { VarModule } from '@esm/shared/directives';
 import { LetModule } from '@ngrx/component';
 import { TuiTableModule } from '@taiga-ui/addon-table';
@@ -35,6 +36,7 @@ export const TAIGA_UI = [
     ScrollingModule,
     ArrayPipeModule,
     ExamMethodPipeModule,
+    ConfirmDialogModule,
     VarModule,
     ...NGRX,
     ...TAIGA_UI,

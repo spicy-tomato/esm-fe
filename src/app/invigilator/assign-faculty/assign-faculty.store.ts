@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Status } from '@esm/cdk';
 import { ObservableHelper } from '@esm/core';
-import { ExaminationShiftGroupSimple } from '@esm/data';
+import { ExaminationShiftGroupSimple, ExaminationStatus } from '@esm/data';
 import { ExaminationService } from '@esm/services';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
@@ -18,7 +18,12 @@ type InvigilatorAssignFacultyState = {
 @Injectable()
 export class InvigilatorAssignFacultyStore extends ComponentStore<InvigilatorAssignFacultyState> {
   // PUBLIC PROPERTIES
-  readonly faculties$ = this.appStore.select(AppSelector.faculties);
+  readonly faculties$ = this.appStore
+    .select(AppSelector.faculties)
+    .pipe(takeUntil(this.destroy$));
+  readonly examination$ = this.appStore
+    .select(AppSelector.examination)
+    .pipe(takeUntil(this.destroy$));
   readonly data$ = this.select((s) => s.data);
   readonly dataStatus$ = this.select((s) => s.dataStatus);
   readonly calculateStatus$ = this.select((s) => s.calculateStatus);
@@ -67,6 +72,26 @@ export class InvigilatorAssignFacultyStore extends ComponentStore<InvigilatorAss
     )
   );
 
+  readonly finishAssign = this.effect<void>((params$) =>
+    params$.pipe(
+      tap(() => this.patchState({ calculateStatus: 'loading' })),
+      withLatestFrom(this.examinationId$),
+      switchMap(({ 1: id }) => {
+        return this.examinationService
+          .changeStatus(id, ExaminationStatus.AssignInvigilator)
+          .pipe(
+            tapResponse(
+              () => {
+                this.patchState({ calculateStatus: 'success' });
+                this.getData();
+              },
+              () => this.patchState({ calculateStatus: 'error' })
+            )
+          );
+      })
+    )
+  );
+
   readonly save = this.effect<{
     rowId: number;
     facultyId: string;
@@ -87,9 +112,9 @@ export class InvigilatorAssignFacultyStore extends ComponentStore<InvigilatorAss
           )
           .pipe(
             tapResponse(
-              ({data}) => {
+              ({ data }) => {
                 this.patchState((s) => ({
-                  data: s.data.map((d, i) => i !== rowId ? d : data),
+                  data: s.data.map((d, i) => (i !== rowId ? d : data)),
                   updateRows: s.updateRows.filter((r) => r !== rowId),
                 }));
               },

@@ -10,9 +10,10 @@
         class="w-9 h-9 ml-2"
       ></tui-loader>
     </div>
-    <div class="buttons">
+    <div *ngrxLet="examination$ as examination" class="buttons">
       <button
         tuiButton
+        *ngIf="examination?.status === ExaminationStatus.AssignFaculty"
         (click)="calculate()"
         [showLoader]="showLoader"
         icon="tuiIconAirplayLarge"
@@ -22,9 +23,9 @@
 
       <button
         tuiButton
-        (click)="finishAssign()"
+        *ngIf="examination?.status === ExaminationStatus.AssignFaculty"
         [showLoader]="showLoader"
-        icon="tuiIconAirplayLarge"
+        icon="tuiIconCheckCircleLarge"
       >
         Chốt số lượng
       </button>
@@ -139,18 +140,24 @@
               <td *tuiCell="'invigilatorsCount'" tuiTd class="!text-center">
                 {{ item.invigilatorsCount }}
               </td>
-              <ng-container *ngFor="let faculty of faculties">
-                <td
-                  *tuiCell="faculty.id"
-                  tuiTd
-                  (dblclick)="onDoubleClickCell($event, i, faculty.id)"
-                  [class.!bg-tui-success-bg-hover]="
-                    item[faculty.id].actual !== item[faculty.id].calculated
-                  "
-                  class="!text-center"
-                >
-                  {{ item[faculty.id].actual }}
-                </td>
+              <ng-container *ngrxLet="examination$ as examination">
+                <ng-container *ngFor="let faculty of faculties">
+                  <td
+                    *tuiCell="faculty.id"
+                    tuiTd
+                    (dblclick)="
+                      examination?.status === ExaminationStatus.AssignFaculty
+                        ? onDoubleClickCell($event, i, faculty.id)
+                        : null
+                    "
+                    [class.!bg-tui-success-bg-hover]="
+                      item[faculty.id].actual !== item[faculty.id].calculated
+                    "
+                    class="!text-center"
+                  >
+                    {{ item[faculty.id].actual }}
+                  </td>
+                </ng-container>
               </ng-container>
               <td *tuiCell="'total'" tuiTd class="!text-center">
                 {{ item.total.actual }}

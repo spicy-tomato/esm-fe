@@ -2,6 +2,8 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import {
   ChangeDetectionStrategy,
   Component,
+  Inject,
+  Injector,
   OnInit,
   ViewChild,
 } from '@angular/core';
@@ -11,9 +13,15 @@ import {
   FormGroup,
   NonNullableFormBuilder,
 } from '@angular/forms';
-import { ExaminationShiftGroupSimple, FacultySummary } from '@esm/data';
-import { tuiButtonOptionsProvider } from '@taiga-ui/core';
+import {
+  ExaminationShiftGroupSimple,
+  ExaminationStatus,
+  FacultySummary,
+} from '@esm/data';
+import { ConfirmDialogComponent } from '@esm/shared/dialogs';
+import { tuiButtonOptionsProvider, TuiDialogService } from '@taiga-ui/core';
 import { TuiInputNumberComponent } from '@taiga-ui/kit';
+import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { combineLatest, map, tap } from 'rxjs';
 import { InvigilatorAssignFacultyStore } from './assign-faculty.store';
 
@@ -50,6 +58,7 @@ export class InvigilatorAssignFacultyComponent implements OnInit {
   readonly data$ = this.store.data$;
   readonly faculties$ = this.store.faculties$;
   readonly updateRows$ = this.store.updateRows$;
+  readonly examination$ = this.store.examination$;
   readonly showLoader$ = combineLatest([
     this.store.dataStatus$,
     this.store.calculateStatus$,
@@ -69,10 +78,13 @@ export class InvigilatorAssignFacultyComponent implements OnInit {
       'difference',
     ])
   );
+  readonly ExaminationStatus = ExaminationStatus;
 
   // CONSTRUCTOR
   constructor(
     private readonly fb: NonNullableFormBuilder,
+    @Inject(TuiDialogService) private readonly dialogService: TuiDialogService,
+    @Inject(Injector) private readonly injector: Injector,
     private readonly store: InvigilatorAssignFacultyStore
   ) {}
 
@@ -94,7 +106,19 @@ export class InvigilatorAssignFacultyComponent implements OnInit {
   }
 
   calculate(): void {
-    this.store.calculate();
+    this.dialogService
+      .open<boolean>(
+        new PolymorpheusComponent(ConfirmDialogComponent, this.injector),
+        {
+          data: {
+            message:
+              'Thao tác này sẽ làm mới toàn bộ dữ liệu phân giảng trong kỳ thi. Vẫn tiếp tục?',
+            onConfirm: this.store.calculate,
+            confirmStatus: this.store.calculateStatus$,
+          },
+        }
+      )
+      .subscribe();
   }
 
   finishAssign(): void {
