@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { PermissionDirectiveModule } from '@esm/shared/directives';
+import { RoleDirectiveModule } from '@esm/shared/directives';
 import { LetModule } from '@ngrx/component';
 import {
   TuiLinkModule,
@@ -26,7 +26,7 @@ export const TAIGA_UI = [
   imports: [
     CommonModule,
     RouterModule,
-    PermissionDirectiveModule,
+    RoleDirectiveModule,
     ...NGRX,
     ...TAIGA_UI,
   ],

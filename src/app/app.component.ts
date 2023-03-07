@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ObservableHelper } from '@esm/core';
+import { ObservableHelper } from '@esm/cdk';
 import { AppPageAction, AppSelector } from '@esm/store';
 import { Store } from '@ngrx/store';
 import { TuiDestroyService } from '@taiga-ui/cdk';

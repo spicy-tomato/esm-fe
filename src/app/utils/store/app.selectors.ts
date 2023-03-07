@@ -1,4 +1,4 @@
-import { ObservableHelper } from '@esm/core';
+import { ObservableHelper } from '@esm/cdk';
 import { DepartmentSummary, FacultySummary } from '@esm/data';
 import { createFeatureSelector, createSelector, select } from '@ngrx/store';
 import { map, Observable, pipe, UnaryFunction } from 'rxjs';
@@ -18,7 +18,10 @@ export class AppSelector {
     this.selector,
     (state) => state.userStatus
   );
-  static readonly permissions = createSelector(this.selector, () => [0]);
+  static readonly role = createSelector(
+    this.selector,
+    (state) => state.user?.role
+  );
 
   static readonly userTitle = (
     useTitleCase = true

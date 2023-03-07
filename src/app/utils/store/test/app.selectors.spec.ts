@@ -16,7 +16,7 @@ describe('AppSelector', () => {
     invigilatorId: '',
     id: 'id',
     isMale: true,
-    roles: [],
+    role: 'ExaminationDepartmentHead',
   };
   const initialState: AppState = {
     userStatus: 'success',

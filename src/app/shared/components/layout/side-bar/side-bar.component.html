@@ -3,7 +3,7 @@
   class="w-full h-full border-r border-tui-base-03"
 >
   <ng-container *ngFor="let item of items">
-    <ng-container *esmPermission="item.permission">
+    <ng-container *esmRole="item.roles">
       <!-- Accordion item -->
       <tui-accordion-item
         *ngIf="item.subItems; else link"
@@ -28,23 +28,25 @@
               (click)="$event.stopPropagation()"
               class="my-2 pl-3 border-tui-base-03"
             >
-              <a
-                tuiLink
-                *ngFor="let subItem of item.subItems"
-                [routerLink]="(examinationId ?? '') + subItem.routerLink"
-                [routerLinkActiveOptions]="{ exact: true }"
-                tuiMode="onLight"
-                routerLinkActive="!text-tui-base-09"
-                iconAlign="left"
-                class="block !pt-2 leading-6 w-fit"
-              >
-                <span class="inline-block">
-                  <div class="flex w-6 h-6">
-                    <i [class]="subItem.icon" class="block mx-auto"></i>
-                  </div>
-                </span>
-                {{ subItem.name }}
-              </a>
+              <ng-container *ngFor="let subItem of item.subItems">
+                <a
+                  tuiLink
+                  *esmRole="subItem.roles"
+                  [routerLink]="(examinationId ?? '') + subItem.routerLink"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  tuiMode="onLight"
+                  routerLinkActive="!text-tui-base-09"
+                  iconAlign="left"
+                  class="block !pt-2 leading-6 w-fit"
+                >
+                  <span class="inline-block">
+                    <div class="flex w-6 h-6">
+                      <i [class]="subItem.icon" class="block mx-auto"></i>
+                    </div>
+                  </span>
+                  {{ subItem.name }}
+                </a>
+              </ng-container>
             </div>
           </div>
         </ng-template>

@@ -18,7 +18,7 @@ describe('appReducer', () => {
       invigilatorId: '',
       id: 'id',
       isMale: true,
-      roles: [],
+      role: 'ExaminationDepartmentHead',
     },
     userStatus: 'success',
     showLoader: null,

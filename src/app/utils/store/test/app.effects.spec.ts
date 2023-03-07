@@ -26,7 +26,7 @@ describe('AppEffects', () => {
     invigilatorId: '',
     id: 'id',
     isMale: true,
-    roles: [],
+    role: 'ExaminationDepartmentHead',
   };
   let actions$: Observable<Action>;
   let mockTokenService: jasmine.SpyObj<TokenService>;

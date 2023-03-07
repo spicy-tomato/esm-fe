@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from '@esm/guards';
+import { Role } from '@esm/data';
+import { AuthGuard, PermissionGuard } from '@esm/guards';
 import { LayoutComponent } from './shared/components/layout/layout.component';
 
 const routes: Routes = [
@@ -52,7 +53,8 @@ const routes: Routes = [
               {
                 path: '',
                 loadChildren: async () =>
-                  (await import('./examination/exam/exam.module')).ExaminationExamModule,
+                  (await import('./examination/exam/exam.module'))
+                    .ExaminationExamModule,
               },
               {
                 path: 'data',
@@ -82,6 +84,10 @@ const routes: Routes = [
               },
               {
                 path: 'assign-teacher',
+                canActivate: [PermissionGuard],
+                data: {
+                  roles: [Role.EXAMINATION_DEPARTMENT_HEAD],
+                },
                 loadChildren: async () =>
                   (
                     await import(

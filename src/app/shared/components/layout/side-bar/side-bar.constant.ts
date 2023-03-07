@@ -1,3 +1,5 @@
+import { Role } from '@esm/data';
+
 export type SidebarItem = {
   name: string;
   icon: string;
@@ -6,8 +8,9 @@ export type SidebarItem = {
     name: string;
     routerLink: string;
     icon: string;
+    roles?: string[];
   }[];
-  permission?: number;
+  roles?: string[];
   externalLink?: string;
   exactRouterLink?: boolean;
 };
@@ -18,23 +21,6 @@ export class SideBarConstant {
       name: 'Lịch thi',
       routerLink: '/exam/data',
       icon: 'far fa-calendar-alt',
-      // subItems: [
-      //   {
-      //     name: 'Lịch thi',
-      //     routerLink: '/exam/data',
-      //     icon: 'far fa-calendar-alt',
-      //   },
-        // {
-        //   name: 'Cán bộ coi thi',
-        //   routerLink: '/invigilator/data',
-        //   icon: 'far fa-users',
-        // },
-        // {
-        //   name: 'Thanh toán',
-        //   routerLink: '/paid/data',
-        //   icon: 'far fa-money-check',
-        // },
-      // ],
     },
     {
       name: 'Đề thi',
@@ -54,6 +40,7 @@ export class SideBarConstant {
           name: 'Phân công',
           routerLink: '/invigilator/assign-teacher',
           icon: 'far fa-chalkboard',
+          roles: [Role.EXAMINATION_DEPARTMENT_HEAD],
         },
         {
           name: 'Phòng thi',

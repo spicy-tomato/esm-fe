@@ -7,7 +7,8 @@ import {
   OnInit,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { fadeInOut, StringHelper } from '@esm/core';
+import { StringHelper } from '@esm/cdk';
+import { fadeInOut } from '@esm/core';
 import { ExaminationSummary } from '@esm/data';
 import { AppPageAction, AppSelector, AppState } from '@esm/store';
 import { Store } from '@ngrx/store';

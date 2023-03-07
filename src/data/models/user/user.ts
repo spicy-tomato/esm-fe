@@ -8,6 +8,6 @@ export type UserSummary = {
   email: string;
   createdAt: Date;
   department: DepartmentSummary | null;
-  roles: Role[];
+  role: typeof Role[keyof typeof Role];
   isMale: boolean;
 };

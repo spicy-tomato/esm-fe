@@ -3,38 +3,32 @@ import {
   Directive,
   Input,
   TemplateRef,
-  ViewContainerRef
+  ViewContainerRef,
 } from '@angular/core';
+import { ObservableHelper } from '@esm/cdk';
 import { AppSelector, AppState } from '@esm/store';
 import { Store } from '@ngrx/store';
 import { TuiDestroyService } from '@taiga-ui/cdk';
-import {
-  combineLatest,
-  filter,
-  Observable,
-  Subject,
-  takeUntil,
-  tap
-} from 'rxjs';
+import { combineLatest, Observable, Subject, takeUntil, tap } from 'rxjs';
 
 @Directive({
-  selector: '[esmPermission]',
+  selector: '[esmRole]',
   providers: [TuiDestroyService],
 })
-export class PermissionDirective {
+export class RoleDirective {
   // PRIVATE PROPERTIES
-  private _esmPermission?: number | null;
-  private permissions$: Observable<number[]>;
+  private _esmRole?: string[] | null;
+  private role: Observable<string | undefined>;
   private bind$ = new Subject<void>();
   private hadElse = false;
 
   // SETTER
-  @Input() set esmPermission(permissions: number | undefined | null) {
-    this._esmPermission = permissions;
+  @Input() set esmRole(acceptRoles: string[] | undefined | null) {
+    this._esmRole = acceptRoles;
     this.bind$.next();
   }
 
-  @Input() set esmPermissionElse(templateRef: TemplateRef<unknown>) {
+  @Input() set esmRoleElse(templateRef: TemplateRef<unknown>) {
     this.elseThenTemplateRef = templateRef;
     this.hadElse = true;
     this.bind$.next();
@@ -49,24 +43,29 @@ export class PermissionDirective {
     appStore: Store<AppState>,
     destroy$: TuiDestroyService
   ) {
-    this.permissions$ = appStore
-      .select(AppSelector.permissions)
-      .pipe(takeUntil(destroy$));
+    this.role = appStore.select(AppSelector.role).pipe(takeUntil(destroy$));
 
     this.triggerUpdateView();
   }
 
   // PRIVATE METHODS
   private triggerUpdateView(): void {
-    combineLatest([this.permissions$.pipe(filter((x) => !!x)), this.bind$])
-      .pipe(tap(([permissions]) => this.updateView(permissions)))
+    combineLatest([
+      this.role.pipe(ObservableHelper.filterNullish()),
+      this.bind$,
+    ])
+      .pipe(tap(([role]) => this.updateView(role)))
       .subscribe();
   }
 
-  private updateView(permissions?: number[]): void {
-    const accept = this._esmPermission;
+  private updateView(userRole: string): void {
+    const accept = this._esmRole;
     this.viewContainerRef.clear();
-    if (!accept || permissions?.includes(accept)) {
+
+    console.log(accept);
+    
+
+    if (!accept || accept.includes(userRole)) {
       this.viewContainerRef.createEmbeddedView(this.thenTemplateRef);
       this.cdr.detectChanges();
     } else if (this.hadElse) {

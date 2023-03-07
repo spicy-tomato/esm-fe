@@ -1,4 +1,4 @@
-export type Role = {
-  id: string;
-  name: string;
-};
+export const Role = {
+  EXAMINATION_DEPARTMENT_HEAD: 'ExaminationDepartmentHead',
+  TEACHER: 'Teacher',
+} as const;

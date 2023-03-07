@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ObservableHelper } from '@esm/core';
+import { ObservableHelper } from '@esm/cdk';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';

@@ -1,21 +1,11 @@
 import { Injectable } from '@angular/core';
-import { ObservableHelper } from '@esm/core';
 import { AppPageAction, AppSelector, AppState } from '@esm/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import {
-  catchError,
-  filter,
-  map,
-  mergeMap,
-  of,
-  tap,
-  withLatestFrom,
-} from 'rxjs';
+import { filter, map, mergeMap, tap, withLatestFrom } from 'rxjs';
 import { EchoService, NotificationService } from '../services';
 import { NotificationApiAction } from './notification.api.actions';
 import { NotificationPageAction } from './notification.page.actions';
-import { NotificationSelector } from './notification.selectors';
 import { NotificationState } from './notification.state';
 
 @Injectable()
