@@ -1,14 +1,18 @@
-import { StringHelper } from './string.helper';
+import { hot } from 'jasmine-marbles';
+import { from, Observable } from 'rxjs';
+import { ObservableHelper } from './observable.helper';
 
-describe('StringHelper', () => {
-  describe('md5', () => {
-    it('should encode', () => {
-      expect(StringHelper.md5('test')).toEqual(
-        '098f6bcd4621d373cade4e832627b4f6'
+describe('ObservableHelper', () => {
+  describe('filterNullish', () => {
+    it('should ignore falsy values', () => {
+      const obs$ = from([null, undefined, 0, 1]).pipe(
+        ObservableHelper.filterNullish()
       );
-      expect(StringHelper.md5('random string')).toEqual(
-        '706b16b2fb732ab6079a10fea61d078b'
-      );
+
+      Observable;
+
+      const expected = hot('(ab|)', { a: 0, b: 1 });
+      expect(obs$).toBeObservable(expected);
     });
   });
 });

@@ -62,9 +62,6 @@ export class RoleDirective {
     const accept = this._esmRole;
     this.viewContainerRef.clear();
 
-    console.log(accept);
-    
-
     if (!accept || accept.includes(userRole)) {
       this.viewContainerRef.createEmbeddedView(this.thenTemplateRef);
       this.cdr.detectChanges();

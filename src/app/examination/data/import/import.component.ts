@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  OnInit,
   Output,
 } from '@angular/core';
 import { TuiFileLike } from '@taiga-ui/kit';
@@ -15,7 +16,7 @@ import { ExaminationDataImportStore } from './import.store';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ExaminationDataImportStore],
 })
-export class ExaminationDataImportComponent {
+export class ExaminationDataImportComponent implements OnInit {
   // OUTPUT
   @Output() uploadSuccess = new EventEmitter<void>();
 
@@ -24,7 +25,10 @@ export class ExaminationDataImportComponent {
   readonly status$ = this.store.status$;
 
   // CONSTRUCTOR
-  constructor(private readonly store: ExaminationDataImportStore) {
+  constructor(private readonly store: ExaminationDataImportStore) {}
+
+  // LIFECYCLE
+  ngOnInit(): void {
     this.handleUploadSuccess();
   }
 

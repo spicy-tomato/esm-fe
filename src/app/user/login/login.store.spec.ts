@@ -7,10 +7,9 @@ import { UserService } from '@esm/services';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { cold } from 'jasmine-marbles';
 import { of } from 'rxjs';
-import { LoginComponent } from './login.component';
 import { LoginStore } from './login.store';
 
-describe('LoginComponentStore', () => {
+describe('LoginStore', () => {
   let store: LoginStore;
   let mockUserService: jasmine.SpyObj<UserService>;
   let mockTokenService: jasmine.SpyObj<TokenService>;
@@ -27,7 +26,6 @@ describe('LoginComponentStore', () => {
 
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      declarations: [LoginComponent],
       providers: [
         LoginStore,
         {

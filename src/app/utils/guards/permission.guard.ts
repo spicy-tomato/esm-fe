@@ -38,8 +38,6 @@ export class PermissionGuard
       ObservableHelper.filterNullish(),
       map(({ role }) => {
         const acceptRoles = route.data['roles'] as string[] | undefined;
-        console.log(acceptRoles);
-        
 
         if (!acceptRoles || acceptRoles.length === 0) {
           return true;

@@ -40,4 +40,16 @@ describe('ExaminationDataTemporaryTableComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('ngOnInit', () => {
+    it('should call initial methods', () => {
+      const handleSpy = spyOn<any>(component, 'handleDataChanges');
+      const storeSpy = spyOn(component['store'], 'getData');
+
+      component.ngOnInit();
+
+      expect(handleSpy).toHaveBeenCalled();
+      expect(storeSpy).toHaveBeenCalled();
+    });
+  });
 });

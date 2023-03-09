@@ -16,7 +16,6 @@ import { AppState } from './app.state';
 export class AppEffects {
   // PRIVATE PROPERTIES
   private examinationId$ = this.appStore.select(AppSelector.examinationId);
-  private user$ = this.appStore.pipe(AppSelector.notNullUser);
 
   // EFFECTS
   readonly getUserInfo$ = createEffect(() => {

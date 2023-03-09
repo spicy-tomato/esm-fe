@@ -1,9 +1,9 @@
 import { Result } from '@esm/cdk';
 
 export class ResultBuilder {
-  static success<T>(data: T): Result<T> {
+  static success<T = boolean>(data?: T): Result<T> {
     return {
-      data,
+      data: data ?? (true as T),
       success: true,
       errors: null,
     };
