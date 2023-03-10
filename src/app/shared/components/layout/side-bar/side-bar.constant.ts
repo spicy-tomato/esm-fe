@@ -21,11 +21,13 @@ export class SideBarConstant {
       name: 'Lịch thi',
       routerLink: '/exam/data',
       icon: 'far fa-calendar-alt',
+      roles: [Role.EXAMINATION_DEPARTMENT_HEAD],
     },
     {
       name: 'Đề thi',
       icon: 'far fa-briefcase',
       routerLink: '/exam',
+      roles: [Role.EXAMINATION_DEPARTMENT_HEAD],
     },
     {
       name: 'Quản lý CBCT',
@@ -35,17 +37,19 @@ export class SideBarConstant {
           name: 'Khối lượng',
           routerLink: '/invigilator/assign-faculty',
           icon: 'far fa-chalkboard',
+          roles: [Role.EXAMINATION_DEPARTMENT_HEAD],
         },
         {
           name: 'Phân công',
           routerLink: '/invigilator/assign-teacher',
           icon: 'far fa-chalkboard',
-          roles: [Role.EXAMINATION_DEPARTMENT_HEAD],
+          roles: [Role.TEACHER],
         },
         {
           name: 'Phòng thi',
           routerLink: '/invigilator/assign-room',
           icon: 'far fa-users-class',
+          roles: [Role.EXAMINATION_DEPARTMENT_HEAD],
         },
       ],
     },
@@ -53,6 +57,7 @@ export class SideBarConstant {
       name: 'Bàn giao bài thi',
       icon: 'far fa-pencil-paintbrush',
       routerLink: '/exam/handover',
+      roles: [Role.EXAMINATION_DEPARTMENT_HEAD],
     },
     {
       name: 'Thanh toán',

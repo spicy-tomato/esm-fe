@@ -13,11 +13,7 @@ import {
   FormGroup,
   NonNullableFormBuilder,
 } from '@angular/forms';
-import {
-  ExaminationShiftGroupSimple,
-  ExaminationStatus,
-  FacultySummary,
-} from '@esm/data';
+import { ShiftGroupSimple, ExaminationStatus, FacultySummary } from '@esm/data';
 import { ConfirmDialogComponent } from '@esm/shared/dialogs';
 import { tuiButtonOptionsProvider, TuiDialogService } from '@taiga-ui/core';
 import { TuiInputNumberComponent } from '@taiga-ui/kit';
@@ -173,7 +169,7 @@ export class InvigilatorAssignFacultyComponent implements OnInit {
 
   private buildForm(
     faculties: FacultySummary[],
-    data: ExaminationShiftGroupSimple[]
+    data: ShiftGroupSimple[]
   ): void {
     this.form = this.fb.group({
       data: this.fb.array(
@@ -188,10 +184,8 @@ export class InvigilatorAssignFacultyComponent implements OnInit {
     }) as any;
   }
 
-  private buildFormDataPart(
-    group: ExaminationShiftGroupSimple
-  ): Record<string, any[]> {
-    const columns: (keyof ExaminationShiftGroupSimple)[] = [
+  private buildFormDataPart(group: ShiftGroupSimple): Record<string, any[]> {
+    const columns: (keyof ShiftGroupSimple)[] = [
       'module',
       'method',
       'startAt',
@@ -207,7 +201,7 @@ export class InvigilatorAssignFacultyComponent implements OnInit {
   }
 
   private buildFormFacultyPart(
-    group: ExaminationShiftGroupSimple,
+    group: ShiftGroupSimple,
     faculties: FacultySummary[]
   ): Record<string, any[]> {
     return faculties.reduce((acc, { id }) => {
@@ -217,7 +211,7 @@ export class InvigilatorAssignFacultyComponent implements OnInit {
   }
 
   private buildFormCalculatePart(
-    group: ExaminationShiftGroupSimple
+    group: ShiftGroupSimple
   ): Record<string, any[]> {
     return {
       total: [group.assignNumerate['total']],

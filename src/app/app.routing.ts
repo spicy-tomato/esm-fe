@@ -52,18 +52,27 @@ const routes: Routes = [
             children: [
               {
                 path: '',
+                canActivate: [PermissionGuard],
                 loadChildren: async () =>
                   (await import('./examination/exam/exam.module'))
                     .ExaminationExamModule,
               },
               {
                 path: 'data',
+                canActivate: [PermissionGuard],
+                data: {
+                  roles: [Role.EXAMINATION_DEPARTMENT_HEAD],
+                },
                 loadChildren: async () =>
                   (await import('./examination/data/data.module'))
                     .ExaminationDataModule,
               },
               {
                 path: 'handover',
+                canActivate: [PermissionGuard],
+                data: {
+                  roles: [Role.EXAMINATION_DEPARTMENT_HEAD],
+                },
                 loadChildren: async () =>
                   (await import('./examination/handover/handover.module'))
                     .ExaminationHandoverModule,
@@ -75,6 +84,10 @@ const routes: Routes = [
             children: [
               {
                 path: 'assign-faculty',
+                canActivate: [PermissionGuard],
+                data: {
+                  roles: [Role.EXAMINATION_DEPARTMENT_HEAD],
+                },
                 loadChildren: async () =>
                   (
                     await import(
@@ -86,7 +99,7 @@ const routes: Routes = [
                 path: 'assign-teacher',
                 canActivate: [PermissionGuard],
                 data: {
-                  roles: [Role.EXAMINATION_DEPARTMENT_HEAD],
+                  roles: [Role.TEACHER],
                 },
                 loadChildren: async () =>
                   (
@@ -97,6 +110,10 @@ const routes: Routes = [
               },
               {
                 path: 'assign-room',
+                canActivate: [PermissionGuard],
+                data: {
+                  roles: [Role.EXAMINATION_DEPARTMENT_HEAD],
+                },
                 loadChildren: async () =>
                   (await import('./invigilator/assign-room/assign-room.module'))
                     .InvigilatorAssignRoomModule,

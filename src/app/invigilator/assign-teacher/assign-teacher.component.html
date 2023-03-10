@@ -1,9 +1,11 @@
 <div
   class="py-3 flex flex-0 justify-between items-center bg-white text-3xl font-bold"
 >
-  <h3>Phân giảng viên coi thi khoa Cơ khí</h3>
+  <h3 *ngrxLet="faculty$ as faculty">
+    Phân giảng viên coi thi khoa {{ faculty }}
+  </h3>
 
-  <div *ngIf="isEditing; else noEdit">
+  <div>
     <button
       *ngrxLet="isSaving$ as isSaving"
       tuiButton
@@ -14,28 +16,8 @@
     >
       Lưu
     </button>
-    <button
-      tuiButton
-      (click)="cancelEdit()"
-      appearance="secondary-destructive"
-      icon="tuiIconCloseLarge"
-    >
-      Hủy
-    </button>
+    <button tuiButton icon="tuiIconDownloadLarge">Tải file Excel</button>
   </div>
-  <ng-template #noEdit>
-    <div>
-      <button
-        tuiButton
-        (click)="toggleEdit(true)"
-        icon="tuiIconEditLarge"
-        class="mr-2"
-      >
-        Chỉnh sửa
-      </button>
-      <button tuiButton icon="tuiIconDownloadLarge">Tải file Excel</button>
-    </div>
-  </ng-template>
 </div>
 
 <tui-scrollbar waIntersectionRoot class="scrollbar" class="flex-1">
@@ -100,17 +82,11 @@
             {{ item.shift }}
           </td>
 
-          <td
-            *tuiCell="'department'"
-            tuiTd
-            [class.colored]="isEditing"
-            class="w-60"
-          >
+          <td *tuiCell="'department'" tuiTd class="w-60">
             <!-- formControlName="department" -->
             <tui-select
               (ngModelChange)="onDepartmentChanges(i, subIndex)"
               [formControl]="control(i, subIndex, 'department')"
-              [readOnly]="!isEditing"
               class="w-60"
             >
               <tui-data-list-wrapper
@@ -120,16 +96,10 @@
             </tui-select>
           </td>
 
-          <td
-            *tuiCell="'teacher'"
-            tuiTd
-            [class.colored]="isEditing"
-            class="w-60"
-          >
+          <td *tuiCell="'teacher'" tuiTd class="w-60">
             <!-- formControlName="teacher" -->
             <tui-select
               [formControl]="control(i, subIndex, 'teacher')"
-              [readOnly]="!isEditing"
               class="w-60"
             >
               <tui-data-list-wrapper

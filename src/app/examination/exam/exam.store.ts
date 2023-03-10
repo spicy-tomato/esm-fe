@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ObservableHelper, Status } from '@esm/cdk';
-import { ExaminationShiftSimple } from '@esm/data';
+import { ShiftSimple } from '@esm/data';
 import { ExaminationService } from '@esm/services';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
@@ -15,7 +15,7 @@ import {
 } from 'rxjs';
 
 type ExaminationExamState = {
-  data: ExaminationShiftSimple[];
+  data: ShiftSimple[];
   dataStatus: Status;
   updateStatus: Status;
 };
@@ -23,6 +23,9 @@ type ExaminationExamState = {
 @Injectable()
 export class ExaminationExamStore extends ComponentStore<ExaminationExamState> {
   // PUBLIC PROPERTIES
+  readonly user$ = this.appStore
+    .select(AppSelector.user)
+    .pipe(ObservableHelper.filterNullish(), takeUntil(this.destroy$));
   readonly data$ = this.select((s) => s.data);
   readonly dataStatus$ = this.select((s) => s.dataStatus);
   readonly updateStatus$ = this.select((s) => s.updateStatus);

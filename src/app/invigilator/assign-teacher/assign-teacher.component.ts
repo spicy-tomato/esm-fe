@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { tuiButtonOptionsProvider } from '@taiga-ui/core';
 import { BehaviorSubject } from 'rxjs';
+import { InvigilatorAssignTeacherStore } from './assign-teacher.store';
 
 type Item = {
   id: string;
@@ -25,12 +26,14 @@ type Item = {
   templateUrl: './assign-teacher.component.html',
   styleUrls: ['./assign-teacher.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [tuiButtonOptionsProvider({ size: 'm' })],
+  providers: [
+    InvigilatorAssignTeacherStore,
+    tuiButtonOptionsProvider({ size: 'm' }),
+  ],
 })
 export class InvigilatorAssignTeacherComponent {
   // PUBLIC PROPERTIES
   data: Item[] = data;
-  isEditing = false;
   departments = Object.keys(teacherData);
   columns = [
     'moduleId',
@@ -44,9 +47,13 @@ export class InvigilatorAssignTeacherComponent {
 
   readonly form!: FormGroup;
   readonly isSaving$ = new BehaviorSubject<boolean>(false);
+  readonly faculty$ = this.store.faculty$;
 
   // CONSTRUCTOR
-  constructor(private readonly fb: NonNullableFormBuilder) {
+  constructor(
+    private readonly fb: NonNullableFormBuilder,
+    private readonly store: InvigilatorAssignTeacherStore
+  ) {
     this.form = this.fb.group({
       assign: this.fb.array(
         this.data.map((item) =>
@@ -61,8 +68,6 @@ export class InvigilatorAssignTeacherComponent {
         )
       ),
     });
-
-    this.form.disable();
   }
 
   // PUBLIC METHODS
@@ -90,23 +95,8 @@ export class InvigilatorAssignTeacherComponent {
     this.isSaving$.next(true);
     setTimeout(() => {
       data = (this.form.controls['assign'] as FormArray).value;
-      this.toggleEdit(false);
       this.isSaving$.next(false);
     }, 1000);
-  }
-
-  cancelEdit(): void {
-    (this.form.controls['assign'] as FormArray).patchValue(data);
-    this.toggleEdit(false);
-  }
-
-  toggleEdit(isEditing: boolean): void {
-    this.isEditing = isEditing;
-    if (isEditing) {
-      this.form.enable();
-    } else {
-      this.form.disable();
-    }
   }
 }
 

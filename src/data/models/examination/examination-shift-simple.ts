@@ -1,12 +1,12 @@
 import { RoomSummary } from '../room/room-summary';
-import { ExaminationShiftGroupSimple } from './examination-shift-group';
+import { ShiftGroupSimple } from './examination-shift-group';
 
-export type ExaminationShiftSimple = {
+export type ShiftSimple = {
   id: string;
   examsCount: number;
   candidatesCount: number;
   invigilatorsCount: number;
   startAt: Date;
   room: RoomSummary;
-  examinationShiftGroup: ExaminationShiftGroupSimple;
+  shiftGroup: ShiftGroupSimple;
 };

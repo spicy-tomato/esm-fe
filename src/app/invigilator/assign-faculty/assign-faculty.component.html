@@ -24,6 +24,7 @@
       <button
         tuiButton
         *ngIf="examination?.status === ExaminationStatus.AssignFaculty"
+        (click)="finishAssign()"
         [showLoader]="showLoader"
         icon="tuiIconCheckCircleLarge"
       >

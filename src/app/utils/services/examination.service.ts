@@ -4,8 +4,8 @@ import { Result } from '@esm/cdk';
 import { AppEnv, APP_ENV } from '@esm/core';
 import {
   CreateExaminationRequest,
-  ExaminationShiftGroupSimple,
-  ExaminationShiftSimple,
+  ShiftGroupSimple,
+  ShiftSimple,
   ExaminationStatus,
   ExaminationSummary,
   TemporaryExamination,
@@ -42,8 +42,8 @@ export class ExaminationService {
   getData(
     id: string,
     departmentAssign?: boolean
-  ): Observable<Result<ExaminationShiftSimple[]>> {
-    return this.http.get<Result<ExaminationShiftSimple[]>>(this.url + id, {
+  ): Observable<Result<ShiftSimple[]>> {
+    return this.http.get<Result<ShiftSimple[]>>(this.url + id, {
       params: departmentAssign
         ? {
             departmentAssign,
@@ -57,12 +57,12 @@ export class ExaminationService {
     return this.http.post<Result<boolean>>(this.url + id, formData);
   }
 
-  // [PATCH] /examination/{examinationId}/status
+  // [POST] /examination/{examinationId}/status
   changeStatus(
     id: string,
     status: ExaminationStatus
   ): Observable<Result<boolean>> {
-    return this.http.patch<Result<boolean>>(this.url + `${id}/status`, status);
+    return this.http.post<Result<boolean>>(this.url + `${id}/status`, status);
   }
 
   // [PATCH] /examination/{examinationId}/exams-number
@@ -77,15 +77,13 @@ export class ExaminationService {
   }
 
   // [GET] /examination/{examinationId}/group
-  getAllGroups(id: string): Observable<Result<ExaminationShiftGroupSimple[]>> {
-    return this.http.get<Result<ExaminationShiftGroupSimple[]>>(
-      this.url + id + '/group'
-    );
+  getAllGroups(id: string): Observable<Result<ShiftGroupSimple[]>> {
+    return this.http.get<Result<ShiftGroupSimple[]>>(this.url + id + '/group');
   }
 
   // [POST] /examination/{examinationId}/group
-  calculate(id: string): Observable<Result<ExaminationShiftGroupSimple[]>> {
-    return this.http.post<Result<ExaminationShiftGroupSimple[]>>(
+  calculate(id: string): Observable<Result<ShiftGroupSimple[]>> {
+    return this.http.post<Result<ShiftGroupSimple[]>>(
       this.url + id + '/group',
       {}
     );
@@ -97,8 +95,8 @@ export class ExaminationService {
     groupId: string,
     facultyId: string,
     numberOfInvigilator: number
-  ): Observable<Result<ExaminationShiftGroupSimple>> {
-    return this.http.post<Result<ExaminationShiftGroupSimple>>(
+  ): Observable<Result<ShiftGroupSimple>> {
+    return this.http.post<Result<ShiftGroupSimple>>(
       `${this.url}${examinationId}/group/${groupId}/${facultyId}`,
       numberOfInvigilator
     );

@@ -1,9 +1,8 @@
-import { KeyValuePair } from '@esm/cdk';
 import { ModuleSimple } from '../module/module-simple';
 import { ExamMethod } from './exam-method';
 import { ExaminationSummary } from './examination-summary';
 
-export type ExaminationShiftGroupSimple = {
+export type ShiftGroupSimple = {
   id: string;
   method: ExamMethod;
   invigilatorsCount: number;

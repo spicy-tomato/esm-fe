@@ -71,16 +71,16 @@
           >
             <td *tuiCell="'index'" tuiTd>{{ i + 1 }}</td>
             <td *tuiCell="'moduleId'" tuiTd class="w-24 max-w-[6rem]">
-              {{ item.value.examinationShiftGroup.module.displayId }}
+              {{ item.value.shiftGroup.module.displayId }}
             </td>
             <td *tuiCell="'moduleName'" tuiTd class="w-52 max-w-[13rem]">
-              {{ item.value.examinationShiftGroup.module.name }}
+              {{ item.value.shiftGroup.module.name }}
             </td>
             <td *tuiCell="'credit'" tuiTd class="!text-center">
-              {{ item.value.examinationShiftGroup.module.credits }}
+              {{ item.value.shiftGroup.module.credits }}
             </td>
             <td *tuiCell="'method'" tuiTd>
-              {{ item.value.examinationShiftGroup.method | examMethod }}
+              {{ item.value.shiftGroup.method | examMethod }}
             </td>
             <td *tuiCell="'date'" tuiTd>
               {{ item.value.startAt | date : "dd/MM/y" }}
@@ -89,7 +89,7 @@
               {{ item.value.startAt | date : "HH:mm" }}
             </td>
             <td *tuiCell="'shift'" tuiTd class="!text-center">
-              {{ item.value.examinationShiftGroup.shift }}
+              {{ item.value.shiftGroup.shift }}
             </td>
             <td *tuiCell="'room'" tuiTd>
               {{ item.value.room.displayId }}
@@ -99,7 +99,7 @@
             </td>
             <td *tuiCell="'departmentAssign'" tuiTd>
               {{
-                item.value.examinationShiftGroup.departmentAssign
+                item.value.shiftGroup.departmentAssign
                   ? "Bộ môn"
                   : "Phòng KT&ĐBCLĐT"
               }}

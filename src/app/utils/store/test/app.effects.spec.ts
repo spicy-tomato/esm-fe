@@ -128,7 +128,7 @@ describe('AppEffects', () => {
       effects.logOut$.subscribe();
 
       expect(mockTokenService.clear).toHaveBeenCalled();
-      expect(navigateSpy).toHaveBeenCalledWith(['']);
+      expect(navigateSpy).toHaveBeenCalledWith(['/login']);
     });
   });
 });

@@ -11,8 +11,8 @@ import {
   NonNullableFormBuilder,
   Validators,
 } from '@angular/forms';
-import { NavigationEnd, Router } from '@angular/router';
-import { ExaminationShiftSimple } from '@esm/data';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ShiftSimple } from '@esm/data';
 import { TuiDestroyService } from '@taiga-ui/cdk';
 import {
   TuiAlertService,
@@ -34,7 +34,7 @@ import { ExaminationExamStore } from './exam.store';
 })
 export class ExaminationExamComponent implements OnInit {
   // PUBLIC PROPERTIES
-  form!: FormGroup<{
+  form?: FormGroup<{
     data: FormArray<FormControl<number>>;
   }>;
 
@@ -52,6 +52,7 @@ export class ExaminationExamComponent implements OnInit {
     'candidatesCount',
     'examsCount',
   ];
+  readonly user$ = this.store.user$;
   readonly data$ = this.store.data$;
   readonly showLoader$ = combineLatest([
     this.store.dataStatus$,
@@ -63,6 +64,7 @@ export class ExaminationExamComponent implements OnInit {
 
   // CONSTRUCTOR
   constructor(
+    private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly fb: NonNullableFormBuilder,
     @Inject(TuiAlertService) private readonly alertService: TuiAlertService,
@@ -72,6 +74,38 @@ export class ExaminationExamComponent implements OnInit {
 
   // LIFECYCLE
   ngOnInit(): void {
+    this.handleNavigateOrInit();
+  }
+
+  // PUBLIC METHODS
+  examsCountControl(index: number): FormControl {
+    return this.form?.controls.data.controls.at(index) as FormControl;
+  }
+
+  save(): void {
+    if (this.form) {
+      this.store.save(this.form.controls.data.value);
+    }
+  }
+
+  // PRIVATE METHODS
+  private handleNavigateOrInit(): void {
+    this.user$
+      .pipe(
+        tap(({ role }) => {
+          if (role !== 'ExaminationDepartmentHead') {
+            void this.router.navigateByUrl(
+              `/${this.route.snapshot.params['examinationId']}/invigilator/assign-teacher`
+            );
+          } else {
+            this.init();
+          }
+        })
+      )
+      .subscribe();
+  }
+
+  private init(): void {
     this.handleDataChanges();
     this.handleUpdateSuccess();
     this.store.getData();
@@ -84,16 +118,6 @@ export class ExaminationExamComponent implements OnInit {
       .subscribe();
   }
 
-  // PUBLIC METHODS
-  examsCountControl(index: number): FormControl {
-    return this.form.controls.data.controls.at(index) as FormControl;
-  }
-
-  save(): void {
-    this.store.save(this.form.controls.data.value);
-  }
-
-  // PRIVATE METHODS
   private handleDataChanges(): void {
     this.data$.pipe(tap((data) => this.buildForm(data))).subscribe();
   }
@@ -111,7 +135,7 @@ export class ExaminationExamComponent implements OnInit {
       .subscribe();
   }
 
-  private buildForm(data: ExaminationShiftSimple[]): void {
+  private buildForm(data: ShiftSimple[]): void {
     this.form = this.fb.group({
       data: this.fb.array(
         data.map((row) =>

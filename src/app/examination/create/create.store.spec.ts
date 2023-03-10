@@ -8,7 +8,6 @@ import { ExaminationService } from '@esm/services';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { cold } from 'jasmine-marbles';
 import { of } from 'rxjs';
-import { LoginComponent } from 'src/app/user/login/login.component';
 import { CreateStore } from './create.store';
 
 describe('CreateStore', () => {
@@ -25,7 +24,6 @@ describe('CreateStore', () => {
 
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      declarations: [LoginComponent],
       providers: [
         CreateStore,
         {

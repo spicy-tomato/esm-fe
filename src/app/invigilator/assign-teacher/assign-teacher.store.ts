@@ -5,9 +5,9 @@ import { ExaminationService } from '@esm/services';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
-import { switchMap, takeUntil, tap, withLatestFrom } from 'rxjs';
+import { map, pipe, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs';
 
-type InvigilatorAssignFacultyState = {
+type InvigilatorAssignTeacherState = {
   data: ShiftGroupSimple[];
   dataStatus: Status;
   calculateStatus: Status;
@@ -15,8 +15,12 @@ type InvigilatorAssignFacultyState = {
 };
 
 @Injectable()
-export class InvigilatorAssignFacultyStore extends ComponentStore<InvigilatorAssignFacultyState> {
+export class InvigilatorAssignTeacherStore extends ComponentStore<InvigilatorAssignTeacherState> {
   // PUBLIC PROPERTIES
+  readonly faculty$ = this.appStore.pipe(
+    AppSelector.notNullUser,
+    map((u) => u.department?.faculty?.name)
+  );
   readonly faculties$ = this.appStore
     .select(AppSelector.faculties)
     .pipe(takeUntil(this.destroy$));

@@ -8,7 +8,7 @@
     tuiButton
     (click)="save()"
     [showLoader]="showLoader"
-    [disabled]="form.pristine"
+    [disabled]="form?.pristine ?? true"
     icon="tuiIconCheckLarge"
     class="mr-2"
   >
@@ -93,16 +93,16 @@
           <tr *cdkVirtualFor="let item of data; let i = index" tuiTr>
             <td *tuiCell="'index'" tuiTd>{{ i + 1 }}</td>
             <td *tuiCell="'moduleId'" tuiTd class="w-24 max-w-[6rem]">
-              {{ item.examinationShiftGroup.module.displayId }}
+              {{ item.shiftGroup.module.displayId }}
             </td>
             <td *tuiCell="'moduleName'" tuiTd class="w-52 max-w-[13rem]">
-              {{ item.examinationShiftGroup.module.name }}
+              {{ item.shiftGroup.module.name }}
             </td>
             <td *tuiCell="'credit'" tuiTd class="!text-center">
-              {{ item.examinationShiftGroup.module.credits }}
+              {{ item.shiftGroup.module.credits }}
             </td>
             <td *tuiCell="'method'" tuiTd>
-              {{ item.examinationShiftGroup.method | examMethod }}
+              {{ item.shiftGroup.method | examMethod }}
             </td>
             <td *tuiCell="'date'" tuiTd>
               {{ item.startAt | date : "dd/MM/y" }}
@@ -111,7 +111,7 @@
               {{ item.startAt | date : "HH:mm" }}
             </td>
             <td *tuiCell="'shift'" tuiTd class="!text-center">
-              {{ item.examinationShiftGroup.shift }}
+              {{ item.shiftGroup.shift }}
             </td>
             <td *tuiCell="'room'" tuiTd>
               {{ item.room.displayId }}

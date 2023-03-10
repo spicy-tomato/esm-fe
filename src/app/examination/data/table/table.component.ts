@@ -5,7 +5,7 @@ import {
   FormGroup,
   NonNullableFormBuilder,
 } from '@angular/forms';
-import { ExaminationShiftSimple } from '@esm/data';
+import { ShiftSimple } from '@esm/data';
 import { tap } from 'rxjs';
 import { ExaminationDataTableStore } from './table.store';
 
@@ -15,7 +15,7 @@ const FormFieldList = [
   'invigilatorsCount',
   'startAt',
   'room',
-  'examinationShiftGroup',
+  'shiftGroup',
 ] as const;
 type FormFieldTuple = typeof FormFieldList;
 type FormFields = FormFieldTuple[number];
@@ -31,7 +31,7 @@ export class ExaminationDataTemporaryTableComponent implements OnInit {
   // PUBLIC PROPERTIES
   form!: FormGroup<{
     data: FormArray<
-      FormGroup<{ [F in FormFields]: FormControl<ExaminationShiftSimple[F]> }>
+      FormGroup<{ [F in FormFields]: FormControl<ShiftSimple[F]> }>
     >;
   }>;
 
@@ -75,7 +75,7 @@ export class ExaminationDataTemporaryTableComponent implements OnInit {
     this.data$.pipe(tap((data) => this.buildForm(data))).subscribe();
   }
 
-  private buildForm(data: ExaminationShiftSimple[]): void {
+  private buildForm(data: ShiftSimple[]): void {
     this.form = this.fb.group({
       data: this.fb.array(
         data.map((row) =>
@@ -83,7 +83,7 @@ export class ExaminationDataTemporaryTableComponent implements OnInit {
             FormFieldList.reduce((acc, curr) => {
               acc[curr] = [row[curr]] as never;
               return acc;
-            }, {} as { [F in FormFields]: ExaminationShiftSimple[F] })
+            }, {} as { [F in FormFields]: ShiftSimple[F] })
           )
         )
       ),
