@@ -1,13 +1,17 @@
 :host {
   @apply relative h-content-h flex flex-col;
+}
 
-  table {
-    th {
-      @apply whitespace-nowrap;
-    }
+tui-scrollbar ::ng-deep .t-content {
+  @apply h-full;
+}
 
-    tbody tr.span-col td {
-      @apply border-l-0;
-    }
+table {
+  th {
+    @apply whitespace-nowrap;
+  }
+
+  tbody tr.span-col td {
+    @apply border-l-0;
   }
 }

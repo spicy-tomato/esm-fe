@@ -12,7 +12,7 @@
           *ngFor="let examination of relatedExaminations"
           class="tui-list__item"
         >
-          <a tuiLink [routerLink]="examination.id + '/exam'">
+          <a tuiLink [routerLink]="examination.id">
             {{ examination.name }}
           </a>
         </li>
@@ -36,12 +36,7 @@
   >
     <h3 class="text-lg">Thông báo</h3>
   </a>
-  <a
-    class="data"
-    tuiAction
-    routerLink="/data"
-    icon="tuiIconDatabaseLarge"
-  >
+  <a class="data" tuiAction routerLink="/data" icon="tuiIconDatabaseLarge">
     <h3 class="text-lg">Dữ liệu</h3>
   </a>
 </div>

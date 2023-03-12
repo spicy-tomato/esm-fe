@@ -74,7 +74,16 @@ export class ExaminationExamComponent implements OnInit {
 
   // LIFECYCLE
   ngOnInit(): void {
-    this.handleNavigateOrInit();
+    this.handleDataChanges();
+    this.handleUpdateSuccess();
+    this.store.getData();
+    this.router.events
+      .pipe(
+        filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+        tap(() => this.store.getData()),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 
   // PUBLIC METHODS
@@ -89,35 +98,6 @@ export class ExaminationExamComponent implements OnInit {
   }
 
   // PRIVATE METHODS
-  private handleNavigateOrInit(): void {
-    this.user$
-      .pipe(
-        tap(({ role }) => {
-          if (role !== 'ExaminationDepartmentHead') {
-            void this.router.navigateByUrl(
-              `/${this.route.snapshot.params['examinationId']}/invigilator/assign-teacher`
-            );
-          } else {
-            this.init();
-          }
-        })
-      )
-      .subscribe();
-  }
-
-  private init(): void {
-    this.handleDataChanges();
-    this.handleUpdateSuccess();
-    this.store.getData();
-    this.router.events
-      .pipe(
-        filter((e): e is NavigationEnd => e instanceof NavigationEnd),
-        tap(() => this.store.getData()),
-        takeUntil(this.destroy$)
-      )
-      .subscribe();
-  }
-
   private handleDataChanges(): void {
     this.data$.pipe(tap((data) => this.buildForm(data))).subscribe();
   }

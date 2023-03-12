@@ -9,6 +9,7 @@ import {
   ExaminationStatus,
   ExaminationSummary,
   TemporaryExamination,
+  DepartmentShiftGroupSimple,
 } from '@esm/data';
 import { Observable } from 'rxjs';
 
@@ -73,6 +74,16 @@ export class ExaminationService {
     return this.http.patch<Result<boolean>>(
       this.url + `${id}/exams-number`,
       params
+    );
+  }
+
+  // [GET] /examination/{examinationId}/faculty/{facultyId}/group
+  getGroupsByFacultyId(
+    id: string,
+    facultyId: string
+  ): Observable<Result<DepartmentShiftGroupSimple[]>> {
+    return this.http.get<Result<DepartmentShiftGroupSimple[]>>(
+      this.url + `${id}/faculty/${facultyId}/group`
     );
   }
 

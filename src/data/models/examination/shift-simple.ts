@@ -1,5 +1,5 @@
 import { RoomSummary } from '../room/room-summary';
-import { ShiftGroupSimple } from './examination-shift-group';
+import { ShiftGroupSimple } from './shift-group';
 
 export type ShiftSimple = {
   id: string;

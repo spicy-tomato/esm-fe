@@ -1,16 +1,16 @@
 import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 
-type VarContext = {
-  $implicit: unknown;
-  esmVar: unknown;
-};
+class VarContext<T = unknown> {
+  public $implicit: T = null!;
+  public esmVar: T = null!;
+}
 
 @Directive({
   selector: '[esmVar]',
 })
-export class VarDirective {
+export class VarDirective<T = unknown> {
   // INPUT
-  @Input() set esmVar(context: unknown) {
+  @Input() set esmVar(context: T) {
     this.context.$implicit = this.context.esmVar = context;
 
     if (!this.hasView) {
@@ -20,16 +20,12 @@ export class VarDirective {
   }
 
   // PRIVATE PROPERTIES
-  private context: VarContext = {
-    $implicit: null,
-    esmVar: null,
-  };
-
+  private context: VarContext<T> = new VarContext<T>();
   private hasView = false;
 
   // CONSTRUCTOR
   constructor(
-    private templateRef: TemplateRef<unknown>,
+    private templateRef: TemplateRef<VarContext<T>>,
     private viewContainerRef: ViewContainerRef
   ) {}
 }

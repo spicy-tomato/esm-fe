@@ -2,116 +2,160 @@
   class="py-3 flex flex-0 justify-between items-center bg-white text-3xl font-bold"
 >
   <h3 *ngrxLet="faculty$ as faculty">
-    Phân giảng viên coi thi khoa {{ faculty }}
+    Phân giảng viên coi thi khoa {{ faculty?.name }}
   </h3>
 
   <div>
     <button
-      *ngrxLet="isSaving$ as isSaving"
+      *ngrxLet="updateStatus$ as updateStatus"
       tuiButton
       (click)="saveChange()"
-      [showLoader]="isSaving"
+      [showLoader]="updateStatus === 'loading'"
       icon="tuiIconCheckLarge"
       class="mr-2"
     >
       Lưu
     </button>
-    <button tuiButton icon="tuiIconDownloadLarge">Tải file Excel</button>
+
+    <!-- TODO -->
+    <!-- <button tuiButton icon="tuiIconDownloadLarge">Tải file Excel</button> -->
   </div>
 </div>
 
-<tui-scrollbar waIntersectionRoot class="scrollbar" class="flex-1">
-  <table
-    tuiTable
-    *ngIf="form"
-    [formGroup]="form"
-    [columns]="columns"
-    class="w-full"
-  >
-    <thead tuiThead>
-      <tr tuiThGroup>
-        <th tuiTh>Mã học phần</th>
-        <th tuiTh>Tên học phần</th>
-        <th tuiTh>Ngày thi</th>
-        <th tuiTh>Ca thi</th>
-        <th tuiTh class="!text-center">Bộ môn</th>
-        <th tuiTh class="!text-center">Họ tên CBCT</th>
-        <th tuiTh>SĐT</th>
-      </tr>
-    </thead>
-    <tbody tuiTbody [data]="data" formArrayName="assign">
-      <ng-container *ngFor="let item of data; let i = index">
-        <tr
-          *tuiRepeatTimes="let subIndex of item.size"
-          [formArrayName]="i"
-          [class.span-col]="subIndex > 0"
-          tuiTr
-        >
-          <td
-            *tuiCell="'moduleId'"
-            tuiTd
-            [rowSpan]="item.size"
-            [class.hidden]="subIndex > 0"
-          >
-            {{ item.moduleId }}
-          </td>
-          <td
-            *tuiCell="'moduleName'"
-            tuiTd
-            [class.hidden]="subIndex > 0"
-            [rowSpan]="item.size"
-          >
-            {{ item.moduleName }}
-          </td>
-          <td
-            *tuiCell="'startAt'"
-            tuiTd
-            [class.hidden]="subIndex > 0"
-            [rowSpan]="item.size"
-          >
-            <div>
-              {{ item.startAt | date : "dd/MM/y" }}
-            </div>
-          </td>
-          <td
-            *tuiCell="'shift'"
-            tuiTd
-            [class.hidden]="subIndex > 0"
-            [rowSpan]="item.size"
-          >
-            {{ item.shift }}
-          </td>
+<ng-container *ngrxLet="dataStatus$ as dataStatus">
+  <tui-loader
+    *ngIf="dataStatus === 'loading'; else loaded"
+    class="h-40"
+  ></tui-loader>
+</ng-container>
 
-          <td *tuiCell="'department'" tuiTd class="w-60">
-            <!-- formControlName="department" -->
-            <tui-select
-              (ngModelChange)="onDepartmentChanges(i, subIndex)"
-              [formControl]="control(i, subIndex, 'department')"
-              class="w-60"
+<ng-template #loaded>
+  <tui-scrollbar class="scrollbar" class="flex-1">
+    <cdk-virtual-scroll-viewport
+      #viewport
+      tuiScrollable
+      [itemSize]="45"
+      [maxBufferPx]="1000"
+      [minBufferPx]="700"
+      class="h-full tui-zero-scrollbar"
+    >
+      <table
+        tuiTable
+        *ngIf="form"
+        [formGroup]="form"
+        [columns]="columns"
+        class="w-full"
+      >
+        <thead tuiThead>
+          <tr
+            tuiThGroup
+            *esmVar="0 - viewport['_renderedContentOffset'] as offset"
+          >
+            <th tuiTh [sticky]="true" [style.top.px]="offset">Mã học phần</th>
+            <th tuiTh [sticky]="true" [style.top.px]="offset">Tên học phần</th>
+            <th tuiTh [sticky]="true" [style.top.px]="offset">Ngày thi</th>
+            <th
+              tuiTh
+              [sticky]="true"
+              [style.top.px]="offset"
+              class="!text-center"
             >
-              <tui-data-list-wrapper
-                *tuiDataList
-                [items]="departments"
-              ></tui-data-list-wrapper>
-            </tui-select>
-          </td>
-
-          <td *tuiCell="'teacher'" tuiTd class="w-60">
-            <!-- formControlName="teacher" -->
-            <tui-select
-              [formControl]="control(i, subIndex, 'teacher')"
-              class="w-60"
+              Ca thi
+            </th>
+            <th
+              tuiTh
+              [sticky]="true"
+              [style.top.px]="offset"
+              class="!text-center"
             >
-              <tui-data-list-wrapper
-                *tuiDataList
-                [items]="getTeacher(i, subIndex)"
-              ></tui-data-list-wrapper>
-            </tui-select>
-          </td>
+              Bộ môn
+            </th>
+            <th
+              tuiTh
+              [sticky]="true"
+              [style.top.px]="offset"
+              class="!text-center"
+            >
+              Họ tên CBCT
+            </th>
+          </tr>
+        </thead>
 
-          <td *tuiCell="'phoneNumber'" tuiTd></td>
-        </tr>
-      </ng-container>
-    </tbody>
-  </table>
-</tui-scrollbar>
+        <tbody tuiTbody *ngrxLet="departments$ as departments">
+          <ng-container *ngrxLet="invigilatorsData$ as invigilatorsData">
+            <ng-container *ngrxLet="data$ as data">
+              <tr *cdkVirtualFor="let row of data" tuiTr>
+                <td *tuiCell="'moduleId'" tuiTd class="w-24 max-w-[6rem]">
+                  {{ row.facultyShiftGroup.shiftGroup.module.displayId }}
+                </td>
+                <td *tuiCell="'moduleName'" tuiTd class="w-52 max-w-[13rem]">
+                  {{ row.facultyShiftGroup.shiftGroup.module.name }}
+                </td>
+                <td *tuiCell="'startAt'" tuiTd>
+                  {{
+                    row.facultyShiftGroup.shiftGroup.startAt | date : "dd/MM/y"
+                  }}
+                </td>
+                <td *tuiCell="'shift'" tuiTd class="!text-center">
+                  {{ row.facultyShiftGroup.shiftGroup.shift }}
+                </td>
+
+                <ng-container *esmVar="form.controls[row.id] as rowControl">
+                  <td *tuiCell="'department'" tuiTd class="w-60">
+                    <tui-select
+                      (ngModelChange)="rowControl.controls.user.setValue(null)"
+                      [formControl]="rowControl.controls.departmentId"
+                      [valueContent]="departmentStringify(departments)"
+                      class="w-60"
+                    >
+                      <ng-template tuiDataList>
+                        <tui-data-list>
+                          <button
+                            tuiOption
+                            *ngFor="let department of departments"
+                            [value]="department.id"
+                          >
+                            {{ department.name }}
+                          </button>
+                        </tui-data-list>
+                      </ng-template>
+                    </tui-select>
+                  </td>
+
+                  <td *tuiCell="'teacher'" tuiTd class="w-60">
+                    <tui-combo-box
+                      [formControl]="rowControl.controls.user"
+                      [valueContent]="invigilatorContent"
+                      class="w-60"
+                    >
+                      <ng-template tuiDataList>
+                        <tui-data-list>
+                          <button
+                            *ngFor="
+                              let invigilator of invigilatorsData
+                                | tuiFilter
+                                  : invigilatorMatcher
+                                  : rowControl.value.departmentId
+                            "
+                            tuiOption
+                            [value]="invigilator"
+                          >
+                            {{ invigilator }}
+                          </button>
+                        </tui-data-list>
+                      </ng-template>
+                    </tui-combo-box>
+                  </td>
+                </ng-container>
+              </tr>
+            </ng-container>
+          </ng-container>
+        </tbody>
+      </table>
+    </cdk-virtual-scroll-viewport>
+  </tui-scrollbar>
+</ng-template>
+
+<ng-template #invigilatorContent let-item>
+  <span class="name">{{ item.fullName }}</span>
+</ng-template>

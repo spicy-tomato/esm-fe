@@ -1,17 +1,27 @@
 import { Injectable } from '@angular/core';
 import { ObservableHelper, Status } from '@esm/cdk';
-import { ShiftGroupSimple, ExaminationStatus } from '@esm/data';
-import { ExaminationService } from '@esm/services';
+import { DepartmentShiftGroupSimple, UserSummary } from '@esm/data';
+import { ExaminationService, FacultyService } from '@esm/services';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
-import { map, pipe, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs';
+import {
+  combineLatest,
+  map,
+  switchMap,
+  takeUntil,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
 
 type InvigilatorAssignTeacherState = {
-  data: ShiftGroupSimple[];
+  data: DepartmentShiftGroupSimple[];
   dataStatus: Status;
-  calculateStatus: Status;
-  updateRows: number[];
+  //
+  invigilatorsData: UserSummary[];
+  invigilatorsDataStatus: Status;
+  //
+  updateStatus: Status;
 };
 
 @Injectable()
@@ -19,18 +29,21 @@ export class InvigilatorAssignTeacherStore extends ComponentStore<InvigilatorAss
   // PUBLIC PROPERTIES
   readonly faculty$ = this.appStore.pipe(
     AppSelector.notNullUser,
-    map((u) => u.department?.faculty?.name)
+    map((u) => u.department!.faculty),
+    takeUntil(this.destroy$)
   );
-  readonly faculties$ = this.appStore
-    .select(AppSelector.faculties)
-    .pipe(takeUntil(this.destroy$));
-  readonly examination$ = this.appStore
-    .select(AppSelector.examination)
-    .pipe(takeUntil(this.destroy$));
+  readonly departmentsInFaculty$ = combineLatest([
+    this.appStore.select(AppSelector.departmentsWithFaculty),
+    this.faculty$,
+  ]).pipe(
+    map(([departments, currentFaculty]) =>
+      departments.filter((d) => d.faculty?.id === currentFaculty?.id)
+    )
+  );
   readonly data$ = this.select((s) => s.data);
   readonly dataStatus$ = this.select((s) => s.dataStatus);
-  readonly calculateStatus$ = this.select((s) => s.calculateStatus);
-  readonly updateRows$ = this.select((s) => s.updateRows);
+  readonly invigilatorsData$ = this.select((s) => s.invigilatorsData);
+  readonly updateStatus$ = this.select((s) => s.updateStatus);
 
   // PRIVATE PROPERTIES
   private readonly examinationId$ = this.appStore
@@ -41,9 +54,15 @@ export class InvigilatorAssignTeacherStore extends ComponentStore<InvigilatorAss
   readonly getData = this.effect<void>((params$) =>
     params$.pipe(
       tap(() => this.patchState({ dataStatus: 'loading' })),
-      withLatestFrom(this.examinationId$),
-      switchMap(({ 1: id }) =>
-        this.examinationService.getAllGroups(id).pipe(
+      withLatestFrom(
+        this.examinationId$,
+        this.faculty$.pipe(
+          ObservableHelper.filterNullish(),
+          map((f) => f.id)
+        )
+      ),
+      switchMap(({ 1: id, 2: facultyId }) =>
+        this.examinationService.getGroupsByFacultyId(id, facultyId).pipe(
           tapResponse(
             ({ data }) =>
               this.patchState({
@@ -57,87 +76,42 @@ export class InvigilatorAssignTeacherStore extends ComponentStore<InvigilatorAss
     )
   );
 
-  readonly calculate = this.effect<void>((params$) =>
+  readonly getInvigilatorsData = this.effect<void>((params$) =>
     params$.pipe(
-      tap(() => this.patchState({ calculateStatus: 'loading' })),
-      withLatestFrom(this.examinationId$),
-      switchMap(({ 1: id }) => {
-        return this.examinationService.calculate(id).pipe(
-          tapResponse(
-            () => {
-              this.patchState({ calculateStatus: 'success' });
-              this.getData();
-            },
-            () => this.patchState({ calculateStatus: 'error' })
-          )
-        );
-      })
-    )
-  );
-
-  readonly finishAssign = this.effect<void>((params$) =>
-    params$.pipe(
-      tap(() => this.patchState({ calculateStatus: 'loading' })),
-      withLatestFrom(this.examinationId$),
-      switchMap(({ 1: id }) => {
-        return this.examinationService
-          .changeStatus(id, ExaminationStatus.AssignInvigilator)
-          .pipe(
-            tapResponse(
-              () => {
-                this.patchState({ calculateStatus: 'success' });
-                this.getData();
-              },
-              () => this.patchState({ calculateStatus: 'error' })
-            )
-          );
-      })
-    )
-  );
-
-  readonly save = this.effect<{
-    rowId: number;
-    facultyId: string;
-    numberOfInvigilator: number;
-  }>((params$) =>
-    params$.pipe(
-      tap(({ rowId }) =>
-        this.patchState((s) => ({ updateRows: [...s.updateRows, rowId] }))
+      tap(() => this.patchState({ invigilatorsDataStatus: 'loading' })),
+      withLatestFrom(
+        this.faculty$.pipe(
+          ObservableHelper.filterNullish(),
+          map((f) => f.id)
+        )
       ),
-      withLatestFrom(this.data$, this.examinationId$),
-      switchMap(([{ rowId, facultyId, numberOfInvigilator }, data, id]) => {
-        return this.examinationService
-          .assignInvigilatorNumerateOfShiftToFaculty(
-            id,
-            data[rowId].id,
-            facultyId,
-            numberOfInvigilator
+      switchMap(({ 1: facultyId }) =>
+        this.facultyService.getUsers(facultyId).pipe(
+          tapResponse(
+            ({ data: invigilatorsData }) =>
+              this.patchState({
+                invigilatorsData,
+                invigilatorsDataStatus: 'success',
+              }),
+            () => this.patchState({ invigilatorsDataStatus: 'error' })
           )
-          .pipe(
-            tapResponse(
-              ({ data }) => {
-                this.patchState((s) => ({
-                  data: s.data.map((d, i) => (i !== rowId ? d : data)),
-                  updateRows: s.updateRows.filter((r) => r !== rowId),
-                }));
-              },
-              () => {}
-            )
-          );
-      })
+        )
+      )
     )
   );
 
   // CONSTRUCTOR
   constructor(
     private readonly examinationService: ExaminationService,
+    private readonly facultyService: FacultyService,
     private readonly appStore: Store<AppState>
   ) {
     super({
       data: [],
       dataStatus: 'loading',
-      calculateStatus: 'idle',
-      updateRows: [],
+      invigilatorsData: [],
+      invigilatorsDataStatus: 'loading',
+      updateStatus: 'idle',
     });
   }
 }

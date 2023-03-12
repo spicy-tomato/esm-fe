@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { Result } from '@esm/cdk';
+import { Result, ResultBuilder } from '@esm/cdk';
 import { AppEnv, APP_ENV } from '@esm/core';
 import {
   CreateModuleRequest,
@@ -9,7 +9,7 @@ import {
   ModuleSimple,
   UserSummary,
 } from '@esm/data';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -49,6 +49,14 @@ export class FacultyService {
 
   // [GET] /faculty/{facultyId}/user
   getUsers(facultyId: string): Observable<Result<UserSummary[]>> {
-    return this.http.get<Result<UserSummary[]>>(this.url + facultyId + '/user');
+    return this.http
+      .get<Result<UserSummary[]>>(this.url + facultyId + '/user')
+      .pipe(
+        map((x) =>
+          ResultBuilder.success(
+            x.data.map((d) => Object.assign(new UserSummary(), d))
+          )
+        )
+      );
   }
 }
