@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ObservableHelper, Status } from '@esm/cdk';
-import { DepartmentShiftGroupSimple, UserSummary } from '@esm/data';
+import {
+  DepartmentShiftGroupSimple,
+  UpdateTeacherAssignmentRequest,
+  UserSummary,
+} from '@esm/data';
 import { ExaminationService, FacultyService } from '@esm/services';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
@@ -96,6 +100,32 @@ export class InvigilatorAssignTeacherStore extends ComponentStore<InvigilatorAss
             () => this.patchState({ invigilatorsDataStatus: 'error' })
           )
         )
+      )
+    )
+  );
+
+  readonly save = this.effect<UpdateTeacherAssignmentRequest>((params$) =>
+    params$.pipe(
+      tap(() => this.patchState({ updateStatus: 'loading' })),
+      withLatestFrom(
+        this.examinationId$,
+        this.faculty$.pipe(
+          ObservableHelper.filterNullish(),
+          map((f) => f.id)
+        )
+      ),
+      switchMap(([params, id, facultyId]) =>
+        this.examinationService
+          .updateTeacherAssignment(id, facultyId, params)
+          .pipe(
+            tapResponse(
+              () => {
+                this.patchState({ updateStatus: 'success' });
+                this.getData();
+              },
+              () => this.patchState({ updateStatus: 'error' })
+            )
+          )
       )
     )
   );

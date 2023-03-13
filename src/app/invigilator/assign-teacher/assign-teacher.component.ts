@@ -4,6 +4,7 @@ import {
   DepartmentShiftGroupSimple,
   DepartmentSummary,
   ShiftGroupInDepartmentShiftGroupSimple,
+  UpdateTeacherAssignmentRequest,
   UserSimple,
   UserSummary,
 } from '@esm/data';
@@ -18,9 +19,8 @@ import { InvigilatorAssignTeacherStore } from './assign-teacher.store';
 
 type FormType = {
   [key: string]: FormGroup<{
-    id: FormControl<string>;
     departmentId: FormControl<string | null>;
-    user: FormControl<UserSimple | null>;
+    user: FormControl<UserSimple | UserSummary | null>;
     shiftGroup: FormControl<ShiftGroupInDepartmentShiftGroupSimple>;
   }>;
 };
@@ -45,6 +45,7 @@ export class InvigilatorAssignTeacherComponent implements OnInit {
     'department',
     'teacher',
   ];
+  customValues: Record<string, string | null> = {};
 
   readonly data$ = this.store.data$;
   readonly faculty$ = this.store.faculty$;
@@ -87,11 +88,26 @@ export class InvigilatorAssignTeacherComponent implements OnInit {
   }
 
   saveChange(): void {
-    // this.isSaving$.next(true);
-    // setTimeout(() => {
-    //   data = (this.form.controls['assign'] as FormArray).value;
-    //   this.isSaving$.next(false);
-    // }, 1000);
+    if (!this.form) {
+      return;
+    }
+
+    const dataToSave: UpdateTeacherAssignmentRequest = {};
+
+    Object.entries(this.form.controls).forEach(([controlName, control]) => {
+      if (control.pristine) return;
+
+      const { departmentId, user } = control.getRawValue();
+
+      dataToSave[controlName] = {
+        departmentId,
+        userId: user?.id ?? null,
+        temporaryInvigilatorName:
+          user === null ? this.customValues[controlName] : null,
+      };
+    });
+
+    this.store.save(dataToSave);
   }
 
   // PRIVATE METHODS
@@ -108,13 +124,27 @@ export class InvigilatorAssignTeacherComponent implements OnInit {
     this.form = this.fb.group(
       data.reduce<FormType>((acc, curr) => {
         acc[curr.id] = this.fb.group({
-          id: [curr.id],
           departmentId: [curr.departmentId],
-          user: [curr.user],
+          user: [
+            curr.user ??
+              (curr.temporaryInvigilatorName !== null
+                ? Object.assign(new UserSummary(), {
+                    fullName: curr.temporaryInvigilatorName,
+                  })
+                : null),
+          ],
           shiftGroup: [curr.facultyShiftGroup.shiftGroup],
         });
         return acc;
       }, {})
+    );
+
+    this.customValues = data.reduce<Record<string, string | null>>(
+      (acc, curr) => {
+        acc[curr.id] = null;
+        return acc;
+      },
+      {}
     );
   }
 }

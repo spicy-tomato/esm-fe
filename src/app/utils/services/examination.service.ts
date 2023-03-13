@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { Result } from '@esm/cdk';
+import { Result, ResultBuilder } from '@esm/cdk';
 import { AppEnv, APP_ENV } from '@esm/core';
 import {
   CreateExaminationRequest,
@@ -10,8 +10,10 @@ import {
   ExaminationSummary,
   TemporaryExamination,
   DepartmentShiftGroupSimple,
+  UpdateTeacherAssignmentRequest,
+  UserSummary,
 } from '@esm/data';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -82,8 +84,35 @@ export class ExaminationService {
     id: string,
     facultyId: string
   ): Observable<Result<DepartmentShiftGroupSimple[]>> {
-    return this.http.get<Result<DepartmentShiftGroupSimple[]>>(
-      this.url + `${id}/faculty/${facultyId}/group`
+    return this.http
+      .get<Result<DepartmentShiftGroupSimple[]>>(
+        this.url + `${id}/faculty/${facultyId}/group`
+      )
+      .pipe(
+        map((x) =>
+          ResultBuilder.success(
+            x.data.map((d) =>
+              d.user
+                ? {
+                    ...d,
+                    user: Object.assign(new UserSummary(), d.user),
+                  }
+                : d
+            )
+          )
+        )
+      );
+  }
+
+  // [POST] /examination/{examinationId}/faculty/{facultyId}/group
+  updateTeacherAssignment(
+    id: string,
+    facultyId: string,
+    params: UpdateTeacherAssignmentRequest
+  ): Observable<Result<true>> {
+    return this.http.post<Result<true>>(
+      this.url + `${id}/faculty/${facultyId}/group`,
+      params
     );
   }
 

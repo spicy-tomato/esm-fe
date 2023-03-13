@@ -11,7 +11,7 @@
       tuiButton
       (click)="saveChange()"
       [showLoader]="updateStatus === 'loading'"
-      icon="tuiIconCheckLarge"
+      icon="tuiIconSaveLarge"
       class="mr-2"
     >
       Lưu
@@ -85,18 +85,18 @@
           <ng-container *ngrxLet="invigilatorsData$ as invigilatorsData">
             <ng-container *ngrxLet="data$ as data">
               <tr *cdkVirtualFor="let row of data" tuiTr>
-                <td *tuiCell="'moduleId'" tuiTd class="w-24 max-w-[6rem]">
+                <td *tuiCell="'moduleId'" tuiTd class="w-32 max-w-[8rem]">
                   {{ row.facultyShiftGroup.shiftGroup.module.displayId }}
                 </td>
-                <td *tuiCell="'moduleName'" tuiTd class="w-52 max-w-[13rem]">
+                <td *tuiCell="'moduleName'" tuiTd>
                   {{ row.facultyShiftGroup.shiftGroup.module.name }}
                 </td>
-                <td *tuiCell="'startAt'" tuiTd>
+                <td *tuiCell="'startAt'" tuiTd class="w-32">
                   {{
                     row.facultyShiftGroup.shiftGroup.startAt | date : "dd/MM/y"
                   }}
                 </td>
-                <td *tuiCell="'shift'" tuiTd class="!text-center">
+                <td *tuiCell="'shift'" tuiTd class="w-24 !text-center">
                   {{ row.facultyShiftGroup.shiftGroup.shift }}
                 </td>
 
@@ -124,6 +124,7 @@
 
                   <td *tuiCell="'teacher'" tuiTd class="w-60">
                     <tui-combo-box
+                      [(search)]="customValues[row.id]"
                       [formControl]="rowControl.controls.user"
                       [valueContent]="invigilatorContent"
                       class="w-60"
