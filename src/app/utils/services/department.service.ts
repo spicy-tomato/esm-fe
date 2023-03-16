@@ -23,11 +23,6 @@ export class DepartmentService {
     this.url = env.baseUrl + 'department/';
   }
 
-  // [GET] /department
-  getAll(): Observable<Result<FacultyWithDepartments[]>> {
-    return this.http.get<Result<FacultyWithDepartments[]>>(this.url);
-  }
-
   // [POST] /department
   create(
     request: EditDepartmentRequest

@@ -1,24 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import {
-  FormArray,
-  FormControl,
-  FormGroup,
-  NonNullableFormBuilder,
-} from '@angular/forms';
-import { ShiftSimple } from '@esm/data';
-import { tap } from 'rxjs';
 import { ExaminationDataTableStore } from './table.store';
-
-const FormFieldList = [
-  'id',
-  'candidatesCount',
-  'invigilatorsCount',
-  'startAt',
-  'room',
-  'shiftGroup',
-] as const;
-type FormFieldTuple = typeof FormFieldList;
-type FormFields = FormFieldTuple[number];
 
 @Component({
   selector: 'esm-examination-data-table',
@@ -27,14 +8,8 @@ type FormFields = FormFieldTuple[number];
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ExaminationDataTableStore],
 })
-export class ExaminationDataTemporaryTableComponent implements OnInit {
+export class ExaminationDataTableComponent implements OnInit {
   // PUBLIC PROPERTIES
-  form!: FormGroup<{
-    data: FormArray<
-      FormGroup<{ [F in FormFields]: FormControl<ShiftSimple[F]> }>
-    >;
-  }>;
-
   readonly columns = [
     'index',
     'moduleId',
@@ -49,44 +24,13 @@ export class ExaminationDataTemporaryTableComponent implements OnInit {
     'departmentAssign',
   ];
   readonly status$ = this.store.status$;
-
-  // PRIVATE PROPERTIES
-  private readonly data$ = this.store.data$;
+  readonly data$ = this.store.data$;
 
   // CONSTRUCTOR
-  constructor(
-    private readonly fb: NonNullableFormBuilder,
-    private readonly store: ExaminationDataTableStore
-  ) {}
+  constructor(private readonly store: ExaminationDataTableStore) {}
 
   // LIFECYCLE
   ngOnInit(): void {
-    this.handleDataChanges();
     this.store.getData();
-  }
-
-  // PUBLIC METHODS
-  get formControl(): FormArray {
-    return this.form.controls.data;
-  }
-
-  // PRIVATE METHODS
-  private handleDataChanges(): void {
-    this.data$.pipe(tap((data) => this.buildForm(data))).subscribe();
-  }
-
-  private buildForm(data: ShiftSimple[]): void {
-    this.form = this.fb.group({
-      data: this.fb.array(
-        data.map((row) =>
-          this.fb.group(
-            FormFieldList.reduce((acc, curr) => {
-              acc[curr] = [row[curr]] as never;
-              return acc;
-            }, {} as { [F in FormFields]: ShiftSimple[F] })
-          )
-        )
-      ),
-    });
   }
 }

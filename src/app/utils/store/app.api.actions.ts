@@ -1,6 +1,7 @@
 import {
   ExaminationSummary,
   FacultyWithDepartments,
+  GetRelatedResponseItem,
   UserSummary,
 } from '@esm/data';
 import { createAction, props } from '@ngrx/store';
@@ -29,7 +30,7 @@ export class AppApiAction {
   );
   static readonly getRelatedExaminationsSuccessful = createAction(
     '[App/API] Get related examinations successful',
-    props<{ relatedExaminations: ExaminationSummary[] }>()
+    props<{ relatedExaminations: GetRelatedResponseItem[] }>()
   );
   static readonly getRelatedExaminationsFailed = createAction(
     '[App/API] Get related examinations failed'

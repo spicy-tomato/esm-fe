@@ -3,13 +3,16 @@ import { Inject, Injectable } from '@angular/core';
 import { Result, ResultBuilder } from '@esm/cdk';
 import { AppEnv, APP_ENV } from '@esm/core';
 import {
+  AssignInvigilatorNumerateOfShiftToFacultyResponse,
   CreateExaminationRequest,
-  ShiftGroupSimple,
-  ShiftSimple,
+  ExaminationGetDataResponseItem,
+  ExaminationGetShiftResponseItem,
   ExaminationStatus,
   ExaminationSummary,
+  GetAllGroupsResponseResponseItem,
+  GetGroupByFacultyIdResponseItem,
+  GetRelatedResponseItem,
   TemporaryExamination,
-  DepartmentShiftGroupSimple,
   UpdateTeacherAssignmentRequest,
   UserSummary,
 } from '@esm/data';
@@ -35,29 +38,38 @@ export class ExaminationService {
   }
 
   // [GET] /examination/related
-  getRelated(isActive?: boolean): Observable<Result<ExaminationSummary[]>> {
-    return this.http.get<Result<ExaminationSummary[]>>(this.url + 'related', {
-      params: isActive !== undefined ? { isActive } : {},
-    });
+  getRelated(isActive?: boolean): Observable<Result<GetRelatedResponseItem[]>> {
+    return this.http.get<Result<GetRelatedResponseItem[]>>(
+      this.url + 'related',
+      {
+        params: isActive !== undefined ? { isActive } : {},
+      }
+    );
   }
 
   // [GET] /examination/{examinationId}
   getData(
     id: string,
     departmentAssign?: boolean
-  ): Observable<Result<ShiftSimple[]>> {
-    return this.http.get<Result<ShiftSimple[]>>(this.url + id, {
-      params: departmentAssign
-        ? {
-            departmentAssign,
-          }
-        : {},
-    });
+  ): Observable<Result<ExaminationGetDataResponseItem[]>> {
+    return this.http.get<Result<ExaminationGetDataResponseItem[]>>(
+      this.url + id,
+      {
+        params: departmentAssign !== undefined ? { departmentAssign } : {},
+      }
+    );
   }
 
   // [POST] /examination/{examinationId}
   import(id: string, formData: FormData): Observable<Result<boolean>> {
     return this.http.post<Result<boolean>>(this.url + id, formData);
+  }
+
+  // [POST] /examination/{examinationId}/shift
+  getShifts(id: string): Observable<Result<ExaminationGetShiftResponseItem[]>> {
+    return this.http.get<Result<ExaminationGetShiftResponseItem[]>>(
+      this.url + `${id}/shift`
+    );
   }
 
   // [POST] /examination/{examinationId}/status
@@ -83,9 +95,9 @@ export class ExaminationService {
   getGroupsByFacultyId(
     id: string,
     facultyId: string
-  ): Observable<Result<DepartmentShiftGroupSimple[]>> {
+  ): Observable<Result<GetGroupByFacultyIdResponseItem[]>> {
     return this.http
-      .get<Result<DepartmentShiftGroupSimple[]>>(
+      .get<Result<GetGroupByFacultyIdResponseItem[]>>(
         this.url + `${id}/faculty/${facultyId}/group`
       )
       .pipe(
@@ -117,16 +129,17 @@ export class ExaminationService {
   }
 
   // [GET] /examination/{examinationId}/group
-  getAllGroups(id: string): Observable<Result<ShiftGroupSimple[]>> {
-    return this.http.get<Result<ShiftGroupSimple[]>>(this.url + id + '/group');
+  getAllGroups(
+    id: string
+  ): Observable<Result<GetAllGroupsResponseResponseItem[]>> {
+    return this.http.get<Result<GetAllGroupsResponseResponseItem[]>>(
+      this.url + id + '/group'
+    );
   }
 
   // [POST] /examination/{examinationId}/group
-  calculate(id: string): Observable<Result<ShiftGroupSimple[]>> {
-    return this.http.post<Result<ShiftGroupSimple[]>>(
-      this.url + id + '/group',
-      {}
-    );
+  calculate(id: string): Observable<Result<boolean>> {
+    return this.http.post<Result<boolean>>(this.url + id + '/group', {});
   }
 
   // [POST] /examination/{examinationId}/group/{groupId}/{facultyId}
@@ -135,8 +148,10 @@ export class ExaminationService {
     groupId: string,
     facultyId: string,
     numberOfInvigilator: number
-  ): Observable<Result<ShiftGroupSimple>> {
-    return this.http.post<Result<ShiftGroupSimple>>(
+  ): Observable<Result<AssignInvigilatorNumerateOfShiftToFacultyResponse>> {
+    return this.http.post<
+      Result<AssignInvigilatorNumerateOfShiftToFacultyResponse>
+    >(
       `${this.url}${examinationId}/group/${groupId}/${facultyId}`,
       numberOfInvigilator
     );

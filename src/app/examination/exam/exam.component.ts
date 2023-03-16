@@ -12,7 +12,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { ShiftSimple } from '@esm/data';
+import { ExaminationGetDataResponseItem } from '@esm/data';
 import { TuiDestroyService } from '@taiga-ui/cdk';
 import {
   TuiAlertService,
@@ -115,7 +115,7 @@ export class ExaminationExamComponent implements OnInit {
       .subscribe();
   }
 
-  private buildForm(data: ShiftSimple[]): void {
+  private buildForm(data: ExaminationGetDataResponseItem[]): void {
     this.form = this.fb.group({
       data: this.fb.array(
         data.map((row) =>

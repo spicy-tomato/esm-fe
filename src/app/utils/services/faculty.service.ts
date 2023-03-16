@@ -5,6 +5,7 @@ import { AppEnv, APP_ENV } from '@esm/core';
 import {
   CreateModuleRequest,
   EditFacultyRequest,
+  FacultyGetAllResponseItem,
   FacultySummary,
   ModuleSimple,
   UserSummary,
@@ -21,6 +22,11 @@ export class FacultyService {
   // CONSTRUCTOR
   constructor(private readonly http: HttpClient, @Inject(APP_ENV) env: AppEnv) {
     this.url = env.baseUrl + 'faculty/';
+  }
+
+  // [GET] /department
+  getAll(): Observable<Result<FacultyGetAllResponseItem[]>> {
+    return this.http.get<Result<FacultyGetAllResponseItem[]>>(this.url);
   }
 
   // [GET] /faculty

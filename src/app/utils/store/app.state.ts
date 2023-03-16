@@ -2,6 +2,7 @@ import { Status } from '@esm/cdk';
 import {
   ExaminationSummary,
   FacultyWithDepartments,
+  GetRelatedResponseItem,
   UserSummary,
 } from '@esm/data';
 
@@ -18,7 +19,7 @@ type ExaminationState = {
 };
 
 type RelatedExaminationsState = {
-  relatedExaminations: ExaminationSummary[];
+  relatedExaminations: GetRelatedResponseItem[];
   relatedExaminationsStatus: Status;
   relatedExaminationsError: string | null;
 };

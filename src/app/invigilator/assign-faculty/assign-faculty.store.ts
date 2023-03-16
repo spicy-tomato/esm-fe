@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ObservableHelper, Status } from '@esm/cdk';
-import { ShiftGroupSimple, ExaminationStatus } from '@esm/data';
+import { ExaminationStatus, GetAllGroupsResponseResponseItem } from '@esm/data';
 import { ExaminationService } from '@esm/services';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
@@ -8,7 +8,7 @@ import { Store } from '@ngrx/store';
 import { switchMap, takeUntil, tap, withLatestFrom } from 'rxjs';
 
 type InvigilatorAssignFacultyState = {
-  data: ShiftGroupSimple[];
+  data: GetAllGroupsResponseResponseItem[];
   dataStatus: Status;
   calculateStatus: Status;
   updateRows: number[];

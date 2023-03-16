@@ -1,6 +1,8 @@
-import { NgModule } from '@angular/core';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
-import { ExaminationDataTemporaryTableComponent } from './table.component';
+import { NgModule } from '@angular/core';
+import { ExamMethodPipeModule } from '@esm/core';
+import { VarModule } from '@esm/shared/directives';
 import { LetModule } from '@ngrx/component';
 import { TuiTableModule } from '@taiga-ui/addon-table';
 import {
@@ -12,10 +14,7 @@ import {
   TuiSvgModule,
 } from '@taiga-ui/core';
 import { TuiInputNumberModule } from '@taiga-ui/kit';
-import { ScrollingModule } from '@angular/cdk/scrolling';
-import { ReactiveFormsModule } from '@angular/forms';
-import { ExamMethodPipeModule } from '@esm/core';
-import { VarModule } from '@esm/shared/directives';
+import { ExaminationDataTableComponent } from './table.component';
 
 export const NGRX = [LetModule];
 export const TAIGA_UI = [
@@ -32,14 +31,13 @@ export const TAIGA_UI = [
 @NgModule({
   imports: [
     CommonModule,
-    ReactiveFormsModule,
     VarModule,
     ExamMethodPipeModule,
     ScrollingModule,
     ...NGRX,
     ...TAIGA_UI,
   ],
-  declarations: [ExaminationDataTemporaryTableComponent],
-  exports: [ExaminationDataTemporaryTableComponent],
+  declarations: [ExaminationDataTableComponent],
+  exports: [ExaminationDataTableComponent],
 })
 export class ExaminationDataTableModule {}

@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { TokenService } from '@esm/cdk';
-import { ExaminationService, UserService } from '@esm/services';
+import { ExaminationService, FacultyService, UserService } from '@esm/services';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store } from '@ngrx/store';
 import { catchError, map, mergeMap, of, tap, withLatestFrom } from 'rxjs';
-import { DepartmentService } from '../services/department.service';
 import { AppApiAction } from './app.api.actions';
 import { AppPageAction } from './app.page.actions';
 import { AppSelector } from './app.selectors';
@@ -66,7 +65,7 @@ export class AppEffects {
     return this.actions$.pipe(
       ofType(AppPageAction.getDepartments),
       mergeMap(() => {
-        return this.departmentService.getAll().pipe(
+        return this.facultyService.getAll().pipe(
           map(({ data: departments }) =>
             AppApiAction.getDepartmentsSuccessful({ departments })
           ),
@@ -138,7 +137,7 @@ export class AppEffects {
     private readonly router: Router,
     private readonly userService: UserService,
     private readonly examinationService: ExaminationService,
-    private readonly departmentService: DepartmentService,
+    private readonly facultyService: FacultyService,
     private readonly tokenService: TokenService
   ) {}
 }

@@ -11,19 +11,14 @@
   <tui-scrollbar class="h-full">
     <cdk-virtual-scroll-viewport
       #viewport
+      *ngrxLet="data$ as data"
       tuiScrollable
       class="h-full tui-zero-scrollbar"
       [itemSize]="45"
       [maxBufferPx]="1000"
       [minBufferPx]="700"
     >
-      <table
-        tuiTable
-        *ngIf="form"
-        [formGroup]="form"
-        [columns]="columns"
-        class="w-full"
-      >
+      <table tuiTable *ngIf="data" [columns]="columns" class="w-full">
         <thead>
           <tr
             tuiThGroup
@@ -63,45 +58,39 @@
             <th tuiTh [sticky]="true" [style.top.px]="offset">Phụ trách</th>
           </tr>
         </thead>
-        <tbody tuiTbody formArrayName="data">
-          <tr
-            *cdkVirtualFor="let item of formControl.controls; let i = index"
-            tuiTr
-            [formGroupName]="i"
-          >
+        <tbody tuiTbody>
+          <tr *cdkVirtualFor="let item of data; let i = index" tuiTr>
             <td *tuiCell="'index'" tuiTd>{{ i + 1 }}</td>
             <td *tuiCell="'moduleId'" tuiTd class="w-24 max-w-[6rem]">
-              {{ item.value.shiftGroup.module.displayId }}
+              {{ item.shiftGroup.module.displayId }}
             </td>
             <td *tuiCell="'moduleName'" tuiTd class="w-52 max-w-[13rem]">
-              {{ item.value.shiftGroup.module.name }}
+              {{ item.shiftGroup.module.name }}
             </td>
             <td *tuiCell="'credit'" tuiTd class="!text-center">
-              {{ item.value.shiftGroup.module.credits }}
+              {{ item.shiftGroup.module.credits }}
             </td>
             <td *tuiCell="'method'" tuiTd>
-              {{ item.value.shiftGroup.method | examMethod }}
+              {{ item.shiftGroup.method | examMethod }}
             </td>
             <td *tuiCell="'date'" tuiTd>
-              {{ item.value.startAt | date : "dd/MM/y" }}
+              {{ item.shiftGroup.startAt | date : "dd/MM/y" }}
             </td>
             <td *tuiCell="'startAt'" tuiTd class="!text-center">
-              {{ item.value.startAt | date : "HH:mm" }}
+              {{ item.shiftGroup.startAt | date : "HH:mm" }}
             </td>
             <td *tuiCell="'shift'" tuiTd class="!text-center">
-              {{ item.value.shiftGroup.shift }}
+              {{ item.shiftGroup.shift }}
             </td>
             <td *tuiCell="'room'" tuiTd>
-              {{ item.value.room.displayId }}
+              {{ item.room.displayId }}
             </td>
             <td *tuiCell="'candidatesCount'" tuiTd>
-              {{ item.value.candidatesCount }}
+              {{ item.candidatesCount }}
             </td>
             <td *tuiCell="'departmentAssign'" tuiTd>
               {{
-                item.value.shiftGroup.departmentAssign
-                  ? "Bộ môn"
-                  : "Phòng KT&ĐBCLĐT"
+                item.shiftGroup.departmentAssign ? "Bộ môn" : "Phòng KT&ĐBCLĐT"
               }}
             </td>
           </tr>

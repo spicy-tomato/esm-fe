@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder } from '@angular/forms';
 import {
-  DepartmentShiftGroupSimple,
+  GetGroupByFacultyIdResponseItem,
   DepartmentSummary,
-  ShiftGroupInDepartmentShiftGroupSimple,
   UpdateTeacherAssignmentRequest,
   UserSimple,
   UserSummary,
@@ -21,7 +20,9 @@ type FormType = {
   [key: string]: FormGroup<{
     departmentId: FormControl<string | null>;
     user: FormControl<UserSimple | UserSummary | null>;
-    shiftGroup: FormControl<ShiftGroupInDepartmentShiftGroupSimple>;
+    shiftGroup: FormControl<
+      GetGroupByFacultyIdResponseItem['facultyShiftGroup']['shiftGroup']
+    >;
   }>;
 };
 
@@ -120,7 +121,7 @@ export class InvigilatorAssignTeacherComponent implements OnInit {
       .subscribe();
   }
 
-  private buildForm(data: DepartmentShiftGroupSimple[]): void {
+  private buildForm(data: GetGroupByFacultyIdResponseItem[]): void {
     this.form = this.fb.group(
       data.reduce<FormType>((acc, curr) => {
         acc[curr.id] = this.fb.group({

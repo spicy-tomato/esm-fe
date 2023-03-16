@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ObservableHelper, Status } from '@esm/cdk';
 import {
-  DepartmentShiftGroupSimple,
+  GetGroupByFacultyIdResponseItem,
   UpdateTeacherAssignmentRequest,
   UserSummary,
 } from '@esm/data';
@@ -19,7 +19,7 @@ import {
 } from 'rxjs';
 
 type InvigilatorAssignTeacherState = {
-  data: DepartmentShiftGroupSimple[];
+  data: GetGroupByFacultyIdResponseItem[];
   dataStatus: Status;
   //
   invigilatorsData: UserSummary[];

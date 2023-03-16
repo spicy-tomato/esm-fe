@@ -9,7 +9,7 @@ import {
 import { Router } from '@angular/router';
 import { StringHelper } from '@esm/cdk';
 import { fadeInOut } from '@esm/core';
-import { ExaminationSummary } from '@esm/data';
+import { ExaminationSummary, GetRelatedResponseItem } from '@esm/data';
 import { AppPageAction, AppSelector, AppState } from '@esm/store';
 import { Store } from '@ngrx/store';
 import { tuiButtonOptionsProvider } from '@taiga-ui/core';
@@ -45,8 +45,6 @@ export class TopBarComponent implements OnInit {
   openUserDropdown = false;
 
   readonly items = TopBarConstants.items;
-  readonly filter = (item: ExaminationSummary, search: string): boolean =>
-    item.name.toLowerCase().includes(search.toLowerCase());
   readonly examinationStatus$ = this.store.examinationStatus$;
   readonly examination$ = this.store.examination$;
   readonly relatedExaminations$ = this.store.relatedExaminations$;
@@ -72,6 +70,9 @@ export class TopBarComponent implements OnInit {
   }
 
   // PUBLIC METHODS
+  readonly filter = (item: GetRelatedResponseItem, search: string): boolean =>
+    item.name.toLowerCase().includes(search.toLowerCase());
+
   onClickExaminationDropdownItem(id: string): void {
     void this.router.navigateByUrl(`${id}/exam`);
     this.openExaminationDropdown = false;

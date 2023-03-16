@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ObservableHelper, Status } from '@esm/cdk';
-import { ShiftSimple } from '@esm/data';
+import { ExaminationGetDataResponseItem } from '@esm/data';
 import { ExaminationService } from '@esm/services';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
@@ -15,7 +15,7 @@ import {
 } from 'rxjs';
 
 type ExaminationExamState = {
-  data: ShiftSimple[];
+  data: ExaminationGetDataResponseItem[];
   dataStatus: Status;
   updateStatus: Status;
 };
@@ -47,7 +47,7 @@ export class ExaminationExamStore extends ComponentStore<ExaminationExamState> {
       withLatestFrom(this.examinationId$),
       filter(([{ 1: examination }, id]) => examination.id === id),
       switchMap(({ 1: id }) =>
-        this.examinationService.getData(id, true).pipe(
+        this.examinationService.getData(id, false).pipe(
           tapResponse(
             ({ data }) =>
               this.patchState({

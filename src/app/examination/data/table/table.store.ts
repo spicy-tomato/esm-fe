@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ObservableHelper, Status } from '@esm/cdk';
-import { ShiftSimple } from '@esm/data';
+import { ExaminationGetDataResponseItem } from '@esm/data';
 import { ExaminationService } from '@esm/services';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
@@ -8,7 +8,7 @@ import { Store } from '@ngrx/store';
 import { switchMap, takeUntil, tap, withLatestFrom } from 'rxjs';
 
 type ExaminationDataTableState = {
-  data: ShiftSimple[];
+  data: ExaminationGetDataResponseItem[];
   status: Status;
 };
 
