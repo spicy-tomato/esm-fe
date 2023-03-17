@@ -4,6 +4,7 @@ import { Result, ResultBuilder } from '@esm/cdk';
 import { AppEnv, APP_ENV } from '@esm/core';
 import {
   AssignInvigilatorNumerateOfShiftToFacultyResponse,
+  AssignInvigilatorsToShiftsRequest,
   CreateExaminationRequest,
   ExaminationGetDataResponseItem,
   ExaminationGetShiftResponseItem,
@@ -14,7 +15,6 @@ import {
   GetGroupByFacultyIdResponseItem,
   GetRelatedResponseItem,
   TemporaryExamination,
-  AssignInvigilatorsToShiftsRequest,
   UpdateTeacherAssignmentRequest,
   UserSummary,
 } from '@esm/data';
@@ -138,6 +138,17 @@ export class ExaminationService {
     );
   }
 
+  // [POST] /examination/{examinationId}/faculty/{facultyId}/group
+  autoAssignTeacherToShiftGroups(
+    id: string,
+    facultyId: string
+  ): Observable<Result<true>> {
+    return this.http.post<Result<true>>(
+      this.url + `${id}/faculty/${facultyId}/group/calculate`,
+      {}
+    );
+  }
+
   // [GET] /examination/{examinationId}/group
   getAllGroups(
     id: string
@@ -149,7 +160,10 @@ export class ExaminationService {
 
   // [POST] /examination/{examinationId}/group
   calculate(id: string): Observable<Result<boolean>> {
-    return this.http.post<Result<boolean>>(this.url + id + '/group', {});
+    return this.http.post<Result<boolean>>(
+      this.url + id + '/group/calculate',
+      {}
+    );
   }
 
   // [POST] /examination/{examinationId}/group/{groupId}/{facultyId}

@@ -74,6 +74,14 @@
               [style.top.px]="offset"
               class="!text-center"
             >
+              STT CBCT
+            </th>
+            <th
+              tuiTh
+              [sticky]="true"
+              [style.top.px]="offset"
+              class="!text-center"
+            >
               Họ tên CBCT
             </th>
           </tr>
@@ -108,6 +116,9 @@
                       </td>
                       <td *tuiCell="'room'" tuiTd class="w-24 !text-center">
                         {{ row.room.displayId }}
+                      </td>
+                      <td *tuiCell="'orderIndex'" tuiTd class="w-24 !text-center">
+                        {{ row.orderIndex }}
                       </td>
 
                       <ng-container

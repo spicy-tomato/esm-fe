@@ -26,6 +26,8 @@ type InvigilatorAssignTeacherState = {
   invigilatorsDataStatus: Status;
   //
   updateStatus: Status;
+  //
+  autoAssignStatus: Status;
 };
 
 @Injectable()
@@ -36,18 +38,23 @@ export class InvigilatorAssignTeacherStore extends ComponentStore<InvigilatorAss
     map((u) => u.department!.faculty),
     takeUntil(this.destroy$)
   );
+  readonly examination$ = this.appStore
+    .select(AppSelector.examination)
+    .pipe(takeUntil(this.destroy$));
   readonly departmentsInFaculty$ = combineLatest([
     this.appStore.select(AppSelector.departmentsWithFaculty),
     this.faculty$,
   ]).pipe(
     map(([departments, currentFaculty]) =>
       departments.filter((d) => d.faculty?.id === currentFaculty?.id)
-    )
+    ),
+    takeUntil(this.destroy$)
   );
   readonly data$ = this.select((s) => s.data);
   readonly dataStatus$ = this.select((s) => s.dataStatus);
   readonly invigilatorsData$ = this.select((s) => s.invigilatorsData);
   readonly updateStatus$ = this.select((s) => s.updateStatus);
+  readonly autoAssignStatus$ = this.select((s) => s.autoAssignStatus);
 
   // PRIVATE PROPERTIES
   private readonly examinationId$ = this.appStore
@@ -104,6 +111,32 @@ export class InvigilatorAssignTeacherStore extends ComponentStore<InvigilatorAss
     )
   );
 
+  readonly autoAssign = this.effect<void>((params$) =>
+    params$.pipe(
+      tap(() => this.patchState({ autoAssignStatus: 'loading' })),
+      withLatestFrom(
+        this.examinationId$,
+        this.faculty$.pipe(
+          ObservableHelper.filterNullish(),
+          map((f) => f.id)
+        )
+      ),
+      switchMap(([_, id, facultyId]) =>
+        this.examinationService
+          .autoAssignTeacherToShiftGroups(id, facultyId)
+          .pipe(
+            tapResponse(
+              () => {
+                this.patchState({ autoAssignStatus: 'success' });
+                this.getData();
+              },
+              () => this.patchState({ autoAssignStatus: 'error' })
+            )
+          )
+      )
+    )
+  );
+
   readonly save = this.effect<UpdateTeacherAssignmentRequest>((params$) =>
     params$.pipe(
       tap(() => this.patchState({ updateStatus: 'loading' })),
@@ -142,6 +175,7 @@ export class InvigilatorAssignTeacherStore extends ComponentStore<InvigilatorAss
       invigilatorsData: [],
       invigilatorsDataStatus: 'loading',
       updateStatus: 'idle',
+      autoAssignStatus: 'idle',
     });
   }
 }

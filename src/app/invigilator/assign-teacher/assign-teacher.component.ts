@@ -6,6 +6,7 @@ import {
   UpdateTeacherAssignmentRequest,
   UserSimple,
   UserSummary,
+  ExaminationStatus,
 } from '@esm/data';
 import {
   TuiContextWithImplicit,
@@ -13,7 +14,7 @@ import {
   TuiStringHandler,
 } from '@taiga-ui/cdk';
 import { tuiButtonOptionsProvider } from '@taiga-ui/core';
-import { filter, tap } from 'rxjs';
+import { combineLatest, filter, map, tap } from 'rxjs';
 import { InvigilatorAssignTeacherStore } from './assign-teacher.store';
 
 type FormType = {
@@ -51,9 +52,15 @@ export class InvigilatorAssignTeacherComponent implements OnInit {
   readonly data$ = this.store.data$;
   readonly faculty$ = this.store.faculty$;
   readonly dataStatus$ = this.store.dataStatus$;
+  readonly examination$ = this.store.examination$;
   readonly departments$ = this.store.departmentsInFaculty$;
   readonly updateStatus$ = this.store.updateStatus$;
   readonly invigilatorsData$ = this.store.invigilatorsData$;
+  readonly showLoader$ = combineLatest([
+    this.store.dataStatus$,
+    this.store.autoAssignStatus$,
+  ]).pipe(map((statuses) => statuses.includes('loading')));
+  readonly ExaminationStatus = ExaminationStatus;
 
   // CONSTRUCTOR
   constructor(
@@ -76,6 +83,13 @@ export class InvigilatorAssignTeacherComponent implements OnInit {
     return item.department?.id === departmentId;
   };
 
+  readonly invigilatorIdentityMatcher = (
+    a: UserSummary,
+    b: UserSummary
+  ): boolean => {
+    return a.invigilatorId === b.invigilatorId;
+  };
+
   @tuiPure
   departmentStringify(
     items: readonly DepartmentSummary[]
@@ -86,6 +100,10 @@ export class InvigilatorAssignTeacherComponent implements OnInit {
 
     return ({ $implicit }: TuiContextWithImplicit<string>) =>
       map.get($implicit) || '';
+  }
+
+  autoAssign(): void {
+    this.store.autoAssign();
   }
 
   saveChange(): void {

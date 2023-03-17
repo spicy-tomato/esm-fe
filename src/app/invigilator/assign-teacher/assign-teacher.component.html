@@ -1,26 +1,39 @@
-<div
-  class="py-3 flex flex-0 justify-between items-center bg-white text-3xl font-bold"
->
-  <h3 *ngrxLet="faculty$ as faculty">
-    Phân giảng viên coi thi khoa {{ faculty?.name }}
-  </h3>
+<ng-container *ngrxLet="showLoader$ as showLoader">
+  <div
+    class="py-3 flex flex-0 justify-between items-center bg-white text-3xl font-bold"
+  >
+    <h3 *ngrxLet="faculty$ as faculty">
+      Phân giảng viên coi thi khoa {{ faculty?.name }}
+    </h3>
 
-  <div>
-    <button
-      *ngrxLet="updateStatus$ as updateStatus"
-      tuiButton
-      (click)="saveChange()"
-      [showLoader]="updateStatus === 'loading'"
-      icon="tuiIconSaveLarge"
-      class="mr-2"
-    >
-      Lưu
-    </button>
+    <div>
+      <div *ngrxLet="examination$ as examination" class="buttons">
+        <button
+          tuiButton
+          *ngIf="examination?.status === ExaminationStatus.AssignInvigilator"
+          (click)="autoAssign()"
+          [showLoader]="showLoader"
+          icon="tuiIconAirplayLarge"
+        >
+          Tự động phân bổ
+        </button>
 
-    <!-- TODO -->
-    <!-- <button tuiButton icon="tuiIconDownloadLarge">Tải file Excel</button> -->
+        <button
+          tuiButton
+          *ngIf="examination?.status === ExaminationStatus.AssignInvigilator"
+          (click)="saveChange()"
+          [showLoader]="showLoader"
+          icon="tuiIconSaveLarge"
+        >
+          Lưu
+        </button>
+
+        <!-- TODO -->
+        <!-- <button tuiButton icon="tuiIconDownloadLarge">Tải file Excel</button> -->
+      </div>
+    </div>
   </div>
-</div>
+</ng-container>
 
 <ng-container *ngrxLet="dataStatus$ as dataStatus">
   <tui-loader
@@ -127,6 +140,7 @@
                       [(search)]="customValues[row.id]"
                       [formControl]="rowControl.controls.user"
                       [valueContent]="invigilatorContent"
+                      [identityMatcher]="invigilatorIdentityMatcher"
                       class="w-60"
                     >
                       <ng-template tuiDataList>

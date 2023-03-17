@@ -13,6 +13,7 @@ export type ExaminationGetShiftResponseItem = {
   room: RoomSummary;
   invigilatorShift: {
     id: string;
+    orderIndex: number;
     invigilatorId: string | null;
   }[];
 };

@@ -24,7 +24,15 @@ export class InvigilatorAssignRoomComponent implements OnInit {
   form?: FormGroup<{
     [key: string]: FormControl<string | null>;
   }>;
-  columns = ['moduleId', 'moduleName', 'startAt', 'shift', 'room', 'teacher'];
+  columns = [
+    'moduleId',
+    'moduleName',
+    'startAt',
+    'shift',
+    'room',
+    'orderIndex',
+    'teacher',
+  ];
 
   readonly data$ = this.store.data$;
   // readonly faculty$ = this.store.faculty$;
