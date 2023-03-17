@@ -10,9 +10,11 @@ import {
   ExaminationStatus,
   ExaminationSummary,
   GetAllGroupsResponseResponseItem,
+  GetAvailableInvigilatorsInShiftGroupResponseItem,
   GetGroupByFacultyIdResponseItem,
   GetRelatedResponseItem,
   TemporaryExamination,
+  AssignInvigilatorsToShiftsRequest,
   UpdateTeacherAssignmentRequest,
   UserSummary,
 } from '@esm/data';
@@ -65,11 +67,19 @@ export class ExaminationService {
     return this.http.post<Result<boolean>>(this.url + id, formData);
   }
 
-  // [POST] /examination/{examinationId}/shift
+  // [GET] /examination/{examinationId}/shift
   getShifts(id: string): Observable<Result<ExaminationGetShiftResponseItem[]>> {
     return this.http.get<Result<ExaminationGetShiftResponseItem[]>>(
       this.url + `${id}/shift`
     );
+  }
+
+  // [PATCH] /examination/{examinationId}/shift
+  assignInvigilatorsToShifts(
+    id: string,
+    params: AssignInvigilatorsToShiftsRequest
+  ): Observable<Result<true>> {
+    return this.http.patch<Result<true>>(this.url + `${id}/shift`, params);
   }
 
   // [POST] /examination/{examinationId}/status
@@ -155,6 +165,15 @@ export class ExaminationService {
       `${this.url}${examinationId}/group/${groupId}/${facultyId}`,
       numberOfInvigilator
     );
+  }
+
+  // [POST] /examination/{examinationId}/group/{groupId}/{facultyId}
+  getAvailableInvigilatorsInShiftGroup(
+    examinationId: string
+  ): Observable<Result<GetAvailableInvigilatorsInShiftGroupResponseItem>> {
+    return this.http.get<
+      Result<GetAvailableInvigilatorsInShiftGroupResponseItem>
+    >(`${this.url}${examinationId}/invigilator`);
   }
 
   // [GET] /examination/{examinationId}/summary
