@@ -1,13 +1,17 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder } from '@angular/forms';
-import { AssignInvigilatorsToShiftsRequest, UserSummary } from '@esm/data';
+import {
+  AssignInvigilatorsToShiftsRequest,
+  ExaminationStatus,
+  UserSummary,
+} from '@esm/data';
 import {
   TuiContextWithImplicit,
   tuiPure,
   TuiStringHandler,
 } from '@taiga-ui/cdk';
 import { tuiButtonOptionsProvider } from '@taiga-ui/core';
-import { BehaviorSubject, filter, map, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, filter, map, tap } from 'rxjs';
 import { InvigilatorAssignRoomStore, ShiftUiModel } from './assign-room.store';
 
 @Component({
@@ -32,12 +36,12 @@ export class InvigilatorAssignRoomComponent implements OnInit {
     'room',
     'orderIndex',
     'teacher',
+    'teacherDepartment',
   ];
 
   readonly data$ = this.store.data$;
-  // readonly faculty$ = this.store.faculty$;
   readonly dataStatus$ = this.store.dataStatus$;
-  // readonly departments$ = this.store.departmentsInFaculty$;
+  readonly examination$ = this.store.examination$;
   readonly updateStatus$ = this.store.updateStatus$;
   readonly invigilatorsData$ = this.store.invigilatorsData$;
   readonly invigilatorsList$ = this.invigilatorsData$.pipe(
@@ -61,6 +65,11 @@ export class InvigilatorAssignRoomComponent implements OnInit {
   readonly usedInvigilatorsMap$ = new BehaviorSubject<
     Record<string, Record<string, string | null>>
   >({});
+  readonly showLoader$ = combineLatest([
+    this.store.dataStatus$,
+    this.store.autoAssignStatus$,
+  ]).pipe(map((statuses) => statuses.includes('loading')));
+  readonly ExaminationStatus = ExaminationStatus;
 
   // CONSTRUCTOR
   constructor(
@@ -121,6 +130,10 @@ export class InvigilatorAssignRoomComponent implements OnInit {
     }
 
     this.usedInvigilatorsMap$.next(newValue);
+  }
+
+  autoAssign(): void {
+    this.store.autoAssign();
   }
 
   saveChange(): void {

@@ -4,5 +4,6 @@ export type GetAvailableInvigilatorsInShiftGroupResponseItem = Record<
     id: string;
     fullName: string;
     invigilatorId: string | null;
+    isPriority: boolean;
   }[]
 >;

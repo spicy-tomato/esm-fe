@@ -82,6 +82,11 @@ export class ExaminationService {
     return this.http.patch<Result<true>>(this.url + `${id}/shift`, params);
   }
 
+  // [PATCH] /examination/{examinationId}/shift/calculate
+  autoAssignTeacherToShifts(id: string): Observable<Result<true>> {
+    return this.http.post<Result<true>>(this.url + `${id}/shift/calculate`, {});
+  }
+
   // [POST] /examination/{examinationId}/status
   changeStatus(
     id: string,
@@ -138,7 +143,7 @@ export class ExaminationService {
     );
   }
 
-  // [POST] /examination/{examinationId}/faculty/{facultyId}/group
+  // [POST] /examination/{examinationId}/faculty/{facultyId}/group/calculate
   autoAssignTeacherToShiftGroups(
     id: string,
     facultyId: string
@@ -158,7 +163,7 @@ export class ExaminationService {
     );
   }
 
-  // [POST] /examination/{examinationId}/group
+  // [POST] /examination/{examinationId}/group/calculate
   calculate(id: string): Observable<Result<boolean>> {
     return this.http.post<Result<boolean>>(
       this.url + id + '/group/calculate',

@@ -15,5 +15,18 @@ export type ExaminationGetShiftResponseItem = {
     id: string;
     orderIndex: number;
     invigilatorId: string | null;
+    invigilator: null | {
+      fullName: string;
+      id: string;
+      invigilatorId: string;
+      department: null | {
+        displayId: string | null;
+        name: string;
+        faculty: null | {
+          displayId: string | null;
+          name: string;
+        };
+      };
+    };
   }[];
 };

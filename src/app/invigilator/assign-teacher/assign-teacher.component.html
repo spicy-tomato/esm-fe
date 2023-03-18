@@ -6,31 +6,29 @@
       Phân giảng viên coi thi khoa {{ faculty?.name }}
     </h3>
 
-    <div>
-      <div *ngrxLet="examination$ as examination" class="buttons">
-        <button
-          tuiButton
-          *ngIf="examination?.status === ExaminationStatus.AssignInvigilator"
-          (click)="autoAssign()"
-          [showLoader]="showLoader"
-          icon="tuiIconAirplayLarge"
-        >
-          Tự động phân bổ
-        </button>
+    <div *ngrxLet="examination$ as examination" class="buttons">
+      <button
+        tuiButton
+        *ngIf="examination?.status === ExaminationStatus.AssignInvigilator"
+        (click)="autoAssign()"
+        [showLoader]="showLoader"
+        icon="tuiIconAirplayLarge"
+      >
+        Tự động phân bổ
+      </button>
 
-        <button
-          tuiButton
-          *ngIf="examination?.status === ExaminationStatus.AssignInvigilator"
-          (click)="saveChange()"
-          [showLoader]="showLoader"
-          icon="tuiIconSaveLarge"
-        >
-          Lưu
-        </button>
+      <button
+        tuiButton
+        *ngIf="examination?.status === ExaminationStatus.AssignInvigilator"
+        (click)="saveChange()"
+        [showLoader]="showLoader"
+        icon="tuiIconSaveLarge"
+      >
+        Lưu
+      </button>
 
-        <!-- TODO -->
-        <!-- <button tuiButton icon="tuiIconDownloadLarge">Tải file Excel</button> -->
-      </div>
+      <!-- TODO -->
+      <!-- <button tuiButton icon="tuiIconDownloadLarge">Tải file Excel</button> -->
     </div>
   </div>
 </ng-container>

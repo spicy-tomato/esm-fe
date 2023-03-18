@@ -1,32 +1,38 @@
-<div
-  class="py-3 flex flex-0 justify-between items-center bg-white text-3xl font-bold"
->
-  <h3>Phân công phòng thi</h3>
-
-  <div>
-    <button
-      *ngrxLet="updateStatus$ as updateStatus"
-      tuiButton
-      (click)="saveChange()"
-      [showLoader]="updateStatus === 'loading'"
-      icon="tuiIconSaveLarge"
-      class="mr-2"
-    >
-      Lưu
-    </button>
-
-    <!-- TODO -->
-    <!-- <button tuiButton icon="tuiIconDownloadLarge">Tải file Excel</button> -->
+<ng-container *ngrxLet="showLoader$ as showLoader">
+  <div
+    class="py-3 flex flex-0 justify-between items-center bg-white text-3xl font-bold"
+  >
+    <h3>Phân công phòng thi</h3>
+    <div *ngrxLet="examination$ as examination" class="buttons">
+      <button
+        tuiButton
+        *ngIf="examination?.status === ExaminationStatus.AssignInvigilator"
+        (click)="autoAssign()"
+        [showLoader]="showLoader"
+        icon="tuiIconAirplayLarge"
+      >
+        Tự động phân bổ
+      </button>
+      <button
+        tuiButton
+        *ngIf="examination?.status === ExaminationStatus.AssignInvigilator"
+        (click)="saveChange()"
+        [showLoader]="showLoader"
+        icon="tuiIconSaveLarge"
+      >
+        Lưu
+      </button>
+      <!-- TODO -->
+      <!-- <button tuiButton icon="tuiIconDownloadLarge">Tải file Excel</button> -->
+    </div>
   </div>
-</div>
-
+</ng-container>
 <ng-container *ngrxLet="dataStatus$ as dataStatus">
   <tui-loader
     *ngIf="dataStatus === 'loading'; else loaded"
     class="h-40"
   ></tui-loader>
 </ng-container>
-
 <ng-template #loaded>
   <tui-scrollbar class="scrollbar" class="flex-1">
     <cdk-virtual-scroll-viewport
@@ -84,9 +90,16 @@
             >
               Họ tên CBCT
             </th>
+            <th
+              tuiTh
+              [sticky]="true"
+              [style.top.px]="offset"
+              class="!text-center"
+            >
+              Khoa
+            </th>
           </tr>
         </thead>
-
         <tbody tuiTbody>
           <ng-container *ngrxLet="data$ as data">
             <ng-container *ngrxLet="invigilatorsData$ as invigilatorsData">
@@ -117,7 +130,11 @@
                       <td *tuiCell="'room'" tuiTd class="w-24 !text-center">
                         {{ row.room.displayId }}
                       </td>
-                      <td *tuiCell="'orderIndex'" tuiTd class="w-24 !text-center">
+                      <td
+                        *tuiCell="'orderIndex'"
+                        tuiTd
+                        class="w-24 !text-center"
+                      >
                         {{ row.orderIndex }}
                       </td>
 
@@ -150,7 +167,11 @@
                                   >
                                     <button
                                       tuiOption
-                                      *ngIf="!(usedInvigilatorsMap[row.shiftGroup.id]?.[invigilator.id])"
+                                      *ngIf="
+                                        !(usedInvigilatorsMap[row.shiftGroup.id]?.[invigilator.id]) && 
+                                          ((row.orderIndex === 1 && invigilator.isPriority) 
+                                          || (row.orderIndex !== 1 && !invigilator.isPriority))
+                                      "
                                       [value]="invigilator.id"
                                     >
                                       {{ invigilator.fullName }}
@@ -162,6 +183,10 @@
                           </td>
                         </ng-container>
                       </ng-container>
+
+                      <td *tuiCell="'teacherDepartment'" tuiTd class="w-24">
+                        {{ row.invigilator?.department?.faculty?.displayId }}
+                      </td>
                     </tr>
                   </ng-container>
                 </ng-container>

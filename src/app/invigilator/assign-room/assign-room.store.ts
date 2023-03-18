@@ -25,15 +25,21 @@ type InvigilatorAssignRoomState = {
   invigilatorsDataStatus: Status;
   //
   updateStatus: Status;
+  //
+  autoAssignStatus: Status;
 };
 
 @Injectable()
 export class InvigilatorAssignRoomStore extends ComponentStore<InvigilatorAssignRoomState> {
   // PUBLIC PROPERTIES
+  readonly examination$ = this.appStore
+    .select(AppSelector.examination)
+    .pipe(takeUntil(this.destroy$));
   readonly data$ = this.select((s) => s.data);
   readonly dataStatus$ = this.select((s) => s.dataStatus);
   readonly invigilatorsData$ = this.select((s) => s.invigilatorsData);
   readonly updateStatus$ = this.select((s) => s.updateStatus);
+  readonly autoAssignStatus$ = this.select((s) => s.autoAssignStatus);
 
   // PRIVATE PROPERTIES
   private readonly examinationId$ = this.appStore
@@ -85,6 +91,24 @@ export class InvigilatorAssignRoomStore extends ComponentStore<InvigilatorAssign
     )
   );
 
+  readonly autoAssign = this.effect<void>((params$) =>
+    params$.pipe(
+      tap(() => this.patchState({ autoAssignStatus: 'loading' })),
+      withLatestFrom(this.examinationId$),
+      switchMap(({ 1: id }) =>
+        this.examinationService.autoAssignTeacherToShifts(id).pipe(
+          tapResponse(
+            () => {
+              this.patchState({ autoAssignStatus: 'success' });
+              this.getData();
+            },
+            () => this.patchState({ autoAssignStatus: 'error' })
+          )
+        )
+      )
+    )
+  );
+
   readonly save = this.effect<AssignInvigilatorsToShiftsRequest>((params$) =>
     params$.pipe(
       tap(() => this.patchState({ updateStatus: 'loading' })),
@@ -114,6 +138,7 @@ export class InvigilatorAssignRoomStore extends ComponentStore<InvigilatorAssign
       invigilatorsData: {},
       invigilatorsDataStatus: 'loading',
       updateStatus: 'idle',
+      autoAssignStatus: 'idle',
     });
   }
 }
