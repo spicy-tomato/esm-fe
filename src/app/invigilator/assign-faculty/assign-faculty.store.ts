@@ -11,6 +11,7 @@ type InvigilatorAssignFacultyState = {
   data: GetAllGroupsResponseResponseItem[];
   dataStatus: Status;
   calculateStatus: Status;
+  finishStatus: Status;
   updateRows: number[];
 };
 
@@ -26,6 +27,7 @@ export class InvigilatorAssignFacultyStore extends ComponentStore<InvigilatorAss
   readonly data$ = this.select((s) => s.data);
   readonly dataStatus$ = this.select((s) => s.dataStatus);
   readonly calculateStatus$ = this.select((s) => s.calculateStatus);
+  readonly finishStatus$ = this.select((s) => s.finishStatus);
   readonly updateRows$ = this.select((s) => s.updateRows);
 
   // PRIVATE PROPERTIES
@@ -73,7 +75,7 @@ export class InvigilatorAssignFacultyStore extends ComponentStore<InvigilatorAss
 
   readonly finishAssign = this.effect<void>((params$) =>
     params$.pipe(
-      tap(() => this.patchState({ calculateStatus: 'loading' })),
+      tap(() => this.patchState({ finishStatus: 'loading' })),
       withLatestFrom(this.examinationId$),
       switchMap(({ 1: id }) => {
         return this.examinationService
@@ -81,10 +83,10 @@ export class InvigilatorAssignFacultyStore extends ComponentStore<InvigilatorAss
           .pipe(
             tapResponse(
               () => {
-                this.patchState({ calculateStatus: 'success' });
+                this.patchState({ finishStatus: 'success' });
                 this.getData();
               },
-              () => this.patchState({ calculateStatus: 'error' })
+              () => this.patchState({ finishStatus: 'error' })
             )
           );
       })
@@ -133,6 +135,7 @@ export class InvigilatorAssignFacultyStore extends ComponentStore<InvigilatorAss
       data: [],
       dataStatus: 'loading',
       calculateStatus: 'idle',
+      finishStatus: 'idle',
       updateRows: [],
     });
   }

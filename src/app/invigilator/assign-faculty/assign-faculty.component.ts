@@ -19,10 +19,15 @@ import {
   GetAllGroupsResponseResponseItem,
 } from '@esm/data';
 import { ConfirmDialogComponent } from '@esm/shared/dialogs';
-import { tuiButtonOptionsProvider, TuiDialogService } from '@taiga-ui/core';
+import {
+  TuiAlertService,
+  tuiButtonOptionsProvider,
+  TuiDialogService,
+  TuiNotification,
+} from '@taiga-ui/core';
 import { TuiInputNumberComponent } from '@taiga-ui/kit';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
-import { combineLatest, map, tap } from 'rxjs';
+import { combineLatest, map, of, switchMap, tap } from 'rxjs';
 import { InvigilatorAssignFacultyStore } from './assign-faculty.store';
 
 @Component({
@@ -58,11 +63,10 @@ export class InvigilatorAssignFacultyComponent implements OnInit {
   readonly data$ = this.store.data$;
   readonly faculties$ = this.store.faculties$;
   readonly updateRows$ = this.store.updateRows$;
+  readonly dataStatus$ = this.store.dataStatus$;
   readonly examination$ = this.store.examination$;
-  readonly showLoader$ = combineLatest([
-    this.store.dataStatus$,
-    this.store.calculateStatus$,
-  ]).pipe(map((statuses) => statuses.includes('loading')));
+  readonly finishStatus$ = this.store.finishStatus$;
+  readonly calculateStatus$ = this.store.calculateStatus$;
   readonly columns$ = this.store.faculties$.pipe(
     map((faculties) => [
       'moduleId',
@@ -84,6 +88,7 @@ export class InvigilatorAssignFacultyComponent implements OnInit {
   constructor(
     private readonly fb: NonNullableFormBuilder,
     @Inject(TuiDialogService) private readonly dialogService: TuiDialogService,
+    @Inject(TuiAlertService) private readonly alertService: TuiAlertService,
     @Inject(Injector) private readonly injector: Injector,
     private readonly store: InvigilatorAssignFacultyStore
   ) {}
@@ -91,6 +96,7 @@ export class InvigilatorAssignFacultyComponent implements OnInit {
   // LIFECYCLE
   ngOnInit(): void {
     this.handleBuildForm();
+    this.handleFinish();
     this.store.getData();
   }
 
@@ -168,6 +174,28 @@ export class InvigilatorAssignFacultyComponent implements OnInit {
   private handleBuildForm(): void {
     combineLatest([this.faculties$, this.data$])
       .pipe(tap(([faculties, data]) => this.buildForm(faculties, data)))
+      .subscribe();
+  }
+
+  private handleFinish(): void {
+    this.finishStatus$
+      .pipe(
+        switchMap((status) =>
+          status === 'success'
+            ? this.alertService.open('Đã chốt số lượng CBCT!', {
+                status: TuiNotification.Success,
+              })
+            : status === 'error'
+            ? this.alertService.open(
+                'Số lượng CBCT thực tế khác so với CBCT cần thiết, vui lòng kiểm tra lại!',
+                {
+                  label: 'Lỗi',
+                  status: TuiNotification.Error,
+                }
+              )
+            : of()
+        )
+      )
       .subscribe();
   }
 

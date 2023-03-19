@@ -1,4 +1,4 @@
-<ng-container *ngrxLet="showLoader$ as showLoader">
+<ng-container *ngrxLet="dataStatus$ as dataStatus">
   <div
     class="py-3 flex flex-0 justify-between items-center bg-white text-3xl font-bold"
   >
@@ -11,32 +11,45 @@
       ></tui-loader>
     </div>
     <div *ngrxLet="examination$ as examination" class="buttons">
-      <button
-        tuiButton
-        *ngIf="examination?.status === ExaminationStatus.AssignFaculty"
-        (click)="calculate()"
-        [showLoader]="showLoader"
-        icon="tuiIconAirplayLarge"
-      >
-        Tính số lượng
-      </button>
+      <ng-container *ngrxLet="finishStatus$ as finishStatus">
+        <ng-container *ngrxLet="calculateStatus$ as calculateStatus">
+          <button
+            tuiButton
+            *ngIf="examination?.status === ExaminationStatus.AssignFaculty"
+            (click)="calculate()"
+            [showLoader]="calculateStatus === 'loading'"
+            [disabled]="dataStatus === 'loading' || finishStatus === 'loading'"
+            icon="tuiIconAirplayLarge"
+          >
+            Tính số lượng
+          </button>
 
-      <button
-        tuiButton
-        *ngIf="examination?.status === ExaminationStatus.AssignFaculty"
-        (click)="finishAssign()"
-        [showLoader]="showLoader"
-        icon="tuiIconCheckCircleLarge"
-      >
-        Chốt số lượng
-      </button>
+          <button
+            tuiButton
+            *ngIf="examination?.status === ExaminationStatus.AssignFaculty"
+            (click)="finishAssign()"
+            [showLoader]="finishStatus === 'loading'"
+            [disabled]="
+              dataStatus === 'loading' || calculateStatus === 'loading'
+            "
+            icon="tuiIconCheckCircleLarge"
+          >
+            Chốt số lượng
+          </button>
+        </ng-container>
+      </ng-container>
 
       <!-- TODO -->
-      <button tuiButton icon="tuiIconDownloadLarge">Tải file Excel</button>
+      <button tuiButton [disabled]="true" icon="tuiIconDownloadLarge">
+        Tải file Excel
+      </button>
     </div>
   </div>
 
-  <tui-loader *ngIf="showLoader; else loaded" class="h-40"></tui-loader>
+  <tui-loader
+    *ngIf="dataStatus === 'loading'; else loaded"
+    class="h-40"
+  ></tui-loader>
 </ng-container>
 
 <ng-template #loaded>
