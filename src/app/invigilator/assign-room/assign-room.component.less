@@ -14,4 +14,10 @@ table {
   th {
     @apply whitespace-nowrap;
   }
+  tr.duplicated td {
+    @apply bg-tui-warning-bg;
+    &:hover {
+      @apply bg-tui-warning-bg-hover;
+    }
+  }
 }

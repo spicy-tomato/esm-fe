@@ -39,6 +39,7 @@ module.exports = {
         "tui-success-bg": "var(--tui-success-bg)",
         "tui-success-bg-hover": "var(--tui-success-bg-hover)",
         "tui-warning-fill": "var(--tui-warning-fill)",
+        "tui-warning-bg": "var(--tui-warning-bg)",
         "tui-warning-bg-hover": "var(--tui-warning-bg-hover)",
         "tui-error-fill": "var(--tui-error-fill)",
         "tui-error-bg": "var(--tui-error-bg)",

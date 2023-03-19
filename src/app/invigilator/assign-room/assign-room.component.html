@@ -114,7 +114,11 @@
                       ) as invigilatorContent
                     "
                   >
-                    <tr tuiTr *cdkVirtualFor="let row of data">
+                    <tr
+                      tuiTr
+                      *cdkVirtualFor="let row of data"
+                      [class.duplicated]="row.isDuplicated"
+                    >
                       <td *tuiCell="'moduleId'" tuiTd class="w-32 max-w-[8rem]">
                         {{ row.shiftGroup.module.displayId }}
                       </td>
