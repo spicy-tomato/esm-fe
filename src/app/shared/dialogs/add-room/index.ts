@@ -1,2 +1,1 @@
-export * from './add-room.component';
-export { AddRoomDialogModule } from './add-room.module';
+export { AddRoomDialogComponent } from './add-room.component';

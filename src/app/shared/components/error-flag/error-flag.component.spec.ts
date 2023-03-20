@@ -8,9 +8,7 @@ describe('ErrorFlagComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ErrorFlagComponent ]
-    })
-    .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ErrorFlagComponent);
     component = fixture.componentInstance;

@@ -1,17 +1,51 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { NonNullableFormBuilder, Validators } from '@angular/forms';
+import {
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { StringHelper } from '@esm/cdk';
 import { slideUp } from '@esm/core';
+import { LetModule } from '@ngrx/component';
 import { TuiDestroyService } from '@taiga-ui/cdk';
+import {
+  TuiButtonModule,
+  TuiErrorModule,
+  TuiHintModule,
+  TuiLinkModule,
+  TuiTextfieldControllerModule,
+} from '@taiga-ui/core';
+import {
+  TuiCheckboxLabeledModule,
+  TuiFieldErrorPipeModule,
+  TuiInputModule,
+  TuiInputPasswordModule,
+} from '@taiga-ui/kit';
 import { tap } from 'rxjs';
 import { LoginStore } from './login.store';
+
+export const NGRX = [LetModule];
+export const TAIGA_UI = [
+  TuiButtonModule,
+  TuiCheckboxLabeledModule,
+  TuiErrorModule,
+  TuiFieldErrorPipeModule,
+  TuiHintModule,
+  TuiInputModule,
+  TuiInputPasswordModule,
+  TuiLinkModule,
+  TuiTextfieldControllerModule,
+];
 
 @Component({
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.less'],
-  animations: [slideUp],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, ...NGRX, ...TAIGA_UI],
   providers: [LoginStore, TuiDestroyService],
+  animations: [slideUp],
 })
 export class LoginComponent implements OnInit {
   // PUBLIC PROPERTIES

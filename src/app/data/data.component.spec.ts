@@ -2,8 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TUI_SANITIZER } from '@taiga-ui/core';
 import { NgDompurifySanitizer } from '@tinkoff/ng-dompurify';
-import { DataComponent } from './data.component';
-import { TAIGA_UI } from './data.module';
+import { DataComponent, TAIGA_UI } from './data.component';
 
 describe('DataComponent', () => {
   let component: DataComponent;
@@ -12,7 +11,6 @@ describe('DataComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, ...TAIGA_UI],
-      declarations: [DataComponent],
       providers: [
         {
           provide: TUI_SANITIZER,

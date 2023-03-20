@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -6,13 +7,26 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { Router } from '@angular/router';
-import { UserSummary } from '@esm/data';
+import { Router, RouterModule } from '@angular/router';
+import { RelativeTimePipe } from '@esm/core';
 import { AppSelector, AppState } from '@esm/store';
+import { LetModule } from '@ngrx/component';
 import { Store } from '@ngrx/store';
-import { TuiActiveZoneDirective, TuiDestroyService } from '@taiga-ui/cdk';
-import { tuiButtonOptionsProvider } from '@taiga-ui/core';
-import { BehaviorSubject, filter, Observable, takeUntil, tap } from 'rxjs';
+import {
+  TuiActiveZoneDirective,
+  TuiActiveZoneModule,
+  TuiDestroyService,
+} from '@taiga-ui/cdk';
+import {
+  TuiButtonModule,
+  tuiButtonOptionsProvider,
+  TuiDataListModule,
+  TuiHintModule,
+  TuiHostedDropdownModule,
+  TuiSvgModule,
+} from '@taiga-ui/core';
+import { TuiLineClampModule, TuiMarkerIconModule } from '@taiga-ui/kit';
+import { BehaviorSubject, filter, takeUntil, tap } from 'rxjs';
 import {
   NotificationListOptions,
   NOTIFICATION_LIST_OPTIONS,
@@ -24,11 +38,25 @@ import {
   NotificationState,
 } from './data-access/store';
 
+export const NGRX = [LetModule];
+export const TAIGA_UI = [
+  TuiActiveZoneModule,
+  TuiButtonModule,
+  TuiDataListModule,
+  TuiHostedDropdownModule,
+  TuiHintModule,
+  TuiLineClampModule,
+  TuiMarkerIconModule,
+  TuiSvgModule,
+];
+
 @Component({
   selector: 'esm-notification-list',
   templateUrl: './notification-list.component.html',
   styleUrls: ['./notification-list.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule, RouterModule, RelativeTimePipe, ...NGRX, ...TAIGA_UI],
   providers: [
     TuiDestroyService,
     tuiButtonOptionsProvider({

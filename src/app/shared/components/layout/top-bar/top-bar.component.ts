@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -6,23 +7,65 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import { StringHelper } from '@esm/cdk';
 import { fadeInOut } from '@esm/core';
 import { ExaminationSummary, GetRelatedResponseItem } from '@esm/data';
+import { VarDirective } from '@esm/shared/directives';
 import { AppPageAction, AppSelector, AppState } from '@esm/store';
+import { LetModule } from '@ngrx/component';
 import { Store } from '@ngrx/store';
-import { tuiButtonOptionsProvider } from '@taiga-ui/core';
+import {
+  TuiActiveZoneModule,
+  TuiFilterPipeModule,
+  TuiLetModule,
+} from '@taiga-ui/cdk';
+import {
+  TuiButtonModule,
+  tuiButtonOptionsProvider,
+  TuiDataListModule,
+  TuiHostedDropdownModule,
+  TuiLoaderModule,
+  TuiSvgModule,
+  TuiTextfieldControllerModule,
+} from '@taiga-ui/core';
+import { TuiInputModule } from '@taiga-ui/kit';
 import { map, tap, withLatestFrom } from 'rxjs';
+import { BellComponent } from '../../bell';
 import { TopBarConstants } from './top-bar.constant';
 import { TopBarStore } from './top-bar.store';
 import { TopBarOptions, TOP_BAR_OPTIONS } from './top-bar.token';
+
+const NGRX = [LetModule];
+export const TAIGA_UI = [
+  TuiActiveZoneModule,
+  TuiButtonModule,
+  TuiDataListModule,
+  TuiFilterPipeModule,
+  TuiHostedDropdownModule,
+  TuiInputModule,
+  TuiLetModule,
+  TuiLoaderModule,
+  TuiSvgModule,
+  TuiTextfieldControllerModule,
+];
 
 @Component({
   selector: 'esm-top-bar',
   templateUrl: './top-bar.component.html',
   styleUrls: ['./top-bar.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    BellComponent,
+    VarDirective,
+    ...NGRX,
+    ...TAIGA_UI,
+  ],
   providers: [
     TopBarStore,
     tuiButtonOptionsProvider({

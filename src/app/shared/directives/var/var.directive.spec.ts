@@ -13,7 +13,8 @@ describe('VarDirective', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [VarDirective, HostComponent],
+      imports: [VarDirective],
+      declarations: [HostComponent],
       providers: [provideMockStore({})],
     }).compileComponents();
 

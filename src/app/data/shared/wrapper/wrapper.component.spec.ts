@@ -9,7 +9,6 @@ describe('WrapperComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      declarations: [DataWrapperComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DataWrapperComponent);

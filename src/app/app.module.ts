@@ -23,7 +23,7 @@ import { NgDompurifySanitizer } from '@tinkoff/ng-dompurify';
 import { of } from 'rxjs';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
-import { LayoutModule, LoaderModule } from './shared/components';
+import { LayoutComponent, LoaderComponent } from './shared/components';
 
 const NGRX = [
   StoreModule.forRoot({ router: routerReducer }, {}),
@@ -42,8 +42,8 @@ const TAIGA_UI = [TuiRootModule, TuiAlertModule, TuiDialogModule];
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
-    LayoutModule,
-    LoaderModule,
+    LayoutComponent,
+    LoaderComponent,
     ...NGRX,
     ...TAIGA_UI,
   ],

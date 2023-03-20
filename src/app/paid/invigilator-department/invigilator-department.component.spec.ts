@@ -7,7 +7,6 @@ describe('InvigilatorDepartmentComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PaidInvigilatorDepartmentComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PaidInvigilatorDepartmentComponent);

@@ -1,1 +1,1 @@
-export * from './var.module';
+export * from './var.directive';

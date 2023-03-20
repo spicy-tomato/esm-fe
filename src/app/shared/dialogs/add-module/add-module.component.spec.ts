@@ -5,8 +5,11 @@ import { APP_ENV } from '@esm/core';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
-import { AddModuleDialogComponent } from './add-module.component';
-import { NGRX, TAIGA_UI } from './add-module.module';
+import {
+  AddModuleDialogComponent,
+  NGRX,
+  TAIGA_UI,
+} from './add-module.component';
 
 describe('AddModuleDialogComponent', () => {
   let component: AddModuleDialogComponent;
@@ -20,7 +23,6 @@ describe('AddModuleDialogComponent', () => {
         ...NGRX,
         ...TAIGA_UI,
       ],
-      declarations: [AddModuleDialogComponent],
       providers: [
         provideMockStore({
           initialState: {

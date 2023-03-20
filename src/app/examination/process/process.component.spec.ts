@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { ExaminationProcessComponent } from './process.component';
-import { TAIGA_UI } from './process.module';
+import { ExaminationProcessComponent, TAIGA_UI } from './process.component';
 
 describe('ExaminationProcessComponent', () => {
   let component: ExaminationProcessComponent;
@@ -10,7 +9,6 @@ describe('ExaminationProcessComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [FormsModule, ...TAIGA_UI],
-      declarations: [ExaminationProcessComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ExaminationProcessComponent);

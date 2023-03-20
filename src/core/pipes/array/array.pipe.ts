@@ -8,6 +8,7 @@ type OperatorParam<T> = {
 
 @Pipe({
   name: 'array',
+  standalone: true,
 })
 export class ArrayPipe implements PipeTransform {
   transform<T>(value: T[], operator: 'in', param: T): boolean;

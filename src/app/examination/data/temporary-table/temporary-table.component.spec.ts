@@ -5,8 +5,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { APP_ENV } from '@esm/core';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { ExaminationDataTemporaryTableComponent } from './temporary-table.component';
-import { NGRX, TAIGA_UI } from './temporary-table.module';
+import {
+  ExaminationDataTemporaryTableComponent,
+  NGRX,
+  TAIGA_UI,
+} from './temporary-table.component';
 
 describe('ExaminationDataTemporaryTableComponent', () => {
   let component: ExaminationDataTemporaryTableComponent;
@@ -21,7 +24,6 @@ describe('ExaminationDataTemporaryTableComponent', () => {
         ...NGRX,
         ...TAIGA_UI,
       ],
-      declarations: [ExaminationDataTemporaryTableComponent],
       providers: [
         provideMockStore({
           initialState: {

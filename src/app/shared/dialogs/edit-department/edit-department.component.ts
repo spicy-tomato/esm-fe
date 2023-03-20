@@ -1,25 +1,55 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   Inject,
   OnInit,
 } from '@angular/core';
-import { NonNullableFormBuilder, Validators } from '@angular/forms';
+import {
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ObservableHelper, StringifyHelper } from '@esm/cdk';
 import { DepartmentSummary } from '@esm/data';
+import { LetModule } from '@ngrx/component';
 import {
   TuiAlertService,
+  TuiButtonModule,
+  TuiDataListModule,
   TuiDialogContext,
+  TuiErrorModule,
+  TuiLabelModule,
   TuiNotification,
+  TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
+import {
+  TuiFieldErrorPipeModule,
+  TuiInputModule,
+  TuiSelectModule,
+} from '@taiga-ui/kit';
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
 import { filter, tap } from 'rxjs';
 import { EditDepartmentDialogStore } from './edit-department.store';
+
+export const NGRX = [LetModule];
+export const TAIGA_UI = [
+  TuiButtonModule,
+  TuiDataListModule,
+  TuiErrorModule,
+  TuiFieldErrorPipeModule,
+  TuiInputModule,
+  TuiLabelModule,
+  TuiSelectModule,
+  TuiTextfieldControllerModule,
+];
 
 @Component({
   templateUrl: './edit-department.component.html',
   styleUrls: ['./edit-department.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, ...NGRX, ...TAIGA_UI],
   providers: [EditDepartmentDialogStore],
 })
 export class EditDepartmentDialogComponent implements OnInit {

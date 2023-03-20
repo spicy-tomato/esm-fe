@@ -1,22 +1,30 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   Inject,
   OnInit,
 } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DepartmentSimple, TemporaryExamination } from '@esm/data';
+import { LetModule } from '@ngrx/component';
 import {
   TuiContextWithImplicit,
+  TuiFilterPipeModule,
   tuiPure,
   TuiStringHandler,
 } from '@taiga-ui/cdk';
 import {
   TuiAlertService,
+  TuiButtonModule,
   tuiButtonOptionsProvider,
+  TuiDataListModule,
   TuiDialogContext,
+  TuiLabelModule,
   TuiNotification,
+  TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
+import { TuiInputModule, TuiSelectModule } from '@taiga-ui/kit';
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
 import { filter, take, tap } from 'rxjs';
 import {
@@ -25,10 +33,23 @@ import {
   AddModuleDialogStore,
 } from './add-module.store';
 
+export const NGRX = [LetModule];
+export const TAIGA_UI = [
+  TuiButtonModule,
+  TuiDataListModule,
+  TuiFilterPipeModule,
+  TuiInputModule,
+  TuiLabelModule,
+  TuiSelectModule,
+  TuiTextfieldControllerModule,
+];
+
 @Component({
   templateUrl: './add-module.component.html',
   styleUrls: ['./add-module.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, ...NGRX, ...TAIGA_UI],
   providers: [AddModuleDialogStore, tuiButtonOptionsProvider({ size: 'm' })],
 })
 export class AddModuleDialogComponent implements OnInit {

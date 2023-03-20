@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
-import { ConfirmDialogComponent } from './confirm.component';
-import { NGRX, TAIGA_UI } from './confirm.module';
+import { ConfirmDialogComponent, NGRX, TAIGA_UI } from './confirm.component';
 
 describe('ConfirmDialogComponent', () => {
   let component: ConfirmDialogComponent;
@@ -10,7 +9,6 @@ describe('ConfirmDialogComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [...NGRX, ...TAIGA_UI],
-      declarations: [ConfirmDialogComponent],
       providers: [
         {
           provide: POLYMORPHEUS_CONTEXT,

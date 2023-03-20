@@ -1,3 +1,5 @@
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -9,23 +11,51 @@ import {
   FormControl,
   FormGroup,
   NonNullableFormBuilder,
+  ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ExamMethodPipe } from '@esm/core';
 import { ExaminationGetDataResponseItem } from '@esm/data';
+import { VarDirective } from '@esm/shared/directives';
+import { LetModule } from '@ngrx/component';
+import { TuiTableModule } from '@taiga-ui/addon-table';
 import { TuiDestroyService } from '@taiga-ui/cdk';
 import {
   TuiAlertService,
+  TuiButtonModule,
   tuiButtonOptionsProvider,
+  TuiLoaderModule,
   TuiNotification,
+  TuiScrollbarModule,
 } from '@taiga-ui/core';
+import { TuiInputNumberModule } from '@taiga-ui/kit';
 import { combineLatest, filter, map, switchMap, takeUntil, tap } from 'rxjs';
 import { ExaminationExamStore } from './exam.store';
+
+export const NGRX = [LetModule];
+export const TAIGA_UI = [
+  TuiButtonModule,
+  TuiInputNumberModule,
+  TuiLoaderModule,
+  TuiScrollbarModule,
+  TuiTableModule,
+];
 
 @Component({
   templateUrl: './exam.component.html',
   styleUrls: ['./exam.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    ExamMethodPipe,
+    ScrollingModule,
+    VarDirective,
+    ...NGRX,
+    ...TAIGA_UI,
+  ],
   providers: [
     ExaminationExamStore,
     TuiDestroyService,

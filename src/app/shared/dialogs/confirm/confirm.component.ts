@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -5,14 +6,24 @@ import {
   OnInit,
 } from '@angular/core';
 import { Status } from '@esm/cdk';
-import { TuiDialogContext } from '@taiga-ui/core';
+import { LetModule } from '@ngrx/component';
+import {
+  TuiButtonModule,
+  TuiDialogContext,
+  TuiSvgModule,
+} from '@taiga-ui/core';
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
 import { filter, Observable, tap } from 'rxjs';
+
+export const NGRX = [LetModule];
+export const TAIGA_UI = [TuiButtonModule, TuiSvgModule];
 
 @Component({
   selector: 'esm-confirm',
   templateUrl: './confirm.component.html',
   styleUrls: ['./confirm.component.less'],
+  standalone: true,
+  imports: [CommonModule, ...NGRX, ...TAIGA_UI],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmDialogComponent implements OnInit {

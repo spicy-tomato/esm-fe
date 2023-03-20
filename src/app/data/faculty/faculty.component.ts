@@ -1,20 +1,48 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   Inject,
   Injector,
 } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { FacultySummary } from '@esm/data';
 import { EditFacultyDialogComponent } from '@esm/shared/dialogs';
-import { tuiButtonOptionsProvider, TuiDialogService } from '@taiga-ui/core';
+import { LetModule } from '@ngrx/component';
+import { TuiTableModule } from '@taiga-ui/addon-table';
+import {
+  TuiButtonModule,
+  tuiButtonOptionsProvider,
+  TuiDialogService,
+  TuiHintModule,
+  TuiLinkModule,
+  TuiLoaderModule,
+} from '@taiga-ui/core';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { filter, tap } from 'rxjs';
 import { DataFacultyStore } from './faculty.store';
+
+export const NGRX = [LetModule];
+export const TAIGA_UI = [
+  TuiButtonModule,
+  TuiHintModule,
+  TuiLinkModule,
+  TuiLoaderModule,
+  TuiTableModule,
+];
 
 @Component({
   templateUrl: './faculty.component.html',
   styleUrls: ['./faculty.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterModule,
+    EditFacultyDialogComponent,
+    ...NGRX,
+    ...TAIGA_UI,
+  ],
   providers: [DataFacultyStore, tuiButtonOptionsProvider({ size: 'm' })],
 })
 export class DataFacultyComponent {

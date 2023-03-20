@@ -1,35 +1,29 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { DataWrapperComponent } from './wrapper.component';
 
-const routes: Routes = [
+export const ROUTES: Routes = [
   {
     path: '',
     component: DataWrapperComponent,
     children: [
       {
         path: 'faculty',
-        loadChildren: async () =>
-          (await import('../../faculty/faculty.module')).DataFacultyModule,
+        loadComponent: async () =>
+          (await import('../../faculty/faculty.component'))
+            .DataFacultyComponent,
       },
       {
         path: 'department',
-        loadChildren: async () =>
-          (await import('../../department/department.module'))
-            .DataDepartmentModule,
+        loadComponent: async () =>
+          (await import('../../department/department.component'))
+            .DataDepartmentComponent,
       },
       {
         path: 'invigilator',
-        loadChildren: async () =>
-          (await import('../../invigilator/invigilator.module'))
-            .DataInvigilatorModule,
+        loadComponent: async () =>
+          (await import('../../invigilator/invigilator.component'))
+            .DataInvigilatorComponent,
       },
     ],
   },
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
-})
-export class DataWrapperRoutingModule {}

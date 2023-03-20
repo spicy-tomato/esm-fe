@@ -5,7 +5,7 @@ import {
   TestBed,
 } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { RelativeTimePipeModule } from '@esm/core';
+import { RelativeTimePipe } from '@esm/core';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import {
@@ -14,8 +14,11 @@ import {
   NotificationPageAction,
   NotificationSelector,
 } from './data-access';
-import { NotificationListComponent } from './notification-list.component';
-import { NGRX, TAIGA_UI } from './notification-list.module';
+import {
+  NGRX,
+  NotificationListComponent,
+  TAIGA_UI,
+} from './notification-list.component';
 
 describe('NotificationListComponent', () => {
   let component: NotificationListComponent;
@@ -24,13 +27,7 @@ describe('NotificationListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule,
-        RelativeTimePipeModule,
-        ...NGRX,
-        ...TAIGA_UI,
-      ],
-      declarations: [NotificationListComponent],
+      imports: [RouterTestingModule, RelativeTimePipe, ...NGRX, ...TAIGA_UI],
       providers: [
         provideMockStore({
           initialState: {

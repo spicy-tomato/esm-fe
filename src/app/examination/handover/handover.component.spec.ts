@@ -5,8 +5,11 @@ import { APP_ENV } from '@esm/core';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
-import { ExaminationHandoverComponent } from './handover.component';
-import { NGRX, TAIGA_UI } from './handover.module';
+import {
+  ExaminationHandoverComponent,
+  NGRX,
+  TAIGA_UI,
+} from './handover.component';
 
 describe('HandoverComponent', () => {
   let component: ExaminationHandoverComponent;
@@ -20,7 +23,6 @@ describe('HandoverComponent', () => {
         ...NGRX,
         ...TAIGA_UI,
       ],
-      declarations: [ExaminationHandoverComponent],
       providers: [
         provideMockStore({
           initialState: {

@@ -15,7 +15,8 @@ describe('RoleDirective', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [RoleDirective, HostComponent],
+      imports: [RoleDirective],
+      declarations: [HostComponent],
       providers: [provideMockStore({})],
     }).compileComponents();
 

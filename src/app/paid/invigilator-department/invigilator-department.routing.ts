@@ -1,16 +1,9 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { PaidInvigilatorDepartmentComponent } from './invigilator-department.component';
 
-const routes: Routes = [
+export const ROUTES: Routes = [
   {
     path: '',
     component: PaidInvigilatorDepartmentComponent,
   },
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
-})
-export class PaidInvigilatorDepartmentRoutingModule {}

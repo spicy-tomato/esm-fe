@@ -12,13 +12,10 @@ import {
   notificationFeatureKey,
   notificationInitialState,
 } from '../notification-list/data-access';
-import { LayoutComponent } from './layout.component';
-import { NGRX, TAIGA_UI } from './layout.module';
+import { LayoutComponent, NGRX, TAIGA_UI } from './layout.component';
 import { MainViewComponent } from './main-view/main-view.component';
-import { MainViewModule } from './main-view/main-view.module';
-import { SideBarComponent } from './side-bar/side-bar.component';
-import { SideBarModule } from './side-bar/side-bar.module';
-import { TopBarModule } from './top-bar';
+import { SideBarComponent } from './side-bar';
+import { TopBarComponent } from './top-bar';
 
 describe('LayoutComponent', () => {
   let component: LayoutComponent;
@@ -30,15 +27,14 @@ describe('LayoutComponent', () => {
         NoopAnimationsModule,
         HttpClientTestingModule,
         RouterTestingModule,
-        TopBarModule,
-        SideBarModule,
-        MainViewModule,
+        TopBarComponent,
+        SideBarComponent,
+        MainViewComponent,
         StoreModule.forRoot({}),
         EffectsModule.forRoot([]),
         ...NGRX,
         ...TAIGA_UI,
       ],
-      declarations: [LayoutComponent, SideBarComponent, MainViewComponent],
       providers: [
         EchoService,
         { provide: APP_ENV, useValue: {} },

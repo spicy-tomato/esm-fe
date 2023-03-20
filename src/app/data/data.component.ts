@@ -1,15 +1,22 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { tuiIconUserLarge, tuiIconUsersLarge } from '@taiga-ui/icons';
+import { TuiActionModule } from '@taiga-ui/kit';
+
+export const TAIGA_UI = [TuiActionModule];
 
 type Link = {
   url: string;
   label: string;
-  icon:string;
+  icon: string;
 };
 
 @Component({
   templateUrl: './data.component.html',
   styleUrls: ['./data.component.less'],
+  standalone: true,
+  imports: [CommonModule, RouterModule, ...TAIGA_UI],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataComponent {

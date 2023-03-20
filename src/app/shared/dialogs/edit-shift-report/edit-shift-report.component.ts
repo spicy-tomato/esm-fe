@@ -1,29 +1,49 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   Inject,
   OnInit,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ExamMethodPipe } from '@esm/core';
 import { GetHandoverDataResponseItem } from '@esm/data';
+import { LetModule } from '@ngrx/component';
 import {
   defaultEditorExtensions,
+  TuiEditorModule,
   TUI_EDITOR_EXTENSIONS,
 } from '@taiga-ui/addon-editor';
 import {
   TuiAlertService,
+  TuiButtonModule,
   tuiButtonOptionsProvider,
   TuiDialogContext,
+  TuiLabelModule,
   TuiNotification,
+  TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
+import { TuiInputModule } from '@taiga-ui/kit';
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
 import { tap } from 'rxjs';
 import { EditShiftReportDialogStore } from './edit-shift-report.store';
+
+export const NGRX = [LetModule];
+export const TAIGA_UI = [
+  TuiButtonModule,
+  TuiInputModule,
+  TuiLabelModule,
+  TuiEditorModule,
+  TuiTextfieldControllerModule,
+];
 
 @Component({
   selector: 'esm-edit-shift-report',
   templateUrl: './edit-shift-report.component.html',
   styleUrls: ['./edit-shift-report.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule, FormsModule, ExamMethodPipe, ...NGRX, ...TAIGA_UI],
   providers: [
     EditShiftReportDialogStore,
     tuiButtonOptionsProvider({ appearance: 'primary', size: 'm' }),

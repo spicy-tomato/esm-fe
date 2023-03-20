@@ -1,3 +1,3 @@
-export { LayoutModule } from './layout.module';
+export { LayoutComponent } from './layout.component';
 export * from './side-bar';
 export * from './top-bar';

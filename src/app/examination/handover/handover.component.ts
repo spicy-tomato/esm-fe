@@ -1,3 +1,5 @@
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -5,24 +7,60 @@ import {
   Injector,
   OnInit,
 } from '@angular/core';
-import { FormControl, FormGroup, NonNullableFormBuilder } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { ObservableHelper } from '@esm/cdk';
+import { ExamMethodPipe } from '@esm/core';
 import { GetHandoverDataResponseItem } from '@esm/data';
 import { EditShiftReportComponent } from '@esm/shared/dialogs';
+import { VarDirective } from '@esm/shared/directives';
+import { LetModule } from '@ngrx/component';
+import { TuiTableModule } from '@taiga-ui/addon-table';
 import {
   TuiContextWithImplicit,
   tuiPure,
   TuiStringHandler,
 } from '@taiga-ui/cdk';
-import { tuiButtonOptionsProvider, TuiDialogService } from '@taiga-ui/core';
+import {
+  tuiButtonOptionsProvider,
+  TuiDataListModule,
+  TuiDialogService,
+  TuiLoaderModule,
+  TuiScrollbarModule,
+} from '@taiga-ui/core';
+import { TuiSelectModule } from '@taiga-ui/kit';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { filter, tap } from 'rxjs';
 import { ExaminationHandoverStore } from './handover.store';
+
+export const NGRX = [LetModule];
+export const TAIGA_UI = [
+  TuiDataListModule,
+  TuiLoaderModule,
+  TuiScrollbarModule,
+  TuiSelectModule,
+  TuiTableModule,
+];
 
 @Component({
   templateUrl: './handover.component.html',
   styleUrls: ['./handover.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    VarDirective,
+    ExamMethodPipe,
+    ScrollingModule,
+    EditShiftReportComponent,
+    ...NGRX,
+    ...TAIGA_UI,
+  ],
   providers: [
     ExaminationHandoverStore,
     tuiButtonOptionsProvider({

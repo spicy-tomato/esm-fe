@@ -17,7 +17,7 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(
     private readonly tokenService: TokenService,
     private readonly location: Location,
-    private readonly redirectService: RedirectService,
+    private readonly redirectService: RedirectService
   ) {}
 
   // IMPLEMENTATIONS

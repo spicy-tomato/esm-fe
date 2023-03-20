@@ -19,7 +19,7 @@ describe('TokenService', () => {
     expect(service.get()).toEqual('token');
     expect(window.localStorage.getItem('access-token')).toEqual('token');
 
-    service.clear()
+    service.clear();
     expect(service.get()).toEqual(null);
     expect(window.localStorage.getItem('access-token')).toEqual(null);
   });

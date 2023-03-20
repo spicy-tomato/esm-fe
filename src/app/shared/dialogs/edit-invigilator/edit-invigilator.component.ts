@@ -1,12 +1,18 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   Inject,
   OnInit,
 } from '@angular/core';
-import { NonNullableFormBuilder, Validators } from '@angular/forms';
+import {
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ObservableHelper } from '@esm/cdk';
 import { FacultyWithDepartments, UserSummary } from '@esm/data';
+import { LetModule } from '@ngrx/component';
 import {
   TuiContextWithImplicit,
   tuiPure,
@@ -14,17 +20,43 @@ import {
 } from '@taiga-ui/cdk';
 import {
   TuiAlertService,
+  TuiButtonModule,
+  TuiDataListModule,
   TuiDialogContext,
+  TuiErrorModule,
+  TuiLabelModule,
   TuiNotification,
+  TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
+import {
+  TuiFieldErrorPipeModule,
+  TuiInputModule,
+  TuiRadioLabeledModule,
+  TuiSelectModule,
+} from '@taiga-ui/kit';
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
 import { filter, tap } from 'rxjs';
 import { EditInvigilatorDialogStore } from './edit-invigilator.store';
+
+export const NGRX = [LetModule];
+export const TAIGA_UI = [
+  TuiButtonModule,
+  TuiDataListModule,
+  TuiErrorModule,
+  TuiFieldErrorPipeModule,
+  TuiInputModule,
+  TuiLabelModule,
+  TuiRadioLabeledModule,
+  TuiSelectModule,
+  TuiTextfieldControllerModule,
+];
 
 @Component({
   templateUrl: './edit-invigilator.component.html',
   styleUrls: ['./edit-invigilator.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, ...NGRX, ...TAIGA_UI],
   providers: [EditInvigilatorDialogStore],
 })
 export class EditInvigilatorDialogComponent implements OnInit {

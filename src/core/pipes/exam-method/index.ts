@@ -1,1 +1,1 @@
-export * from './exam-method.module';
+export * from './exam-method.pipe';

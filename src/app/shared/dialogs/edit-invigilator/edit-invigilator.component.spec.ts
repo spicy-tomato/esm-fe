@@ -6,8 +6,11 @@ import { APP_ENV } from '@esm/core';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
-import { EditInvigilatorDialogComponent } from './edit-invigilator.component';
-import { NGRX, TAIGA_UI } from './edit-invigilator.module';
+import {
+  EditInvigilatorDialogComponent,
+  NGRX,
+  TAIGA_UI,
+} from './edit-invigilator.component';
 
 describe('EditInvigilatorDialogComponent', () => {
   let component: EditInvigilatorDialogComponent;
@@ -22,7 +25,6 @@ describe('EditInvigilatorDialogComponent', () => {
         ...NGRX,
         ...TAIGA_UI,
       ],
-      declarations: [EditInvigilatorDialogComponent],
       providers: [
         provideMockStore({
           initialState: {

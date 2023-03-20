@@ -3,8 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { APP_ENV } from '@esm/core';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { ExaminationDataComponent } from './data.component';
-import { NGRX } from './data.module';
+import { ExaminationDataComponent, NGRX } from './data.component';
 
 describe('DataComponent', () => {
   let component: ExaminationDataComponent;
@@ -13,7 +12,6 @@ describe('DataComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, ...NGRX],
-      declarations: [ExaminationDataComponent],
       providers: [
         provideMockStore({
           initialState: {

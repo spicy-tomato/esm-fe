@@ -5,8 +5,7 @@ import { appFeatureKey, appInitialState } from '@esm/store';
 import { LetModule } from '@ngrx/component';
 import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { MainViewComponent } from './main-view.component';
-import { TAIGA_UI } from './main-view.module';
+import { MainViewComponent, TAIGA_UI } from './main-view.component';
 
 describe('MainViewComponent', () => {
   let component: MainViewComponent;
@@ -21,7 +20,6 @@ describe('MainViewComponent', () => {
         StoreModule.forRoot({}),
         ...TAIGA_UI,
       ],
-      declarations: [MainViewComponent],
       providers: [
         provideMockStore({
           initialState: {

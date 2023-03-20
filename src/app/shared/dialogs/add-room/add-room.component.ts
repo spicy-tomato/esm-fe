@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -9,24 +10,41 @@ import {
   FormBuilder,
   FormControl,
   FormGroup,
+  ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { CreateRoomRequest } from '@esm/data';
+import { LetModule } from '@ngrx/component';
+import { TuiTableModule } from '@taiga-ui/addon-table';
 import {
   TuiAlertService,
+  TuiButtonModule,
   tuiButtonOptionsProvider,
   TuiDialogContext,
+  TuiHintModule,
   TuiNotification,
 } from '@taiga-ui/core';
+import { TuiInputModule, TuiInputNumberModule } from '@taiga-ui/kit';
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
 import { filter, map, tap } from 'rxjs';
 import { AddRoomDialogStore } from './add-room.store';
+
+export const NGRX = [LetModule];
+export const TAIGA_UI = [
+  TuiButtonModule,
+  TuiHintModule,
+  TuiInputModule,
+  TuiInputNumberModule,
+  TuiTableModule,
+];
 
 @Component({
   selector: 'esm-add-room',
   templateUrl: './add-room.component.html',
   styleUrls: ['./add-room.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, ...NGRX, ...TAIGA_UI],
   providers: [
     AddRoomDialogStore,
     tuiButtonOptionsProvider({ appearance: 'icon', size: 'm' }),
@@ -70,7 +88,7 @@ export class AddRoomDialogComponent implements OnInit {
 
     roomControls.removeAt(rowId);
     if (!roomControls.length) {
-      this.context.completeWith(this.shouldUpdate)
+      this.context.completeWith(this.shouldUpdate);
     }
   }
 

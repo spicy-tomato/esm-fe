@@ -1,2 +1,1 @@
-export * from './edit-invigilator.component';
-export { EditInvigilatorDialogModule } from './edit-invigilator.module';
+export { EditInvigilatorDialogComponent } from './edit-invigilator.component';

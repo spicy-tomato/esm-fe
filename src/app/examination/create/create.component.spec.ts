@@ -3,8 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { APP_ENV } from '@esm/core';
 import { TuiDay, TuiDayRange } from '@taiga-ui/cdk';
-import { ExaminationCreateComponent } from './create.component';
-import { NGRX, TAIGA_UI } from './create.module';
+import { ExaminationCreateComponent, NGRX, TAIGA_UI } from './create.component';
 
 describe('CreateComponent', () => {
   let component: ExaminationCreateComponent;
@@ -18,7 +17,6 @@ describe('CreateComponent', () => {
         ...NGRX,
         TAIGA_UI,
       ],
-      declarations: [ExaminationCreateComponent],
       providers: [{ provide: APP_ENV, useValue: {} }],
     }).compileComponents();
 

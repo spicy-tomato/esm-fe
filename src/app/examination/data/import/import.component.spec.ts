@@ -4,8 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { APP_ENV } from '@esm/core';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { ExaminationDataImportComponent } from './import.component';
-import { NGRX, TAIGA_UI } from './import.module';
+import {
+  ExaminationDataImportComponent,
+  NGRX,
+  TAIGA_UI,
+} from './import.component';
 import { ExaminationDataImportStore } from './import.store';
 
 describe('ExaminationDataImportComponent', () => {
@@ -15,7 +18,6 @@ describe('ExaminationDataImportComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, FormsModule, ...NGRX, ...TAIGA_UI],
-      declarations: [ExaminationDataImportComponent],
       providers: [
         ExaminationDataImportStore,
         provideMockStore({

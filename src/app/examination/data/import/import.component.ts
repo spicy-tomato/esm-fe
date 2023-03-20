@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -5,14 +6,21 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { TuiFileLike } from '@taiga-ui/kit';
+import { FormsModule } from '@angular/forms';
+import { LetModule } from '@ngrx/component';
+import { TuiFileLike, TuiInputFilesModule } from '@taiga-ui/kit';
 import { filter, tap } from 'rxjs';
 import { ExaminationDataImportStore } from './import.store';
+
+export const NGRX = [LetModule];
+export const TAIGA_UI = [TuiInputFilesModule];
 
 @Component({
   selector: 'esm-examination-data-import',
   templateUrl: './import.component.html',
   styleUrls: ['./import.component.less'],
+  standalone: true,
+  imports: [CommonModule, FormsModule, ...NGRX, ...TAIGA_UI],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ExaminationDataImportStore],
 })

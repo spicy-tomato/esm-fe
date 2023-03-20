@@ -6,8 +6,11 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { APP_ENV } from '@esm/core';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { DataInvigilatorComponent } from './invigilator.component';
-import { NGRX, TAIGA_UI } from './invigilator.module';
+import {
+  DataInvigilatorComponent,
+  NGRX,
+  TAIGA_UI,
+} from './invigilator.component';
 
 describe('DataInvigilatorComponent', () => {
   let component: DataInvigilatorComponent;
@@ -23,7 +26,6 @@ describe('DataInvigilatorComponent', () => {
         ...NGRX,
         ...TAIGA_UI,
       ],
-      declarations: [DataInvigilatorComponent],
       providers: [
         provideMockStore({
           initialState: {

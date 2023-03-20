@@ -1,23 +1,70 @@
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, NonNullableFormBuilder } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { ArrayPipe, ExamMethodPipe } from '@esm/core';
 import {
   AssignInvigilatorsToShiftsRequest,
   ExaminationStatus,
   UserSummary,
 } from '@esm/data';
+import { VarDirective } from '@esm/shared/directives';
+import { LetModule } from '@ngrx/component';
+import { TuiTableModule } from '@taiga-ui/addon-table';
 import {
   TuiContextWithImplicit,
   tuiPure,
   TuiStringHandler,
 } from '@taiga-ui/cdk';
-import { tuiButtonOptionsProvider } from '@taiga-ui/core';
+import {
+  TuiButtonModule,
+  tuiButtonOptionsProvider,
+  TuiDataListModule,
+  TuiLoaderModule,
+  TuiScrollbarModule,
+  TuiTextfieldControllerModule,
+} from '@taiga-ui/core';
+import {
+  TuiComboBoxModule,
+  TuiDataListWrapperModule,
+  TuiSelectModule,
+} from '@taiga-ui/kit';
 import { BehaviorSubject, combineLatest, filter, map, tap } from 'rxjs';
 import { InvigilatorAssignRoomStore, ShiftUiModel } from './assign-room.store';
+
+export const NGRX = [LetModule];
+export const TAIGA_UI = [
+  TuiButtonModule,
+  TuiComboBoxModule,
+  TuiDataListModule,
+  TuiDataListWrapperModule,
+  TuiLoaderModule,
+  TuiScrollbarModule,
+  TuiSelectModule,
+  TuiTableModule,
+  TuiTextfieldControllerModule,
+];
 
 @Component({
   templateUrl: './assign-room.component.html',
   styleUrls: ['./assign-room.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    ScrollingModule,
+    ArrayPipe,
+    ExamMethodPipe,
+    VarDirective,
+    ...NGRX,
+    ...TAIGA_UI,
+  ],
   providers: [
     InvigilatorAssignRoomStore,
     tuiButtonOptionsProvider({ size: 'm' }),

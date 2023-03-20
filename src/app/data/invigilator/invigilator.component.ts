@@ -1,3 +1,5 @@
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -5,19 +7,56 @@ import {
   Injector,
   OnInit,
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { StringifyHelper } from '@esm/cdk';
 import { UserSummary } from '@esm/data';
 import { EditInvigilatorDialogComponent } from '@esm/shared/dialogs';
-import { tuiButtonOptionsProvider, TuiDialogService } from '@taiga-ui/core';
+import { VarDirective } from '@esm/shared/directives';
+import { LetModule } from '@ngrx/component';
+import { TuiTableModule } from '@taiga-ui/addon-table';
+import { TuiFilterPipeModule } from '@taiga-ui/cdk';
+import {
+  TuiButtonModule,
+  tuiButtonOptionsProvider,
+  TuiDataListModule,
+  TuiDialogService,
+  TuiHintModule,
+  TuiLoaderModule,
+  TuiScrollbarModule,
+} from '@taiga-ui/core';
+import { TuiSelectModule } from '@taiga-ui/kit';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { filter, tap } from 'rxjs';
 import { DataInvigilatorStore } from './invigilator.store';
+
+export const NGRX = [LetModule];
+export const TAIGA_UI = [
+  TuiButtonModule,
+  TuiDataListModule,
+  TuiFilterPipeModule,
+  TuiHintModule,
+  TuiLoaderModule,
+  TuiScrollbarModule,
+  TuiSelectModule,
+  TuiTableModule,
+];
 
 @Component({
   templateUrl: './invigilator.component.html',
   styleUrls: ['./invigilator.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    EditInvigilatorDialogComponent,
+    ScrollingModule,
+    VarDirective,
+    ...NGRX,
+    ...TAIGA_UI,
+  ],
   providers: [DataInvigilatorStore, tuiButtonOptionsProvider({ size: 'm' })],
 })
 export class DataInvigilatorComponent implements OnInit {

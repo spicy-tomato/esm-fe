@@ -7,10 +7,9 @@ import { APP_ENV } from '@esm/core';
 import { appFeatureKey, appInitialState, AppPageAction } from '@esm/store';
 import { LetModule } from '@ngrx/component';
 import { provideMockStore } from '@ngrx/store/testing';
-import { BellModule } from '../../bell';
-import { TopBarComponent } from './top-bar.component';
+import { BellComponent } from '../../bell';
+import { TAIGA_UI, TopBarComponent } from './top-bar.component';
 import { TopBarConstants } from './top-bar.constant';
-import { TAIGA_UI } from './top-bar.module';
 
 describe('TopBarComponent', () => {
   let component: TopBarComponent;
@@ -24,10 +23,9 @@ describe('TopBarComponent', () => {
         RouterTestingModule,
         FormsModule,
         LetModule,
-        BellModule,
+        BellComponent,
         ...TAIGA_UI,
       ],
-      declarations: [TopBarComponent],
       providers: [
         { provide: APP_ENV, useValue: {} },
         provideMockStore({

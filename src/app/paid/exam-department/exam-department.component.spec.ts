@@ -7,7 +7,6 @@ describe('ExamDepartmentComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PaidExamDepartmentComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PaidExamDepartmentComponent);

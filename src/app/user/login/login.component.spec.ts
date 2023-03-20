@@ -4,8 +4,7 @@ import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { APP_ENV } from '@esm/core';
 import { provideMockStore } from '@ngrx/store/testing';
-import { LoginComponent } from './login.component';
-import { NGRX, TAIGA_UI } from './login.module';
+import { LoginComponent, NGRX, TAIGA_UI } from './login.component';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -21,7 +20,6 @@ describe('LoginComponent', () => {
         ...NGRX,
         ...TAIGA_UI,
       ],
-      declarations: [LoginComponent],
       providers: [{ provide: APP_ENV, useValue: {} }, provideMockStore({})],
     }).compileComponents();
 

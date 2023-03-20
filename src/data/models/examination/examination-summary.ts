@@ -1,5 +1,5 @@
-import { UserSummary } from "../user";
-import { ExaminationStatus } from "./examination-status";
+import { UserSummary } from '../user';
+import { ExaminationStatus } from './examination-status';
 
 export type ExaminationSummary = {
   id: string;

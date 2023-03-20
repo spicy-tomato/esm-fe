@@ -1,21 +1,51 @@
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, NonNullableFormBuilder } from '@angular/forms';
 import {
-  GetGroupByFacultyIdResponseItem,
+  FormControl,
+  FormGroup,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import {
   DepartmentSummary,
+  ExaminationStatus,
+  GetGroupByFacultyIdResponseItem,
   UpdateTeacherAssignmentRequest,
   UserSimple,
   UserSummary,
-  ExaminationStatus,
 } from '@esm/data';
+import { VarDirective } from '@esm/shared/directives';
+import { LetModule } from '@ngrx/component';
+import { TuiTableModule } from '@taiga-ui/addon-table';
 import {
   TuiContextWithImplicit,
+  TuiFilterPipeModule,
   tuiPure,
   TuiStringHandler,
 } from '@taiga-ui/cdk';
-import { tuiButtonOptionsProvider } from '@taiga-ui/core';
+import {
+  TuiButtonModule,
+  tuiButtonOptionsProvider,
+  TuiDataListModule,
+  TuiLoaderModule,
+  TuiScrollbarModule,
+} from '@taiga-ui/core';
+import { TuiComboBoxModule, TuiSelectModule } from '@taiga-ui/kit';
 import { combineLatest, filter, map, tap } from 'rxjs';
 import { InvigilatorAssignTeacherStore } from './assign-teacher.store';
+
+export const NGRX = [LetModule];
+export const TAIGA_UI = [
+  TuiButtonModule,
+  TuiComboBoxModule,
+  TuiDataListModule,
+  TuiFilterPipeModule,
+  TuiLoaderModule,
+  TuiScrollbarModule,
+  TuiSelectModule,
+  TuiTableModule,
+];
 
 type FormType = {
   [key: string]: FormGroup<{
@@ -31,6 +61,15 @@ type FormType = {
   templateUrl: './assign-teacher.component.html',
   styleUrls: ['./assign-teacher.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    ScrollingModule,
+    VarDirective,
+    ...NGRX,
+    ...TAIGA_UI,
+  ],
   providers: [
     InvigilatorAssignTeacherStore,
     tuiButtonOptionsProvider({ size: 'm' }),

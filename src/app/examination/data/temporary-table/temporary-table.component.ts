@@ -1,3 +1,5 @@
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -5,21 +7,64 @@ import {
   Injector,
   OnInit,
 } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { ExamMethodPipe } from '@esm/core';
 import { TemporaryExamination } from '@esm/data';
+import { ErrorFlagComponent } from '@esm/shared/components';
 import {
   AddModuleDialogComponent,
   AddRoomDialogComponent,
 } from '@esm/shared/dialogs';
-import { TuiDialogService } from '@taiga-ui/core';
+import { VarDirective } from '@esm/shared/directives';
+import { LetModule } from '@ngrx/component';
+import { TuiTableModule } from '@taiga-ui/addon-table';
+import {
+  TuiButtonModule,
+  TuiDataListModule,
+  TuiDialogService,
+  TuiDropdownModule,
+  TuiLoaderModule,
+  TuiScrollbarModule,
+  TuiSvgModule,
+} from '@taiga-ui/core';
+import { TuiInputNumberModule } from '@taiga-ui/kit';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { filter, tap } from 'rxjs';
 import { ExaminationDataTemporaryTableStore } from './temporary-table.store';
+
+export const NGRX = [LetModule];
+export const TAIGA_UI = [
+  TuiButtonModule,
+  TuiDataListModule,
+  TuiDropdownModule,
+  TuiInputNumberModule,
+  TuiLoaderModule,
+  TuiScrollbarModule,
+  TuiSvgModule,
+  TuiTableModule,
+];
 
 @Component({
   selector: 'esm-examination-data-temporary-table',
   templateUrl: './temporary-table.component.html',
   styleUrls: ['./temporary-table.component.less'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    VarDirective,
+    ExamMethodPipe,
+    ScrollingModule,
+    ErrorFlagComponent,
+    ...NGRX,
+    ...TAIGA_UI,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ExaminationDataTemporaryTableStore],
 })

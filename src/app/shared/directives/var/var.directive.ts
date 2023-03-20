@@ -7,6 +7,7 @@ class VarContext<T = unknown> {
 
 @Directive({
   selector: '[esmVar]',
+  standalone: true,
 })
 export class VarDirective<T = unknown> {
   // INPUT

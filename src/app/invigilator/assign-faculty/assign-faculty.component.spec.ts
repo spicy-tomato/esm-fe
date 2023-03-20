@@ -4,8 +4,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { APP_ENV } from '@esm/core';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { InvigilatorAssignFacultyComponent } from './assign-faculty.component';
-import { NGRX, TAIGA_UI } from './assign-faculty.module';
+import {
+  InvigilatorAssignFacultyComponent,
+  NGRX,
+  TAIGA_UI,
+} from './assign-faculty.component';
 
 describe('AssignFacultyComponent', () => {
   let component: InvigilatorAssignFacultyComponent;
@@ -19,7 +22,6 @@ describe('AssignFacultyComponent', () => {
         ...NGRX,
         ...TAIGA_UI,
       ],
-      declarations: [InvigilatorAssignFacultyComponent],
       providers: [
         provideMockStore({
           initialState: {

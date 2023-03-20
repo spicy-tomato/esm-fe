@@ -4,8 +4,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { APP_ENV } from '@esm/core';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { ExaminationDataTableComponent } from './table.component';
-import { NGRX, TAIGA_UI } from './table.module';
+import {
+  ExaminationDataTableComponent,
+  NGRX,
+  TAIGA_UI,
+} from './table.component';
 
 describe('ExaminationDataTableComponent', () => {
   let component: ExaminationDataTableComponent;
@@ -14,7 +17,6 @@ describe('ExaminationDataTableComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, ScrollingModule, ...NGRX, ...TAIGA_UI],
-      declarations: [ExaminationDataTableComponent],
       providers: [
         provideMockStore({
           initialState: {

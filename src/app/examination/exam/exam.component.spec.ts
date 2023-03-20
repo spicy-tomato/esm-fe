@@ -5,8 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { APP_ENV } from '@esm/core';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { ExaminationExamComponent } from './exam.component';
-import { NGRX, TAIGA_UI } from './exam.module';
+import { ExaminationExamComponent, NGRX, TAIGA_UI } from './exam.component';
 
 describe('ExaminationExamComponent', () => {
   let component: ExaminationExamComponent;
@@ -21,7 +20,6 @@ describe('ExaminationExamComponent', () => {
         ...NGRX,
         ...TAIGA_UI,
       ],
-      declarations: [ExaminationExamComponent],
       providers: [
         provideMockStore({
           initialState: {

@@ -1,1 +1,1 @@
-export * from './error-flag.module';
+export { ErrorFlagComponent } from './error-flag.component';

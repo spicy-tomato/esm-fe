@@ -8,9 +8,7 @@ describe('GeneralComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ExaminationGeneralComponent ]
-    })
-    .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ExaminationGeneralComponent);
     component = fixture.componentInstance;

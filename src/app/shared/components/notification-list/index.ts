@@ -1,2 +1,2 @@
 export * from './data-access';
-export * from './notification-list.module';
+export { NotificationListComponent } from './notification-list.component';

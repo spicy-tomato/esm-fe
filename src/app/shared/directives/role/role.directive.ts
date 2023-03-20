@@ -14,6 +14,7 @@ import { combineLatest, Observable, Subject, takeUntil, tap } from 'rxjs';
 @Directive({
   selector: '[esmRole]',
   providers: [TuiDestroyService],
+  standalone: true,
 })
 export class RoleDirective {
   // PRIVATE PROPERTIES

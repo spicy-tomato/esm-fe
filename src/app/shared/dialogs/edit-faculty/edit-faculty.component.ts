@@ -1,25 +1,48 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   Inject,
   OnInit,
 } from '@angular/core';
-import { NonNullableFormBuilder, Validators } from '@angular/forms';
+import {
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ObservableHelper } from '@esm/cdk';
 import { FacultySummary } from '@esm/data';
+import { LetModule } from '@ngrx/component';
 import {
   TuiAlertService,
+  TuiButtonModule,
   TuiDialogContext,
+  TuiErrorModule,
+  TuiLabelModule,
   TuiNotification,
+  TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
+import { TuiFieldErrorPipeModule, TuiInputModule } from '@taiga-ui/kit';
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
 import { filter, tap } from 'rxjs';
 import { EditFacultyDialogStore } from './edit-faculty.store';
+
+export const NGRX = [LetModule];
+export const TAIGA_UI = [
+  TuiButtonModule,
+  TuiErrorModule,
+  TuiFieldErrorPipeModule,
+  TuiInputModule,
+  TuiLabelModule,
+  TuiTextfieldControllerModule,
+];
 
 @Component({
   templateUrl: './edit-faculty.component.html',
   styleUrls: ['./edit-faculty.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, ...NGRX, ...TAIGA_UI],
   providers: [EditFacultyDialogStore],
 })
 export class EditFacultyDialogComponent implements OnInit {
