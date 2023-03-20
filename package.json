@@ -8,7 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "prepare": "husky install",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "preinstall": "npx only-allow pnpm"
   },
   "private": true,
   "dependencies": {
@@ -28,14 +29,16 @@
     "@ngrx/router-store": "^14.3.3",
     "@ngrx/store": "^14.3.3",
     "@ngrx/store-devtools": "^14.3.3",
-    "@taiga-ui/addon-editor": "^3.18.0",
-    "@taiga-ui/addon-table": "^3.18.0",
-    "@taiga-ui/cdk": "^3.18.0",
-    "@taiga-ui/core": "^3.18.0",
-    "@taiga-ui/icons": "^3.18.0",
-    "@taiga-ui/kit": "^3.18.0",
-    "@taiga-ui/styles": "^3.18.0",
+    "@taiga-ui/addon-editor": "^3.20.0",
+    "@taiga-ui/addon-table": "^3.20.0",
+    "@taiga-ui/cdk": "^3.20.0",
+    "@taiga-ui/core": "^3.20.0",
+    "@taiga-ui/i18n": "^3.20.0",
+    "@taiga-ui/icons": "^3.20.0",
+    "@taiga-ui/kit": "^3.20.0",
+    "@taiga-ui/styles": "^3.20.0",
     "@tinkoff/ng-dompurify": "3.0.0",
+    "@tinkoff/ng-polymorpheus": "4.0.10",
     "dompurify": "2.2.9",
     "rxjs": "~7.5.0",
     "ts-md5": "^1.3.1",
@@ -71,6 +74,6 @@
     "postcss": "^8.4.21",
     "standard-version": "^9.5.0",
     "tailwindcss": "^3.2.4",
-    "typescript": "^4.8.4"
+    "typescript": "~4.8.4"
   }
 }
