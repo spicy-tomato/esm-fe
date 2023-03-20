@@ -11,7 +11,6 @@ import {
   TuiDropdownModule,
   TuiLoaderModule,
   TuiScrollbarModule,
-  TuiSvgModule,
 } from '@taiga-ui/core';
 import { TuiInputNumberModule } from '@taiga-ui/kit';
 import { ExaminationDataTableComponent } from './table.component';
@@ -24,7 +23,6 @@ export const TAIGA_UI = [
   TuiInputNumberModule,
   TuiLoaderModule,
   TuiScrollbarModule,
-  TuiSvgModule,
   TuiTableModule,
 ];
 

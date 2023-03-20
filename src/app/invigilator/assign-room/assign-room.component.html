@@ -100,6 +100,7 @@
             </th>
           </tr>
         </thead>
+
         <tbody tuiTbody>
           <ng-container *ngrxLet="data$ as data">
             <ng-container *ngrxLet="invigilatorsData$ as invigilatorsData">
@@ -142,54 +143,51 @@
                         {{ row.orderIndex }}
                       </td>
 
-                      <ng-container
-                        *esmVar="form.controls[row.id] as rowControl"
-                      >
-                        <ng-container
-                          *esmVar="
-                            invigilatorsData[row.shiftGroup.id] as invigilators
+                      <td *tuiCell="'teacher'" tuiTd class="w-64">
+                        <tui-select
+                          (ngModelChange)="
+                            onInvigilatorChanges(
+                              row.shiftGroup.id,
+                              row.id,
+                              $event
+                            )
                           "
+                          [formControl]="form.controls[row.id]"
+                          [valueContent]="invigilatorContent"
+                          [tuiTextfieldCleaner]="true"
+                          class="w-64"
                         >
-                          <td *tuiCell="'teacher'" tuiTd class="w-60">
-                            <tui-select
-                              (ngModelChange)="
-                                onInvigilatorChanges(
-                                  row.shiftGroup.id,
-                                  row.id,
-                                  $event
-                                )
-                              "
-                              [formControl]="rowControl"
-                              [valueContent]="invigilatorContent"
-                              [tuiTextfieldCleaner]="true"
-                              class="w-60"
-                            >
-                              <ng-template tuiDataList>
-                                <tui-data-list>
-                                  <ng-container
-                                    *ngFor="let invigilator of invigilators"
-                                  >
-                                    <button
-                                      tuiOption
-                                      *ngIf="
-                                        !(usedInvigilatorsMap[row.shiftGroup.id]?.[invigilator.id]) && 
-                                          ((row.orderIndex === 1 && invigilator.isPriority) 
-                                          || (row.orderIndex !== 1 && !invigilator.isPriority))
-                                      "
-                                      [value]="invigilator.id"
-                                    >
-                                      {{ invigilator.fullName }}
-                                    </button>
-                                  </ng-container>
-                                </tui-data-list>
-                              </ng-template>
-                            </tui-select>
-                          </td>
-                        </ng-container>
-                      </ng-container>
+                          <ng-template tuiDataList>
+                            <tui-data-list>
+                              <ng-container
+                                *ngFor="
+                                  let invigilator of invigilatorsData[
+                                    row.shiftGroup.id
+                                  ]
+                                "
+                              >
+                                <button
+                                  tuiOption
+                                  *ngIf="
+                                    !(usedInvigilatorsMap[row.shiftGroup.id]?.[invigilator.id]) && 
+                                      ((row.orderIndex === 1 && invigilator.isPriority) 
+                                      || (row.orderIndex !== 1 && !invigilator.isPriority))
+                                  "
+                                  [value]="invigilator.id"
+                                >
+                                  {{ invigilator.fullName }}
+                                </button>
+                              </ng-container>
+                            </tui-data-list>
+                          </ng-template>
+                        </tui-select>
+                      </td>
 
-                      <td *tuiCell="'teacherDepartment'" tuiTd class="w-24">
-                        {{ row.invigilator?.department?.faculty?.displayId }}
+                      <td *tuiCell="'teacherDepartment'" tuiTd class="w-40">
+                        {{
+                          row.invigilator?.department?.faculty?.displayId ||
+                            row.invigilator?.department?.faculty?.name
+                        }}
                       </td>
                     </tr>
                   </ng-container>

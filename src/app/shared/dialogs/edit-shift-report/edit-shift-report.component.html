@@ -1,0 +1,44 @@
+<h2 class="text-3xl font-bold">Biên bản ca thi</h2>
+
+<div class="mt-6">
+  <label tuiLabel="Mã học phần">
+    <tui-input
+      [ngModel]="context.data.shiftGroup.module.displayId"
+      [tuiTextfieldLabelOutside]="true"
+      [readOnly]="true"
+    ></tui-input>
+  </label>
+
+  <label tuiLabel="Tên học phần">
+    <tui-input
+      [ngModel]="context.data.shiftGroup.module.name"
+      [tuiTextfieldLabelOutside]="true"
+      [readOnly]="true"
+    ></tui-input>
+  </label>
+
+  <label tuiLabel="Hình thức">
+    <tui-input
+      [ngModel]="context.data.shiftGroup.method | examMethod"
+      [tuiTextfieldLabelOutside]="true"
+      [readOnly]="true"
+    ></tui-input>
+  </label>
+
+  <label tuiLabel="Biên bản">
+    <tui-editor [(ngModel)]="reportValue"></tui-editor>
+  </label>
+
+  <div class="flex justify-end mt-6">
+    <button
+      tuiButton
+      *ngrxLet="status$ as status"
+      (click)="onFinish()"
+      [showLoader]="status === 'loading'"
+      [disabled]="reportValue === context.data.report"
+      icon="tuiIconCheck"
+    >
+      Hoàn thành
+    </button>
+  </div>
+</div>

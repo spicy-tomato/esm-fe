@@ -13,8 +13,10 @@ import {
   GetAllGroupsResponseResponseItem,
   GetAvailableInvigilatorsInShiftGroupResponseItem,
   GetGroupByFacultyIdResponseItem,
+  GetHandoverDataResponseItem,
   GetRelatedResponseItem,
   TemporaryExamination,
+  UpdateShiftRequest,
   UpdateTeacherAssignmentRequest,
   UserSummary,
 } from '@esm/data';
@@ -65,6 +67,27 @@ export class ExaminationService {
   // [POST] /examination/{examinationId}
   import(id: string, formData: FormData): Observable<Result<boolean>> {
     return this.http.post<Result<boolean>>(this.url + id, formData);
+  }
+
+  // [GET] /examination/{examinationId}/handover
+  getHandoverData(
+    id: string
+  ): Observable<Result<GetHandoverDataResponseItem[]>> {
+    return this.http.get<Result<GetHandoverDataResponseItem[]>>(
+      this.url + `${id}/handover`
+    );
+  }
+
+  // [GET] /examination/{examinationId}/handover/{shiftId}/report
+  updateShift(
+    id: string,
+    shiftId: string,
+    request: UpdateShiftRequest
+  ): Observable<Result<boolean>> {
+    return this.http.patch<Result<boolean>>(
+      this.url + `${id}/shift/${shiftId}`,
+      request
+    );
   }
 
   // [GET] /examination/{examinationId}/shift

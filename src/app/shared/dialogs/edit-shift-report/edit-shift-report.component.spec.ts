@@ -1,26 +1,30 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { APP_ENV } from '@esm/core';
+import { FormsModule } from '@angular/forms';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { APP_ENV, ExamMethodPipeModule } from '@esm/core';
+import { ExamMethod } from '@esm/data';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
-import { ExaminationHandoverComponent } from './handover.component';
-import { NGRX, TAIGA_UI } from './handover.module';
+import { EditShiftReportComponent } from './edit-shift-report.component';
+import { NGRX, TAIGA_UI } from './edit-shift-report.module';
 
-describe('HandoverComponent', () => {
-  let component: ExaminationHandoverComponent;
-  let fixture: ComponentFixture<ExaminationHandoverComponent>;
+describe('EditShiftReportComponent', () => {
+  let component: EditShiftReportComponent;
+  let fixture: ComponentFixture<EditShiftReportComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
-        ReactiveFormsModule,
+        NoopAnimationsModule,
+        FormsModule,
+        ExamMethodPipeModule,
         ...NGRX,
         ...TAIGA_UI,
       ],
-      declarations: [ExaminationHandoverComponent],
+      declarations: [EditShiftReportComponent],
       providers: [
         provideMockStore({
           initialState: {
@@ -34,13 +38,20 @@ describe('HandoverComponent', () => {
             data: {
               handedOverUserId: null,
               report: '',
+              shiftGroup: {
+                module: {
+                  displayId: 'mock-module-id',
+                  name: 'Mock module name',
+                  method: ExamMethod.Write,
+                },
+              },
             },
           },
         },
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ExaminationHandoverComponent);
+    fixture = TestBed.createComponent(EditShiftReportComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
