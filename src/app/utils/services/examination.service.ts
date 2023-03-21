@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Result, ResultBuilder } from '@esm/cdk';
-import { AppEnv, APP_ENV } from '@esm/core';
+import { APP_ENV } from '@esm/core';
 import {
   AssignInvigilatorNumerateOfShiftToFacultyResponse,
   AssignInvigilatorsToShiftsRequest,
@@ -26,13 +26,12 @@ import { map, Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ExaminationService {
-  // PRIVATE PROPERTIES
-  private readonly url: string;
+  // INJECT PROPERTIES
+  private readonly http = inject(HttpClient);
+  private readonly env = inject(APP_ENV);
 
-  // CONSTRUCTOR
-  constructor(private readonly http: HttpClient, @Inject(APP_ENV) env: AppEnv) {
-    this.url = env.baseUrl + 'examination/';
-  }
+  // PRIVATE PROPERTIES
+  private readonly url = this.env.baseUrl + 'examination/';
 
   // [POST] /examination
   create(

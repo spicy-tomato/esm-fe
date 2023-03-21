@@ -1,6 +1,11 @@
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
 import { ExamMethodPipe } from '@esm/core';
 import { VarDirective } from '@esm/shared/directives';
 import { LetModule } from '@ngrx/component';
@@ -37,6 +42,9 @@ export const TAIGA_UI = [
   providers: [ExaminationDataTableStore],
 })
 export class ExaminationDataTableComponent implements OnInit {
+  // INJECT PROPERTIES
+  private readonly store = inject(ExaminationDataTableStore);
+
   // PUBLIC PROPERTIES
   readonly columns = [
     'index',
@@ -53,9 +61,6 @@ export class ExaminationDataTableComponent implements OnInit {
   ];
   readonly status$ = this.store.status$;
   readonly data$ = this.store.data$;
-
-  // CONSTRUCTOR
-  constructor(private readonly store: ExaminationDataTableStore) {}
 
   // LIFECYCLE
   ngOnInit(): void {

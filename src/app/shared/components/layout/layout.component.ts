@@ -3,6 +3,8 @@ import {
   ChangeDetectionStrategy,
   Component,
   importProvidersFrom,
+  inject,
+  OnInit,
 } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
@@ -51,14 +53,17 @@ export const TAIGA_UI = [
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LayoutComponent {
+export class LayoutComponent implements OnInit {
+  // INJECT PROPERTIES
+  private readonly router = inject(Router);
+
   // PUBLIC PROPERTIES
   readonly isInCommonPage$ = new BehaviorSubject<boolean>(true);
   readonly hideCreateButton$ = new BehaviorSubject<boolean>(true);
   readonly commonPages = ['/create', '/data'];
 
-  // CONSTRUCTOR
-  constructor(private readonly router: Router) {
+  // LIFECYCLE
+  ngOnInit(): void {
     this.triggerToggleSideBar();
   }
 

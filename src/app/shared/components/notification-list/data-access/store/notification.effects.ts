@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { AppPageAction, AppSelector, AppState } from '@esm/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -10,6 +10,13 @@ import { NotificationState } from './notification.state';
 
 @Injectable()
 export class NotificationEffects {
+  // INJECT PROPERTIES
+  private readonly actions$ = inject(Actions);
+  private readonly echoService = inject(EchoService);
+  private readonly appStore = inject(Store<AppState>);
+  private readonly store = inject(Store<NotificationState>);
+  private readonly notificationService = inject(NotificationService);
+
   // PRIVATE PROPERTIES
   private readonly uuidAccount$ = this.appStore.pipe(
     AppSelector.notNullUser,
@@ -113,13 +120,7 @@ export class NotificationEffects {
   });
 
   // CONSTRUCTOR
-  constructor(
-    private readonly actions$: Actions,
-    private readonly echoService: EchoService,
-    private readonly notificationService: NotificationService,
-    private readonly store: Store<NotificationState>,
-    private readonly appStore: Store<AppState>
-  ) {
+  constructor() {
     this.triggerGetInitialData();
     this.handleReceiveEchoMessage();
   }

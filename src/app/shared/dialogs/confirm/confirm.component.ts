@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  Inject,
+  inject,
   OnInit,
 } from '@angular/core';
 import { Status } from '@esm/cdk';
@@ -27,21 +27,18 @@ export const TAIGA_UI = [TuiButtonModule, TuiSvgModule];
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmDialogComponent implements OnInit {
+  // INJECT PROPERTIES
+  public readonly context = inject(POLYMORPHEUS_CONTEXT) as TuiDialogContext<
+    boolean,
+    {
+      message: string;
+      onConfirm: () => void;
+      confirmStatus?: Observable<Status>;
+    }
+  >;
+
   // PUBLIC PROPERTIES
   confirmStatus$ = this.context.data?.confirmStatus;
-
-  // CONSTRUCTOR
-  constructor(
-    @Inject(POLYMORPHEUS_CONTEXT)
-    public readonly context: TuiDialogContext<
-      boolean,
-      {
-        message: string;
-        onConfirm: () => void;
-        confirmStatus?: Observable<Status>;
-      }
-    >
-  ) {}
 
   // LIFECYCLE
   ngOnInit(): void {

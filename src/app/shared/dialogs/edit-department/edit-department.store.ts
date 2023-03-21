@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ErrorResult, EsmHttpErrorResponse, Status } from '@esm/cdk';
 import { EditDepartmentRequest } from '@esm/data';
 import { DepartmentService } from '@esm/services';
@@ -14,6 +14,10 @@ type EditDepartmentDialogState = {
 
 @Injectable()
 export class EditDepartmentDialogStore extends ComponentStore<EditDepartmentDialogState> {
+  // INJECT PROPERTIES
+  private readonly appStore = inject(Store<AppState>);
+  private readonly departmentService = inject(DepartmentService);
+
   // PUBLIC PROPERTIES
   readonly faculties$ = this.appStore
     .select(AppSelector.faculties)
@@ -60,10 +64,7 @@ export class EditDepartmentDialogStore extends ComponentStore<EditDepartmentDial
   );
 
   // CONSTRUCTOR
-  constructor(
-    private readonly departmentService: DepartmentService,
-    private readonly appStore: Store<AppState>
-  ) {
+  constructor() {
     super({
       status: 'idle',
       errors: null,

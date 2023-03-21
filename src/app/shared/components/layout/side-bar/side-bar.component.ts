@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { RoleDirective } from '@esm/shared/directives';
 import { LetModule } from '@ngrx/component';
@@ -33,10 +33,10 @@ export const TAIGA_UI = [
   providers: [SideBarStore],
 })
 export class SideBarComponent {
+  // INJECT PROPERTIES
+  private readonly store = inject(SideBarStore);
+
   // PUBLIC PROPERTIES
   readonly items = SideBarConstant.items;
   readonly examinationId$ = this.store.examinationId$;
-
-  // CONSTRUCTOR
-  constructor(private readonly store: SideBarStore) {}
 }

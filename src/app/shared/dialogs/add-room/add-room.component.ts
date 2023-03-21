@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  Inject,
+  inject,
   OnInit,
 } from '@angular/core';
 import {
@@ -51,6 +51,15 @@ export const TAIGA_UI = [
   ],
 })
 export class AddRoomDialogComponent implements OnInit {
+  // INJECT PROPERTIES
+  private readonly fb = inject(FormBuilder);
+  private readonly store = inject(AddRoomDialogStore);
+  private readonly alertService = inject(TuiAlertService);
+  private readonly context = inject(POLYMORPHEUS_CONTEXT) as TuiDialogContext<
+    boolean,
+    string[]
+  >;
+
   // PUBLIC PROPERTIES
   form!: FormGroup<{
     rooms: FormArray<
@@ -64,15 +73,6 @@ export class AddRoomDialogComponent implements OnInit {
   readonly columns = ['id', 'roomId', 'capacity', 'action'];
   readonly data$ = this.store.data$;
   readonly status$ = this.store.status$;
-
-  // CONSTRUCTOR
-  constructor(
-    private readonly fb: FormBuilder,
-    @Inject(POLYMORPHEUS_CONTEXT)
-    private readonly context: TuiDialogContext<boolean, string[]>,
-    @Inject(TuiAlertService) private readonly alertService: TuiAlertService,
-    private readonly store: AddRoomDialogStore
-  ) {}
 
   // LIFECYCLE
   ngOnInit(): void {

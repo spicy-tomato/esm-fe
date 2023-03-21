@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import {
   ErrorResult,
   EsmHttpErrorResponse,
@@ -18,6 +18,10 @@ type EditShiftReportDialogState = {
 
 @Injectable()
 export class EditShiftReportDialogStore extends ComponentStore<EditShiftReportDialogState> {
+  // INJECT PROPERTIES
+  private readonly appStore = inject(Store<AppState>);
+  private readonly examinationService = inject(ExaminationService);
+
   // PUBLIC PROPERTIES
   readonly examinationId$ = this.appStore
     .select(AppSelector.examinationId)
@@ -51,10 +55,7 @@ export class EditShiftReportDialogStore extends ComponentStore<EditShiftReportDi
   );
 
   // CONSTRUCTOR
-  constructor(
-    private readonly examinationService: ExaminationService,
-    private readonly appStore: Store<AppState>
-  ) {
+  constructor() {
     super({
       status: 'idle',
       errors: null,

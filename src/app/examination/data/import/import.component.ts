@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  inject,
   OnInit,
   Output,
 } from '@angular/core';
@@ -25,15 +26,15 @@ export const TAIGA_UI = [TuiInputFilesModule];
   providers: [ExaminationDataImportStore],
 })
 export class ExaminationDataImportComponent implements OnInit {
+  // INJECT PROPERTIES
+  private readonly store = inject(ExaminationDataImportStore);
+
   // OUTPUT
   @Output() uploadSuccess = new EventEmitter<void>();
 
   // PUBLIC PROPERTIES
   file: TuiFileLike | null = null;
   readonly status$ = this.store.status$;
-
-  // CONSTRUCTOR
-  constructor(private readonly store: ExaminationDataImportStore) {}
 
   // LIFECYCLE
   ngOnInit(): void {

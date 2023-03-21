@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
   CanActivate,
@@ -11,11 +11,9 @@ import { RedirectService } from '../services/redirect.service';
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  // CONSTRUCTOR
-  constructor(
-    private readonly redirectService: RedirectService,
-    private readonly tokenService: TokenService
-  ) {}
+  // INJECT PROPERTIES
+  private readonly tokenService = inject(TokenService);
+  private readonly redirectService = inject(RedirectService);
 
   // IMPLEMENTATIONS
   canActivate(_: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {

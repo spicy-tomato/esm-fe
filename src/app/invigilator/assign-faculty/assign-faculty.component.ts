@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  Inject,
+  inject,
   Injector,
   OnInit,
   ViewChild,
@@ -76,6 +76,13 @@ export const TAIGA_UI = [
   ],
 })
 export class InvigilatorAssignFacultyComponent implements OnInit {
+  // INJECT PROPERTIES
+  private readonly injector = inject(Injector);
+  private readonly fb = inject(NonNullableFormBuilder);
+  private readonly alertService = inject(TuiAlertService);
+  private readonly dialogService = inject(TuiDialogService);
+  private readonly store = inject(InvigilatorAssignFacultyStore);
+
   // VIEWCHILD
   @ViewChild('input') input!: TuiInputNumberComponent;
   @ViewChild('viewport') viewport!: CdkVirtualScrollViewport;
@@ -119,15 +126,6 @@ export class InvigilatorAssignFacultyComponent implements OnInit {
     ])
   );
   readonly ExaminationStatus = ExaminationStatus;
-
-  // CONSTRUCTOR
-  constructor(
-    private readonly fb: NonNullableFormBuilder,
-    @Inject(TuiDialogService) private readonly dialogService: TuiDialogService,
-    @Inject(TuiAlertService) private readonly alertService: TuiAlertService,
-    @Inject(Injector) private readonly injector: Injector,
-    private readonly store: InvigilatorAssignFacultyStore
-  ) {}
 
   // LIFECYCLE
   ngOnInit(): void {

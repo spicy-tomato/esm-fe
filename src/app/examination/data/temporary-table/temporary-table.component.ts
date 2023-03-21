@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  Inject,
+  inject,
   Injector,
   OnInit,
 } from '@angular/core';
@@ -69,6 +69,12 @@ export const TAIGA_UI = [
   providers: [ExaminationDataTemporaryTableStore],
 })
 export class ExaminationDataTemporaryTableComponent implements OnInit {
+  // INJECT PROPERTIES
+  private readonly fb = inject(FormBuilder);
+  private readonly injector = inject(Injector);
+  private readonly dialogService = inject(TuiDialogService);
+  private readonly store = inject(ExaminationDataTemporaryTableStore);
+
   // PUBLIC PROPERTIES
   form!: FormGroup<{
     data: FormArray<
@@ -102,14 +108,6 @@ export class ExaminationDataTemporaryTableComponent implements OnInit {
 
   // PRIVATE PROPERTIES
   private readonly data$ = this.store.data$;
-
-  // CONSTRUCTOR
-  constructor(
-    private readonly fb: FormBuilder,
-    @Inject(TuiDialogService) private readonly dialogService: TuiDialogService,
-    @Inject(Injector) private readonly injector: Injector,
-    private readonly store: ExaminationDataTemporaryTableStore
-  ) {}
 
   // LIFECYCLE
   ngOnInit(): void {

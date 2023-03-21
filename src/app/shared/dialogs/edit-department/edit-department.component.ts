@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  Inject,
+  inject,
   OnInit,
 } from '@angular/core';
 import {
@@ -53,6 +53,16 @@ export const TAIGA_UI = [
   providers: [EditDepartmentDialogStore],
 })
 export class EditDepartmentDialogComponent implements OnInit {
+  // INJECT PROPERTIES
+  private readonly fb = inject(NonNullableFormBuilder);
+  private readonly alertService = inject(TuiAlertService);
+  private readonly store = inject(EditDepartmentDialogStore);
+  private readonly context = inject(POLYMORPHEUS_CONTEXT) as TuiDialogContext<
+    boolean,
+    DepartmentSummary | undefined
+  >;
+
+  // PUBLIC PROPERTIES
   form = this.fb.group({
     displayId: [this.context.data?.displayId || '', Validators.required],
     name: [this.context.data?.name || '', Validators.required],
@@ -63,18 +73,6 @@ export class EditDepartmentDialogComponent implements OnInit {
   readonly status$ = this.store.status$;
   readonly errors$ = this.store.errors$;
   readonly facultyStringify = StringifyHelper.idName;
-
-  // CONSTRUCTOR
-  constructor(
-    private readonly fb: NonNullableFormBuilder,
-    @Inject(POLYMORPHEUS_CONTEXT)
-    private readonly context: TuiDialogContext<
-      boolean,
-      DepartmentSummary | undefined
-    >,
-    @Inject(TuiAlertService) private readonly alertService: TuiAlertService,
-    private readonly store: EditDepartmentDialogStore
-  ) {}
 
   // LIFECYCLE
   ngOnInit(): void {

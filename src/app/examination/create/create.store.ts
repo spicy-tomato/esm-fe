@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Status } from '@esm/cdk';
 import { CreateExaminationRequest } from '@esm/data';
@@ -13,7 +13,11 @@ type TopBarState = {
 
 @Injectable()
 export class CreateStore extends ComponentStore<TopBarState> {
-  // properties
+  // INJECT PROPERTIES
+  private readonly router = inject(Router);
+  private readonly examinationService = inject(ExaminationService);
+
+  // PUBLIC PROPERTIES
   readonly status$ = this.select((s) => s.status);
 
   // EFFECTS
@@ -38,10 +42,7 @@ export class CreateStore extends ComponentStore<TopBarState> {
   );
 
   // CONSTRUCTOR
-  constructor(
-    private readonly router: Router,
-    private readonly examinationService: ExaminationService
-  ) {
+  constructor() {
     super({
       status: 'idle',
       error: null,

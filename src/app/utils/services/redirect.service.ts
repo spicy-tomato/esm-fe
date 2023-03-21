@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RedirectService {
-  // CONSTRUCTOR
-  constructor(private readonly router: Router) {}
+  // INJECT PROPERTIES
+  private readonly router = inject(Router);
 
   login(redirect?: string): void {
     if (redirect?.includes('/login')) {

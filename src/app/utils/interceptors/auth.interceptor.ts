@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import {
   HttpErrorResponse,
   HttpEvent,
@@ -5,20 +6,17 @@ import {
   HttpInterceptor,
   HttpRequest,
 } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { TokenService } from '@esm/cdk';
-import { Location } from '@angular/common';
-import { Observable, tap } from 'rxjs';
 import { RedirectService } from '@esm/services';
+import { Observable, tap } from 'rxjs';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  // CONSTRUCTOR
-  constructor(
-    private readonly tokenService: TokenService,
-    private readonly location: Location,
-    private readonly redirectService: RedirectService
-  ) {}
+  // INJECT PROPERTIES
+  private readonly location = inject(Location);
+  private readonly tokenService = inject(TokenService);
+  private readonly redirectService = inject(RedirectService);
 
   // IMPLEMENTATIONS
   intercept(

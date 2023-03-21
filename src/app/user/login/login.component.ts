@@ -1,5 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
 import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
@@ -48,6 +53,10 @@ export const TAIGA_UI = [
   animations: [slideUp],
 })
 export class LoginComponent implements OnInit {
+  // INJECT PROPERTIES
+  private readonly store = inject(LoginStore);
+  private readonly fb = inject(NonNullableFormBuilder);
+
   // PUBLIC PROPERTIES
   readonly form = this.fb.group({
     userName: ['', Validators.required],
@@ -56,12 +65,6 @@ export class LoginComponent implements OnInit {
     validator: [''],
   });
   readonly status$ = this.store.status$;
-
-  // CONSTRUCTOR
-  constructor(
-    private readonly fb: NonNullableFormBuilder,
-    private readonly store: LoginStore
-  ) {}
 
   // LIFECYCLE
   ngOnInit(): void {

@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { BehaviorSubject, tap } from 'rxjs';
 import { EchoMessage, messageEvent, MessageEvent } from '../models/echo.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class EchoService {
   // PUBLIC PROPERTIES
   // readonly echo: Echo;
@@ -35,7 +35,7 @@ export class EchoService {
     //   forceTLS: true,
     // });
 
-    this.handleUserChange();
+    // this.handleUserChange();
   }
 
   // PUBLIC METHODS

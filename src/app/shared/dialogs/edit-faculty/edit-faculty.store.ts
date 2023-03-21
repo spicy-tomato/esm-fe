@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ErrorResult, EsmHttpErrorResponse, Status } from '@esm/cdk';
 import { EditFacultyRequest } from '@esm/data';
 import { FacultyService } from '@esm/services';
@@ -12,6 +12,9 @@ type EditFacultyDialogState = {
 
 @Injectable()
 export class EditFacultyDialogStore extends ComponentStore<EditFacultyDialogState> {
+  // INJECT PROPERTIES
+  private readonly facultyService = inject(FacultyService);
+
   // PUBLIC PROPERTIES
   readonly status$ = this.select((s) => s.status);
   readonly errors$ = this.select((s) => s.errors);
@@ -59,7 +62,7 @@ export class EditFacultyDialogStore extends ComponentStore<EditFacultyDialogStat
   );
 
   // CONSTRUCTOR
-  constructor(private readonly facultyService: FacultyService) {
+  constructor() {
     super({
       status: 'idle',
       errors: null,

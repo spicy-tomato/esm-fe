@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { inject, Injectable, OnDestroy } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
 import { ObservableHelper } from '@esm/cdk';
 import { Store } from '@ngrx/store';
@@ -13,16 +13,17 @@ export class PermissionGuard
   extends ReplaySubject<void>
   implements CanActivate, OnDestroy
 {
+  // INJECT PROPERTIES
+  private readonly router = inject(Router);
+  private readonly appStore = inject(Store<AppState>);
+
   // PRIVATE PROPERTIES
   private readonly user$ = this.appStore
     .select(AppSelector.user)
     .pipe(takeUntil(this));
 
   // CONSTRUCTOR
-  constructor(
-    private readonly router: Router,
-    private readonly appStore: Store<AppState>
-  ) {
+  constructor() {
     super(1);
   }
 

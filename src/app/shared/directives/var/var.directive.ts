@@ -1,4 +1,10 @@
-import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
+import {
+  Directive,
+  inject,
+  Input,
+  TemplateRef,
+  ViewContainerRef,
+} from '@angular/core';
 
 class VarContext<T = unknown> {
   public $implicit: T = null!;
@@ -10,6 +16,10 @@ class VarContext<T = unknown> {
   standalone: true,
 })
 export class VarDirective<T = unknown> {
+  // INJECT PROPERTIES
+  private viewContainerRef = inject(ViewContainerRef);
+  private templateRef = inject(TemplateRef<VarContext<T>>);
+
   // INPUT
   @Input() set esmVar(context: T) {
     this.context.$implicit = this.context.esmVar = context;
@@ -23,10 +33,4 @@ export class VarDirective<T = unknown> {
   // PRIVATE PROPERTIES
   private context: VarContext<T> = new VarContext<T>();
   private hasView = false;
-
-  // CONSTRUCTOR
-  constructor(
-    private templateRef: TemplateRef<VarContext<T>>,
-    private viewContainerRef: ViewContainerRef
-  ) {}
 }

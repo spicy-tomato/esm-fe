@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { fadeOut } from '@esm/core';
 import { AppSelector, AppState } from '@esm/store';
 import { LetModule } from '@ngrx/component';
@@ -18,6 +18,9 @@ export const NGRX = [LetModule];
   animations: [fadeOut],
 })
 export class LoaderComponent {
+  // INJECT PROPERTIES
+  private readonly appStore = inject(Store<AppState>);
+
   // PUBLIC PROPERTIES
   showLoader$ = this.appStore
     .select(AppSelector.showLoader)
@@ -26,7 +29,4 @@ export class LoaderComponent {
         of(x).pipe(delayWhen((x) => (x ? of(null) : interval(500))))
       )
     );
-
-  // CONSTRUCTOR
-  constructor(private readonly appStore: Store<AppState>) {}
 }

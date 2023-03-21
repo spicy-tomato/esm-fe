@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  Inject,
+  inject,
   Injector,
   OnInit,
 } from '@angular/core';
@@ -60,6 +60,12 @@ export const TAIGA_UI = [
   providers: [DataInvigilatorStore, tuiButtonOptionsProvider({ size: 'm' })],
 })
 export class DataInvigilatorComponent implements OnInit {
+  // INJECT PROPERTIES
+  private readonly injector = inject(Injector);
+  private readonly route = inject(ActivatedRoute);
+  private readonly store = inject(DataInvigilatorStore);
+  private readonly dialogService = inject(TuiDialogService);
+
   // PUBLIC PROPERTIES
   readonly routerLink = '/data/invigilator';
   readonly columns = [
@@ -78,14 +84,6 @@ export class DataInvigilatorComponent implements OnInit {
   readonly selectedDepartmentName$ = this.store.selectedDepartmentName$;
   readonly status$ = this.store.status$;
   readonly facultyStringify = StringifyHelper.idName;
-
-  // CONSTRUCTOR
-  constructor(
-    private readonly route: ActivatedRoute,
-    @Inject(TuiDialogService) private readonly dialogService: TuiDialogService,
-    @Inject(Injector) private readonly injector: Injector,
-    private readonly store: DataInvigilatorStore
-  ) {}
 
   // LIFECYCLE
   ngOnInit(): void {

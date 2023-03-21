@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  Inject,
+  inject,
   Injector,
   OnInit,
 } from '@angular/core';
@@ -70,6 +70,12 @@ export const TAIGA_UI = [
   ],
 })
 export class ExaminationHandoverComponent implements OnInit {
+  // INJECT PROPERTIES
+  private readonly fb = inject(NonNullableFormBuilder);
+  private readonly injector = inject(Injector);
+  private readonly store = inject(ExaminationHandoverStore);
+  private readonly dialogService = inject(TuiDialogService);
+
   // PUBLIC PROPERTIES
   form?: FormGroup<{
     [key: string]: FormControl<string | null>;
@@ -88,14 +94,6 @@ export class ExaminationHandoverComponent implements OnInit {
   readonly data$ = this.store.data$;
   readonly dataStatus$ = this.store.dataStatus$;
   readonly handoverPersonStatus$ = this.store.handoverPersonStatus$;
-
-  // CONSTRUCTOR
-  constructor(
-    private readonly fb: NonNullableFormBuilder,
-    @Inject(TuiDialogService) private readonly dialogService: TuiDialogService,
-    @Inject(Injector) private readonly injector: Injector,
-    private readonly store: ExaminationHandoverStore
-  ) {}
 
   // LIFECYCLE
   ngOnInit(): void {

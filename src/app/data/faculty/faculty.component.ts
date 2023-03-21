@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  Inject,
+  inject,
   Injector,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
@@ -46,18 +46,16 @@ export const TAIGA_UI = [
   providers: [DataFacultyStore, tuiButtonOptionsProvider({ size: 'm' })],
 })
 export class DataFacultyComponent {
+  // INJECT PROPERTIES
+  private readonly store = inject(DataFacultyStore);
+  private readonly injector = inject(Injector);
+  private readonly dialogService = inject(TuiDialogService);
+
   // PUBLIC PROPERTIES
   readonly departmentRouterLink = '/data/department';
   readonly columns = ['displayId', 'name', 'action'];
   readonly faculties$ = this.store.faculties$;
   readonly status$ = this.store.status$;
-
-  // CONSTRUCTOR
-  constructor(
-    @Inject(TuiDialogService) private readonly dialogService: TuiDialogService,
-    @Inject(Injector) private readonly injector: Injector,
-    private readonly store: DataFacultyStore
-  ) {}
 
   // PUBLIC METHODS
   openDialog(data?: FacultySummary): void {

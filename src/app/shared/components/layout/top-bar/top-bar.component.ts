@@ -3,7 +3,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  Inject,
+  inject,
   Input,
   OnInit,
 } from '@angular/core';
@@ -35,7 +35,7 @@ import { map, tap, withLatestFrom } from 'rxjs';
 import { BellComponent } from '../../bell';
 import { TopBarConstants } from './top-bar.constant';
 import { TopBarStore } from './top-bar.store';
-import { TopBarOptions, TOP_BAR_OPTIONS } from './top-bar.token';
+import { TOP_BAR_OPTIONS } from './top-bar.token';
 
 const NGRX = [LetModule];
 export const TAIGA_UI = [
@@ -76,6 +76,13 @@ export const TAIGA_UI = [
   animations: [fadeInOut],
 })
 export class TopBarComponent implements OnInit {
+  // INJECT PROPERTIES
+  public readonly options = inject(TOP_BAR_OPTIONS);
+  private readonly router = inject(Router);
+  private readonly store = inject(TopBarStore);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly appStore = inject(Store<AppState>);
+
   // INPUT
   @Input() isInCommonPage!: boolean;
   @Input() hideCreateButton!: boolean;
@@ -97,15 +104,6 @@ export class TopBarComponent implements OnInit {
     map(({ fullName }) => StringHelper.getFirstName(fullName))
   );
   readonly userTitle$ = this.appStore.pipe(AppSelector.userTitle(false));
-
-  // CONSTRUCTOR
-  constructor(
-    @Inject(TOP_BAR_OPTIONS) public readonly options: TopBarOptions,
-    private readonly router: Router,
-    private readonly cdr: ChangeDetectorRef,
-    private readonly store: TopBarStore,
-    private readonly appStore: Store<AppState>
-  ) {}
 
   // IMPLEMENTATIONS
   ngOnInit(): void {

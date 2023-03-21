@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Status } from '@esm/cdk';
 import { DepartmentSimple, FacultyWithDepartments } from '@esm/data';
 import { FacultyService } from '@esm/services';
@@ -27,6 +27,11 @@ export type AddModuleDialogCreateParams = {
 
 @Injectable()
 export class AddModuleDialogStore extends ComponentStore<AddModuleDialogState> {
+  // INJECT PROPERTIES
+  private readonly appStore = inject(Store<AppState>);
+  private readonly facultyService = inject(FacultyService);
+
+  // PROPERTIES
   private readonly facultiesWithDepartment$ = this.appStore
     .select(AppSelector.facultiesWithDepartment)
     .pipe(takeUntil(this.destroy$));
@@ -69,10 +74,7 @@ export class AddModuleDialogStore extends ComponentStore<AddModuleDialogState> {
   );
 
   // CONSTRUCTOR
-  constructor(
-    private readonly facultyService: FacultyService,
-    private readonly appStore: Store<AppState>
-  ) {
+  constructor() {
     super({
       status: 'idle',
       error: null,

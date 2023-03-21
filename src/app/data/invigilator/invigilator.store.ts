@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Status } from '@esm/cdk';
-import { UserSimple, UserSummary } from '@esm/data';
+import { UserSummary } from '@esm/data';
 import { FacultyService, UserService } from '@esm/services';
-import { AppPageAction, AppSelector, AppState } from '@esm/store';
+import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
 import {
@@ -25,6 +25,11 @@ type DataInvigilatorState = {
 
 @Injectable()
 export class DataInvigilatorStore extends ComponentStore<DataInvigilatorState> {
+  // INJECT PROPERTIES
+  private readonly userService = inject(UserService);
+  private readonly appStore = inject(Store<AppState>);
+  private readonly facultyService = inject(FacultyService);
+
   // PUBLIC PROPERTIES
   readonly faculties$ = this.appStore
     .select(AppSelector.faculties)
@@ -138,11 +143,7 @@ export class DataInvigilatorStore extends ComponentStore<DataInvigilatorState> {
   );
 
   // CONSTRUCTOR
-  constructor(
-    private readonly userService: UserService,
-    private readonly facultyService: FacultyService,
-    private readonly appStore: Store<AppState>
-  ) {
+  constructor() {
     super({
       selectedFacultyId: '',
       selectedDepartmentId: '',

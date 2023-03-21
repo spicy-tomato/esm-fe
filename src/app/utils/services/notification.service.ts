@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { AppEnv, APP_ENV } from '@esm/core';
+import { inject, Injectable } from '@angular/core';
+import { APP_ENV } from '@esm/core';
 import { Observable } from 'rxjs';
 import { GetNotificationParams } from '../../shared/components/notification-list/data-access/models';
 import { NotificationPage } from '../../shared/components/notification-list/data-access/models/notification.model';
@@ -9,13 +9,12 @@ import { NotificationPage } from '../../shared/components/notification-list/data
   providedIn: 'root',
 })
 export class NotificationService {
-  // PRIVATE PROPERTIES
-  private readonly url: string;
+  // INJECT PROPERTIES
+  private readonly http = inject(HttpClient);
+  private readonly env = inject(APP_ENV);
 
-  // CONSTRUCTOR
-  constructor(private readonly http: HttpClient, @Inject(APP_ENV) env: AppEnv) {
-    this.url = env.baseUrl + 'notifications/';
-  }
+  // PRIVATE PROPERTIES
+  private readonly url = this.env.baseUrl + 'notifications/';
 
   getAll(
     idAccount: string,

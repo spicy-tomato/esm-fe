@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  Inject,
+  inject,
   OnInit,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -53,6 +53,15 @@ export const TAIGA_UI = [
   providers: [AddModuleDialogStore, tuiButtonOptionsProvider({ size: 'm' })],
 })
 export class AddModuleDialogComponent implements OnInit {
+  // INJECT PROPERTIES
+  private readonly fb = inject(FormBuilder);
+  private readonly store = inject(AddModuleDialogStore);
+  private readonly alertService = inject(TuiAlertService);
+  private readonly context = inject(POLYMORPHEUS_CONTEXT) as TuiDialogContext<
+    boolean,
+    TemporaryExamination
+  >;
+
   // PUBLIC PROPERTIES
   form = this.fb.group({
     moduleId: [this.context.data.moduleId, Validators.required],
@@ -63,15 +72,6 @@ export class AddModuleDialogComponent implements OnInit {
   readonly faculties$ = this.store.faculties$;
   readonly departments$ = this.store.departments$;
   readonly status$ = this.store.status$;
-
-  // CONSTRUCTOR
-  constructor(
-    private readonly fb: FormBuilder,
-    @Inject(POLYMORPHEUS_CONTEXT)
-    private readonly context: TuiDialogContext<boolean, TemporaryExamination>,
-    @Inject(TuiAlertService) private readonly alertService: TuiAlertService,
-    private readonly store: AddModuleDialogStore
-  ) {}
 
   // LIFECYCLE
   ngOnInit(): void {

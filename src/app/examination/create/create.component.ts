@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
@@ -42,6 +42,10 @@ export const TAIGA_UI = [
   providers: [CreateStore],
 })
 export class ExaminationCreateComponent {
+  // INJECT PROPERTIES
+  private readonly fb = inject(NonNullableFormBuilder);
+  private readonly store = inject(CreateStore);
+
   // PUBLIC PROPERTIES
   readonly form = this.fb.group({
     name: ['', Validators.required],
@@ -50,12 +54,6 @@ export class ExaminationCreateComponent {
     expectedDateRange: [null as TuiDayRange | null],
   });
   readonly status$ = this.store.status$;
-
-  // CONSTRUCTORS
-  constructor(
-    private readonly fb: NonNullableFormBuilder,
-    private readonly store: CreateStore
-  ) {}
 
   // PUBLIC METHODS
   onSubmit(): void {

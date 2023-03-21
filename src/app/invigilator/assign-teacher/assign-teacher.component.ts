@@ -1,6 +1,11 @@
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -76,6 +81,10 @@ type FormType = {
   ],
 })
 export class InvigilatorAssignTeacherComponent implements OnInit {
+  // INJECT PROPERTIES
+  private readonly fb = inject(NonNullableFormBuilder);
+  private readonly store = inject(InvigilatorAssignTeacherStore);
+
   // PUBLIC PROPERTIES
   form?: FormGroup<FormType>;
   columns = [
@@ -100,12 +109,6 @@ export class InvigilatorAssignTeacherComponent implements OnInit {
     this.store.autoAssignStatus$,
   ]).pipe(map((statuses) => statuses.includes('loading')));
   readonly ExaminationStatus = ExaminationStatus;
-
-  // CONSTRUCTOR
-  constructor(
-    private readonly fb: NonNullableFormBuilder,
-    private readonly store: InvigilatorAssignTeacherStore
-  ) {}
 
   // LIFECYCLE
   ngOnInit(): void {

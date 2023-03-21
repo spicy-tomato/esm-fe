@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  Inject,
+  inject,
   OnInit,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -54,20 +54,17 @@ export const TAIGA_UI = [
   ],
 })
 export class EditShiftReportComponent implements OnInit {
+  // INJECT PROPERTIES
+  private readonly alertService = inject(TuiAlertService);
+  private readonly store = inject(EditShiftReportDialogStore);
+  public readonly context = inject(POLYMORPHEUS_CONTEXT) as TuiDialogContext<
+    string | null,
+    GetHandoverDataResponseItem
+  >;
+
   // PUBLIC PROPERTIES
   reportValue = this.context.data.report || '';
   readonly status$ = this.store.status$;
-
-  // CONSTRUCTOR
-  constructor(
-    @Inject(POLYMORPHEUS_CONTEXT)
-    public readonly context: TuiDialogContext<
-      string | null,
-      GetHandoverDataResponseItem
-    >,
-    @Inject(TuiAlertService) private readonly alertService: TuiAlertService,
-    private readonly store: EditShiftReportDialogStore
-  ) {}
 
   // LIFECYCLE
   ngOnInit(): void {

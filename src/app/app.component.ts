@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ObservableHelper } from '@esm/cdk';
 import { AppPageAction, AppSelector } from '@esm/store';
 import { Store } from '@ngrx/store';
@@ -13,19 +13,17 @@ import { AppState } from './utils/store/app.state';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [TuiDestroyService],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+  private readonly appStore = inject(Store<AppState>);
+  private readonly destroy$ = inject(TuiDestroyService);
   private readonly user$ = this.appStore
     .select(AppSelector.user)
     .pipe(takeUntil(this.destroy$));
 
-  // CONSTRUCTOR
-  constructor(
-    private readonly appStore: Store<AppState>,
-    private readonly destroy$: TuiDestroyService
-  ) {
+  // LIFECYCLE
+  ngOnInit(): void {
     this.triggerGetRelatedExaminations();
-
-    appStore.dispatch(AppPageAction.getUserInfo());
+    this.appStore.dispatch(AppPageAction.getUserInfo());
   }
 
   // PRIVATE METHODS

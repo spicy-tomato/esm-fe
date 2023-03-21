@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { TokenService } from '@esm/cdk';
 import { ExaminationService, FacultyService, UserService } from '@esm/services';
@@ -13,6 +13,15 @@ import { AppState } from './app.state';
 
 @Injectable()
 export class AppEffects {
+  // INJECT PROPERTIES
+  private readonly router = inject(Router);
+  private readonly actions$ = inject(Actions);
+  private readonly userService = inject(UserService);
+  private readonly appStore = inject(Store<AppState>);
+  private readonly tokenService = inject(TokenService);
+  private readonly facultyService = inject(FacultyService);
+  private readonly examinationService = inject(ExaminationService);
+
   // PRIVATE PROPERTIES
   private examinationId$ = this.appStore.select(AppSelector.examinationId);
 
@@ -129,15 +138,4 @@ export class AppEffects {
       })
     );
   });
-
-  // CONSTRUCTOR
-  constructor(
-    private readonly actions$: Actions,
-    private readonly appStore: Store<AppState>,
-    private readonly router: Router,
-    private readonly userService: UserService,
-    private readonly examinationService: ExaminationService,
-    private readonly facultyService: FacultyService,
-    private readonly tokenService: TokenService
-  ) {}
 }

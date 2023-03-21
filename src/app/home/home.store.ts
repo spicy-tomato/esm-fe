@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
@@ -6,6 +6,9 @@ import { takeUntil } from 'rxjs';
 
 @Injectable()
 export class HomeStore extends ComponentStore<{}> {
+  // INJECT PROPERTIES
+  private readonly appStore = inject(Store<AppState>);
+
   // PROPERTIES
   readonly relatedStatus$ = this.appStore
     .select(AppSelector.relatedExaminationsStatus)
@@ -15,7 +18,7 @@ export class HomeStore extends ComponentStore<{}> {
     .pipe(takeUntil(this.destroy$));
 
   // CONSTRUCTOR
-  constructor(private readonly appStore: Store<AppState>) {
+  constructor() {
     super({});
   }
 }

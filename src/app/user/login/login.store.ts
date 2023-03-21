@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Status, TokenService } from '@esm/cdk';
 import { LoginRequest } from '@esm/data';
@@ -15,6 +15,12 @@ type LoginState = {
 
 @Injectable()
 export class LoginStore extends ComponentStore<LoginState> {
+  // INJECT PROPERTIES
+  private readonly router = inject(Router);
+  private readonly userService = inject(UserService);
+  private readonly appStore = inject(Store<AppState>);
+  private readonly tokenService = inject(TokenService);
+
   // PROPERTIES
   readonly status$ = this.select((s) => s.status);
 
@@ -42,12 +48,7 @@ export class LoginStore extends ComponentStore<LoginState> {
   );
 
   // CONSTRUCTOR
-  constructor(
-    private readonly router: Router,
-    private readonly tokenService: TokenService,
-    private readonly userService: UserService,
-    private readonly appStore: Store<AppState>
-  ) {
+  constructor() {
     super({ status: 'idle', error: null });
   }
 }

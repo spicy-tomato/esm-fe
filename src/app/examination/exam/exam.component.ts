@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  Inject,
+  inject,
   OnInit,
 } from '@angular/core';
 import {
@@ -14,7 +14,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { ExamMethodPipe } from '@esm/core';
 import { ExaminationGetDataResponseItem } from '@esm/data';
 import { VarDirective } from '@esm/shared/directives';
@@ -63,6 +63,13 @@ export const TAIGA_UI = [
   ],
 })
 export class ExaminationExamComponent implements OnInit {
+  // INJECT PROPERTIES
+  private readonly router = inject(Router);
+  private readonly fb = inject(NonNullableFormBuilder);
+  private readonly store = inject(ExaminationExamStore);
+  private readonly destroy$ = inject(TuiDestroyService);
+  private readonly alertService = inject(TuiAlertService);
+
   // PUBLIC PROPERTIES
   form?: FormGroup<{
     data: FormArray<FormControl<number>>;
@@ -91,16 +98,6 @@ export class ExaminationExamComponent implements OnInit {
 
   // PRIVATE PROPERTIES
   readonly updateStatus$ = this.store.updateStatus$;
-
-  // CONSTRUCTOR
-  constructor(
-    private readonly route: ActivatedRoute,
-    private readonly router: Router,
-    private readonly fb: NonNullableFormBuilder,
-    @Inject(TuiAlertService) private readonly alertService: TuiAlertService,
-    private readonly store: ExaminationExamStore,
-    private readonly destroy$: TuiDestroyService
-  ) {}
 
   // LIFECYCLE
   ngOnInit(): void {

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { AppPageAction, AppSelector, AppState } from '@esm/store';
 import { ComponentStore } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
@@ -10,6 +10,9 @@ type DataDepartmentState = {
 
 @Injectable()
 export class DataDepartmentStore extends ComponentStore<DataDepartmentState> {
+  // INJECT PROPERTIES
+  private readonly appStore = inject(Store<AppState>);
+
   // PUBLIC PROPERTIES
   readonly faculties$ = this.appStore
     .select(AppSelector.faculties)
@@ -34,7 +37,7 @@ export class DataDepartmentStore extends ComponentStore<DataDepartmentState> {
   );
 
   // CONSTRUCTOR
-  constructor(private readonly appStore: Store<AppState>) {
+  constructor() {
     super({
       selectedFacultyId: '',
     });

@@ -1,6 +1,11 @@
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -71,6 +76,10 @@ export const TAIGA_UI = [
   ],
 })
 export class InvigilatorAssignRoomComponent implements OnInit {
+  // INJECT PROPERTIES
+  private readonly fb = inject(NonNullableFormBuilder);
+  private readonly store = inject(InvigilatorAssignRoomStore);
+
   // PUBLIC PROPERTIES
   form?: FormGroup<{
     [key: string]: FormControl<string | null>;
@@ -117,12 +126,6 @@ export class InvigilatorAssignRoomComponent implements OnInit {
     this.store.autoAssignStatus$,
   ]).pipe(map((statuses) => statuses.includes('loading')));
   readonly ExaminationStatus = ExaminationStatus;
-
-  // CONSTRUCTOR
-  constructor(
-    private readonly fb: NonNullableFormBuilder,
-    private readonly store: InvigilatorAssignRoomStore
-  ) {}
 
   // LIFECYCLE
   ngOnInit(): void {

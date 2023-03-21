@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ObservableHelper, Status } from '@esm/cdk';
 import { ExaminationStatus, TemporaryExamination } from '@esm/data';
 import { ExaminationService } from '@esm/services';
@@ -17,6 +17,10 @@ type ExaminationDataTemporaryTableState = {
 
 @Injectable()
 export class ExaminationDataTemporaryTableStore extends ComponentStore<ExaminationDataTemporaryTableState> {
+  // INJECT PROPERTIES
+  private readonly examinationService = inject(ExaminationService);
+  private readonly appStore = inject(Store<AppState>);
+
   // PUBLIC PROPERTIES
   readonly data$ = this.select((s) => s.data);
   readonly hasError$ = this.select(
@@ -78,10 +82,7 @@ export class ExaminationDataTemporaryTableStore extends ComponentStore<Examinati
   );
 
   // CONSTRUCTOR
-  constructor(
-    private readonly examinationService: ExaminationService,
-    private readonly appStore: Store<AppState>
-  ) {
+  constructor() {
     super({
       data: [],
       dataStatus: 'loading',

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Status } from '@esm/cdk';
 import { CreateRoomRequest } from '@esm/data';
 import { RoomService } from '@esm/services';
@@ -13,6 +13,10 @@ type AddRoomDialogState = {
 
 @Injectable()
 export class AddRoomDialogStore extends ComponentStore<AddRoomDialogState> {
+  // INJECT PROPERTIES
+  private readonly roomService = inject(RoomService);
+
+  // PUBLIC PROPERTIES
   readonly data$ = this.select((s) => s.data);
   readonly status$ = this.select((s) => s.status);
   readonly error$ = this.select((s) => s.error);
@@ -78,7 +82,7 @@ export class AddRoomDialogStore extends ComponentStore<AddRoomDialogState> {
   );
 
   // CONSTRUCTOR
-  constructor(private readonly roomService: RoomService) {
+  constructor() {
     super({
       data: [],
       status: [],

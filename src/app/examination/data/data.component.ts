@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ExaminationStatus } from '@esm/data';
 import { LetModule } from '@ngrx/component';
@@ -27,10 +27,10 @@ export const NGRX = [LetModule];
   providers: [ExaminationDataStore, tuiButtonOptionsProvider({ size: 'm' })],
 })
 export class ExaminationDataComponent {
+  // INJECT PROPERTIES
+  private readonly store = inject(ExaminationDataStore);
+
   // PUBLIC PROPERTIES
   readonly examination$ = this.store.examination$;
   readonly ExaminationStatus = ExaminationStatus;
-
-  // CONSTRUCTOR
-  constructor(private readonly store: ExaminationDataStore) {}
 }

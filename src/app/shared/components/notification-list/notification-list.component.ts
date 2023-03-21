@@ -3,7 +3,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  Inject,
+  inject,
   Input,
   OnInit,
 } from '@angular/core';
@@ -27,10 +27,7 @@ import {
 } from '@taiga-ui/core';
 import { TuiLineClampModule, TuiMarkerIconModule } from '@taiga-ui/kit';
 import { BehaviorSubject, filter, takeUntil, tap } from 'rxjs';
-import {
-  NotificationListOptions,
-  NOTIFICATION_LIST_OPTIONS,
-} from './data-access';
+import { NOTIFICATION_LIST_OPTIONS } from './data-access';
 import { EchoMessage } from './data-access/models';
 import {
   NotificationPageAction,
@@ -67,6 +64,14 @@ export const TAIGA_UI = [
   ],
 })
 export class NotificationListComponent implements OnInit {
+  // INJECT PROPERTIES
+  public readonly options = inject(NOTIFICATION_LIST_OPTIONS);
+  private readonly router = inject(Router);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly appStore = inject(Store<AppState>);
+  private readonly destroy$ = inject(TuiDestroyService);
+  private readonly store = inject(Store<NotificationState>);
+
   // INPUT
   @Input() activeZone?: TuiActiveZoneDirective;
 
@@ -80,17 +85,6 @@ export class NotificationListComponent implements OnInit {
 
   openDropdown = false;
   openOptions = false;
-
-  // CONSTRUCTOR
-  constructor(
-    private readonly cdr: ChangeDetectorRef,
-    private readonly router: Router,
-    @Inject(NOTIFICATION_LIST_OPTIONS)
-    public readonly options: NotificationListOptions,
-    private readonly store: Store<NotificationState>,
-    private readonly appStore: Store<AppState>,
-    private readonly destroy$: TuiDestroyService
-  ) {}
 
   // LIFECYCLE
   ngOnInit(): void {

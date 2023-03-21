@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ObservableHelper, Status } from '@esm/cdk';
 import { ExaminationService } from '@esm/services';
 import { AppPageAction, AppSelector, AppState } from '@esm/store';
@@ -12,6 +12,10 @@ type ExaminationDataImportState = {
 
 @Injectable()
 export class ExaminationDataImportStore extends ComponentStore<ExaminationDataImportState> {
+  // INJECT PROPERTIES
+  private readonly examinationService = inject(ExaminationService);
+  private readonly appStore = inject(Store<AppState>);
+
   // PUBLIC PROPERTIES
   readonly status$ = this.select((s) => s.status);
   readonly reload$ = new Subject<void>();
@@ -47,10 +51,7 @@ export class ExaminationDataImportStore extends ComponentStore<ExaminationDataIm
   );
 
   // CONSTRUCTOR
-  constructor(
-    private readonly examinationService: ExaminationService,
-    private readonly appStore: Store<AppState>
-  ) {
+  constructor() {
     super({
       status: 'idle',
     });

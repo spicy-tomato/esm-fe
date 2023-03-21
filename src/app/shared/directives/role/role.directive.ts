@@ -1,7 +1,9 @@
 import {
   ChangeDetectorRef,
   Directive,
+  inject,
   Input,
+  OnInit,
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
@@ -9,17 +11,27 @@ import { ObservableHelper } from '@esm/cdk';
 import { AppSelector, AppState } from '@esm/store';
 import { Store } from '@ngrx/store';
 import { TuiDestroyService } from '@taiga-ui/cdk';
-import { combineLatest, Observable, Subject, takeUntil, tap } from 'rxjs';
+import { combineLatest, Subject, takeUntil, tap } from 'rxjs';
 
 @Directive({
   selector: '[esmRole]',
   providers: [TuiDestroyService],
   standalone: true,
 })
-export class RoleDirective {
+export class RoleDirective implements OnInit {
+  // INJECT PROPERTIES
+  private elseThenTemplateRef = inject(TemplateRef<unknown>);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly appStore = inject(Store<AppState>);
+  private readonly destroy$ = inject(TuiDestroyService);
+  private readonly viewContainerRef = inject(ViewContainerRef);
+  private readonly thenTemplateRef = inject(TemplateRef<unknown>);
+
   // PRIVATE PROPERTIES
   private _esmRole?: string[] | null;
-  private role: Observable<string | undefined>;
+  private role = this.appStore
+    .select(AppSelector.role)
+    .pipe(takeUntil(this.destroy$));
   private bind$ = new Subject<void>();
   private hadElse = false;
 
@@ -35,17 +47,8 @@ export class RoleDirective {
     this.bind$.next();
   }
 
-  // CONSTRUCTOR
-  constructor(
-    private readonly thenTemplateRef: TemplateRef<unknown>,
-    private readonly viewContainerRef: ViewContainerRef,
-    private readonly cdr: ChangeDetectorRef,
-    private elseThenTemplateRef: TemplateRef<unknown>,
-    appStore: Store<AppState>,
-    destroy$: TuiDestroyService
-  ) {
-    this.role = appStore.select(AppSelector.role).pipe(takeUntil(destroy$));
-
+  // LIFECYCLE
+  ngOnInit(): void {
     this.triggerUpdateView();
   }
 
