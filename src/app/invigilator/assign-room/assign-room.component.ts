@@ -85,6 +85,7 @@ export class InvigilatorAssignRoomComponent implements OnInit {
     [key: string]: FormControl<string | null>;
   }>;
   columns = [
+    'index',
     'moduleId',
     'moduleName',
     'startAt',

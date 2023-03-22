@@ -112,6 +112,7 @@ export class InvigilatorAssignFacultyComponent implements OnInit {
   readonly calculateStatus$ = this.store.calculateStatus$;
   readonly columns$ = this.store.faculties$.pipe(
     map((faculties) => [
+      'index',
       'moduleId',
       'moduleName',
       'method',

@@ -62,6 +62,7 @@
             tuiThGroup
             *esmVar="0 - viewport['_renderedContentOffset'] as offset"
           >
+            <th tuiTh [sticky]="true" [style.top.px]="offset">STT</th>
             <th tuiTh [sticky]="true" [style.top.px]="offset">Mã học phần</th>
             <th tuiTh [sticky]="true" [style.top.px]="offset">Tên học phần</th>
             <th tuiTh [sticky]="true" [style.top.px]="offset">Ngày thi</th>
@@ -95,7 +96,8 @@
         <tbody tuiTbody *ngrxLet="departments$ as departments">
           <ng-container *ngrxLet="invigilatorsData$ as invigilatorsData">
             <ng-container *ngrxLet="data$ as data">
-              <tr *cdkVirtualFor="let row of data" tuiTr>
+              <tr *cdkVirtualFor="let row of data; let i = index" tuiTr>
+                <td *tuiCell="'index'" tuiTd class="w-8">{{ i + 1 }}</td>
                 <td *tuiCell="'moduleId'" tuiTd class="w-32 max-w-[8rem]">
                   {{ row.facultyShiftGroup.shiftGroup.module.displayId }}
                 </td>

@@ -83,6 +83,7 @@ export class ExaminationHandoverComponent implements OnInit {
     [key: string]: FormControl<string | null>;
   }>;
   readonly columns = [
+    'index',
     'moduleId',
     'moduleName',
     'method',

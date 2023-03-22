@@ -76,6 +76,7 @@
               tuiThGroup
               *esmVar="0 - viewport['_renderedContentOffset'] as offset"
             >
+              <th tuiTh [sticky]="true" [style.top.px]="offset">STT</th>
               <th tuiTh [sticky]="true" [style.top.px]="offset">Mã học phần</th>
               <th tuiTh [sticky]="true" [style.top.px]="offset">
                 Tên học phần
@@ -131,6 +132,7 @@
               [formGroupName]="i"
               [class.updating]="updateRows | array : 'in' : i"
             >
+              <td *tuiCell="'index'" tuiTd>{{ i + 1 }}</td>
               <td *tuiCell="'moduleId'" tuiTd class="w-24 max-w-[6rem]">
                 {{ item.module.displayId }}
               </td>

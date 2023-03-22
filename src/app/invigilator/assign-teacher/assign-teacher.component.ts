@@ -88,6 +88,7 @@ export class InvigilatorAssignTeacherComponent implements OnInit {
   // PUBLIC PROPERTIES
   form?: FormGroup<FormType>;
   columns = [
+    'index',
     'moduleId',
     'moduleName',
     'startAt',

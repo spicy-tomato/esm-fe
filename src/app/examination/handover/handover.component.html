@@ -34,6 +34,7 @@
             tuiThGroup
             *esmVar="0 - viewport['_renderedContentOffset'] as offset"
           >
+            <th tuiTh [sticky]="true" [style.top.px]="offset">STT</th>
             <th tuiTh [sticky]="true" [style.top.px]="offset">Mã học phần</th>
             <th tuiTh [sticky]="true" [style.top.px]="offset">Tên học phần</th>
             <th tuiTh [sticky]="true" [style.top.px]="offset">Hình thức</th>
@@ -67,6 +68,7 @@
           *ngrxLet="handoverPersonStatus$ as handoverPersonStatus"
         >
           <tr *cdkVirtualFor="let row of data; let i = index" tuiTr>
+            <td *tuiCell="'index'" tuiTd class="w-8">{{ i + 1 }}</td>
             <td *tuiCell="'moduleId'" tuiTd class="w-24 max-w-[6rem]">
               {{ row.shiftGroup.module.displayId }}
             </td>
