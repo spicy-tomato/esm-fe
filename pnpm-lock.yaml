@@ -27,6 +27,8 @@ specifiers:
   '@ngrx/router-store': ^14.3.3
   '@ngrx/store': ^14.3.3
   '@ngrx/store-devtools': ^14.3.3
+  '@syncfusion/ej2-angular-diagrams': ^20.4.54
+  '@syncfusion/ej2-base': ^20.4.51
   '@taiga-ui/addon-editor': ^3.20.0
   '@taiga-ui/addon-table': ^3.20.0
   '@taiga-ui/cdk': ^3.20.0
@@ -79,6 +81,8 @@ dependencies:
   '@ngrx/router-store': 14.3.3_maftchkg4tl6mfxzlcpeo4p62q
   '@ngrx/store': 14.3.3_45fgcmivyoswmo24zkfgzo2uca
   '@ngrx/store-devtools': 14.3.3_qlh7hpeofmhzu3o2xsrsv6flcq
+  '@syncfusion/ej2-angular-diagrams': 20.4.54
+  '@syncfusion/ej2-base': 20.4.51
   '@taiga-ui/addon-editor': 3.20.0_usjk5dlvjawd4i4hxlvrbi6kay
   '@taiga-ui/addon-table': 3.20.0_2a6qxotgf6guglosp7wtrw6k2m
   '@taiga-ui/cdk': 3.20.0_rcifw34wtnjt2yyg5fz5acq6xe
@@ -2577,6 +2581,105 @@ packages:
     resolution: {integrity: sha512-+9jVqKhRSpsc591z5vX+X5Yyw+he/HCB4iQ/RYxw35CEPaY1gnsNE43nf9n9AaYjAQrTiI/mOwKUKdUs9vf7Xg==}
     dev: true
 
+  /@syncfusion/ej2-angular-base/20.4.53:
+    resolution: {integrity: sha512-5ABEbEG7GiliFiRDbdRxgb5//5ynfPulm9PrL5tKYiwUKcZY1do2o1JQlSzFBxWijI8Q5utR6rOE7ugQFyfbTA==}
+    requiresBuild: true
+    dependencies:
+      '@syncfusion/ej2-base': 20.4.51
+      '@syncfusion/ej2-icons': 20.4.48
+      core-js: 3.29.1
+      reflect-metadata: 0.1.13
+      rxjs: 6.6.7
+      rxjs-compat: 6.6.7
+      zone.js: 0.10.3
+    dev: false
+
+  /@syncfusion/ej2-angular-diagrams/20.4.54:
+    resolution: {integrity: sha512-KgmaRAEYCjPlMlwN1WPDlcgVItcFZp9/GIYtSVeJrvrqUG+NPVTBS6xTWgNnUITWP+CZhzquRrwsz8ciPV9Vjg==}
+    dependencies:
+      '@syncfusion/ej2-angular-base': 20.4.53
+      '@syncfusion/ej2-base': 20.4.51
+      '@syncfusion/ej2-diagrams': 20.4.54
+      tslib: 2.5.0
+    dev: false
+
+  /@syncfusion/ej2-base/20.4.51:
+    resolution: {integrity: sha512-nVyqylTXFuEMZARmqAtGQVadqDwwqgKSC4r1IYwSEc8FoEa2mBxlhQWPjBN7SucwAGAh9aQvnkqIJjSCy8jZiA==}
+    hasBin: true
+    dependencies:
+      '@syncfusion/ej2-icons': 20.4.48
+    dev: false
+
+  /@syncfusion/ej2-buttons/20.4.53:
+    resolution: {integrity: sha512-o3/Blcs9VisB7oAoLd6x2jFGIHGY7COzMpEj9jWOdHZMtxj9tCqeqgT8A2NHRzHFFsJSAA/G3+lZs8Hh2SZNOw==}
+    dependencies:
+      '@syncfusion/ej2-base': 20.4.51
+    dev: false
+
+  /@syncfusion/ej2-data/20.4.48:
+    resolution: {integrity: sha512-RQ0bplZ20GmmBuJYXSMKVGUGpap0Sx7Zls4tL7+IBIIq+jdGNat80b6pemJAKxyZfy3iCB0+L4L2LVAlfN+KTw==}
+    dependencies:
+      '@syncfusion/ej2-base': 20.4.51
+    dev: false
+
+  /@syncfusion/ej2-diagrams/20.4.54:
+    resolution: {integrity: sha512-xlksi9QDMnQQlQjz8gIxCQdhpeyhYl28qbf0KjuoGdLfur4/B4S7QOov3+CAt28GLuAAk2ehyOU+z+LY8JFF0w==}
+    dependencies:
+      '@syncfusion/ej2-base': 20.4.51
+      '@syncfusion/ej2-buttons': 20.4.53
+      '@syncfusion/ej2-data': 20.4.48
+      '@syncfusion/ej2-inputs': 20.4.54
+      '@syncfusion/ej2-lists': 20.4.50
+      '@syncfusion/ej2-navigations': 20.4.53
+      '@syncfusion/ej2-popups': 20.4.53
+    dev: false
+
+  /@syncfusion/ej2-icons/20.4.48:
+    resolution: {integrity: sha512-uPV4RzwxQ3cj6Zx4h6VvsEmrCGL9ssKG62Pa12k1fow915QSSQkJ0WZ6dBHIdXbk5nSDp2J2wDlV+5h3Ici+sg==}
+    dev: false
+
+  /@syncfusion/ej2-inputs/20.4.54:
+    resolution: {integrity: sha512-xmNc4uIIfm/5nZybat4dniqYzej9QYP7YBT3LoQyITMko8p3D5+iNMg1LjK7d/KhCYK85phkfjp3WzdFzmtzhw==}
+    dependencies:
+      '@syncfusion/ej2-base': 20.4.51
+      '@syncfusion/ej2-buttons': 20.4.53
+      '@syncfusion/ej2-popups': 20.4.53
+      '@syncfusion/ej2-splitbuttons': 20.4.50
+    dev: false
+
+  /@syncfusion/ej2-lists/20.4.50:
+    resolution: {integrity: sha512-Kw0LtJ4ypp6bzO1In4H5QF3LfWQlAqPPLtDWkb8yXxwatDH8nDAJP/yln9Ljm3wZfQFB1hvCJO/Digyl2l+OUw==}
+    dependencies:
+      '@syncfusion/ej2-base': 20.4.51
+      '@syncfusion/ej2-buttons': 20.4.53
+      '@syncfusion/ej2-data': 20.4.48
+    dev: false
+
+  /@syncfusion/ej2-navigations/20.4.53:
+    resolution: {integrity: sha512-+dYgrhzZ1S29jY2485gaQg+5Hib2cNbhX7TWJW7bFtGMdsq+BoqpFr2dUIAN+rLlLs8uqZ/jFUYe1cR2JVCQAg==}
+    dependencies:
+      '@syncfusion/ej2-base': 20.4.51
+      '@syncfusion/ej2-buttons': 20.4.53
+      '@syncfusion/ej2-data': 20.4.48
+      '@syncfusion/ej2-inputs': 20.4.54
+      '@syncfusion/ej2-lists': 20.4.50
+      '@syncfusion/ej2-popups': 20.4.53
+    dev: false
+
+  /@syncfusion/ej2-popups/20.4.53:
+    resolution: {integrity: sha512-EtRwPk8e+rDpdUxoHQtP43JMT67130bM58GK6bby6amrMBdcTMtQ6Iuv2sXBpdP+hp/0QvfNM49xjaEJD4JnsQ==}
+    dependencies:
+      '@syncfusion/ej2-base': 20.4.51
+      '@syncfusion/ej2-buttons': 20.4.53
+    dev: false
+
+  /@syncfusion/ej2-splitbuttons/20.4.50:
+    resolution: {integrity: sha512-Av/d8K1tuRs/gLnWKVfyLZ7iLhW8DyaqBNdpdYWsjNBuoVpRZdYddOSqPOeOzq5Upd6DzCkGpUfT3WDpAoNH7w==}
+    dependencies:
+      '@syncfusion/ej2-base': 20.4.51
+      '@syncfusion/ej2-popups': 20.4.53
+    dev: false
+
   /@taiga-ui/addon-editor/3.20.0_usjk5dlvjawd4i4hxlvrbi6kay:
     resolution: {integrity: sha512-1WR+JxsJF12SbMbS8e4nSaY+8/CkGLyyORy5Cv6hla7Ew9eAOdv1Egyf7mdb+PDq9KYN71s9ttFeShZPcIO7Xw==}
     peerDependencies:
@@ -4704,6 +4807,11 @@ packages:
     dependencies:
       browserslist: 4.21.5
     dev: true
+
+  /core-js/3.29.1:
+    resolution: {integrity: sha512-+jwgnhg6cQxKYIIjGtAHq2nwUOolo9eoFZ4sHfUH09BLXBgxnH4gA0zEd+t+BO2cNB8idaBtZFcFTRjQJRJmAw==}
+    requiresBuild: true
+    dev: false
 
   /core-util-is/1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
@@ -9002,7 +9110,6 @@ packages:
 
   /reflect-metadata/0.1.13:
     resolution: {integrity: sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==}
-    dev: true
 
   /regenerate-unicode-properties/10.1.0:
     resolution: {integrity: sha512-d1VudCLoIGitcU/hEg2QqvyGZQmdC0Lf8BqdOMXGFSvJP4bNV1+XqbPQeHHLD51Jh4QJJ225dlIFvY4Ly6MXmQ==}
@@ -9161,6 +9268,10 @@ packages:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==}
     dependencies:
       queue-microtask: 1.2.3
+
+  /rxjs-compat/6.6.7:
+    resolution: {integrity: sha512-szN4fK+TqBPOFBcBcsR0g2cmTTUF/vaFEOZNuSdfU8/pGFnNmmn2u8SystYXG1QMrjOPBc6XTKHMVfENDf6hHw==}
+    dev: false
 
   /rxjs/6.6.7:
     resolution: {integrity: sha512-hTdwr+7yYNIT5n4AMYp85KA6yw2Va0FLa3Rguvbpa4W3I5xynaBZo41cM3XM+4Q6fRMj3sBYIR1VAmZMXYJvRQ==}
@@ -10530,6 +10641,10 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
+
+  /zone.js/0.10.3:
+    resolution: {integrity: sha512-LXVLVEq0NNOqK/fLJo3d0kfzd4sxwn2/h67/02pjCjfKDxgx1i9QqpvtHD8CrBnSSwMw5+dy11O7FRX5mkO7Cg==}
+    dev: false
 
   /zone.js/0.11.8:
     resolution: {integrity: sha512-82bctBg2hKcEJ21humWIkXRlLBBmrc3nN7DFh5LGGhcyycO2S7FN8NmdvlcKaGFDNVL4/9kFLmwmInTavdJERA==}

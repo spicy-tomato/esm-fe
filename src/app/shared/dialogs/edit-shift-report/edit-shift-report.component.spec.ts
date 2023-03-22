@@ -8,14 +8,14 @@ import { appFeatureKey, appInitialState } from '@esm/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
 import {
-  EditShiftReportComponent,
+  EditShiftReportDialogComponent,
   NGRX,
   TAIGA_UI,
 } from './edit-shift-report.component';
 
-describe('EditShiftReportComponent', () => {
-  let component: EditShiftReportComponent;
-  let fixture: ComponentFixture<EditShiftReportComponent>;
+describe('EditShiftReportDialogComponent', () => {
+  let component: EditShiftReportDialogComponent;
+  let fixture: ComponentFixture<EditShiftReportDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -53,7 +53,7 @@ describe('EditShiftReportComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(EditShiftReportComponent);
+    fixture = TestBed.createComponent(EditShiftReportDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

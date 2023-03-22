@@ -53,7 +53,7 @@ export const TAIGA_UI = [
     },
   ],
 })
-export class EditShiftReportComponent implements OnInit {
+export class EditShiftReportDialogComponent implements OnInit {
   // INJECT PROPERTIES
   private readonly alertService = inject(TuiAlertService);
   private readonly store = inject(EditShiftReportDialogStore);

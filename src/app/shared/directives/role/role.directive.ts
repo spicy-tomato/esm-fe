@@ -3,7 +3,6 @@ import {
   Directive,
   inject,
   Input,
-  OnInit,
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
@@ -18,7 +17,7 @@ import { combineLatest, Subject, takeUntil, tap } from 'rxjs';
   providers: [TuiDestroyService],
   standalone: true,
 })
-export class RoleDirective implements OnInit {
+export class RoleDirective {
   // INJECT PROPERTIES
   private elseThenTemplateRef = inject(TemplateRef<unknown>);
   private readonly cdr = inject(ChangeDetectorRef);
@@ -47,8 +46,8 @@ export class RoleDirective implements OnInit {
     this.bind$.next();
   }
 
-  // LIFECYCLE
-  ngOnInit(): void {
+  // CONSTRUCTOR
+  constructor() {
     this.triggerUpdateView();
   }
 

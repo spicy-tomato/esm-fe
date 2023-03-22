@@ -53,7 +53,7 @@ export const TAIGA_UI = [
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LayoutComponent implements OnInit {
+export class LayoutComponent  {
   // INJECT PROPERTIES
   private readonly router = inject(Router);
 
@@ -63,7 +63,7 @@ export class LayoutComponent implements OnInit {
   readonly commonPages = ['/create', '/data'];
 
   // LIFECYCLE
-  ngOnInit(): void {
+  constructor() {
     this.triggerToggleSideBar();
   }
 

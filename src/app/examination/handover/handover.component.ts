@@ -16,7 +16,7 @@ import {
 import { ObservableHelper } from '@esm/cdk';
 import { ExamMethodPipe } from '@esm/core';
 import { GetHandoverDataResponseItem } from '@esm/data';
-import { EditShiftReportComponent } from '@esm/shared/dialogs';
+import { EditShiftReportDialogComponent } from '@esm/shared/dialogs';
 import { VarDirective } from '@esm/shared/directives';
 import { LetModule } from '@ngrx/component';
 import { TuiTableModule } from '@taiga-ui/addon-table';
@@ -26,6 +26,7 @@ import {
   TuiStringHandler,
 } from '@taiga-ui/cdk';
 import {
+  TuiButtonModule,
   tuiButtonOptionsProvider,
   TuiDataListModule,
   TuiDialogService,
@@ -39,6 +40,7 @@ import { ExaminationHandoverStore } from './handover.store';
 
 export const NGRX = [LetModule];
 export const TAIGA_UI = [
+  TuiButtonModule,
   TuiDataListModule,
   TuiLoaderModule,
   TuiScrollbarModule,
@@ -57,7 +59,7 @@ export const TAIGA_UI = [
     VarDirective,
     ExamMethodPipe,
     ScrollingModule,
-    EditShiftReportComponent,
+    EditShiftReportDialogComponent,
     ...NGRX,
     ...TAIGA_UI,
   ],
@@ -124,7 +126,10 @@ export class ExaminationHandoverComponent implements OnInit {
   openDialog(data: GetHandoverDataResponseItem): void {
     this.dialogService
       .open<string | null>(
-        new PolymorpheusComponent(EditShiftReportComponent, this.injector),
+        new PolymorpheusComponent(
+          EditShiftReportDialogComponent,
+          this.injector
+        ),
         { data }
       )
       .pipe(

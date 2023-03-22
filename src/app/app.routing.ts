@@ -15,7 +15,7 @@ const routes: Routes = [
   {
     path: 'login',
     canActivate: [AuthGuard],
-    loadChildren: async () =>
+    loadComponent: async () =>
       (await import('./user/login/login.component')).LoginComponent,
   },
   {

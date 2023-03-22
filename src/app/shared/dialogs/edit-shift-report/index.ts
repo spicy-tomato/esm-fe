@@ -1,1 +1,1 @@
-export { EditShiftReportComponent } from './edit-shift-report.component';
+export { EditShiftReportDialogComponent } from './edit-shift-report.component';
