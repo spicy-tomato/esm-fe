@@ -70,7 +70,7 @@ export class EditInvigilatorDialogComponent implements OnInit {
   >;
 
   // PUBLIC PROPERTIES
-  form = this.fb.group({
+  readonly form = this.fb.group({
     invigilatorId: [
       this.context.data?.invigilatorId || '',
       Validators.required,
@@ -86,7 +86,6 @@ export class EditInvigilatorDialogComponent implements OnInit {
       Validators.required,
     ],
   });
-
   readonly isEditDialog = this.context.data !== undefined;
   readonly faculties$ = this.store.faculties$;
   readonly status$ = this.store.status$;
