@@ -135,7 +135,12 @@
                     </tui-select>
                   </td>
 
-                  <td *tuiCell="'teacher'" tuiTd class="w-60">
+                  <td
+                    *tuiCell="'teacher'"
+                    tuiTd
+                    [class.!bg-tui-warning-bg-hover]="customValues[row.id]"
+                    class="w-60"
+                  >
                     <tui-combo-box
                       [(search)]="customValues[row.id]"
                       [formControl]="rowControl.controls.user"
