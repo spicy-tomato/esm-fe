@@ -17,12 +17,19 @@ export type ShiftUiModel = Omit<
 > &
   ExaminationGetShiftResponseItem['invigilatorShift'][number];
 
+type InvigilatorMapType = Record<
+  string,
+  { facultyName: string; phoneNumber: string } | null
+>;
+
 type InvigilatorAssignRoomState = {
   data: ShiftUiModel[];
   dataStatus: Status;
   //
   invigilatorsData: GetAvailableInvigilatorsInShiftGroupResponseItem;
   invigilatorsDataStatus: Status;
+  //
+  invigilatorMap: InvigilatorMapType;
   //
   updateStatus: Status;
   //
@@ -42,6 +49,7 @@ export class InvigilatorAssignRoomStore extends ComponentStore<InvigilatorAssign
   readonly data$ = this.select((s) => s.data);
   readonly dataStatus$ = this.select((s) => s.dataStatus);
   readonly invigilatorsData$ = this.select((s) => s.invigilatorsData);
+  readonly invigilatorFacultyMap$ = this.select((s) => s.invigilatorMap);
   readonly updateStatus$ = this.select((s) => s.updateStatus);
   readonly autoAssignStatus$ = this.select((s) => s.autoAssignStatus);
 
@@ -87,6 +95,18 @@ export class InvigilatorAssignRoomStore extends ComponentStore<InvigilatorAssign
               this.patchState({
                 invigilatorsData: data,
                 invigilatorsDataStatus: 'success',
+                invigilatorMap: Object.entries(data).reduce<InvigilatorMapType>(
+                  (acc, [key, invigilators]) => {
+                    invigilators.forEach((invigilator) => {
+                      if (!acc[key]) {
+                        const { facultyName, phoneNumber } = invigilator;
+                        acc[invigilator.id] = { facultyName, phoneNumber };
+                      }
+                    });
+                    return acc;
+                  },
+                  {}
+                ),
               }),
             () => this.patchState({ invigilatorsDataStatus: 'error' })
           )
@@ -138,6 +158,7 @@ export class InvigilatorAssignRoomStore extends ComponentStore<InvigilatorAssign
       dataStatus: 'loading',
       invigilatorsData: {},
       invigilatorsDataStatus: 'loading',
+      invigilatorMap: {},
       updateStatus: 'idle',
       autoAssignStatus: 'idle',
     });

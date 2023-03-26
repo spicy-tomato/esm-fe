@@ -85,6 +85,7 @@ export class EditInvigilatorDialogComponent implements OnInit {
       this.context.data?.department?.id || '',
       Validators.required,
     ],
+    phoneNumber: [this.context.data?.phoneNumber || '']
   });
   readonly isEditDialog = this.context.data !== undefined;
   readonly faculties$ = this.store.faculties$;

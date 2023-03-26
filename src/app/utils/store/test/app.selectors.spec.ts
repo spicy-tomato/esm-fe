@@ -17,6 +17,7 @@ describe('AppSelector', () => {
     id: 'id',
     isMale: true,
     role: 'ExaminationDepartmentHead',
+    phoneNumber: '',
   };
   const initialState: AppState = {
     userStatus: 'success',

@@ -95,6 +95,7 @@ export class InvigilatorAssignTeacherComponent implements OnInit {
     'shift',
     'department',
     'teacher',
+    'phoneNumber',
   ];
   customValues: Record<string, string | null> = {};
 
@@ -102,9 +103,10 @@ export class InvigilatorAssignTeacherComponent implements OnInit {
   readonly faculty$ = this.store.faculty$;
   readonly dataStatus$ = this.store.dataStatus$;
   readonly examination$ = this.store.examination$;
-  readonly departments$ = this.store.departmentsInFaculty$;
   readonly updateStatus$ = this.store.updateStatus$;
+  readonly departments$ = this.store.departmentsInFaculty$;
   readonly invigilatorsData$ = this.store.invigilatorsData$;
+  readonly invigilatorPhoneNumberMap$ = this.store.invigilatorPhoneNumberMap$;
   readonly showLoader$ = combineLatest([
     this.store.dataStatus$,
     this.store.autoAssignStatus$,

@@ -89,6 +89,7 @@ describe('CreateStore', () => {
               department: null,
               role: 'ExaminationDepartmentHead' as any,
               isMale: true,
+              phoneNumber: '',
             },
           })
         )

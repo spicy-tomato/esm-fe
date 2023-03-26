@@ -10,6 +10,7 @@ export class UserSummary {
   department!: DepartmentSummary | null;
   role!: typeof Role[keyof typeof Role];
   isMale!: boolean;
+  phoneNumber!: string | null;
 
   toString(): string {
     return this.fullName;

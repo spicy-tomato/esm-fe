@@ -25,6 +25,8 @@ type InvigilatorAssignTeacherState = {
   invigilatorsData: UserSummary[];
   invigilatorsDataStatus: Status;
   //
+  invigilatorPhoneNumberMap: Record<string, string | null>;
+  //
   updateStatus: Status;
   //
   autoAssignStatus: Status;
@@ -58,6 +60,9 @@ export class InvigilatorAssignTeacherStore extends ComponentStore<InvigilatorAss
   readonly data$ = this.select((s) => s.data);
   readonly dataStatus$ = this.select((s) => s.dataStatus);
   readonly invigilatorsData$ = this.select((s) => s.invigilatorsData);
+  readonly invigilatorPhoneNumberMap$ = this.select(
+    (s) => s.invigilatorPhoneNumberMap
+  );
   readonly updateStatus$ = this.select((s) => s.updateStatus);
   readonly autoAssignStatus$ = this.select((s) => s.autoAssignStatus);
 
@@ -108,6 +113,13 @@ export class InvigilatorAssignTeacherStore extends ComponentStore<InvigilatorAss
               this.patchState({
                 invigilatorsData,
                 invigilatorsDataStatus: 'success',
+                invigilatorPhoneNumberMap: invigilatorsData.reduce<
+                  Record<string, string | null>
+                >((acc, curr) => {
+                  const { phoneNumber } = curr;
+                  acc[curr.id] = phoneNumber;
+                  return acc;
+                }, {}),
               }),
             () => this.patchState({ invigilatorsDataStatus: 'error' })
           )
@@ -175,6 +187,7 @@ export class InvigilatorAssignTeacherStore extends ComponentStore<InvigilatorAss
       dataStatus: 'loading',
       invigilatorsData: [],
       invigilatorsDataStatus: 'loading',
+      invigilatorPhoneNumberMap: {},
       updateStatus: 'idle',
       autoAssignStatus: 'idle',
     });

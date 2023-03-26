@@ -77,6 +77,7 @@ describe('AssignTeacherComponent', () => {
           invigilatorId: 'mock-id',
           isMale: false,
           role: 'ExaminationDepartmentHead',
+          phoneNumber: '',
         },
         'mock-id-faculty'
       );
@@ -94,6 +95,7 @@ describe('AssignTeacherComponent', () => {
           invigilatorId: 'mock-id',
           isMale: false,
           role: 'ExaminationDepartmentHead',
+          phoneNumber: '',
         },
         'mock-id-faculty'
       );

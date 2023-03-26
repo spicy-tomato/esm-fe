@@ -3,4 +3,5 @@ export type CreateUserRequest = {
   invigilatorId: string | null;
   fullName: string;
   isMale: boolean;
+  phoneNumber: string;
 };

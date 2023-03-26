@@ -94,6 +94,7 @@ export class InvigilatorAssignRoomComponent implements OnInit {
     'orderIndex',
     'teacher',
     'teacherDepartment',
+    'phoneNumber',
   ];
 
   readonly data$ = this.store.data$;
@@ -101,6 +102,7 @@ export class InvigilatorAssignRoomComponent implements OnInit {
   readonly examination$ = this.store.examination$;
   readonly updateStatus$ = this.store.updateStatus$;
   readonly invigilatorsData$ = this.store.invigilatorsData$;
+  readonly invigilatorFacultyMap$ = this.store.invigilatorFacultyMap$;
   readonly invigilatorsList$ = this.invigilatorsData$.pipe(
     map((data) => {
       const res: {

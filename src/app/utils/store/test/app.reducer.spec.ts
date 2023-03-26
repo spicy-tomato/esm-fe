@@ -19,6 +19,7 @@ describe('appReducer', () => {
       id: 'id',
       isMale: true,
       role: 'ExaminationDepartmentHead',
+      phoneNumber: '',
     },
     userStatus: 'success',
     showLoader: null,

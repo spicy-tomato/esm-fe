@@ -90,84 +90,107 @@
             >
               Họ tên CBCT
             </th>
+            <th
+              tuiTh
+              [sticky]="true"
+              [style.top.px]="offset"
+              class="!text-center"
+            >
+              SĐT
+            </th>
           </tr>
         </thead>
 
         <tbody tuiTbody *ngrxLet="departments$ as departments">
           <ng-container *ngrxLet="invigilatorsData$ as invigilatorsData">
-            <ng-container *ngrxLet="data$ as data">
-              <tr *cdkVirtualFor="let row of data; let i = index" tuiTr>
-                <td *tuiCell="'index'" tuiTd class="w-8">{{ i + 1 }}</td>
-                <td *tuiCell="'moduleId'" tuiTd class="w-32 max-w-[8rem]">
-                  {{ row.facultyShiftGroup.shiftGroup.module.displayId }}
-                </td>
-                <td *tuiCell="'moduleName'" tuiTd>
-                  {{ row.facultyShiftGroup.shiftGroup.module.name }}
-                </td>
-                <td *tuiCell="'startAt'" tuiTd class="w-32">
-                  {{
-                    row.facultyShiftGroup.shiftGroup.startAt | date : "dd/MM/y"
-                  }}
-                </td>
-                <td *tuiCell="'shift'" tuiTd class="w-24 !text-center">
-                  {{ row.facultyShiftGroup.shiftGroup.shift }}
-                </td>
-
-                <ng-container *esmVar="form.controls[row.id] as rowControl">
-                  <td *tuiCell="'department'" tuiTd class="w-60">
-                    <tui-select
-                      (ngModelChange)="rowControl.controls.user.setValue(null)"
-                      [formControl]="rowControl.controls.departmentId"
-                      [valueContent]="departmentStringify(departments)"
-                      class="w-60"
-                    >
-                      <ng-template tuiDataList>
-                        <tui-data-list>
-                          <button
-                            tuiOption
-                            *ngFor="let department of departments"
-                            [value]="department.id"
-                          >
-                            {{ department.name }}
-                          </button>
-                        </tui-data-list>
-                      </ng-template>
-                    </tui-select>
+            <ng-container
+              *ngrxLet="invigilatorPhoneNumberMap$ as invigilatorPhoneNumberMap"
+            >
+              <ng-container *ngrxLet="data$ as data">
+                <tr *cdkVirtualFor="let row of data; let i = index" tuiTr>
+                  <td *tuiCell="'index'" tuiTd class="w-8">{{ i + 1 }}</td>
+                  <td *tuiCell="'moduleId'" tuiTd class="w-32 max-w-[8rem]">
+                    {{ row.facultyShiftGroup.shiftGroup.module.displayId }}
+                  </td>
+                  <td *tuiCell="'moduleName'" tuiTd>
+                    {{ row.facultyShiftGroup.shiftGroup.module.name }}
+                  </td>
+                  <td *tuiCell="'startAt'" tuiTd class="w-32">
+                    {{
+                      row.facultyShiftGroup.shiftGroup.startAt
+                        | date : "dd/MM/y"
+                    }}
+                  </td>
+                  <td *tuiCell="'shift'" tuiTd class="w-24 !text-center">
+                    {{ row.facultyShiftGroup.shiftGroup.shift }}
                   </td>
 
-                  <td
-                    *tuiCell="'teacher'"
-                    tuiTd
-                    [class.!bg-tui-warning-bg-hover]="customValues[row.id]"
-                    class="w-60"
-                  >
-                    <tui-combo-box
-                      [(search)]="customValues[row.id]"
-                      [formControl]="rowControl.controls.user"
-                      [valueContent]="invigilatorContent"
-                      [identityMatcher]="invigilatorIdentityMatcher"
+                  <ng-container *esmVar="form.controls[row.id] as rowControl">
+                    <td *tuiCell="'department'" tuiTd class="w-60">
+                      <tui-select
+                        (ngModelChange)="
+                          rowControl.controls.user.setValue(null)
+                        "
+                        [formControl]="rowControl.controls.departmentId"
+                        [valueContent]="departmentStringify(departments)"
+                        class="w-60"
+                      >
+                        <ng-template tuiDataList>
+                          <tui-data-list>
+                            <button
+                              tuiOption
+                              *ngFor="let department of departments"
+                              [value]="department.id"
+                            >
+                              {{ department.name }}
+                            </button>
+                          </tui-data-list>
+                        </ng-template>
+                      </tui-select>
+                    </td>
+
+                    <td
+                      *tuiCell="'teacher'"
+                      tuiTd
+                      [class.!bg-tui-warning-bg-hover]="customValues[row.id]"
                       class="w-60"
                     >
-                      <ng-template tuiDataList>
-                        <tui-data-list>
-                          <button
-                            *ngFor="
-                              let invigilator of invigilatorsData
-                                | tuiFilter
-                                  : invigilatorMatcher
-                                  : rowControl.value.departmentId
-                            "
-                            tuiOption
-                            [value]="invigilator"
-                          >
-                            {{ invigilator }}
-                          </button>
-                        </tui-data-list>
-                      </ng-template>
-                    </tui-combo-box>
-                  </td>
-                </ng-container>
-              </tr>
+                      <tui-combo-box
+                        [(search)]="customValues[row.id]"
+                        [formControl]="rowControl.controls.user"
+                        [valueContent]="invigilatorContent"
+                        [identityMatcher]="invigilatorIdentityMatcher"
+                        class="w-60"
+                      >
+                        <ng-template tuiDataList>
+                          <tui-data-list>
+                            <button
+                              *ngFor="
+                                let invigilator of invigilatorsData
+                                  | tuiFilter
+                                    : invigilatorMatcher
+                                    : rowControl.value.departmentId
+                              "
+                              tuiOption
+                              [value]="invigilator"
+                            >
+                              {{ invigilator }}
+                            </button>
+                          </tui-data-list>
+                        </ng-template>
+                      </tui-combo-box>
+                    </td>
+
+                    <td *tuiCell="'phoneNumber'" tuiTd class="w-32">
+                      {{
+                        rowControl.value.user
+                          ? invigilatorPhoneNumberMap[rowControl.value.user.id]
+                          : ""
+                      }}
+                    </td>
+                  </ng-container>
+                </tr>
+              </ng-container>
             </ng-container>
           </ng-container>
         </tbody>
