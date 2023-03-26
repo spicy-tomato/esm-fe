@@ -19,7 +19,6 @@ import {
   TuiButtonModule,
   tuiButtonOptionsProvider,
   TuiDialogContext,
-  TuiLabelModule,
   TuiNotification,
   TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
@@ -32,7 +31,6 @@ export const NGRX = [LetModule];
 export const TAIGA_UI = [
   TuiButtonModule,
   TuiInputModule,
-  TuiLabelModule,
   TuiEditorModule,
   TuiTextfieldControllerModule,
 ];
@@ -64,6 +62,9 @@ export class EditShiftReportDialogComponent implements OnInit {
 
   // PUBLIC PROPERTIES
   reportValue = this.context.data.report || '';
+  readonly handoverInvigilatorName = this.context.data.invigilatorShift.find(
+    (ivs) => ivs.invigilator?.id === this.context.data.handedOverUserId
+  )?.invigilator?.fullName;
   readonly status$ = this.store.status$;
 
   // LIFECYCLE

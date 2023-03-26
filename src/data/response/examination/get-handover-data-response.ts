@@ -27,7 +27,7 @@ export type GetHandoverDataResponseItem = {
   shiftGroup: {
     id: string;
     method: ExamMethod;
-    startAt: string;
+    startAt: Date;
     shift: number | null;
     departmentAssign: boolean;
     module: {

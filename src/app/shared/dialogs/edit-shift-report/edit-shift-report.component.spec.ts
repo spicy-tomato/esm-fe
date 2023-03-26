@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { APP_ENV, ExamMethodPipe } from '@esm/core';
-import { ExamMethod } from '@esm/data';
+import { ExamMethod, GetHandoverDataResponseItem } from '@esm/data';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
@@ -16,6 +16,36 @@ import {
 describe('EditShiftReportDialogComponent', () => {
   let component: EditShiftReportDialogComponent;
   let fixture: ComponentFixture<EditShiftReportDialogComponent>;
+  const defaultContext: GetHandoverDataResponseItem = {
+    handedOverUserId: null,
+    report: '',
+    id: '',
+    invigilatorShift: [
+      {
+        id: '',
+        orderIndex: 1,
+        invigilator: null,
+      },
+    ],
+    room: {
+      displayId: '',
+    },
+    shiftGroup: {
+      id: '',
+      method: ExamMethod.Oral,
+      startAt: new Date(),
+      shift: null,
+      departmentAssign: false,
+      module: {
+        displayId: 'mock-module-id',
+        name: 'Mock module name',
+        faculty: {
+          displayId: null,
+          name: '',
+        },
+      },
+    },
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -37,17 +67,7 @@ describe('EditShiftReportDialogComponent', () => {
         {
           provide: POLYMORPHEUS_CONTEXT,
           useValue: {
-            data: {
-              handedOverUserId: null,
-              report: '',
-              shiftGroup: {
-                module: {
-                  displayId: 'mock-module-id',
-                  name: 'Mock module name',
-                  method: ExamMethod.Write,
-                },
-              },
-            },
+            data: defaultContext,
           },
         },
       ],
