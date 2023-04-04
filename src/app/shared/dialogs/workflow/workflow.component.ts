@@ -5,6 +5,7 @@ import {
   inject,
   ViewChild,
 } from '@angular/core';
+import { DIAGRAM_STATUS_MAP } from '@esm/cdk';
 import { ExaminationStatus, ExaminationSummary } from '@esm/data';
 import { LetModule } from '@ngrx/component';
 import {
@@ -38,20 +39,11 @@ export class WorkflowDialogComponent {
 
   // PUBLIC PROPERTIES
   readonly examination$ = this.store.examination$;
-  readonly constraints = DiagramConstraints.Zoom;
   readonly nodes = WORKFLOW_NODES;
   readonly connectors = WORKFLOW_CONNECTORS;
+  readonly constraints = DiagramConstraints.Zoom;
   readonly snapSettings: SnapSettingsModel = {
     constraints: SnapConstraints.All & ~SnapConstraints.ShowLines,
-  };
-
-  // PRIVATE PROPERTIES
-  private readonly statusMap: Record<ExaminationStatus, string> = {
-    '0': '0-idle',
-    '1': '1-setup',
-    '2': '2-assign-faculty',
-    '4': '3-assign-department',
-    '8': '4-assign-teacher',
   };
 
   // PUBLIC METHODS
@@ -65,7 +57,7 @@ export class WorkflowDialogComponent {
     return (node) => {
       if (node.style) {
         node.style.strokeColor = 'var(--tui-neutral-fill)';
-        if (this.statusMap[examination.status] === node.id) {
+        if (DIAGRAM_STATUS_MAP[examination.status] === node.id) {
           node.style.fill = 'var(--tui-success-fill)';
         }
       }

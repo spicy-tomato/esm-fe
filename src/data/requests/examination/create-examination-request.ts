@@ -4,4 +4,5 @@ export type CreateExaminationRequest = {
   description: string | null;
   expectStartAt: Date | null;
   expectEndAt: Date | null;
+  createdAt: Date;
 };

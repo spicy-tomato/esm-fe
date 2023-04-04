@@ -83,7 +83,10 @@ export class InvigilatorAssignFacultyStore extends ComponentStore<InvigilatorAss
       withLatestFrom(this.examinationId$),
       switchMap(({ 1: id }) => {
         return this.examinationService
-          .changeStatus(id, ExaminationStatus.AssignInvigilator)
+          .changeStatus(id, {
+            status: ExaminationStatus.AssignInvigilator,
+            createdAt: new Date(),
+          })
           .pipe(
             tapResponse(
               () => {

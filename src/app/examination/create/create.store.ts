@@ -6,13 +6,13 @@ import { ExaminationService } from '@esm/services';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { switchMap, tap } from 'rxjs';
 
-type TopBarState = {
+type ExaminationCreateState = {
   status: Status;
   error: string | null;
 };
 
 @Injectable()
-export class CreateStore extends ComponentStore<TopBarState> {
+export class ExaminationCreateStore extends ComponentStore<ExaminationCreateState> {
   // INJECT PROPERTIES
   private readonly router = inject(Router);
   private readonly examinationService = inject(ExaminationService);

@@ -5,10 +5,11 @@ import { APP_ENV } from '@esm/core';
 import {
   AssignInvigilatorNumerateOfShiftToFacultyResponse,
   AssignInvigilatorsToShiftsRequest,
+  ChangeExaminationStatusRequest,
   CreateExaminationRequest,
+  ExaminationEvent,
   ExaminationGetDataResponseItem,
   ExaminationGetShiftResponseItem,
-  ExaminationStatus,
   ExaminationSummary,
   GetAllGroupsResponseResponseItem,
   GetAvailableInvigilatorsInShiftGroupResponseItem,
@@ -68,6 +69,11 @@ export class ExaminationService {
     return this.http.post<Result<boolean>>(this.url + id, formData);
   }
 
+  // [GET] /examination/{examinationId}/events
+  getEvents(id: string): Observable<Result<ExaminationEvent>> {
+    return this.http.get<Result<ExaminationEvent>>(this.url + `${id}/events`);
+  }
+
   // [GET] /examination/{examinationId}/handover
   getHandoverData(
     id: string
@@ -112,9 +118,9 @@ export class ExaminationService {
   // [POST] /examination/{examinationId}/status
   changeStatus(
     id: string,
-    status: ExaminationStatus
+    request: ChangeExaminationStatusRequest
   ): Observable<Result<boolean>> {
-    return this.http.post<Result<boolean>>(this.url + `${id}/status`, status);
+    return this.http.post<Result<boolean>>(this.url + `${id}/status`, request);
   }
 
   // [PATCH] /examination/{examinationId}/exams-number

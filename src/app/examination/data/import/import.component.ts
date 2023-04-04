@@ -53,6 +53,7 @@ export class ExaminationDataImportComponent implements OnInit {
 
   importFile(file: File): void {
     const formData = new FormData();
+    formData.append('createdAt', new Date().toISOString());
     formData.append('file', file);
     this.store.import(formData);
   }

@@ -19,7 +19,7 @@ import {
   TuiInputModule,
   TuiIslandModule,
 } from '@taiga-ui/kit';
-import { CreateStore } from './create.store';
+import { ExaminationCreateStore } from './create.store';
 
 export const NGRX = [LetModule];
 export const TAIGA_UI = [
@@ -39,12 +39,12 @@ export const TAIGA_UI = [
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, ...NGRX, ...TAIGA_UI],
-  providers: [CreateStore],
+  providers: [ExaminationCreateStore],
 })
 export class ExaminationCreateComponent {
   // INJECT PROPERTIES
   private readonly fb = inject(NonNullableFormBuilder);
-  private readonly store = inject(CreateStore);
+  private readonly store = inject(ExaminationCreateStore);
 
   // PUBLIC PROPERTIES
   readonly form = this.fb.group({
@@ -62,6 +62,7 @@ export class ExaminationCreateComponent {
       ...rest,
       expectStartAt: expectedDateRange?.from.toUtcNativeDate() ?? null,
       expectEndAt: expectedDateRange?.to.toUtcNativeDate() ?? null,
+      createdAt: new Date(),
     });
   }
 }

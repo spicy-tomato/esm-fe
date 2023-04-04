@@ -30,3 +30,25 @@
     </li>
   </ul>
 </tui-island>
+
+<tui-island *ngrxLet="diagramData$ as diagramData">
+  <div
+    *ngIf="diagramData && diagramData.nodes.length > 0"
+    id="diagram-space"
+    class="w-[1260px] h-[700px]"
+  >
+    <ejs-diagram
+      #diagram
+      id="diagram"
+      width="100%"
+      height="100%"
+      (created)="created()"
+      [snapSettings]="snapSettings"
+      [constraints]="constraints"
+      [nodes]="diagramData.nodes"
+      [connectors]="diagramData.connectors"
+      [getNodeDefaults]="getNodeDefaults"
+      [getConnectorDefaults]="getConnectorDefaults"
+    ></ejs-diagram>
+  </div>
+</tui-island>

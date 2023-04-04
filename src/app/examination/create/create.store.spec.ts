@@ -3,15 +3,15 @@ import { fakeAsync, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { ResultBuilder } from '@esm/cdk';
 import { APP_ENV } from '@esm/core';
-import { ExaminationStatus } from '@esm/data';
+import { CreateExaminationRequest, ExaminationStatus } from '@esm/data';
 import { ExaminationService } from '@esm/services';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { cold } from 'jasmine-marbles';
 import { of } from 'rxjs';
-import { CreateStore } from './create.store';
+import { ExaminationCreateStore } from './create.store';
 
 describe('CreateStore', () => {
-  let store: CreateStore;
+  let store: ExaminationCreateStore;
   let mockExaminationService: jasmine.SpyObj<ExaminationService>;
   let router: Router;
   let appStore: MockStore;
@@ -25,7 +25,7 @@ describe('CreateStore', () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
-        CreateStore,
+        ExaminationCreateStore,
         {
           provide: ExaminationService,
           useValue: mockExaminationService,
@@ -35,7 +35,7 @@ describe('CreateStore', () => {
       ],
     }).compileComponents();
 
-    store = TestBed.inject(CreateStore);
+    store = TestBed.inject(ExaminationCreateStore);
     router = TestBed.inject(Router);
     appStore = TestBed.inject(MockStore);
   });
@@ -46,12 +46,13 @@ describe('CreateStore', () => {
   });
 
   describe('Effect create', () => {
-    const params = {
+    const params: CreateExaminationRequest = {
       name: 'Mock name',
       displayId: 'Mock ID',
       description: 'Mock description',
       expectStartAt: new Date(2023, 0, 1, 7, 0, 0, 0),
       expectEndAt: new Date(2023, 1, 1, 7, 0, 0, 0),
+      createdAt: new Date(),
     };
 
     it('[Called] should patch state `loading`', () => {

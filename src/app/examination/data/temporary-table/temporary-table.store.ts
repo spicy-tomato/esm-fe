@@ -41,7 +41,10 @@ export class ExaminationDataTemporaryTableStore extends ComponentStore<Examinati
       withLatestFrom(this.examinationId$),
       switchMap(({ 1: id }) =>
         this.examinationService
-          .changeStatus(id, ExaminationStatus.AssignFaculty)
+          .changeStatus(id, {
+            status: ExaminationStatus.AssignFaculty,
+            createdAt: new Date(),
+          })
           .pipe(
             tapResponse(
               () => {

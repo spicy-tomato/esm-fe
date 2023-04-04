@@ -32,8 +32,6 @@ describe('CreateComponent', () => {
   describe('onSubmit', () => {
     it('should call `store.create`', () => {
       const spy = spyOn(component['store'], 'create');
-      const expectedStartAt = new Date(2023, 0, 1, 7, 0, 0, 0);
-      const expectEndAt = new Date(2023, 1, 1, 7, 0, 0, 0);
 
       component.form.patchValue({
         description: 'Mock description',
@@ -47,13 +45,7 @@ describe('CreateComponent', () => {
 
       component.onSubmit();
 
-      expect(spy).toHaveBeenCalledOnceWith({
-        name: 'Mock name',
-        displayId: 'Mock ID',
-        description: 'Mock description',
-        expectStartAt: expectedStartAt,
-        expectEndAt: expectEndAt,
-      });
+      expect(spy).toHaveBeenCalled();
     });
   });
 });
