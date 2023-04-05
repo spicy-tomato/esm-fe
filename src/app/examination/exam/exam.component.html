@@ -10,6 +10,8 @@
     [showLoader]="showLoader"
     [disabled]="form?.pristine ?? true"
     icon="tuiIconCheckLarge"
+    size="m"
+    appearance="primary"
     class="mr-2"
   >
     Lưu
@@ -63,13 +65,18 @@
             >
               Bắt đầu
             </th>
-            <th
-              tuiTh
-              [sticky]="true"
-              [style.top.px]="offset"
-              class="!text-center"
-            >
-              Ca
+            <th tuiTh [sticky]="true" [style.top.px]="offset">
+              <div class="center-flex">
+                Ca
+                <tui-hosted-dropdown
+                  tuiDropdownAlign="right"
+                  [sided]="true"
+                  [(open)]="openShiftDropdown"
+                  [content]="shiftDropdown"
+                >
+                  <button tuiIconButton icon="tuiIconFilter"></button>
+                </tui-hosted-dropdown>
+              </div>
             </th>
             <th tuiTh [sticky]="true" [style.top.px]="offset">Phòng</th>
             <th
@@ -132,4 +139,24 @@
       </table>
     </cdk-virtual-scroll-viewport>
   </tui-scrollbar>
+</ng-template>
+
+<ng-template #shiftDropdown>
+  <div class="m-4">
+    <div *ngFor="let key of shiftsDropdownKey" class="my-2">
+      <tui-checkbox-labeled [(ngModel)]="shiftsDropdown[key]">
+        Ca {{ key }}
+      </tui-checkbox-labeled>
+    </div>
+
+    <button
+      tuiButton
+      (click)="applyFilter()"
+      appearance="primary"
+      size="s"
+      class="mt-2"
+    >
+      Áp dụng
+    </button>
+  </div>
 </ng-template>

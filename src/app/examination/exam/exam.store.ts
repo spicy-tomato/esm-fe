@@ -43,24 +43,26 @@ export class ExaminationExamStore extends ComponentStore<ExaminationExamState> {
     .pipe(ObservableHelper.filterNullish(), takeUntil(this.destroy$));
 
   // EFFECTS
-  readonly getData = this.effect<void>((params$) =>
+  readonly getData = this.effect<{ shift?: number[] }>((params$) =>
     combineLatest([
       params$.pipe(tap(() => this.patchState({ dataStatus: 'loading' }))),
       this.examination$,
     ]).pipe(
       withLatestFrom(this.examinationId$),
       filter(([{ 1: examination }, id]) => examination.id === id),
-      switchMap(({ 1: id }) =>
-        this.examinationService.getData(id, false).pipe(
-          tapResponse(
-            ({ data }) =>
-              this.patchState({
-                data,
-                dataStatus: 'success',
-              }),
-            () => this.patchState({ data: [], dataStatus: 'error' })
+      switchMap(([[{ shift }], id]) =>
+        this.examinationService
+          .getData(id, { departmentAssign: false, shift })
+          .pipe(
+            tapResponse(
+              ({ data }) =>
+                this.patchState({
+                  data,
+                  dataStatus: 'success',
+                }),
+              () => this.patchState({ data: [], dataStatus: 'error' })
+            )
           )
-        )
       )
     )
   );
@@ -80,7 +82,7 @@ export class ExaminationExamStore extends ComponentStore<ExaminationExamState> {
           tapResponse(
             () => {
               this.patchState({ updateStatus: 'success' });
-              this.getData();
+              this.getData({});
             },
             () => this.patchState({ updateStatus: 'error' })
           )

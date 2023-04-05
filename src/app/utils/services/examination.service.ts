@@ -54,13 +54,11 @@ export class ExaminationService {
   // [GET] /examination/{examinationId}
   getData(
     id: string,
-    departmentAssign?: boolean
+    params?: { departmentAssign?: boolean; shift?: number[] }
   ): Observable<Result<ExaminationGetDataResponseItem[]>> {
     return this.http.get<Result<ExaminationGetDataResponseItem[]>>(
       this.url + id,
-      {
-        params: departmentAssign !== undefined ? { departmentAssign } : {},
-      }
+      { params }
     );
   }
 

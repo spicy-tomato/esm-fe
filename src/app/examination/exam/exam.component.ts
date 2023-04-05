@@ -10,6 +10,7 @@ import {
   FormArray,
   FormControl,
   FormGroup,
+  FormsModule,
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
@@ -25,17 +26,20 @@ import {
   TuiAlertService,
   TuiButtonModule,
   tuiButtonOptionsProvider,
+  TuiHostedDropdownModule,
   TuiLoaderModule,
   TuiNotification,
   TuiScrollbarModule,
 } from '@taiga-ui/core';
-import { TuiInputNumberModule } from '@taiga-ui/kit';
+import { TuiCheckboxLabeledModule, TuiInputNumberModule } from '@taiga-ui/kit';
 import { combineLatest, filter, map, switchMap, takeUntil, tap } from 'rxjs';
 import { ExaminationExamStore } from './exam.store';
 
 export const NGRX = [LetModule];
 export const TAIGA_UI = [
   TuiButtonModule,
+  TuiCheckboxLabeledModule,
+  TuiHostedDropdownModule,
   TuiInputNumberModule,
   TuiLoaderModule,
   TuiScrollbarModule,
@@ -49,6 +53,7 @@ export const TAIGA_UI = [
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     ReactiveFormsModule,
     ExamMethodPipe,
     ScrollingModule,
@@ -59,7 +64,7 @@ export const TAIGA_UI = [
   providers: [
     ExaminationExamStore,
     TuiDestroyService,
-    tuiButtonOptionsProvider({ size: 'm' }),
+    tuiButtonOptionsProvider({ size: 'xs', appearance: 'icon' }),
   ],
 })
 export class ExaminationExamComponent implements OnInit {
@@ -71,6 +76,7 @@ export class ExaminationExamComponent implements OnInit {
   private readonly alertService = inject(TuiAlertService);
 
   // PUBLIC PROPERTIES
+  openShiftDropdown = false;
   form?: FormGroup<{
     data: FormArray<FormControl<number>>;
   }>;
@@ -89,6 +95,14 @@ export class ExaminationExamComponent implements OnInit {
     'candidatesCount',
     'examsCount',
   ];
+  readonly shiftsDropdownKey = [1, 2, 3, 4];
+  readonly shiftsDropdown = this.shiftsDropdownKey.reduce<
+    Record<number, boolean>
+  >((acc, curr) => {
+    acc[curr] = true;
+    return acc;
+  }, {});
+
   readonly user$ = this.store.user$;
   readonly data$ = this.store.data$;
   readonly showLoader$ = combineLatest([
@@ -103,11 +117,11 @@ export class ExaminationExamComponent implements OnInit {
   ngOnInit(): void {
     this.handleDataChanges();
     this.handleUpdateSuccess();
-    this.store.getData();
+    this.store.getData({});
     this.router.events
       .pipe(
         filter((e): e is NavigationEnd => e instanceof NavigationEnd),
-        tap(() => this.store.getData()),
+        tap(() => this.store.getData({})),
         takeUntil(this.destroy$)
       )
       .subscribe();
@@ -122,6 +136,19 @@ export class ExaminationExamComponent implements OnInit {
     if (this.form) {
       this.store.save(this.form.controls.data.value);
     }
+  }
+
+  applyFilter(): void {
+    const shift = Object.entries(this.shiftsDropdown).reduce(
+      (acc, [shift, isSelected]) => {
+        if (isSelected) {
+          acc.push(+shift);
+        }
+        return acc;
+      },
+      [] as number[]
+    );
+    this.store.getData({ shift });
   }
 
   // PRIVATE METHODS
