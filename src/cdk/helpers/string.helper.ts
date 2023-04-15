@@ -3,6 +3,15 @@ import { Md5 } from 'ts-md5';
 import { ArrayHelper } from './array.helper';
 
 export class StringHelper {
+  static EXAM_METHOD_MAPPING = {
+    0: 'Trắc nghiệm',
+    1: 'Tự luận',
+    2: 'Thực hành',
+    3: 'Vấn đáp',
+    4: 'Báo cáo 1',
+    5: 'Báo cáo 2',
+  };
+
   static md5(text: string): string {
     return new Md5().appendStr(text).end() as string;
   }
@@ -12,15 +21,6 @@ export class StringHelper {
   }
 
   static getExamMethod(method: ExamMethod): string {
-    const mapping = {
-      0: 'Trắc nghiệm',
-      1: 'Tự luận',
-      2: 'Thực hành',
-      3: 'Vấn đáp',
-      4: 'Báo cáo 1',
-      5: 'Báo cáo 2',
-    };
-
-    return mapping[method];
+    return this.EXAM_METHOD_MAPPING[method];
   }
 }

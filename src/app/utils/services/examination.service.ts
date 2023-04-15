@@ -52,13 +52,9 @@ export class ExaminationService {
   }
 
   // [GET] /examination/{examinationId}
-  getData(
-    id: string,
-    params?: { departmentAssign?: boolean; shift?: number[] }
-  ): Observable<Result<ExaminationGetDataResponseItem[]>> {
+  getData(id: string): Observable<Result<ExaminationGetDataResponseItem[]>> {
     return this.http.get<Result<ExaminationGetDataResponseItem[]>>(
-      this.url + id,
-      { params }
+      this.url + id
     );
   }
 

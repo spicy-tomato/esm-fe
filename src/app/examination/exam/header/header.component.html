@@ -1,0 +1,88 @@
+<div
+  class="py-3 flex flex-0 justify-between items-center bg-white text-3xl font-bold"
+>
+  <h3>Danh sách phòng và số đề thi</h3>
+
+  <div class="flex">
+    <form [formGroup]="form" class="flex">
+      <tui-select
+        formControlName="methods"
+        [tuiTextfieldLabelOutside]="true"
+        [valueContent]="methodContent"
+        tuiTextfieldSize="m"
+        class="w-36"
+      >
+        Hình thức
+        <ng-template tuiDataList>
+          <tui-data-list>
+            <tui-opt-group tuiMultiSelectGroup>
+              <button *ngFor="let method of methods" tuiOption [value]="method">
+                {{ method | examMethod }}
+              </button>
+            </tui-opt-group>
+          </tui-data-list>
+        </ng-template>
+      </tui-select>
+
+      <tui-input-date-range
+        *ngrxLet="minMaxDate$ as minMaxDate"
+        formControlName="date"
+        [tuiTextfieldLabelOutside]="true"
+        [tuiTextfieldCleaner]="true"
+        [min]="minMaxDate.min"
+        [max]="minMaxDate.max"
+        tuiTextfieldSize="m"
+        class="w-56"
+      >
+        Ngày thi
+      </tui-input-date-range>
+
+      <tui-select
+        formControlName="shifts"
+        [tuiTextfieldLabelOutside]="true"
+        [valueContent]="shiftContent"
+        tuiTextfieldSize="m"
+        class="w-32"
+      >
+        Ca thi
+        <ng-template tuiDataList>
+          <tui-data-list>
+            <tui-opt-group tuiMultiSelectGroup>
+              <button *ngFor="let shift of shifts" tuiOption [value]="shift">
+                Ca {{ shift }}
+              </button>
+            </tui-opt-group>
+          </tui-data-list>
+        </ng-template>
+      </tui-select>
+    </form>
+
+    <button
+      *ngrxLet="tableFormIsPristine$ as tableFormIsPristine"
+      tuiButton
+      (click)="save.emit()"
+      [showLoader]="showLoader"
+      [disabled]="tableFormIsPristine"
+      icon="tuiIconCheckLarge"
+      size="m"
+      appearance="primary"
+      class="ml-10 mr-2"
+    >
+      Lưu
+    </button>
+  </div>
+</div>
+
+<ng-template #shiftContent [polymorpheus]="shiftContentContext" let-data>
+  {{ data.length ? "Ca " + data.join(", ") : "Ca thi" }}
+</ng-template>
+
+<ng-template #methodContent [polymorpheus]="methodContentContext" let-data>
+  {{
+    data.length === 0
+      ? "Hình thức thi"
+      : data.length === 1
+      ? (data[0] | examMethod)
+      : data.length + " hình thức"
+  }}
+</ng-template>
