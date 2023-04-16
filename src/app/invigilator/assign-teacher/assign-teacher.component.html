@@ -65,7 +65,7 @@
           <thead tuiThead>
             <tr
               tuiThGroup
-              *esmVar="0 - viewport['_renderedContentOffset'] as offset"
+              *ngrxLet="0 - viewport['_renderedContentOffset'] as offset"
             >
               <th tuiTh [sticky]="true" [style.top.px]="offset">STT</th>
               <th tuiTh [sticky]="true" [style.top.px]="offset">Mã học phần</th>
@@ -134,7 +134,9 @@
                       {{ row.facultyShiftGroup.shiftGroup.shift }}
                     </td>
 
-                    <ng-container *esmVar="form.controls[row.id] as rowControl">
+                    <ng-container
+                      *ngrxLet="form.controls[row.id] as rowControl"
+                    >
                       <td *tuiCell="'department'" tuiTd class="w-60">
                         <tui-select
                           (ngModelChange)="

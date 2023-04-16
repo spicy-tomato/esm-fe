@@ -22,7 +22,6 @@ import { ExamMethodPipe } from '@esm/core';
 import { ExaminationGetDataResponseItem } from '@esm/data';
 import { filter, tap, withLatestFrom } from 'rxjs';
 import { ExaminationExamStore } from '../exam.store';
-import { VarDirective } from '@esm/shared/directives';
 
 export const NGRX = [LetModule];
 export const TAIGA_UI = [
@@ -40,7 +39,6 @@ export const TAIGA_UI = [
     ExamMethodPipe,
     ReactiveFormsModule,
     ScrollingModule,
-    VarDirective,
     ...NGRX,
     ...TAIGA_UI,
   ],

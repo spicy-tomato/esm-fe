@@ -17,7 +17,7 @@
       <thead tuiThead>
         <tr
           tuiThGroup
-          *esmVar="0 - viewport['_renderedContentOffset'] as offset"
+          *ngrxLet="0 - viewport['_renderedContentOffset'] as offset"
         >
           <th tuiTh [sticky]="true" [style.top.px]="offset">STT</th>
           <th tuiTh [sticky]="true" [style.top.px]="offset">Mã học phần</th>

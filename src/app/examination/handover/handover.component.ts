@@ -17,7 +17,6 @@ import { ObservableHelper } from '@esm/cdk';
 import { ExamMethodPipe } from '@esm/core';
 import { GetHandoverDataResponseItem } from '@esm/data';
 import { EditShiftReportDialogComponent } from '@esm/shared/dialogs';
-import { VarDirective } from '@esm/shared/directives';
 import { LetModule } from '@ngrx/component';
 import { TuiTableModule } from '@taiga-ui/addon-table';
 import {
@@ -56,7 +55,6 @@ export const TAIGA_UI = [
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    VarDirective,
     ExamMethodPipe,
     ScrollingModule,
     EditShiftReportDialogComponent,

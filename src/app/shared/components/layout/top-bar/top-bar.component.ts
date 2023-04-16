@@ -12,7 +12,6 @@ import { Router, RouterModule } from '@angular/router';
 import { StringHelper } from '@esm/cdk';
 import { fadeInOut } from '@esm/core';
 import { ExaminationSummary, GetRelatedResponseItem } from '@esm/data';
-import { VarDirective } from '@esm/shared/directives';
 import { AppPageAction, AppSelector, AppState } from '@esm/store';
 import { LetModule } from '@ngrx/component';
 import { Store } from '@ngrx/store';
@@ -62,7 +61,6 @@ export const TAIGA_UI = [
     RouterModule,
     FormsModule,
     BellComponent,
-    VarDirective,
     ...NGRX,
     ...TAIGA_UI,
   ],

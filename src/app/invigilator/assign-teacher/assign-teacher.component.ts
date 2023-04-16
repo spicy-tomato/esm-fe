@@ -20,7 +20,6 @@ import {
   UserSimple,
   UserSummary,
 } from '@esm/data';
-import { VarDirective } from '@esm/shared/directives';
 import { LetModule } from '@ngrx/component';
 import { TuiTableModule } from '@taiga-ui/addon-table';
 import {
@@ -71,7 +70,6 @@ type FormType = {
     CommonModule,
     ReactiveFormsModule,
     ScrollingModule,
-    VarDirective,
     ...NGRX,
     ...TAIGA_UI,
   ],

@@ -21,7 +21,6 @@ import {
   AddModuleDialogComponent,
   AddRoomDialogComponent,
 } from '@esm/shared/dialogs';
-import { VarDirective } from '@esm/shared/directives';
 import { LetModule } from '@ngrx/component';
 import { TuiTableModule } from '@taiga-ui/addon-table';
 import {
@@ -58,7 +57,6 @@ export const TAIGA_UI = [
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    VarDirective,
     ExamMethodPipe,
     ScrollingModule,
     ErrorFlagComponent,

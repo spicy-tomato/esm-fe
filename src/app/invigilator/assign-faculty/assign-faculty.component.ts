@@ -26,7 +26,6 @@ import {
   GetAllGroupsResponseResponseItem,
 } from '@esm/data';
 import { ConfirmDialogComponent } from '@esm/shared/dialogs';
-import { VarDirective } from '@esm/shared/directives';
 import { LetModule } from '@ngrx/component';
 import { TuiTableModule } from '@taiga-ui/addon-table';
 import {
@@ -66,7 +65,6 @@ export const TAIGA_UI = [
     ScrollingModule,
     ArrayPipe,
     ExamMethodPipe,
-    VarDirective,
     ...NGRX,
     ...TAIGA_UI,
   ],

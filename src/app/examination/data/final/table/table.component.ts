@@ -11,7 +11,6 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { ExamMethodPipe } from '@esm/core';
 import { TuiTableModule } from '@taiga-ui/addon-table';
 import { TuiLoaderModule, TuiScrollbarModule } from '@taiga-ui/core';
-import { VarDirective } from '@esm/shared/directives';
 
 export const NGRX = [LetModule];
 export const TAIGA_UI = [TuiLoaderModule, TuiScrollbarModule, TuiTableModule];
@@ -22,7 +21,6 @@ export const TAIGA_UI = [TuiLoaderModule, TuiScrollbarModule, TuiTableModule];
   imports: [
     CommonModule,
     ExamMethodPipe,
-    VarDirective,
     ScrollingModule,
     ...NGRX,
     ...TAIGA_UI,

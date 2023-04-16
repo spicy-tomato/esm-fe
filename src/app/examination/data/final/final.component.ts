@@ -7,7 +7,6 @@ import {
   OnInit,
 } from '@angular/core';
 import { ExamMethodPipe } from '@esm/core';
-import { VarDirective } from '@esm/shared/directives';
 import { LetModule } from '@ngrx/component';
 import { TuiLoaderModule } from '@taiga-ui/core';
 import { ExaminationDataFinalStore } from './final.store';
@@ -24,7 +23,6 @@ export const TAIGA_UI = [TuiLoaderModule];
   standalone: true,
   imports: [
     CommonModule,
-    VarDirective,
     ExamMethodPipe,
     ScrollingModule,
     ExaminationDataFinalHeaderComponent,

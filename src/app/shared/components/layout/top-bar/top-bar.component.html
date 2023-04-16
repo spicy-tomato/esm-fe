@@ -139,7 +139,7 @@
         <ng-container *ngFor="let examination of filtered">
           <button
             tuiOption
-            *esmVar="
+            *ngrxLet="
               examination.id === selectedExamination?.id as isCurrentExamination
             "
             (click)="onClickExaminationDropdownItem(examination.id)"

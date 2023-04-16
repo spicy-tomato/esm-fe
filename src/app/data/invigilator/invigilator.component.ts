@@ -12,7 +12,6 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { StringifyHelper } from '@esm/cdk';
 import { UserSummary } from '@esm/data';
 import { EditInvigilatorDialogComponent } from '@esm/shared/dialogs';
-import { VarDirective } from '@esm/shared/directives';
 import { LetModule } from '@ngrx/component';
 import { TuiTableModule } from '@taiga-ui/addon-table';
 import { TuiFilterPipeModule } from '@taiga-ui/cdk';
@@ -53,7 +52,6 @@ export const TAIGA_UI = [
     FormsModule,
     EditInvigilatorDialogComponent,
     ScrollingModule,
-    VarDirective,
     ...NGRX,
     ...TAIGA_UI,
   ],
