@@ -12,6 +12,7 @@ import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { Status } from '@esm/cdk';
 import {
   DepartmentSummary,
   ExaminationStatus,
@@ -29,16 +30,18 @@ import {
   TuiStringHandler,
 } from '@taiga-ui/cdk';
 import {
+  TuiAlertService,
   TuiButtonModule,
   tuiButtonOptionsProvider,
   TuiDataListModule,
   TuiLoaderModule,
+  TuiNotification,
   TuiScrollbarModule,
 } from '@taiga-ui/core';
 import { TuiComboBoxModule, TuiSelectModule } from '@taiga-ui/kit';
-import { combineLatest, filter, map, tap } from 'rxjs';
-import { InvigilatorAssignTeacherStore } from './assign-teacher.store';
+import { combineLatest, filter, map, of, switchMap, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { InvigilatorAssignTeacherStore } from './assign-teacher.store';
 
 export const NGRX = [LetModule];
 export const TAIGA_UI = [
@@ -81,6 +84,7 @@ type FormType = {
 })
 export class InvigilatorAssignTeacherComponent implements OnInit {
   // INJECT PROPERTIES
+  private readonly alertService = inject(TuiAlertService);
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly store = inject(InvigilatorAssignTeacherStore);
 
@@ -97,7 +101,7 @@ export class InvigilatorAssignTeacherComponent implements OnInit {
     'phoneNumber',
   ];
   customValues: Record<string, string | null> = {};
-  
+
   readonly hideAutoAssign = environment.production;
   readonly ExaminationStatus = ExaminationStatus;
   readonly data$ = this.store.data$;
@@ -106,6 +110,7 @@ export class InvigilatorAssignTeacherComponent implements OnInit {
   readonly dataStatus$ = this.store.dataStatus$;
   readonly examination$ = this.store.examination$;
   readonly updateStatus$ = this.store.updateStatus$;
+  readonly autoAssignStatus$ = this.store.autoAssignStatus$;
   readonly departments$ = this.store.departmentsInFaculty$;
   readonly invigilatorsData$ = this.store.invigilatorsData$;
   readonly invigilatorPhoneNumberMap$ = this.store.invigilatorPhoneNumberMap$;
@@ -117,6 +122,8 @@ export class InvigilatorAssignTeacherComponent implements OnInit {
   // LIFECYCLE
   ngOnInit(): void {
     this.handleBuildForm();
+    this.handleUpdateStatusChanges();
+
     this.store.getData();
     this.store.getInvigilatorsData();
   }
@@ -211,5 +218,22 @@ export class InvigilatorAssignTeacherComponent implements OnInit {
       },
       {}
     );
+  }
+
+  private handleUpdateStatusChanges(): void {
+    const func = (status: Status) =>
+      status === 'success'
+        ? this.alertService.open('Cập nhật thành công!', {
+            status: TuiNotification.Success,
+          })
+        : status === 'error'
+        ? this.alertService.open('Đã có lỗi xảy ra, vui lòng thử lại sau!', {
+            label: 'Lỗi',
+            status: TuiNotification.Error,
+          })
+        : of();
+
+    this.updateStatus$.pipe(switchMap(func)).subscribe();
+    this.autoAssignStatus$.pipe(switchMap(func)).subscribe();
   }
 }

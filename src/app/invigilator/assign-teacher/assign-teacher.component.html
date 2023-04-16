@@ -23,6 +23,7 @@
         *ngIf="examination?.status === ExaminationStatus.AssignInvigilator"
         (click)="saveChange()"
         [showLoader]="showLoader"
+        [disabled]="!form || form.pristine"
         icon="tuiIconSaveLarge"
       >
         Lưu
