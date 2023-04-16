@@ -101,6 +101,7 @@ export class InvigilatorAssignTeacherComponent implements OnInit {
 
   readonly data$ = this.store.data$;
   readonly faculty$ = this.store.faculty$;
+  readonly dataError$ = this.store.dataError$;
   readonly dataStatus$ = this.store.dataStatus$;
   readonly examination$ = this.store.examination$;
   readonly updateStatus$ = this.store.updateStatus$;

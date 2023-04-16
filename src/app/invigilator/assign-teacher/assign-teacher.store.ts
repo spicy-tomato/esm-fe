@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { ObservableHelper, Status } from '@esm/cdk';
+import { EsmHttpErrorResponse, ObservableHelper, Status } from '@esm/cdk';
 import {
   GetGroupByFacultyIdResponseItem,
   UpdateTeacherAssignmentRequest,
@@ -21,6 +21,7 @@ import {
 type InvigilatorAssignTeacherState = {
   data: GetGroupByFacultyIdResponseItem[];
   dataStatus: Status;
+  dataError: any;
   //
   invigilatorsData: UserSummary[];
   invigilatorsDataStatus: Status;
@@ -58,6 +59,7 @@ export class InvigilatorAssignTeacherStore extends ComponentStore<InvigilatorAss
     takeUntil(this.destroy$)
   );
   readonly data$ = this.select((s) => s.data);
+  readonly dataError$ = this.select((s) => s.dataError);
   readonly dataStatus$ = this.select((s) => s.dataStatus);
   readonly invigilatorsData$ = this.select((s) => s.invigilatorsData);
   readonly invigilatorPhoneNumberMap$ = this.select(
@@ -74,7 +76,7 @@ export class InvigilatorAssignTeacherStore extends ComponentStore<InvigilatorAss
   // EFFECTS
   readonly getData = this.effect<void>((params$) =>
     params$.pipe(
-      tap(() => this.patchState({ dataStatus: 'loading' })),
+      tap(() => this.patchState({ dataStatus: 'loading', dataError: null })),
       withLatestFrom(
         this.examinationId$,
         this.faculty$.pipe(
@@ -90,7 +92,9 @@ export class InvigilatorAssignTeacherStore extends ComponentStore<InvigilatorAss
                 data,
                 dataStatus: 'success',
               }),
-            () => this.patchState({ dataStatus: 'error' })
+            (e: EsmHttpErrorResponse) => {
+              this.patchState({ dataStatus: 'error', dataError: e.error });
+            }
           )
         )
       )
@@ -185,6 +189,7 @@ export class InvigilatorAssignTeacherStore extends ComponentStore<InvigilatorAss
     super({
       data: [],
       dataStatus: 'loading',
+      dataError: null,
       invigilatorsData: [],
       invigilatorsDataStatus: 'loading',
       invigilatorPhoneNumberMap: {},
