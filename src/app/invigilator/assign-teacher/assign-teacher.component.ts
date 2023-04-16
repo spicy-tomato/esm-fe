@@ -38,6 +38,7 @@ import {
 import { TuiComboBoxModule, TuiSelectModule } from '@taiga-ui/kit';
 import { combineLatest, filter, map, tap } from 'rxjs';
 import { InvigilatorAssignTeacherStore } from './assign-teacher.store';
+import { environment } from 'src/environments/environment';
 
 export const NGRX = [LetModule];
 export const TAIGA_UI = [
@@ -96,7 +97,9 @@ export class InvigilatorAssignTeacherComponent implements OnInit {
     'phoneNumber',
   ];
   customValues: Record<string, string | null> = {};
-
+  
+  readonly hideAutoAssign = environment.production;
+  readonly ExaminationStatus = ExaminationStatus;
   readonly data$ = this.store.data$;
   readonly faculty$ = this.store.faculty$;
   readonly dataError$ = this.store.dataError$;
@@ -110,7 +113,6 @@ export class InvigilatorAssignTeacherComponent implements OnInit {
     this.store.dataStatus$,
     this.store.autoAssignStatus$,
   ]).pipe(map((statuses) => statuses.includes('loading')));
-  readonly ExaminationStatus = ExaminationStatus;
 
   // LIFECYCLE
   ngOnInit(): void {

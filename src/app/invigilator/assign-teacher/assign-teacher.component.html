@@ -12,6 +12,7 @@
         *ngIf="examination?.status === ExaminationStatus.AssignInvigilator"
         (click)="autoAssign()"
         [showLoader]="showLoader"
+        [class.!hidden]="hideAutoAssign"
         icon="tuiIconAirplayLarge"
       >
         Tự động phân bổ
