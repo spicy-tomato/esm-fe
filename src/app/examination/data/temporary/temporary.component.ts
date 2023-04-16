@@ -36,7 +36,7 @@ import {
 import { TuiInputNumberModule } from '@taiga-ui/kit';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { filter, tap } from 'rxjs';
-import { ExaminationDataTemporaryTableStore } from './temporary-table.store';
+import { ExaminationDataTemporaryStore } from './temporary.store';
 
 export const NGRX = [LetModule];
 export const TAIGA_UI = [
@@ -51,9 +51,9 @@ export const TAIGA_UI = [
 ];
 
 @Component({
-  selector: 'esm-examination-data-temporary-table',
-  templateUrl: './temporary-table.component.html',
-  styleUrls: ['./temporary-table.component.less'],
+  selector: 'esm-examination-data-temporary',
+  templateUrl: './temporary.component.html',
+  styleUrls: ['./temporary.component.less'],
   standalone: true,
   imports: [
     CommonModule,
@@ -66,14 +66,14 @@ export const TAIGA_UI = [
     ...TAIGA_UI,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [ExaminationDataTemporaryTableStore],
+  providers: [ExaminationDataTemporaryStore],
 })
-export class ExaminationDataTemporaryTableComponent implements OnInit {
+export class ExaminationDataTemporaryComponent implements OnInit {
   // INJECT PROPERTIES
   private readonly fb = inject(FormBuilder);
   private readonly injector = inject(Injector);
   private readonly dialogService = inject(TuiDialogService);
-  private readonly store = inject(ExaminationDataTemporaryTableStore);
+  private readonly store = inject(ExaminationDataTemporaryStore);
 
   // PUBLIC PROPERTIES
   form!: FormGroup<{

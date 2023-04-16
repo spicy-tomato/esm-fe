@@ -7,7 +7,7 @@ import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
 import { switchMap, takeUntil, tap, withLatestFrom } from 'rxjs';
 
-type ExaminationDataTemporaryTableState = {
+type ExaminationDataTemporaryState = {
   data: TemporaryExamination[];
   dataStatus: Status;
   dataError: string | null;
@@ -16,7 +16,7 @@ type ExaminationDataTemporaryTableState = {
 };
 
 @Injectable()
-export class ExaminationDataTemporaryTableStore extends ComponentStore<ExaminationDataTemporaryTableState> {
+export class ExaminationDataTemporaryStore extends ComponentStore<ExaminationDataTemporaryState> {
   // INJECT PROPERTIES
   private readonly examinationService = inject(ExaminationService);
   private readonly appStore = inject(Store<AppState>);

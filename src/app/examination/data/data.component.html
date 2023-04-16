@@ -7,14 +7,14 @@
       class="flex-1"
     ></esm-examination-data-import>
 
-    <esm-examination-data-temporary-table
+    <esm-examination-data-temporary
       *ngSwitchCase="ExaminationStatus.Setup"
       class="flex-1"
-    ></esm-examination-data-temporary-table>
+    ></esm-examination-data-temporary>
 
-    <esm-examination-data-table
+    <esm-examination-data-final
       *ngSwitchDefault
       class="flex-1"
-    ></esm-examination-data-table>
+    ></esm-examination-data-final>
   </ng-container>
 </ng-container>

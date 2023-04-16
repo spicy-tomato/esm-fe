@@ -5,9 +5,9 @@ import { ExaminationStatus } from '@esm/data';
 import { LetModule } from '@ngrx/component';
 import { tuiButtonOptionsProvider } from '@taiga-ui/core';
 import { ExaminationDataStore } from './data.store';
+import { ExaminationDataFinalComponent } from './final/final.component';
 import { ExaminationDataImportComponent } from './import/import.component';
-import { ExaminationDataTableComponent } from './table/table.component';
-import { ExaminationDataTemporaryTableComponent } from './temporary-table/temporary-table.component';
+import { ExaminationDataTemporaryComponent } from './temporary/temporary.component';
 
 export const NGRX = [LetModule];
 
@@ -19,9 +19,9 @@ export const NGRX = [LetModule];
   imports: [
     CommonModule,
     RouterModule,
+    ExaminationDataFinalComponent,
     ExaminationDataImportComponent,
-    ExaminationDataTableComponent,
-    ExaminationDataTemporaryTableComponent,
+    ExaminationDataTemporaryComponent,
     ...NGRX,
   ],
   providers: [ExaminationDataStore, tuiButtonOptionsProvider({ size: 'm' })],

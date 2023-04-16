@@ -2,14 +2,14 @@ import { inject, Injectable } from '@angular/core';
 import { ObservableHelper, Status } from '@esm/cdk';
 import { ExaminationGetDataResponseItem } from '@esm/data';
 import { ExaminationService } from '@esm/services';
+import { shiftFilterObservable } from '@esm/shared/observables';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
-import { TuiDay, TuiDayRange } from '@taiga-ui/cdk';
+import { TuiDayRange } from '@taiga-ui/cdk';
 import {
   combineLatest,
   filter,
-  map,
   switchMap,
   takeUntil,
   tap,
@@ -37,26 +37,7 @@ export class ExaminationExamStore extends ComponentStore<ExaminationExamState> {
   // PUBLIC PROPERTIES
   readonly data$ = this.select((s) => s.data);
   private readonly filter$ = this.select((s) => s.filter);
-  readonly displayData$ = combineLatest([this.data$, this.filter$]).pipe(
-    map(([data, { methods, date, shifts }]) =>
-      data.filter(({ shiftGroup }) => {
-        const startAt = TuiDay.fromUtcNativeDate(new Date(shiftGroup.startAt));
-        return (
-          // method
-          (methods.length === 0 ||
-            (shiftGroup.shift && methods.includes(shiftGroup.method))) &&
-          // date
-          (!date ||
-            (date.from.daySameOrBefore(startAt) &&
-              startAt.daySameOrBefore(date.to))) &&
-          // shift
-          (shifts.length === 0 ||
-            (shiftGroup.shift && shifts.includes(shiftGroup.shift)))
-        );
-      })
-    )
-  );
-
+  readonly displayData$ = shiftFilterObservable(this.data$, this.filter$);
   readonly dataStatus$ = this.select((s) => s.dataStatus);
   readonly updateStatus$ = this.select((s) => s.updateStatus);
   readonly tableFormIsPristine$ = this.select((s) => s.tableFormIsPristine);

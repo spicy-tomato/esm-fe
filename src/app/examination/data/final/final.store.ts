@@ -2,24 +2,33 @@ import { inject, Injectable } from '@angular/core';
 import { ObservableHelper, Status } from '@esm/cdk';
 import { ExaminationGetDataResponseItem } from '@esm/data';
 import { ExaminationService } from '@esm/services';
+import { shiftFilterObservable } from '@esm/shared/observables';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
+import { TuiDayRange } from '@taiga-ui/cdk';
 import { switchMap, takeUntil, tap, withLatestFrom } from 'rxjs';
 
-type ExaminationDataTableState = {
+type ExaminationDataFinalState = {
   data: ExaminationGetDataResponseItem[];
   status: Status;
+  filter: {
+    methods: number[];
+    date: TuiDayRange | null;
+    shifts: number[];
+  };
 };
 
 @Injectable()
-export class ExaminationDataTableStore extends ComponentStore<ExaminationDataTableState> {
+export class ExaminationDataFinalStore extends ComponentStore<ExaminationDataFinalState> {
   // INJECT PROPERTIES
   private readonly examinationService = inject(ExaminationService);
   private readonly appStore = inject(Store<AppState>);
 
   // PUBLIC PROPERTIES
   readonly data$ = this.select((s) => s.data);
+  private readonly filter$ = this.select((s) => s.filter);
+  readonly displayData$ = shiftFilterObservable(this.data$, this.filter$);
   readonly status$ = this.select((s) => s.status);
 
   // PRIVATE PROPERTIES
@@ -52,6 +61,11 @@ export class ExaminationDataTableStore extends ComponentStore<ExaminationDataTab
     super({
       data: [],
       status: 'loading',
+      filter: {
+        methods: [],
+        date: null,
+        shifts: [],
+      },
     });
   }
 }

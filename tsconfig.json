@@ -50,6 +50,9 @@
       "@esm/shared/directives": [
         "src/app/shared/directives"
       ],
+      "@esm/shared/*": [
+        "src/app/shared/*"
+      ],
       "@esm/store": [
         "src/app/utils/store"
       ]

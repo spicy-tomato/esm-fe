@@ -1,18 +1,20 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ExaminationDataFinalHeaderComponent } from './header.component';
+import { ExaminationDataFinalStore } from '../final.store';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { APP_ENV } from '@esm/core';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { ExaminationDataComponent, NGRX } from './data.component';
 
-describe('ExaminationDataComponent', () => {
-  let component: ExaminationDataComponent;
-  let fixture: ComponentFixture<ExaminationDataComponent>;
+describe('ExaminationDataFinalHeaderComponent', () => {
+  let component: ExaminationDataFinalHeaderComponent;
+  let fixture: ComponentFixture<ExaminationDataFinalHeaderComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, ...NGRX],
+      imports: [HttpClientTestingModule],
       providers: [
+        ExaminationDataFinalStore,
         provideMockStore({
           initialState: {
             [appFeatureKey]: appInitialState,
@@ -22,7 +24,7 @@ describe('ExaminationDataComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ExaminationDataComponent);
+    fixture = TestBed.createComponent(ExaminationDataFinalHeaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

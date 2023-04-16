@@ -1,6 +1,6 @@
-table {
-  &[tuiTable] tr:nth-child(odd) td {
-    background: var(--tui-base-02);
+table[tuiTable] {
+  tr:nth-child(odd) td {
+    @apply bg-tui-base-02;
   }
 
   tr:hover > td {
