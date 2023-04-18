@@ -107,6 +107,14 @@
               [style.top.px]="offset"
               class="!text-center"
             >
+              Bộ môn
+            </th>
+            <th
+              tuiTh
+              [sticky]="true"
+              [style.top.px]="offset"
+              class="!text-center"
+            >
               SĐT
             </th>
           </tr>
@@ -232,12 +240,22 @@
                   </tui-select>
                 </td>
 
-                <td *tuiCell="'teacherDepartment'" tuiTd class="w-40">
+                <td *tuiCell="'teacherFaculty'" tuiTd class="w-40">
                   {{
                     form.controls[row.id].value
                       ? tableObservables.invigilatorFacultyMap[
                           form.controls[row.id].value!
                         ]?.facultyName
+                      : ""
+                  }}
+                </td>
+
+                <td *tuiCell="'teacherDepartment'" tuiTd class="w-40">
+                  {{
+                    form.controls[row.id].value
+                      ? tableObservables.invigilatorFacultyMap[
+                          form.controls[row.id].value!
+                        ]?.departmentName
                       : ""
                   }}
                 </td>

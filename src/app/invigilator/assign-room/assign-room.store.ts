@@ -19,7 +19,11 @@ export type ShiftUiModel = Omit<
 
 type InvigilatorMapType = Record<
   string,
-  { facultyName: string; phoneNumber: string } | null
+  {
+    facultyName: string | null;
+    departmentName: string | null;
+    phoneNumber: string | null;
+  } | null
 >;
 
 type InvigilatorAssignRoomState = {
@@ -99,8 +103,13 @@ export class InvigilatorAssignRoomStore extends ComponentStore<InvigilatorAssign
                   (acc, [key, invigilators]) => {
                     invigilators.forEach((invigilator) => {
                       if (!acc[key] && 'id' in invigilator) {
-                        const { facultyName, phoneNumber } = invigilator;
-                        acc[invigilator.id] = { facultyName, phoneNumber };
+                        const { facultyName, departmentName, phoneNumber } =
+                          invigilator;
+                        acc[invigilator.id] = {
+                          facultyName,
+                          departmentName,
+                          phoneNumber,
+                        };
                       }
                     });
                     return acc;

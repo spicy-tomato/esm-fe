@@ -3,8 +3,9 @@ export type GetAvailableInvigilatorsInShiftGroupVerifiedInvigilator = {
   fullName: string;
   invigilatorId: string | null;
   isPriority: boolean;
-  phoneNumber: string;
-  facultyName: string;
+  phoneNumber: string | null;
+  facultyName: string | null;
+  departmentName: string | null;
 };
 
 export type GetAvailableInvigilatorsInShiftGroupTemporaryInvigilator = {

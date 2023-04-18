@@ -114,6 +114,7 @@ export class InvigilatorAssignRoomComponent implements OnInit {
     'room',
     'orderIndex',
     'teacher',
+    'teacherFaculty',
     'teacherDepartment',
     'phoneNumber',
   ];
