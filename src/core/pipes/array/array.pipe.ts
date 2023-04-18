@@ -27,6 +27,10 @@ export class ArrayPipe implements PipeTransform {
       return value.includes(param as OperatorParam<T>['in']);
     }
 
-    return value.map(param as OperatorParam<T>['map']);
+    if (operator === 'map') {
+      return value.map(param as OperatorParam<T>['map']);
+    }
+
+    throw Error('Invalid operator');
   }
 }

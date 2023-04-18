@@ -6,6 +6,8 @@ import {
   OnInit,
 } from '@angular/core';
 import {
+  FormControl,
+  FormGroup,
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
@@ -51,6 +53,20 @@ export const TAIGA_UI = [
   TuiTextfieldControllerModule,
 ];
 
+type UserTemplate = {
+  invigilatorName: string;
+  departmentId: string;
+};
+
+type FormType = {
+  invigilatorId: FormControl<string>;
+  fullName: FormControl<string>;
+  email: FormControl<string>;
+  isMale: FormControl<boolean>;
+  departmentId: FormControl<string>;
+  phoneNumber: FormControl<string>;
+};
+
 @Component({
   templateUrl: './edit-invigilator.component.html',
   styleUrls: ['./edit-invigilator.component.less'],
@@ -65,52 +81,49 @@ export class EditInvigilatorDialogComponent implements OnInit {
   private readonly alertService = inject(TuiAlertService);
   private readonly store = inject(EditInvigilatorDialogStore);
   private readonly context = inject(POLYMORPHEUS_CONTEXT) as TuiDialogContext<
-    boolean,
-    UserSummary | undefined
+    UserSummary,
+    UserSummary | UserTemplate | undefined
   >;
 
   // PUBLIC PROPERTIES
-  readonly form = this.fb.group({
-    invigilatorId: [
-      this.context.data?.invigilatorId || '',
-      Validators.required,
-    ],
-    fullName: [this.context.data?.fullName || '', Validators.required],
-    email: [
-      this.context.data?.email || '',
-      [Validators.required, Validators.email],
-    ],
-    isMale: [this.context.data?.isMale || true, Validators.required],
-    departmentId: [
-      this.context.data?.department?.id || '',
-      Validators.required,
-    ],
-    phoneNumber: [this.context.data?.phoneNumber || '']
-  });
-  readonly isEditDialog = this.context.data !== undefined;
+  readonly isFillCreateDialog =
+    this.context.data &&
+    EditInvigilatorDialogComponent.isTemporaryInvigilator(this.context.data);
+  readonly isEditDialog =
+    this.context.data !== undefined && !this.isFillCreateDialog;
+  readonly form = this.buildForm();
   readonly faculties$ = this.store.faculties$;
   readonly status$ = this.store.status$;
   readonly errors$ = this.store.errors$;
+  readonly responseData$ = this.store.responseData$;
 
   // LIFECYCLE
   ngOnInit(): void {
-    this.handleCreateSuccess();
-    this.handleCreateFailed();
+    this.handleStatusChanges();
+    this.handleErrorChanges();
+    this.handleSuccessSubmit();
   }
 
   // PUBLIC METHODS
-  onFinish(): void {
+  onSubmit(): void {
     this.form.markAllAsTouched();
     const request = this.form.getRawValue();
+    this.form.disable();
 
-    if (this.isEditDialog) {
-      this.store.update({ id: this.context.data!.id, request });
-    } else {
+    if (!this.isEditDialog) {
       this.store.create({
         departmentId: request.departmentId,
         request,
       });
+      return;
     }
+
+    const contextData = this.context.data!;
+    if (!('id' in contextData)) {
+      throw 'EditInvigilatorDialogComponent is edit dialog, but contextData.id is undefined';
+    }
+
+    this.store.update({ id: contextData.id, request });
   }
 
   @tuiPure
@@ -134,24 +147,16 @@ export class EditInvigilatorDialogComponent implements OnInit {
   }
 
   // PRIVATE METHODS
-  private handleCreateSuccess(): void {
+  private handleStatusChanges(): void {
     this.status$
       .pipe(
-        filter((s) => s === 'success'),
-        tap(() => {
-          const message = this.isEditDialog
-            ? 'Cập nhật thông tin thành công!'
-            : 'Thêm CBCT công!';
-          this.alertService
-            .open(message, { status: TuiNotification.Success })
-            .subscribe();
-          this.context.completeWith(true);
-        })
+        filter((s) => s === 'error'),
+        tap(() => this.form.enable())
       )
       .subscribe();
   }
 
-  private handleCreateFailed(): void {
+  private handleErrorChanges(): void {
     this.errors$
       .pipe(
         ObservableHelper.filterNullish(),
@@ -166,5 +171,61 @@ export class EditInvigilatorDialogComponent implements OnInit {
         })
       )
       .subscribe();
+  }
+
+  private handleSuccessSubmit(): void {
+    this.responseData$
+      .pipe(
+        ObservableHelper.filterNullish(),
+        tap((data) => {
+          const message = this.isEditDialog
+            ? 'Cập nhật thông tin thành công!'
+            : 'Thêm CBCT thành công!';
+          this.alertService
+            .open(message, { status: TuiNotification.Success })
+            .subscribe();
+          this.context.completeWith(data);
+        })
+      )
+      .subscribe();
+  }
+
+  private buildForm(): FormGroup<FormType> {
+    const data = this.context.data;
+    let invigilatorId: string | undefined;
+    let fullName: string | undefined;
+    let email: string | undefined;
+    let isMale: boolean | undefined;
+    let departmentId: string | undefined;
+    let phoneNumber: string | null | undefined;
+
+    if (data) {
+      if (EditInvigilatorDialogComponent.isTemporaryInvigilator(data)) {
+        fullName = data.invigilatorName;
+        departmentId = data.departmentId;
+      } else {
+        invigilatorId = data.invigilatorId;
+        fullName = data.fullName;
+        email = data.email;
+        departmentId = data.department?.id;
+        phoneNumber = data.phoneNumber;
+      }
+    }
+
+    return this.fb.group({
+      invigilatorId: this.fb.control(invigilatorId ?? '', Validators.required),
+      fullName: this.fb.control(fullName ?? '', Validators.required),
+      email: this.fb.control(email ?? '', [
+        Validators.required,
+        Validators.email,
+      ]),
+      isMale: this.fb.control(isMale ?? true, Validators.required),
+      departmentId: this.fb.control(departmentId ?? '', Validators.required),
+      phoneNumber: this.fb.control(phoneNumber ?? ''),
+    });
+  }
+
+  private static isTemporaryInvigilator(value: any): value is UserTemplate {
+    return 'invigilatorName' in value;
   }
 }

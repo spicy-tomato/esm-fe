@@ -94,7 +94,7 @@
     <button
       tuiButton
       *ngrxLet="status$ as status"
-      (click)="onFinish()"
+      (click)="onSubmit()"
       [showLoader]="status === 'loading'"
       [disabled]="form.pristine || form.invalid"
       icon="tuiIconCheck"

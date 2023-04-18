@@ -98,7 +98,7 @@ export class InvigilatorAssignRoomStore extends ComponentStore<InvigilatorAssign
                 invigilatorMap: Object.entries(data).reduce<InvigilatorMapType>(
                   (acc, [key, invigilators]) => {
                     invigilators.forEach((invigilator) => {
-                      if (!acc[key]) {
+                      if (!acc[key] && 'id' in invigilator) {
                         const { facultyName, phoneNumber } = invigilator;
                         acc[invigilator.id] = { facultyName, phoneNumber };
                       }
@@ -147,6 +147,31 @@ export class InvigilatorAssignRoomStore extends ComponentStore<InvigilatorAssign
             () => this.patchState({ updateStatus: 'error' })
           )
         )
+      )
+    )
+  );
+
+  readonly updateTeacherAssignment = this.effect<{
+    shiftGroupId: string;
+    departmentId: string;
+    userId: string;
+  }>((params$) =>
+    params$.pipe(
+      tap(() => this.patchState({ updateStatus: 'loading' })),
+      withLatestFrom(this.examinationId$),
+      switchMap(([{ departmentId, shiftGroupId, userId }, id]) =>
+        this.examinationService
+          .updateTemporaryTeacher(id, shiftGroupId, departmentId, userId)
+          .pipe(
+            tapResponse(
+              () => {
+                this.patchState({ updateStatus: 'success' });
+                this.getData();
+                this.getInvigilatorsData();
+              },
+              () => this.patchState({ updateStatus: 'error' })
+            )
+          )
       )
     )
   );

@@ -166,18 +166,20 @@ export class InvigilatorAssignTeacherComponent implements OnInit {
 
     const dataToSave: UpdateTeacherAssignmentRequest = {};
 
-    Object.entries(this.form.controls).forEach(([controlName, control]) => {
-      if (control.pristine) return;
+    Object.entries(this.form.controls).forEach(
+      ([departmentShiftGroupId, control]) => {
+        if (control.pristine) return;
 
-      const { departmentId, user } = control.getRawValue();
+        const { departmentId, user } = control.getRawValue();
 
-      dataToSave[controlName] = {
-        departmentId,
-        userId: user?.id ?? null,
-        temporaryInvigilatorName:
-          user === null ? this.customValues[controlName] : null,
-      };
-    });
+        dataToSave[departmentShiftGroupId] = {
+          departmentId,
+          userId: user?.id ?? null,
+          temporaryInvigilatorName:
+            user === null ? this.customValues[departmentShiftGroupId] : null,
+        };
+      }
+    );
 
     this.store.save(dataToSave);
   }

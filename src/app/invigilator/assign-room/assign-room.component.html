@@ -27,12 +27,14 @@
     </div>
   </div>
 </ng-container>
+
 <ng-container *ngrxLet="dataStatus$ as dataStatus">
   <tui-loader
     *ngIf="dataStatus === 'loading'; else loaded"
     class="h-40"
   ></tui-loader>
 </ng-container>
+
 <ng-template #loaded>
   <tui-scrollbar class="scrollbar" class="flex-1">
     <cdk-virtual-scroll-viewport
@@ -111,121 +113,145 @@
         </thead>
 
         <tbody tuiTbody>
-          <ng-container *ngrxLet="data$ as data">
-            <ng-container *ngrxLet="invigilatorsData$ as invigilatorsData">
-              <ng-container *ngrxLet="invigilatorsList$ as invigilatorsList">
-                <ng-container
-                  *ngrxLet="invigilatorFacultyMap$ as invigilatorFacultyMap"
-                >
-                  <ng-container
-                    *ngrxLet="usedInvigilatorsMap$ as usedInvigilatorsMap"
+          <ng-container *ngrxLet="tableObservables$ as tableObservables">
+            <ng-container
+              *ngrxLet="
+                invigilatorStringify(
+                  tableObservables.invigilatorsList
+                ) as invigilatorContent
+              "
+            >
+              <tr
+                tuiTr
+                *cdkVirtualFor="let row of tableObservables.data; let i = index"
+                [class.duplicated]="row.isDuplicated"
+              >
+                <td *tuiCell="'index'" tuiTd class="w-8">
+                  {{ i + 1 }}
+                </td>
+                <td *tuiCell="'moduleId'" tuiTd class="w-32 max-w-[8rem]">
+                  {{ row.shiftGroup.module.displayId }}
+                </td>
+                <td *tuiCell="'moduleName'" tuiTd>
+                  {{ row.shiftGroup.module.name }}
+                </td>
+                <td *tuiCell="'startAt'" tuiTd class="w-32">
+                  {{ row.shiftGroup.startAt | date : "dd/MM/y" }}
+                </td>
+                <td *tuiCell="'shift'" tuiTd class="w-24 !text-center">
+                  {{ row.shiftGroup.shift }}
+                </td>
+                <td *tuiCell="'room'" tuiTd class="w-24 !text-center">
+                  {{ row.room.displayId }}
+                </td>
+                <td *tuiCell="'orderIndex'" tuiTd class="w-24 !text-center">
+                  {{ row.orderIndex }}
+                </td>
+
+                <td *tuiCell="'teacher'" tuiTd class="w-64">
+                  <tui-select
+                    *ngrxLet="
+                      invigilatorStringify(
+                        tableObservables.invigilatorsList
+                      ) as invigilatorContent
+                    "
+                    (ngModelChange)="
+                      onInvigilatorChanges(row.shiftGroup.id, row.id, $event)
+                    "
+                    [formControl]="form.controls[row.id]"
+                    [valueContent]="invigilatorContent"
+                    [tuiTextfieldCleaner]="true"
+                    class="w-64"
                   >
-                    <ng-container
-                      *ngrxLet="
-                        invigilatorStringify(
-                          invigilatorsList
-                        ) as invigilatorContent
-                      "
-                    >
-                      <tr
-                        tuiTr
-                        *cdkVirtualFor="let row of data; let i = index"
-                        [class.duplicated]="row.isDuplicated"
+                    <ng-template tuiDataList>
+                      <tui-data-list
+                        *ngrxLet="tableObservables$ as tableObservables"
                       >
-                        <td *tuiCell="'index'" tuiTd class="w-8">
-                          {{ i + 1 }}
-                        </td>
-                        <td
-                          *tuiCell="'moduleId'"
-                          tuiTd
-                          class="w-32 max-w-[8rem]"
+                        <ng-container
+                          *ngFor="
+                            let invigilator of tableObservables
+                              .invigilatorsData[row.shiftGroup.id]
+                          "
                         >
-                          {{ row.shiftGroup.module.displayId }}
-                        </td>
-                        <td *tuiCell="'moduleName'" tuiTd>
-                          {{ row.shiftGroup.module.name }}
-                        </td>
-                        <td *tuiCell="'startAt'" tuiTd class="w-32">
-                          {{ row.shiftGroup.startAt | date : "dd/MM/y" }}
-                        </td>
-                        <td *tuiCell="'shift'" tuiTd class="w-24 !text-center">
-                          {{ row.shiftGroup.shift }}
-                        </td>
-                        <td *tuiCell="'room'" tuiTd class="w-24 !text-center">
-                          {{ row.room.displayId }}
-                        </td>
-                        <td
-                          *tuiCell="'orderIndex'"
-                          tuiTd
-                          class="w-24 !text-center"
-                        >
-                          {{ row.orderIndex }}
-                        </td>
-
-                        <td *tuiCell="'teacher'" tuiTd class="w-64">
-                          <tui-select
-                            (ngModelChange)="
-                              onInvigilatorChanges(
-                                row.shiftGroup.id,
-                                row.id,
-                                $event
-                              )
+                          <!-- Only show prior invigilators on first row, else show other ones -->
+                          <ng-container
+                            *ngIf="
+                              (row.orderIndex === 1 &&
+                                invigilator.isPriority) ||
+                              (row.orderIndex !== 1 && !invigilator.isPriority)
                             "
-                            [formControl]="form.controls[row.id]"
-                            [valueContent]="invigilatorContent"
-                            [tuiTextfieldCleaner]="true"
-                            class="w-64"
                           >
-                            <ng-template tuiDataList>
-                              <tui-data-list>
-                                <ng-container
-                                  *ngFor="
-                                    let invigilator of invigilatorsData[
-                                      row.shiftGroup.id
-                                    ]
-                                  "
+                            <!-- Show template to add  -->
+                            <ng-container
+                              *ngIf="
+                                invigilator
+                                  | object
+                                    : 'in'
+                                    : 'temporaryName'
+                                    : temporaryInvigilatorModel;
+                                else selection
+                              "
+                            >
+                              <button
+                                tuiOption
+                                (click)="
+                                  onAddNewInvigilator(
+                                    invigilator.temporaryName,
+                                    invigilator.departmentId,
+                                    row.shiftGroup.id
+                                  )
+                                "
+                                class="relative"
+                              >
+                                <div
+                                  class="absolute inset-0 flex justify-between items-center px-2 py-1.5"
                                 >
-                                  <button
-                                    tuiOption
-                                    *ngIf="
-                                    !(usedInvigilatorsMap[row.shiftGroup.id]?.[invigilator.id]) && 
-                                      ((row.orderIndex === 1 && invigilator.isPriority) 
-                                      || (row.orderIndex !== 1 && !invigilator.isPriority))
-                                  "
-                                    [value]="invigilator.id"
-                                  >
-                                    {{ invigilator.fullName }}
-                                  </button>
-                                </ng-container>
-                              </tui-data-list>
+                                  {{ invigilator.temporaryName }}
+                                  <tui-svg
+                                    src="tuiIconPlusCircleLarge"
+                                    class="text-tui-text-link"
+                                  ></tui-svg>
+                                </div>
+                              </button>
+                            </ng-container>
+
+                            <!-- Show selection -->
+                            <ng-template #selection>
+                              <button
+                                tuiOption
+                                *ngIf="!(tableObservables.usedInvigilatorsMap[row.shiftGroup.id]?.[$any(invigilator).id])"
+                                [value]="$any(invigilator).id"
+                              >
+                                {{ $any(invigilator).fullName }}
+                              </button>
                             </ng-template>
-                          </tui-select>
-                        </td>
+                          </ng-container>
+                        </ng-container>
+                      </tui-data-list>
+                    </ng-template>
+                  </tui-select>
+                </td>
 
-                        <td *tuiCell="'teacherDepartment'" tuiTd class="w-40">
-                          {{
-                            form.controls[row.id].value
-                              ? invigilatorFacultyMap[
-                                  form.controls[row.id].value!
-                                ]?.facultyName
-                              : ""
-                          }}
-                        </td>
+                <td *tuiCell="'teacherDepartment'" tuiTd class="w-40">
+                  {{
+                    form.controls[row.id].value
+                      ? tableObservables.invigilatorFacultyMap[
+                          form.controls[row.id].value!
+                        ]?.facultyName
+                      : ""
+                  }}
+                </td>
 
-                        <td *tuiCell="'phoneNumber'" tuiTd class="w-32">
-                          {{
-                            form.controls[row.id].value
-                              ? invigilatorFacultyMap[
-                                  form.controls[row.id].value!
-                                ]?.phoneNumber
-                              : ""
-                          }}
-                        </td>
-                      </tr>
-                    </ng-container>
-                  </ng-container>
-                </ng-container>
-              </ng-container>
+                <td *tuiCell="'phoneNumber'" tuiTd class="w-32">
+                  {{
+                    form.controls[row.id].value
+                      ? tableObservables.invigilatorFacultyMap[
+                          form.controls[row.id].value!
+                        ]?.phoneNumber
+                      : ""
+                  }}
+                </td>
+              </tr>
             </ng-container>
           </ng-container>
         </tbody>

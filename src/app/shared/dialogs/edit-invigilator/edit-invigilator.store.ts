@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { ErrorResult, EsmHttpErrorResponse, Status } from '@esm/cdk';
-import { CreateUserRequest, UpdateUserRequest } from '@esm/data';
+import { CreateUserRequest, UpdateUserRequest, UserSummary } from '@esm/data';
 import { DepartmentService, UserService } from '@esm/services';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
@@ -10,6 +10,7 @@ import { switchMap, takeUntil, tap } from 'rxjs';
 type EditInvigilatorDialogState = {
   status: Status;
   errors: ErrorResult[] | null;
+  responseData: UserSummary | null;
 };
 
 @Injectable()
@@ -25,6 +26,7 @@ export class EditInvigilatorDialogStore extends ComponentStore<EditInvigilatorDi
     .pipe(takeUntil(this.destroy$));
   readonly status$ = this.select((s) => s.status);
   readonly errors$ = this.select((s) => s.errors);
+  readonly responseData$ = this.select((s) => s.responseData);
 
   // EFFECTS
   readonly create = this.effect<{
@@ -36,7 +38,8 @@ export class EditInvigilatorDialogStore extends ComponentStore<EditInvigilatorDi
       switchMap(({ departmentId, request }) =>
         this.departmentService.createUser(departmentId, request).pipe(
           tapResponse(
-            () => this.patchState({ status: 'success' }),
+            ({ data }) =>
+              this.patchState({ responseData: data, status: 'success' }),
             (res: EsmHttpErrorResponse) =>
               this.patchState({
                 status: 'error',
@@ -55,7 +58,8 @@ export class EditInvigilatorDialogStore extends ComponentStore<EditInvigilatorDi
         switchMap(({ id, request }) =>
           this.userService.update(id, request).pipe(
             tapResponse(
-              () => this.patchState({ status: 'success' }),
+              ({ data }) =>
+                this.patchState({ responseData: data, status: 'success' }),
               (res: EsmHttpErrorResponse) =>
                 this.patchState({
                   status: 'error',
@@ -72,6 +76,7 @@ export class EditInvigilatorDialogStore extends ComponentStore<EditInvigilatorDi
     super({
       status: 'idle',
       errors: null,
+      responseData: null,
     });
   }
 }

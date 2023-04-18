@@ -4,7 +4,6 @@ export type ExaminationGetShiftResponseItem = {
   invigilatorShift: {
     id: string;
     orderIndex: number;
-    invigilatorId: string | null;
     invigilator: null | {
       fullName: string;
       id: string;

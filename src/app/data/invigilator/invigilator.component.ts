@@ -59,10 +59,10 @@ export const TAIGA_UI = [
 })
 export class DataInvigilatorComponent implements OnInit {
   // INJECT PROPERTIES
+  private readonly dialogService = inject(TuiDialogService);
   private readonly injector = inject(Injector);
   private readonly route = inject(ActivatedRoute);
   private readonly store = inject(DataInvigilatorStore);
-  private readonly dialogService = inject(TuiDialogService);
 
   // PUBLIC PROPERTIES
   readonly routerLink = '/data/invigilator';
@@ -73,6 +73,7 @@ export class DataInvigilatorComponent implements OnInit {
     'departmentName',
     'action',
   ];
+  readonly facultyStringify = StringifyHelper.idName;
   readonly faculties$ = this.store.faculties$;
   readonly departments$ = this.store.departments$;
   readonly invigilators$ = this.store.invigilators$;
@@ -81,7 +82,6 @@ export class DataInvigilatorComponent implements OnInit {
   readonly selectedDepartmentId$ = this.store.selectedDepartmentId$;
   readonly selectedDepartmentName$ = this.store.selectedDepartmentName$;
   readonly status$ = this.store.status$;
-  readonly facultyStringify = StringifyHelper.idName;
 
   // LIFECYCLE
   ngOnInit(): void {
@@ -100,7 +100,7 @@ export class DataInvigilatorComponent implements OnInit {
   // PUBLIC METHODS
   openDialog(data?: UserSummary): void {
     this.dialogService
-      .open<boolean>(
+      .open<UserSummary>(
         new PolymorpheusComponent(
           EditInvigilatorDialogComponent,
           this.injector
@@ -108,7 +108,7 @@ export class DataInvigilatorComponent implements OnInit {
         { data }
       )
       .pipe(
-        filter((x) => x),
+        filter((x) => !!x),
         tap(() => this.store.loadAfterCreated())
       )
       .subscribe();

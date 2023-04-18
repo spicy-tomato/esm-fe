@@ -193,6 +193,21 @@ export class ExaminationService {
     );
   }
 
+  // [POST] /examination/{examinationId}/group/{groupId}/department/{departmentId}
+  updateTemporaryTeacher(
+    examinationId: string,
+    groupId: string,
+    departmentId: string,
+    userId: string
+  ): Observable<Result<AssignInvigilatorNumerateOfShiftToFacultyResponse>> {
+    return this.http.post<
+      Result<AssignInvigilatorNumerateOfShiftToFacultyResponse>
+    >(
+      `${this.url}${examinationId}/group/${groupId}/department/${departmentId}`,
+      { userId }
+    );
+  }
+
   // [POST] /examination/{examinationId}/group/{groupId}/{facultyId}
   assignInvigilatorNumerateOfShiftToFaculty(
     examinationId: string,
@@ -208,7 +223,7 @@ export class ExaminationService {
     );
   }
 
-  // [POST] /examination/{examinationId}/group/{groupId}/{facultyId}
+  // [POST] /examination/{examinationId}/invigilator}
   getAvailableInvigilatorsInShiftGroup(
     examinationId: string
   ): Observable<Result<GetAvailableInvigilatorsInShiftGroupResponseItem>> {

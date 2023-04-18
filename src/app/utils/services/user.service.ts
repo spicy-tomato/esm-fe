@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Result } from '@esm/cdk';
 import { APP_ENV } from '@esm/core';
 import {
+  CheckIfExistParams,
   GeneratedToken,
   LoginRequest,
   UpdateUserRequest,
@@ -27,6 +28,13 @@ export class UserService {
       params: {
         isInvigilator: true,
       },
+    });
+  }
+
+  // [PUT] /user/check-exist
+  checkIfExist(params: CheckIfExistParams): Observable<Result<UserSummary>> {
+    return this.http.get<Result<UserSummary>>(this.url + 'check-if-exist', {
+      params,
     });
   }
 
