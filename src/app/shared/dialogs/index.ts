@@ -5,4 +5,5 @@ export * from './edit-department';
 export * from './edit-faculty';
 export * from './edit-invigilator';
 export * from './edit-shift-report';
+export * from './select-teacher';
 export * from './workflow';

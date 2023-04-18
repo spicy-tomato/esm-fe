@@ -6,6 +6,7 @@ import {
   CheckIfExistParams,
   GeneratedToken,
   LoginRequest,
+  SearchParams,
   UpdateUserRequest,
   UserSummary,
 } from '@esm/data';
@@ -41,6 +42,13 @@ export class UserService {
   // [POST] /user/login
   login(request: LoginRequest): Observable<Result<GeneratedToken>> {
     return this.http.post<Result<GeneratedToken>>(this.url + 'login', request);
+  }
+
+  // [GET] /user/search
+  search(params: SearchParams): Observable<Result<UserSummary[]>> {
+    return this.http.get<Result<UserSummary[]>>(this.url + 'search', {
+      params,
+    });
   }
 
   // [GET] /user/summary

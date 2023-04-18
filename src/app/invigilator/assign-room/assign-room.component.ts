@@ -49,14 +49,16 @@ import {
   PolymorpheusComponent,
   PolymorpheusModule,
 } from '@tinkoff/ng-polymorpheus';
-import { EditInvigilatorDialogComponent } from '@esm/shared/dialogs';
+import {
+  EditInvigilatorDialogComponent,
+  SelectTeacherDialogComponent,
+} from '@esm/shared/dialogs';
 
 export const NGRX = [LetModule];
 export const TAIGA_UI = [
   TuiButtonModule,
   TuiComboBoxModule,
   TuiDataListModule,
-  TuiDataListWrapperModule,
   TuiLoaderModule,
   TuiScrollbarModule,
   TuiSelectModule,
@@ -271,6 +273,15 @@ export class InvigilatorAssignRoomComponent implements OnInit {
           })
         )
       )
+      .subscribe();
+  }
+
+  onAddOtherInvigilator(shiftGroupId: string): void {
+    this.dialogService
+      .open<UserSummary>(
+        new PolymorpheusComponent(SelectTeacherDialogComponent, this.injector)
+      )
+      .pipe(tap(({ id }) => this.store.save({ [shiftGroupId]: id })))
       .subscribe();
   }
 
