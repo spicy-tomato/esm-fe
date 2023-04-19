@@ -132,6 +132,7 @@
               <tr
                 tuiTr
                 *cdkVirtualFor="let row of tableObservables.data; let i = index"
+                [class.no-invigilator]="!row.invigilator"
                 [class.duplicated]="row.isDuplicated"
               >
                 <td *tuiCell="'index'" tuiTd class="w-8">
