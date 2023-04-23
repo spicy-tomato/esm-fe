@@ -1,6 +1,7 @@
 import { ExamMethod, ModuleSimple, RoomSummary } from '../../models';
 
 export type ExaminationGetShiftResponseItem = {
+  candidatesCount: number;
   invigilatorShift: {
     id: string;
     orderIndex: number;

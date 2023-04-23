@@ -114,6 +114,7 @@ export class InvigilatorAssignRoomComponent implements OnInit {
     'startAt',
     'shift',
     'room',
+    'candidatesCount',
     'orderIndex',
     'teacher',
     'teacherFaculty',

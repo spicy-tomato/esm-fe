@@ -83,6 +83,14 @@
               [style.top.px]="offset"
               class="!text-center"
             >
+              Số thí sinh
+            </th>
+            <th
+              tuiTh
+              [sticky]="true"
+              [style.top.px]="offset"
+              class="!text-center"
+            >
               STT CBCT
             </th>
             <th
@@ -152,6 +160,9 @@
                 </td>
                 <td *tuiCell="'room'" tuiTd class="w-24 !text-center">
                   {{ row.room.displayId }}
+                </td>
+                <td *tuiCell="'candidatesCount'" tuiTd class="w-24 !text-center">
+                  {{ row.candidatesCount }}
                 </td>
                 <td *tuiCell="'orderIndex'" tuiTd class="w-24 !text-center">
                   {{ row.orderIndex }}
