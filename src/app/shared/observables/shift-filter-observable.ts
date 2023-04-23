@@ -11,7 +11,7 @@ export type ShiftFilterFilterType = {
 export const shiftFilterObservable = (
   data$: Observable<ExaminationGetDataResponseItem[]>,
   filter$: Observable<ShiftFilterFilterType>
-) =>
+): Observable<ExaminationGetDataResponseItem[]> =>
   combineLatest([data$, filter$]).pipe(
     map(([data, { methods, date, shifts }]) =>
       data.filter(({ shiftGroup }) => {

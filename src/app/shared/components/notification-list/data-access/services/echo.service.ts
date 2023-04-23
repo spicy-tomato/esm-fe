@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@angular/core';
-import { AppEnv, APP_ENV } from '@esm/core';
+import { APP_ENV, AppEnv } from '@esm/core';
 import { AppState } from '@esm/store';
 import { Store } from '@ngrx/store';
-import { BehaviorSubject, tap } from 'rxjs';
-import { EchoMessage, messageEvent, MessageEvent } from '../models/echo.model';
+import { BehaviorSubject } from 'rxjs';
+import { EchoMessage, MessageEvent, messageEvent } from '../models/echo.model';
 
 @Injectable({ providedIn: 'root' })
 export class EchoService {
@@ -34,7 +34,6 @@ export class EchoService {
     //   encrypted: true,
     //   forceTLS: true,
     // });
-
     // this.handleUserChange();
   }
 

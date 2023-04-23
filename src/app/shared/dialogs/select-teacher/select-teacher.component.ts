@@ -49,7 +49,6 @@ export const TAIGA_UI = [
     ...TAIGA_UI,
   ],
   templateUrl: './select-teacher.component.html',
-  styleUrls: ['./select-teacher.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [SelectTeacherDialogStore, TuiDestroyService],
 })

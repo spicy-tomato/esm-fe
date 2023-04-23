@@ -9,8 +9,6 @@ describe('ObservableHelper', () => {
         ObservableHelper.filterNullish()
       );
 
-      Observable;
-
       const expected = hot('(ab|)', { a: 0, b: 1 });
       expect(obs$).toBeObservable(expected);
     });

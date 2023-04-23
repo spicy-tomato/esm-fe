@@ -29,7 +29,7 @@ export const TAIGA_UI = [TuiLoaderModule, TuiScrollbarModule, TuiTableModule];
   styleUrls: ['./table.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ExaminationDataFinalTableComponent implements OnInit {
+export class ExaminationDataFinalTableComponent {
   // INJECT PROPERTIES
   private readonly store = inject(ExaminationDataFinalStore);
 
@@ -48,6 +48,4 @@ export class ExaminationDataFinalTableComponent implements OnInit {
     'departmentAssign',
   ];
   readonly data$ = this.store.displayData$;
-
-  ngOnInit(): void {}
 }

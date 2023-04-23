@@ -67,7 +67,6 @@ describe('CreateStore', () => {
 
     it('[Create successful] should navigate to created examination', fakeAsync(() => {
       const navigateSpy = spyOn(router, 'navigateByUrl');
-      const getUserInfoSpy = spyOn(appStore, 'dispatch');
 
       mockExaminationService.create.and.returnValue(
         of(

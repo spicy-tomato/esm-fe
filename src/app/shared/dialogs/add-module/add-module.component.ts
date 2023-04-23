@@ -6,14 +6,10 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DepartmentSimple, TemporaryExamination } from '@esm/data';
+import { StringifyHelper } from '@esm/cdk';
+import { TemporaryExamination } from '@esm/data';
 import { LetModule } from '@ngrx/component';
-import {
-  TuiContextWithImplicit,
-  TuiFilterPipeModule,
-  tuiPure,
-  TuiStringHandler,
-} from '@taiga-ui/cdk';
+import { TuiFilterPipeModule } from '@taiga-ui/cdk';
 import {
   TuiAlertService,
   TuiButtonModule,
@@ -29,7 +25,6 @@ import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
 import { filter, take, tap } from 'rxjs';
 import {
   AddModuleDialogDepartment,
-  AddModuleDialogFaculty,
   AddModuleDialogStore,
 } from './add-module.store';
 
@@ -69,6 +64,8 @@ export class AddModuleDialogComponent implements OnInit {
     faculty: ['', Validators.required],
     department: [''],
   });
+
+  readonly stringify = StringifyHelper.idName;
   readonly faculties$ = this.store.faculties$;
   readonly departments$ = this.store.departments$;
   readonly status$ = this.store.status$;
@@ -80,30 +77,6 @@ export class AddModuleDialogComponent implements OnInit {
   }
 
   // PUBLIC METHODS
-  @tuiPure
-  facultyStringify(
-    items: readonly AddModuleDialogFaculty[]
-  ): TuiStringHandler<TuiContextWithImplicit<string>> {
-    const map = new Map(
-      items.map(({ id, name }) => [id, name] as [string, string])
-    );
-
-    return ({ $implicit }: TuiContextWithImplicit<string>) =>
-      map.get($implicit) || '';
-  }
-
-  @tuiPure
-  departmentStringify(
-    items: readonly DepartmentSimple[]
-  ): TuiStringHandler<TuiContextWithImplicit<string>> {
-    const map = new Map(
-      items.map(({ id, name }) => [id, name] as [string, string])
-    );
-
-    return ({ $implicit }: TuiContextWithImplicit<string>) =>
-      map.get($implicit) || '';
-  }
-
   readonly departmentMatcher = (item: AddModuleDialogDepartment): boolean =>
     item.facultyId === this.form.controls.faculty.value;
 

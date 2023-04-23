@@ -33,7 +33,6 @@ export const TAIGA_UI = [
 
 @Component({
   templateUrl: './faculty.component.html',
-  styleUrls: ['./faculty.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [

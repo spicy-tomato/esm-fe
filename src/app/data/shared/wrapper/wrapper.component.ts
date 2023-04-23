@@ -6,7 +6,6 @@ export const TAIGA_UI = [TuiLinkModule];
 
 @Component({
   templateUrl: './wrapper.component.html',
-  styleUrls: ['./wrapper.component.less'],
   standalone: true,
   imports: [RouterModule, ...TAIGA_UI],
   changeDetection: ChangeDetectionStrategy.OnPush,

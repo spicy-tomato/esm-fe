@@ -50,7 +50,6 @@ export const TAIGA_UI = [
 @Component({
   selector: 'esm-notification-list',
   templateUrl: './notification-list.component.html',
-  styleUrls: ['./notification-list.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [CommonModule, RouterModule, RelativeTimePipe, ...NGRX, ...TAIGA_UI],

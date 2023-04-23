@@ -33,15 +33,13 @@ export class AuthInterceptor implements HttpInterceptor {
           if (!(error instanceof HttpErrorResponse)) return;
           const currentUrl = this.location.path();
 
-          switch (error.status) {
-            case 401: {
-              const token = error.headers.get('Authorization');
-              if (token) {
-                this.tokenService.save(token);
-              } else if (!currentUrl.includes('login')) {
-                this.tokenService.clear();
-                this.redirectService.login(currentUrl);
-              }
+          if (error.status === 401) {
+            const token = error.headers.get('Authorization');
+            if (token) {
+              this.tokenService.save(token);
+            } else if (!currentUrl.includes('login')) {
+              this.tokenService.clear();
+              this.redirectService.login(currentUrl);
             }
           }
         },

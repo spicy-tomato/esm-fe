@@ -5,12 +5,10 @@ import { ExamMethodPipe } from './exam-method.pipe';
 
 describe('ExamMethod', () => {
   let pipe: ExamMethodPipe;
-  let dateValue: number;
 
   beforeEach(() => {
     TestBed.configureTestingModule({ providers: [ExamMethodPipe] });
     pipe = TestBed.inject(ExamMethodPipe);
-    dateValue = new Date().valueOf();
   });
 
   it('can load instance', () => {

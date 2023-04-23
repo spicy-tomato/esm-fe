@@ -41,7 +41,6 @@ export const TAIGA_UI = [
 
 @Component({
   templateUrl: './department.component.html',
-  styleUrls: ['./department.component.less'],
   standalone: true,
   imports: [
     CommonModule,

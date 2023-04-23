@@ -47,7 +47,7 @@ export class AppEffects {
         ofType(AppPageAction.logOut),
         tap(() => {
           this.tokenService.clear();
-          void this.router.navigate(['/login']);
+          this.router.navigate(['/login']);
         })
       );
     },

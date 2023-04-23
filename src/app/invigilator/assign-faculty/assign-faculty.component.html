@@ -3,7 +3,7 @@
     class="py-3 flex flex-0 justify-between items-center bg-white text-3xl font-bold"
   >
     <div class="flex">
-      <h3>Danh sách phân giảng viên mỗi khoa</h3>
+      <h3 id="title">Danh sách phân giảng viên mỗi khoa</h3>
       <tui-loader
         *ngrxLet="updateRows$ as updateRows"
         [showLoader]="!!updateRows.length"
@@ -69,6 +69,7 @@
         [formGroup]="form"
         [columns]="columns"
         class="relative w-full"
+        aria-describedby="title"
       >
         <ng-container *ngrxLet="faculties$ as faculties">
           <thead tuiThead>

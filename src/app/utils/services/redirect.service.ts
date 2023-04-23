@@ -12,17 +12,17 @@ export class RedirectService {
     if (redirect?.includes('/login')) {
       redirect = '';
     }
-    void this.router.navigate(['/login'], {
+    this.router.navigate(['/login'], {
       queryParams: { redirect: redirect || null },
     });
   }
 
   app(redirect?: string | null): void {
     if (redirect) {
-      void this.router.navigate([redirect]);
+      this.router.navigate([redirect]);
       return;
     }
 
-    void this.router.navigate(['/']);
+    this.router.navigate(['/']);
   }
 }

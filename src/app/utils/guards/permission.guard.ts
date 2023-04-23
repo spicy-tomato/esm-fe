@@ -49,7 +49,7 @@ export class PermissionGuard
         }
 
         const redirect = route.data['redirect'] as string;
-        void this.router.navigate([redirect ?? '/403']);
+        this.router.navigate([redirect ?? '/403']);
 
         return false;
       }),

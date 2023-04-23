@@ -6,7 +6,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { DIAGRAM_STATUS_MAP } from '@esm/cdk';
-import { ExaminationStatus, ExaminationSummary } from '@esm/data';
+import { ExaminationSummary } from '@esm/data';
 import { LetModule } from '@ngrx/component';
 import {
   ConnectorModel,
@@ -25,7 +25,6 @@ import { WorkflowDialogStore } from './workflow.store';
   standalone: true,
   imports: [CommonModule, DiagramModule, LetModule],
   templateUrl: './workflow.component.html',
-  styleUrls: ['./workflow.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [WorkflowDialogStore],
 })
@@ -68,7 +67,8 @@ export class WorkflowDialogComponent {
   getConnectorDefaults(connector: ConnectorModel): ConnectorModel {
     connector.type = 'Orthogonal';
 
-    if (connector.style) connector.style.strokeColor = 'var(--tui-neutral-fill)';
+    if (connector.style)
+      connector.style.strokeColor = 'var(--tui-neutral-fill)';
     if (connector.sourceDecorator?.style) {
       connector.sourceDecorator.style.strokeColor = 'var(--tui-neutral-fill)';
       connector.sourceDecorator.style.fill = 'var(--tui-neutral-fill)';

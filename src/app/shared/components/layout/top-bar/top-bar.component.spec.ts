@@ -45,18 +45,6 @@ describe('TopBarComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  // describe('onClickExaminationDropdownItem', () => {
-  //   it('should set `openExaminationDropdown` to `false`', () => {
-  //     const item = 'Selected item';
-
-  //     component.openExaminationDropdown = true;
-  //     component.onClickExaminationDropdownItem(item);
-
-  //     expect(component.openExaminationDropdown).toBeFalse();
-  //     expect(component.selectedExamination?.id).toEqual(item);
-  //   });
-  // });
-
   describe('onClickUserDropdownItem', () => {
     it('should set `openUserDropdown` to `false`', () => {
       component.openUserDropdown = true;

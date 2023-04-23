@@ -1,11 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  importProvidersFrom,
-  inject,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
@@ -53,7 +47,7 @@ export const TAIGA_UI = [
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LayoutComponent  {
+export class LayoutComponent {
   // INJECT PROPERTIES
   private readonly router = inject(Router);
 

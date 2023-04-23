@@ -213,21 +213,23 @@ export class InvigilatorAssignFacultyComponent implements OnInit {
   private handleFinish(): void {
     this.finishStatus$
       .pipe(
-        switchMap((status) =>
-          status === 'success'
-            ? this.alertService.open('Đã chốt số lượng CBCT!', {
-                status: TuiNotification.Success,
-              })
-            : status === 'error'
-            ? this.alertService.open(
-                'Số lượng CBCT thực tế khác so với CBCT cần thiết, vui lòng kiểm tra lại!',
-                {
-                  label: 'Lỗi',
-                  status: TuiNotification.Error,
-                }
-              )
-            : of()
-        )
+        switchMap((status) => {
+          if (status === 'success')
+            return this.alertService.open('Đã chốt số lượng CBCT!', {
+              status: TuiNotification.Success,
+            });
+
+          if (status === 'error')
+            return this.alertService.open(
+              'Số lượng CBCT thực tế khác so với CBCT cần thiết, vui lòng kiểm tra lại!',
+              {
+                label: 'Lỗi',
+                status: TuiNotification.Error,
+              }
+            );
+
+          return of();
+        })
       )
       .subscribe();
   }

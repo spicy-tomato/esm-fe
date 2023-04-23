@@ -36,7 +36,7 @@ import {
   TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
 import { TuiComboBoxModule, TuiSelectModule } from '@taiga-ui/kit';
-import { filter, of, switchMap, tap } from 'rxjs';
+import { filter, Observable, of, switchMap, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { InvigilatorAssignTeacherStore } from './assign-teacher.store';
 
@@ -213,17 +213,23 @@ export class InvigilatorAssignTeacherComponent implements OnInit {
   }
 
   private handleUpdateStatusChanges(): void {
-    const func = (status: Status) =>
-      status === 'success'
-        ? this.alertService.open('Cập nhật thành công!', {
-            status: TuiNotification.Success,
-          })
-        : status === 'error'
-        ? this.alertService.open('Đã có lỗi xảy ra, vui lòng thử lại sau!', {
+    const func = (status: Status): Observable<void> => {
+      if (status === 'success')
+        return this.alertService.open('Cập nhật thành công!', {
+          status: TuiNotification.Success,
+        });
+
+      if (status === 'error')
+        return this.alertService.open(
+          'Đã có lỗi xảy ra, vui lòng thử lại sau!',
+          {
             label: 'Lỗi',
             status: TuiNotification.Error,
-          })
-        : of();
+          }
+        );
+
+      return of();
+    };
 
     this.updateStatus$.pipe(switchMap(func)).subscribe();
     this.autoAssignStatus$.pipe(switchMap(func)).subscribe();

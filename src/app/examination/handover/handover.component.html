@@ -1,5 +1,6 @@
 <ng-container *ngrxLet="dataStatus$ as dataStatus">
   <h1
+    id="title"
     class="py-3 flex flex-0 justify-between items-center bg-white text-3xl font-bold"
   >
     Bàn giao bài thi
@@ -28,6 +29,7 @@
         [formGroup]="form"
         [columns]="columns"
         class="w-full"
+        aria-describedby="title"
       >
         <thead>
           <tr

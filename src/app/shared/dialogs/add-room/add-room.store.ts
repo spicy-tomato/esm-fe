@@ -47,23 +47,8 @@ export class AddRoomDialogStore extends ComponentStore<AddRoomDialogState> {
         switchMap(({ rowId, params }) =>
           this.roomService.create(params).pipe(
             tapResponse(
-              () => {
-                this.patchState((state) => ({
-                  status: state.status.map((v, i) =>
-                    i === rowId ? 'success' : v
-                  ),
-                  error: state.error.map((v, i) => (i === rowId ? null : v)),
-                }));
-              },
-              (error) =>
-                this.patchState((state) => ({
-                  status: state.status.map((v, i) =>
-                    i === rowId ? 'error' : v
-                  ),
-                  error: state.error.map((v, i) =>
-                    i === rowId ? (error as string) : v
-                  ),
-                }))
+              () => this.onAddSuccess(rowId),
+              (error) => this.onAddFail(rowId, error as string)
             )
           )
         )
@@ -88,5 +73,20 @@ export class AddRoomDialogStore extends ComponentStore<AddRoomDialogState> {
       status: [],
       error: [],
     });
+  }
+
+  // PRIVATE METHODS
+  private onAddSuccess(rowId: number): void {
+    this.patchState((state) => ({
+      status: state.status.map((v, i) => (i === rowId ? 'success' : v)),
+      error: state.error.map((v, i) => (i === rowId ? null : v)),
+    }));
+  }
+
+  private onAddFail(rowId: number, error: string): void {
+    this.patchState((state) => ({
+      status: state.status.map((v, i) => (i === rowId ? 'error' : v)),
+      error: state.error.map((v, i) => (i === rowId ? (error as string) : v)),
+    }));
   }
 }

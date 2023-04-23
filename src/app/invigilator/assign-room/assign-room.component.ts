@@ -21,6 +21,10 @@ import {
   GetAvailableInvigilatorsInShiftGroupVerifiedInvigilator,
   UserSummary,
 } from '@esm/data';
+import {
+  EditInvigilatorDialogComponent,
+  SelectTeacherDialogComponent,
+} from '@esm/shared/dialogs';
 import { LetModule } from '@ngrx/component';
 import { TuiTableModule } from '@taiga-ui/addon-table';
 import {
@@ -38,21 +42,13 @@ import {
   TuiSvgModule,
   TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
-import {
-  TuiComboBoxModule,
-  TuiDataListWrapperModule,
-  TuiSelectModule,
-} from '@taiga-ui/kit';
-import { BehaviorSubject, combineLatest, filter, map, tap } from 'rxjs';
-import { InvigilatorAssignRoomStore, ShiftUiModel } from './assign-room.store';
+import { TuiComboBoxModule, TuiSelectModule } from '@taiga-ui/kit';
 import {
   PolymorpheusComponent,
   PolymorpheusModule,
 } from '@tinkoff/ng-polymorpheus';
-import {
-  EditInvigilatorDialogComponent,
-  SelectTeacherDialogComponent,
-} from '@esm/shared/dialogs';
+import { BehaviorSubject, combineLatest, filter, map, tap } from 'rxjs';
+import { InvigilatorAssignRoomStore, ShiftUiModel } from './assign-room.store';
 
 export const NGRX = [LetModule];
 export const TAIGA_UI = [

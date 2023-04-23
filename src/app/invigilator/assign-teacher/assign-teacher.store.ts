@@ -281,7 +281,7 @@ export class InvigilatorAssignTeacherStore
     });
   }
 
-  ngrxOnStoreInit() {
+  ngrxOnStoreInit(): void {
     this.handleFacultyChanges();
     this.handleGetUser();
   }

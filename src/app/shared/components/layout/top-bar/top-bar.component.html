@@ -2,21 +2,6 @@
   class="wrapper relative h-full flex justify-between py-2 border-b border-tui-base-03 sm:px-2 lg:px-5"
 >
   <div class="h-full flex items-center">
-    <!-- <button
-      tuiIconButton
-      *ngIf="options.showInfo"
-      (click)="toggleMobileNav(true)"
-      (tuiActiveZoneChange)="toggleMobileNav($event)"
-      icon="tuiIconMenuLarge"
-      class="lg:!hidden"
-      aria-label="Menu"
-    >
-      <div *tuiSidebar="openMobileNav">
-        <tss-mobile-sidebar
-          (clickItem)="toggleMobileNav(false, true)"
-        ></tss-mobile-sidebar>
-      </div>
-    </button> -->
     <a routerLink="/" class="h-full flex items-center">
       <img
         src="/assets/favicon/logo.png"
@@ -89,15 +74,6 @@
         </button>
       </tui-hosted-dropdown>
     </div>
-
-    <!-- <ng-container *ngrxLet="rightMenu$ as rightMenu">
-      <div
-        *ngIf="options.showInfo && rightMenu"
-        class="flex items-center lg:hidden"
-      >
-        <ng-container [ngTemplateOutlet]="rightMenu"></ng-container>
-      </div>
-    </ng-container> -->
   </div>
 </div>
 

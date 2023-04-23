@@ -23,7 +23,6 @@ export const TAIGA_UI = [
 @Component({
   selector: 'esm-bell',
   templateUrl: './bell.component.html',
-  styleUrls: ['./bell.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [CommonModule, NotificationListComponent, ...NGRX, ...TAIGA_UI],

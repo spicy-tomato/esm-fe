@@ -27,9 +27,7 @@ export class ExaminationCreateStore extends ComponentStore<ExaminationCreateStat
       switchMap((param) =>
         this.examinationService.create(param).pipe(
           tapResponse(
-            ({ data }) => {
-              void this.router.navigateByUrl(`${data.id}/exam/data`);
-            },
+            ({ data }) => this.router.navigateByUrl(`${data.id}/exam/data`),
             (error) =>
               this.patchState({
                 status: 'error',

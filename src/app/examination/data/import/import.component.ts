@@ -19,7 +19,6 @@ export const TAIGA_UI = [TuiInputFilesModule];
 @Component({
   selector: 'esm-examination-data-import',
   templateUrl: './import.component.html',
-  styleUrls: ['./import.component.less'],
   standalone: true,
   imports: [CommonModule, FormsModule, ...NGRX, ...TAIGA_UI],
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -41,7 +41,6 @@ export const TAIGA_UI = [
 @Component({
   selector: 'esm-add-room',
   templateUrl: './add-room.component.html',
-  styleUrls: ['./add-room.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, ...NGRX, ...TAIGA_UI],

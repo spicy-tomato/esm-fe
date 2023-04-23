@@ -17,7 +17,6 @@ const TAIGA_UI = [TuiButtonModule];
 
 @Component({
   templateUrl: './general.component.html',
-  styleUrls: ['./general.component.less'],
   standalone: true,
   imports: [CommonModule, ...TAIGA_UI],
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -24,7 +24,6 @@ export const TAIGA_UI = [TuiIslandModule, TuiProgressModule];
 
 @Component({
   templateUrl: './process.component.html',
-  styleUrls: ['./process.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [CommonModule, DiagramModule, LetModule, ...TAIGA_UI],

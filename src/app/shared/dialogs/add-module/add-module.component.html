@@ -15,7 +15,7 @@
     <tui-select
       *ngrxLet="faculties$ as faculties"
       formControlName="faculty"
-      [valueContent]="facultyStringify(faculties)"
+      [valueContent]="stringify(faculties)"
       [tuiTextfieldLabelOutside]="true"
     >
       <tui-data-list *tuiDataList>
@@ -33,7 +33,7 @@
     <tui-select
       *ngrxLet="departments$ as departments"
       formControlName="department"
-      [valueContent]="departmentStringify(departments)"
+      [valueContent]="stringify(departments)"
       [tuiTextfieldLabelOutside]="true"
     >
       <tui-data-list *tuiDataList>

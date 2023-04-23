@@ -223,7 +223,7 @@ export class ExaminationService {
     );
   }
 
-  // [POST] /examination/{examinationId}/invigilator}
+  // [POST] /examination/{examinationId}/invigilator
   getAvailableInvigilatorsInShiftGroup(
     examinationId: string
   ): Observable<Result<GetAvailableInvigilatorsInShiftGroupResponseItem>> {

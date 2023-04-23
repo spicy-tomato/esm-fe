@@ -14,7 +14,6 @@ type Link = {
 
 @Component({
   templateUrl: './data.component.html',
-  styleUrls: ['./data.component.less'],
   standalone: true,
   imports: [CommonModule, RouterModule, ...TAIGA_UI],
   changeDetection: ChangeDetectionStrategy.OnPush,

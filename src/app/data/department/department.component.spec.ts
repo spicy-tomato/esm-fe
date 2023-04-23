@@ -3,8 +3,11 @@ import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { DataDepartmentComponent } from './department.component';
-import { NGRX, TAIGA_UI } from './department.component';
+import {
+  DataDepartmentComponent,
+  NGRX,
+  TAIGA_UI,
+} from './department.component';
 
 describe('DataDepartmentComponent', () => {
   let component: DataDepartmentComponent;

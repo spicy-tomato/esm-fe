@@ -45,7 +45,6 @@ export const TAIGA_UI = [
 
 @Component({
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, ...NGRX, ...TAIGA_UI],

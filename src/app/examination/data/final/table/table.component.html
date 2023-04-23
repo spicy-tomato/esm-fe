@@ -8,7 +8,13 @@
     [maxBufferPx]="1000"
     [minBufferPx]="700"
   >
-    <table tuiTable *ngIf="data" [columns]="columns" class="w-full">
+    <table
+      tuiTable
+      *ngIf="data"
+      [columns]="columns"
+      class="w-full"
+      aria-describedby="title"
+    >
       <thead>
         <tr
           tuiThGroup

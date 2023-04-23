@@ -9,7 +9,6 @@ import { AppState } from './utils/store/app.state';
 @Component({
   selector: 'esm-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [TuiDestroyService],
 })

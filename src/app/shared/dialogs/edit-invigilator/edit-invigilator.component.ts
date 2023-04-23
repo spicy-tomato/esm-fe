@@ -120,7 +120,9 @@ export class EditInvigilatorDialogComponent implements OnInit {
 
     const contextData = this.context.data!;
     if (!('id' in contextData)) {
-      throw 'EditInvigilatorDialogComponent is edit dialog, but contextData.id is undefined';
+      throw Error(
+        'EditInvigilatorDialogComponent is edit dialog, but contextData.id is undefined'
+      );
     }
 
     this.store.update({ id: contextData.id, request });

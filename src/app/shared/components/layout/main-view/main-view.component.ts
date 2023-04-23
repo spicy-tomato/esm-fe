@@ -11,7 +11,6 @@ export const TAIGA_UI = [TuiScrollbarModule];
 @Component({
   selector: 'esm-main-view',
   templateUrl: './main-view.component.html',
-  styleUrls: ['./main-view.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [CommonModule, RouterModule, ...NGRX, TAIGA_UI],
