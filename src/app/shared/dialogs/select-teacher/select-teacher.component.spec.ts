@@ -4,7 +4,7 @@ import { APP_ENV } from '@esm/core';
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
 import { SelectTeacherDialogComponent } from './select-teacher.component';
 
-fdescribe('SelectTeacherComponent', () => {
+describe('SelectTeacherDialogComponent', () => {
   let component: SelectTeacherDialogComponent;
   let fixture: ComponentFixture<SelectTeacherDialogComponent>;
 

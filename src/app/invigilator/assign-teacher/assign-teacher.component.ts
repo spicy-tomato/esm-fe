@@ -9,12 +9,12 @@ import {
 import {
   FormControl,
   FormGroup,
+  FormsModule,
   NonNullableFormBuilder,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { Status } from '@esm/cdk';
+import { Status, StringifyHelper } from '@esm/cdk';
 import {
-  DepartmentSummary,
   ExaminationStatus,
   GetGroupByFacultyIdResponseItem,
   UpdateTeacherAssignmentRequest,
@@ -22,13 +22,9 @@ import {
   UserSummary,
 } from '@esm/data';
 import { LetModule } from '@ngrx/component';
+import { provideComponentStore } from '@ngrx/component-store';
 import { TuiTableModule } from '@taiga-ui/addon-table';
-import {
-  TuiContextWithImplicit,
-  TuiFilterPipeModule,
-  tuiPure,
-  TuiStringHandler,
-} from '@taiga-ui/cdk';
+import { TuiFilterPipeModule } from '@taiga-ui/cdk';
 import {
   TuiAlertService,
   TuiButtonModule,
@@ -37,9 +33,10 @@ import {
   TuiLoaderModule,
   TuiNotification,
   TuiScrollbarModule,
+  TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
 import { TuiComboBoxModule, TuiSelectModule } from '@taiga-ui/kit';
-import { combineLatest, filter, map, of, switchMap, tap } from 'rxjs';
+import { filter, of, switchMap, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { InvigilatorAssignTeacherStore } from './assign-teacher.store';
 
@@ -53,6 +50,7 @@ export const TAIGA_UI = [
   TuiScrollbarModule,
   TuiSelectModule,
   TuiTableModule,
+  TuiTextfieldControllerModule,
 ];
 
 type FormType = {
@@ -72,23 +70,24 @@ type FormType = {
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     ReactiveFormsModule,
     ScrollingModule,
     ...NGRX,
     ...TAIGA_UI,
   ],
   providers: [
-    InvigilatorAssignTeacherStore,
+    provideComponentStore(InvigilatorAssignTeacherStore),
     tuiButtonOptionsProvider({ size: 'm' }),
   ],
 })
 export class InvigilatorAssignTeacherComponent implements OnInit {
-  // INJECT PROPERTIES
+  // INJECTS
   private readonly alertService = inject(TuiAlertService);
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly store = inject(InvigilatorAssignTeacherStore);
 
-  // PUBLIC PROPERTIES
+  // PROPERTIES
   form?: FormGroup<FormType>;
   columns = [
     'index',
@@ -102,22 +101,18 @@ export class InvigilatorAssignTeacherComponent implements OnInit {
   ];
   customValues: Record<string, string | null> = {};
 
+  readonly stringify = StringifyHelper.idName;
   readonly hideAutoAssign = environment.production;
   readonly ExaminationStatus = ExaminationStatus;
+
   readonly data$ = this.store.data$;
-  readonly faculty$ = this.store.faculty$;
+  readonly faculties$ = this.store.faculties$;
   readonly dataError$ = this.store.dataError$;
   readonly dataStatus$ = this.store.dataStatus$;
-  readonly examination$ = this.store.examination$;
   readonly updateStatus$ = this.store.updateStatus$;
   readonly autoAssignStatus$ = this.store.autoAssignStatus$;
-  readonly departments$ = this.store.departmentsInFaculty$;
-  readonly invigilatorsData$ = this.store.invigilatorsData$;
-  readonly invigilatorPhoneNumberMap$ = this.store.invigilatorPhoneNumberMap$;
-  readonly showLoader$ = combineLatest([
-    this.store.dataStatus$,
-    this.store.autoAssignStatus$,
-  ]).pipe(map((statuses) => statuses.includes('loading')));
+  readonly tableObservables$ = this.store.tableObservables$;
+  readonly headerObservables$ = this.store.headerObservables$;
 
   // LIFECYCLE
   ngOnInit(): void {
@@ -143,16 +138,11 @@ export class InvigilatorAssignTeacherComponent implements OnInit {
     return a.invigilatorId === b.invigilatorId;
   };
 
-  @tuiPure
-  departmentStringify(
-    items: readonly DepartmentSummary[]
-  ): TuiStringHandler<TuiContextWithImplicit<string>> {
-    const map = new Map(
-      items.map(({ id, name }) => [id, name] as [string, string])
-    );
-
-    return ({ $implicit }: TuiContextWithImplicit<string>) =>
-      map.get($implicit) || '';
+  /**
+   * Called when select faculty from input select, only used if user has role `ExaminationDepartmentHead`
+   */
+  onSelectFaculty(facultyId: string): void {
+    this.store.changeFaculty(facultyId);
   }
 
   autoAssign(): void {

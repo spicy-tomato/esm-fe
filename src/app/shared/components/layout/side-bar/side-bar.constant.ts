@@ -43,7 +43,6 @@ export class SideBarConstant {
           name: 'Phân công',
           routerLink: '/invigilator/assign-teacher',
           icon: 'far fa-chalkboard',
-          roles: [Role.TEACHER],
         },
         {
           name: 'Phòng thi',

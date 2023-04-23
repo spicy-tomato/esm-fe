@@ -1,4 +1,3 @@
-import { FacultySummary } from '@esm/data';
 import {
   TuiContextWithImplicit,
   tuiPure,
@@ -7,8 +6,8 @@ import {
 
 export class StringifyHelper {
   @tuiPure
-  static idName(
-    items: FacultySummary[]
+  static idName<T extends { id: string; name: string }>(
+    items: T[]
   ): TuiStringHandler<TuiContextWithImplicit<string>> {
     const map = new Map(
       items.map(({ id, name }) => [id, name] as [string, string])

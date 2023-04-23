@@ -1,37 +1,68 @@
-<ng-container *ngrxLet="showLoader$ as showLoader">
+<ng-container *ngrxLet="headerObservables$ as obs">
   <div
     class="py-3 flex flex-0 justify-between items-center bg-white text-3xl font-bold"
   >
-    <h3 *ngrxLet="faculty$ as faculty">
-      Phân giảng viên coi thi khoa {{ faculty?.name }}
-    </h3>
+    <h3>Phân giảng viên coi thi khoa {{ obs.faculty?.name }}</h3>
 
-    <div *ngrxLet="examination$ as examination" class="buttons">
-      <button
-        tuiButton
-        *ngIf="examination?.status === ExaminationStatus.AssignInvigilator"
-        (click)="autoAssign()"
-        [showLoader]="showLoader"
-        [class.!hidden]="hideAutoAssign"
-        icon="tuiIconAirplayLarge"
+    <ng-container
+      *ngIf="obs.role === 'ExaminationDepartmentHead'; else buttons"
+    >
+      <tui-select
+        *ngrxLet="faculties$ as faculties"
+        [ngModel]="obs.faculty?.id"
+        (ngModelChange)="onSelectFaculty($event)"
+        [valueContent]="stringify(faculties)"
+        [tuiTextfieldLabelOutside]="true"
+        tuiTextfieldSize="m"
+        class="w-48"
       >
-        Tự động phân bổ
-      </button>
+        <ng-template tuiDataList>
+          <tui-data-list>
+            <button
+              tuiOption
+              *ngFor="let faculty of faculties"
+              [value]="faculty.id"
+              role="menuitemradio"
+            >
+              {{ faculty.name }}
+            </button>
+          </tui-data-list>
+        </ng-template>
+      </tui-select>
+    </ng-container>
 
-      <button
-        tuiButton
-        *ngIf="examination?.status === ExaminationStatus.AssignInvigilator"
-        (click)="saveChange()"
-        [showLoader]="showLoader"
-        [disabled]="!form || form.pristine"
-        icon="tuiIconSaveLarge"
-      >
-        Lưu
-      </button>
+    <ng-template #buttons>
+      <div class="buttons">
+        <button
+          tuiButton
+          *ngIf="
+            obs.examination?.status === ExaminationStatus.AssignInvigilator
+          "
+          (click)="autoAssign()"
+          [showLoader]="obs.showLoader"
+          [class.!hidden]="hideAutoAssign"
+          icon="tuiIconAirplayLarge"
+        >
+          Tự động phân bổ
+        </button>
 
-      <!-- TODO -->
-      <!-- <button tuiButton icon="tuiIconDownloadLarge">Tải file Excel</button> -->
-    </div>
+        <button
+          tuiButton
+          *ngIf="
+            obs.examination?.status === ExaminationStatus.AssignInvigilator
+          "
+          (click)="saveChange()"
+          [showLoader]="obs.showLoader"
+          [disabled]="!form || form.pristine"
+          icon="tuiIconSaveLarge"
+        >
+          Lưu
+        </button>
+
+        <!-- TODO -->
+        <!-- <button tuiButton icon="tuiIconDownloadLarge">Tải file Excel</button> -->
+      </div>
+    </ng-template>
   </div>
 </ng-container>
 
@@ -46,173 +77,168 @@
   <h2 *ngIf="dataError$ | async; else dataTable" class="mt-4 text-base">
     Phòng Khảo thí chưa phân số lượng cho khoa, vui lòng thử lại sau!
   </h2>
+</ng-template>
 
-  <ng-template #dataTable>
-    <tui-scrollbar class="scrollbar" class="flex-1">
-      <cdk-virtual-scroll-viewport
-        #viewport
-        tuiScrollable
-        [itemSize]="45"
-        [maxBufferPx]="1000"
-        [minBufferPx]="700"
-        class="h-full tui-zero-scrollbar"
+<ng-template #dataTable>
+  <tui-scrollbar class="scrollbar" class="flex-1">
+    <cdk-virtual-scroll-viewport
+      #viewport
+      tuiScrollable
+      [itemSize]="45"
+      [maxBufferPx]="1000"
+      [minBufferPx]="700"
+      class="h-full tui-zero-scrollbar"
+    >
+      <table
+        tuiTable
+        *ngIf="form"
+        [formGroup]="form"
+        [columns]="columns"
+        class="w-full"
       >
-        <table
-          tuiTable
-          *ngIf="form"
-          [formGroup]="form"
-          [columns]="columns"
-          class="w-full"
-        >
-          <thead tuiThead>
-            <tr
-              tuiThGroup
-              *ngrxLet="0 - viewport['_renderedContentOffset'] as offset"
+        <thead tuiThead>
+          <tr
+            tuiThGroup
+            *ngrxLet="0 - viewport['_renderedContentOffset'] as offset"
+          >
+            <th tuiTh [sticky]="true" [style.top.px]="offset">STT</th>
+            <th tuiTh [sticky]="true" [style.top.px]="offset">Mã học phần</th>
+            <th tuiTh [sticky]="true" [style.top.px]="offset">Tên học phần</th>
+            <th tuiTh [sticky]="true" [style.top.px]="offset">Ngày thi</th>
+            <th
+              tuiTh
+              [sticky]="true"
+              [style.top.px]="offset"
+              class="!text-center"
             >
-              <th tuiTh [sticky]="true" [style.top.px]="offset">STT</th>
-              <th tuiTh [sticky]="true" [style.top.px]="offset">Mã học phần</th>
-              <th tuiTh [sticky]="true" [style.top.px]="offset">
-                Tên học phần
-              </th>
-              <th tuiTh [sticky]="true" [style.top.px]="offset">Ngày thi</th>
-              <th
-                tuiTh
-                [sticky]="true"
-                [style.top.px]="offset"
-                class="!text-center"
-              >
-                Ca thi
-              </th>
-              <th
-                tuiTh
-                [sticky]="true"
-                [style.top.px]="offset"
-                class="!text-center"
-              >
-                Bộ môn
-              </th>
-              <th
-                tuiTh
-                [sticky]="true"
-                [style.top.px]="offset"
-                class="!text-center"
-              >
-                Họ tên CBCT
-              </th>
-              <th
-                tuiTh
-                [sticky]="true"
-                [style.top.px]="offset"
-                class="!text-center"
-              >
-                SĐT
-              </th>
-            </tr>
-          </thead>
+              Ca thi
+            </th>
+            <th
+              tuiTh
+              [sticky]="true"
+              [style.top.px]="offset"
+              class="!text-center"
+            >
+              Bộ môn
+            </th>
+            <th
+              tuiTh
+              [sticky]="true"
+              [style.top.px]="offset"
+              class="!text-center"
+            >
+              Họ tên CBCT
+            </th>
+            <th
+              tuiTh
+              [sticky]="true"
+              [style.top.px]="offset"
+              class="!text-center"
+            >
+              SĐT
+            </th>
+          </tr>
+        </thead>
 
-          <tbody tuiTbody *ngrxLet="departments$ as departments">
-            <ng-container *ngrxLet="invigilatorsData$ as invigilatorsData">
-              <ng-container
-                *ngrxLet="
-                  invigilatorPhoneNumberMap$ as invigilatorPhoneNumberMap
-                "
-              >
-                <ng-container *ngrxLet="data$ as data">
-                  <tr *cdkVirtualFor="let row of data; let i = index" tuiTr>
-                    <td *tuiCell="'index'" tuiTd class="w-8">{{ i + 1 }}</td>
-                    <td *tuiCell="'moduleId'" tuiTd class="w-32 max-w-[8rem]">
-                      {{ row.facultyShiftGroup.shiftGroup.module.displayId }}
-                    </td>
-                    <td *tuiCell="'moduleName'" tuiTd>
-                      {{ row.facultyShiftGroup.shiftGroup.module.name }}
-                    </td>
-                    <td *tuiCell="'startAt'" tuiTd class="w-32">
-                      {{
-                        row.facultyShiftGroup.shiftGroup.startAt
-                          | date : "dd/MM/y"
-                      }}
-                    </td>
-                    <td *tuiCell="'shift'" tuiTd class="w-24 !text-center">
-                      {{ row.facultyShiftGroup.shiftGroup.shift }}
-                    </td>
+        <tbody tuiTbody *ngrxLet="tableObservables$ as obs">
+          <tr *cdkVirtualFor="let row of obs.data; let i = index" tuiTr>
+            <td *tuiCell="'index'" tuiTd class="w-8">{{ i + 1 }}</td>
+            <td *tuiCell="'moduleId'" tuiTd class="w-32 max-w-[8rem]">
+              {{ row.facultyShiftGroup.shiftGroup.module.displayId }}
+            </td>
+            <td *tuiCell="'moduleName'" tuiTd>
+              {{ row.facultyShiftGroup.shiftGroup.module.name }}
+            </td>
+            <td *tuiCell="'startAt'" tuiTd class="w-32">
+              {{ row.facultyShiftGroup.shiftGroup.startAt | date : "dd/MM/y" }}
+            </td>
+            <td *tuiCell="'shift'" tuiTd class="w-24 !text-center">
+              {{ row.facultyShiftGroup.shiftGroup.shift }}
+            </td>
 
-                    <ng-container
-                      *ngrxLet="form.controls[row.id] as rowControl"
-                    >
-                      <td *tuiCell="'department'" tuiTd class="w-60">
-                        <tui-select
-                          (ngModelChange)="
-                            rowControl.controls.user.setValue(null)
-                          "
-                          [formControl]="rowControl.controls.departmentId"
-                          [valueContent]="departmentStringify(departments)"
-                          class="w-60"
-                        >
-                          <ng-template tuiDataList>
-                            <tui-data-list>
-                              <button
-                                tuiOption
-                                *ngFor="let department of departments"
-                                [value]="department.id"
-                              >
-                                {{ department.name }}
-                              </button>
-                            </tui-data-list>
-                          </ng-template>
-                        </tui-select>
-                      </td>
-
-                      <td
-                        *tuiCell="'teacher'"
-                        tuiTd
-                        [class.!bg-tui-warning-bg-hover]="customValues[row.id]"
-                        class="w-60"
+            <ng-container *ngrxLet="form.controls[row.id] as rowControl">
+              <td *tuiCell="'department'" tuiTd class="w-60">
+                <tui-select
+                  *ngIf="obs.role === 'Teacher'; else departmentTmpl"
+                  (ngModelChange)="rowControl.controls.user.setValue(null)"
+                  [formControl]="rowControl.controls.departmentId"
+                  [valueContent]="stringify(obs.departments)"
+                  class="w-60"
+                >
+                  <ng-template tuiDataList>
+                    <tui-data-list>
+                      <button
+                        tuiOption
+                        *ngFor="let department of obs.departments"
+                        [value]="department.id"
                       >
-                        <tui-combo-box
-                          [(search)]="customValues[row.id]"
-                          [formControl]="rowControl.controls.user"
-                          [valueContent]="invigilatorContent"
-                          [identityMatcher]="invigilatorIdentityMatcher"
-                          class="w-60"
-                        >
-                          <ng-template tuiDataList>
-                            <tui-data-list>
-                              <button
-                                *ngFor="
-                                  let invigilator of invigilatorsData
-                                    | tuiFilter
-                                      : invigilatorMatcher
-                                      : rowControl.value.departmentId
-                                "
-                                tuiOption
-                                [value]="invigilator"
-                              >
-                                {{ invigilator }}
-                              </button>
-                            </tui-data-list>
-                          </ng-template>
-                        </tui-combo-box>
-                      </td>
+                        {{ department.name }}
+                      </button>
+                    </tui-data-list>
+                  </ng-template>
+                </tui-select>
 
-                      <td *tuiCell="'phoneNumber'" tuiTd class="w-32">
-                        {{
-                          rowControl.value.user
-                            ? invigilatorPhoneNumberMap[
-                                rowControl.value.user.id
-                              ]
-                            : ""
-                        }}
-                      </td>
-                    </ng-container>
-                  </tr>
-                </ng-container>
-              </ng-container>
+                <ng-template #departmentTmpl>
+                  {{
+                    rowControl.value.user
+                      ? obs.invigilatorInfoMap[rowControl.value.user.id]
+                          ?.department?.name
+                      : ""
+                  }}
+                </ng-template>
+              </td>
+
+              <td
+                *tuiCell="'teacher'"
+                tuiTd
+                [class.!bg-tui-warning-bg-hover]="customValues[row.id]"
+                class="w-60"
+              >
+                <tui-combo-box
+                  *ngIf="obs.role === 'Teacher'; else teacherTmpl"
+                  [(search)]="customValues[row.id]"
+                  [formControl]="rowControl.controls.user"
+                  [valueContent]="invigilatorContent"
+                  [identityMatcher]="invigilatorIdentityMatcher"
+                  class="w-60"
+                >
+                  <ng-template tuiDataList>
+                    <tui-data-list>
+                      <button
+                        *ngFor="
+                          let invigilator of obs.invigilatorsData
+                            | tuiFilter
+                              : invigilatorMatcher
+                              : rowControl.value.departmentId
+                        "
+                        tuiOption
+                        [value]="invigilator"
+                      >
+                        {{ invigilator }}
+                      </button>
+                    </tui-data-list>
+                  </ng-template>
+                </tui-combo-box>
+
+                <ng-template #teacherTmpl>
+                  {{ rowControl.value.user?.fullName }}
+                </ng-template>
+              </td>
+
+              <td *tuiCell="'phoneNumber'" tuiTd class="w-32">
+                {{
+                  rowControl.value.user
+                    ? obs.invigilatorInfoMap[rowControl.value.user.id]
+                        ?.phoneNumber
+                    : ""
+                }}
+              </td>
             </ng-container>
-          </tbody>
-        </table>
-      </cdk-virtual-scroll-viewport>
-    </tui-scrollbar>
-  </ng-template>
+          </tr>
+        </tbody>
+      </table>
+    </cdk-virtual-scroll-viewport>
+  </tui-scrollbar>
 </ng-template>
 
 <ng-template #invigilatorContent let-item>

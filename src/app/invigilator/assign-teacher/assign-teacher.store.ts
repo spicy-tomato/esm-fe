@@ -1,24 +1,39 @@
 import { inject, Injectable } from '@angular/core';
 import { EsmHttpErrorResponse, ObservableHelper, Status } from '@esm/cdk';
 import {
+  DepartmentSummary,
+  FacultySummary,
   GetGroupByFacultyIdResponseItem,
   UpdateTeacherAssignmentRequest,
   UserSummary,
 } from '@esm/data';
 import { ExaminationService, FacultyService } from '@esm/services';
 import { AppSelector, AppState } from '@esm/store';
-import { ComponentStore, tapResponse } from '@ngrx/component-store';
+import {
+  ComponentStore,
+  OnStoreInit,
+  tapResponse,
+} from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
 import {
   combineLatest,
   map,
+  Subject,
   switchMap,
+  take,
   takeUntil,
   tap,
   withLatestFrom,
 } from 'rxjs';
 
+type UserInfoMap = Record<
+  string,
+  null | { phoneNumber: string | null; department: DepartmentSummary | null }
+>;
+
 type InvigilatorAssignTeacherState = {
+  //
+  faculty: FacultySummary | null;
   data: GetGroupByFacultyIdResponseItem[];
   dataStatus: Status;
   dataError: any;
@@ -26,7 +41,7 @@ type InvigilatorAssignTeacherState = {
   invigilatorsData: UserSummary[];
   invigilatorsDataStatus: Status;
   //
-  invigilatorPhoneNumberMap: Record<string, string | null>;
+  invigilatorInfoMap: UserInfoMap;
   //
   updateStatus: Status;
   //
@@ -34,22 +49,48 @@ type InvigilatorAssignTeacherState = {
 };
 
 @Injectable()
-export class InvigilatorAssignTeacherStore extends ComponentStore<InvigilatorAssignTeacherState> {
+export class InvigilatorAssignTeacherStore
+  extends ComponentStore<InvigilatorAssignTeacherState>
+  implements OnStoreInit
+{
   // INJECT PROPERTIES
   private readonly appStore = inject(Store<AppState>);
   private readonly facultyService = inject(FacultyService);
   private readonly examinationService = inject(ExaminationService);
 
-  // PUBLIC PROPERTIES
-  readonly faculty$ = this.appStore.pipe(
-    AppSelector.notNullUser,
-    map((u) => u.department!.faculty),
-    takeUntil(this.destroy$)
+  // STATE SELECTORS
+  readonly data$ = this.select((s) => s.data);
+  readonly dataError$ = this.select((s) => s.dataError);
+  readonly dataStatus$ = this.select((s) => s.dataStatus);
+  readonly updateStatus$ = this.select((s) => s.updateStatus);
+  readonly autoAssignStatus$ = this.select((s) => s.autoAssignStatus);
+
+  private readonly faculty$ = this.select((s) => s.faculty);
+  private readonly invigilatorsData$ = this.select((s) => s.invigilatorsData);
+  private readonly invigilatorInfoMap$ = this.select(
+    (s) => s.invigilatorInfoMap
   );
-  readonly examination$ = this.appStore
+
+  // GLOBAL SELECTORS
+  readonly faculties$ = this.appStore
+    .select(AppSelector.faculties)
+    .pipe(ObservableHelper.filterNullish(), takeUntil(this.destroy$));
+
+  private readonly examination$ = this.appStore
     .select(AppSelector.examination)
     .pipe(takeUntil(this.destroy$));
-  readonly departmentsInFaculty$ = combineLatest([
+
+  private readonly examinationId$ = this.appStore
+    .select(AppSelector.examinationId)
+    .pipe(ObservableHelper.filterNullish(), takeUntil(this.destroy$));
+
+  private readonly user$ = this.appStore.pipe(
+    AppSelector.notNullUser,
+    takeUntil(this.destroy$)
+  );
+
+  // CUSTOM SELECTORS
+  private readonly departmentsInFaculty$ = combineLatest([
     this.appStore.select(AppSelector.departmentsWithFaculty),
     this.faculty$,
   ]).pipe(
@@ -58,20 +99,46 @@ export class InvigilatorAssignTeacherStore extends ComponentStore<InvigilatorAss
     ),
     takeUntil(this.destroy$)
   );
-  readonly data$ = this.select((s) => s.data);
-  readonly dataError$ = this.select((s) => s.dataError);
-  readonly dataStatus$ = this.select((s) => s.dataStatus);
-  readonly invigilatorsData$ = this.select((s) => s.invigilatorsData);
-  readonly invigilatorPhoneNumberMap$ = this.select(
-    (s) => s.invigilatorPhoneNumberMap
-  );
-  readonly updateStatus$ = this.select((s) => s.updateStatus);
-  readonly autoAssignStatus$ = this.select((s) => s.autoAssignStatus);
 
-  // PRIVATE PROPERTIES
-  private readonly examinationId$ = this.appStore
-    .select(AppSelector.examinationId)
-    .pipe(ObservableHelper.filterNullish(), takeUntil(this.destroy$));
+  private role$ = this.user$.pipe(map((u) => u.role));
+
+  private readonly showLoader$ = combineLatest([
+    this.dataStatus$,
+    this.autoAssignStatus$,
+  ]).pipe(map((statuses) => statuses.includes('loading')));
+
+  readonly headerObservables$ = combineLatest([
+    this.showLoader$,
+    this.faculty$,
+    this.examination$,
+    this.role$,
+  ]).pipe(
+    map(([showLoader, faculty, examination, role]) => ({
+      showLoader,
+      faculty,
+      examination,
+      role,
+    }))
+  );
+
+  readonly tableObservables$ = combineLatest([
+    this.data$,
+    this.departmentsInFaculty$,
+    this.invigilatorsData$,
+    this.invigilatorInfoMap$,
+    this.role$,
+  ]).pipe(
+    map(([data, departments, invigilatorsData, invigilatorInfoMap, role]) => ({
+      data,
+      departments,
+      invigilatorsData,
+      invigilatorInfoMap,
+      role,
+    }))
+  );
+
+  // PRIVATE METHODS
+  private gotExaminationDepartmentHeadRole$ = new Subject<void>();
 
   // EFFECTS
   readonly getData = this.effect<void>((params$) =>
@@ -117,18 +184,33 @@ export class InvigilatorAssignTeacherStore extends ComponentStore<InvigilatorAss
               this.patchState({
                 invigilatorsData,
                 invigilatorsDataStatus: 'success',
-                invigilatorPhoneNumberMap: invigilatorsData.reduce<
-                  Record<string, string | null>
-                >((acc, curr) => {
-                  const { phoneNumber } = curr;
-                  acc[curr.id] = phoneNumber;
-                  return acc;
-                }, {}),
+                invigilatorInfoMap: invigilatorsData.reduce<UserInfoMap>(
+                  (acc, curr) => {
+                    const { phoneNumber, department } = curr;
+                    acc[curr.id] = { phoneNumber, department };
+                    return acc;
+                  },
+                  {}
+                ),
               }),
             () => this.patchState({ invigilatorsDataStatus: 'error' })
           )
         )
       )
+    )
+  );
+
+  /**
+   * Called when select faculty from input select, only used if user has role `ExaminationDepartmentHead`
+   */
+  readonly changeFaculty = this.effect<string>((params$) =>
+    params$.pipe(
+      withLatestFrom(this.faculties$),
+      tap(([id, faculties]) => {
+        this.patchState({ faculty: faculties.find((f) => f.id === id) });
+        this.getData();
+        this.getInvigilatorsData();
+      })
     )
   );
 
@@ -187,14 +269,52 @@ export class InvigilatorAssignTeacherStore extends ComponentStore<InvigilatorAss
   // CONSTRUCTOR
   constructor() {
     super({
+      faculty: null,
       data: [],
       dataStatus: 'loading',
       dataError: null,
       invigilatorsData: [],
       invigilatorsDataStatus: 'loading',
-      invigilatorPhoneNumberMap: {},
+      invigilatorInfoMap: {},
       updateStatus: 'idle',
       autoAssignStatus: 'idle',
     });
+  }
+
+  ngrxOnStoreInit() {
+    this.handleFacultyChanges();
+    this.handleGetUser();
+  }
+
+  private handleGetUser(): void {
+    this.user$
+      .pipe(
+        tap((user) => {
+          switch (user.role) {
+            case 'ExaminationDepartmentHead':
+              this.gotExaminationDepartmentHeadRole$.next();
+              break;
+            case 'Teacher':
+              this.patchState({ faculty: user.department?.faculty ?? null });
+              break;
+          }
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+  }
+
+  /**
+   * Select first faculty. This function is called only if user has role `ExaminationDepartmentHead`
+   */
+  private handleFacultyChanges(): void {
+    combineLatest([this.gotExaminationDepartmentHeadRole$, this.faculties$])
+      .pipe(
+        map(([_, faculties]) => faculties[0]),
+        ObservableHelper.filterNullish(),
+        tap((faculty) => this.patchState({ faculty })),
+        take(1)
+      )
+      .subscribe();
   }
 }

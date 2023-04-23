@@ -105,9 +105,6 @@ const routes: Routes = [
               {
                 path: 'assign-teacher',
                 canActivate: [PermissionGuard],
-                data: {
-                  roles: [Role.TEACHER],
-                },
                 loadChildren: async () =>
                   (
                     await import(
