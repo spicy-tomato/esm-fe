@@ -1,5 +1,5 @@
 import { hot } from 'jasmine-marbles';
-import { from, Observable } from 'rxjs';
+import { from } from 'rxjs';
 import { ObservableHelper } from './observable.helper';
 
 describe('ObservableHelper', () => {

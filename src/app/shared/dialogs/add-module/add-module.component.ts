@@ -5,7 +5,11 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
-import { FormBuilder, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { StringifyHelper } from '@esm/cdk';
 import { TemporaryExamination } from '@esm/data';
 import { LetModule } from '@ngrx/component';
@@ -81,7 +85,8 @@ export class AddModuleDialogComponent implements OnInit {
     item.facultyId === this.form.controls.faculty.value;
 
   onCreate(): void {
-    const { moduleId, moduleName, faculty, department } = this.form.getRawValue();
+    const { moduleId, moduleName, faculty, department } =
+      this.form.getRawValue();
     this.store.create({
       displayId: moduleId,
       name: moduleName,
