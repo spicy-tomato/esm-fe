@@ -5,7 +5,7 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { StringifyHelper } from '@esm/cdk';
 import { TemporaryExamination } from '@esm/data';
 import { LetModule } from '@ngrx/component';
@@ -49,7 +49,7 @@ export const TAIGA_UI = [
 })
 export class AddModuleDialogComponent implements OnInit {
   // INJECT PROPERTIES
-  private readonly fb = inject(FormBuilder);
+  private readonly fb = inject(NonNullableFormBuilder);
   private readonly store = inject(AddModuleDialogStore);
   private readonly alertService = inject(TuiAlertService);
   private readonly context = inject(POLYMORPHEUS_CONTEXT) as TuiDialogContext<
@@ -59,8 +59,8 @@ export class AddModuleDialogComponent implements OnInit {
 
   // PUBLIC PROPERTIES
   form = this.fb.group({
-    moduleId: [this.context.data.moduleId, Validators.required],
-    moduleName: [this.context.data.moduleName, Validators.required],
+    moduleId: [this.context.data.moduleId ?? '', Validators.required],
+    moduleName: [this.context.data.moduleName ?? '', Validators.required],
     faculty: ['', Validators.required],
     department: [''],
   });
@@ -81,11 +81,11 @@ export class AddModuleDialogComponent implements OnInit {
     item.facultyId === this.form.controls.faculty.value;
 
   onCreate(): void {
-    const { moduleId, moduleName, faculty, department } = this.form.value;
+    const { moduleId, moduleName, faculty, department } = this.form.getRawValue();
     this.store.create({
-      displayId: moduleId!,
-      name: moduleName!,
-      facultyId: faculty!,
+      displayId: moduleId,
+      name: moduleName,
+      facultyId: faculty,
       departmentId: department ?? null,
     });
   }

@@ -1,16 +1,11 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  OnInit,
-  inject,
-} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ExaminationDataFinalStore } from '../final.store';
-import { LetModule } from '@ngrx/component';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ExamMethodPipe } from '@esm/core';
+import { LetModule } from '@ngrx/component';
 import { TuiTableModule } from '@taiga-ui/addon-table';
 import { TuiLoaderModule, TuiScrollbarModule } from '@taiga-ui/core';
+import { ExaminationDataFinalStore } from '../final.store';
 
 export const NGRX = [LetModule];
 export const TAIGA_UI = [TuiLoaderModule, TuiScrollbarModule, TuiTableModule];

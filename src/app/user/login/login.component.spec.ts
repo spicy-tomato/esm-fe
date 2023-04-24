@@ -90,7 +90,7 @@ describe('LoginComponent', () => {
     it('[Valid form] should login when form is valid', () => {
       component.form.patchValue({
         userName: 'userName',
-        password: 'password',
+        password: 'example-password',
       });
       const spy = spyOn(component['store'], 'login');
       component.login();

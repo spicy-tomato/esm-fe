@@ -5,7 +5,7 @@ import { ResultBuilder } from '@esm/cdk';
 import { APP_ENV } from '@esm/core';
 import { CreateExaminationRequest, ExaminationStatus } from '@esm/data';
 import { ExaminationService } from '@esm/services';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 import { cold } from 'jasmine-marbles';
 import { of } from 'rxjs';
 import { ExaminationCreateStore } from './create.store';
@@ -14,7 +14,6 @@ describe('CreateStore', () => {
   let store: ExaminationCreateStore;
   let mockExaminationService: jasmine.SpyObj<ExaminationService>;
   let router: Router;
-  let appStore: MockStore;
 
   beforeEach(async () => {
     mockExaminationService = jasmine.createSpyObj<ExaminationService>(
@@ -37,7 +36,6 @@ describe('CreateStore', () => {
 
     store = TestBed.inject(ExaminationCreateStore);
     router = TestBed.inject(Router);
-    appStore = TestBed.inject(MockStore);
   });
 
   it('should have initial state', () => {

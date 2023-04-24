@@ -86,7 +86,7 @@ export class AddRoomDialogStore extends ComponentStore<AddRoomDialogState> {
   private onAddFail(rowId: number, error: string): void {
     this.patchState((state) => ({
       status: state.status.map((v, i) => (i === rowId ? 'error' : v)),
-      error: state.error.map((v, i) => (i === rowId ? (error as string) : v)),
+      error: state.error.map((v, i) => (i === rowId ? error : v)),
     }));
   }
 }
