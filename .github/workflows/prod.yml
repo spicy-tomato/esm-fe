@@ -55,5 +55,5 @@ jobs:
           password: ${{ secrets.SSH_PWD }}
           script: |
             cd /var/www/esmfe-docker
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:latest
-            docker run -p localhost:80:80 -d ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:latest
+            docker pull snowflower1408/esmfe:latest
+            docker run -p 80:80 -d snowflower1408/esmfe:latest
