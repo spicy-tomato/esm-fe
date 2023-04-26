@@ -58,13 +58,3 @@ jobs:
           script: |
             cd /var/www/esmfe-docker
             docker-compose up -d
-
-      - name: Compose Docker image
-        uses: appleboy/scp-action@v0.1.3
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PWD }}
-          script: |
-            cd /var/www/esmfe-docker
-            docker-compose up -d
