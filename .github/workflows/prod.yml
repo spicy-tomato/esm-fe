@@ -57,5 +57,4 @@ jobs:
           target: "/var/www/esmfe-docker"
           script: |
             cd /var/www/esmfe-docker
-            docker pull snowflower1408/esmfe:latest
-            docker run -p 80:80 -d snowflower1408/esmfe:latest
+            docker-compose up -d
