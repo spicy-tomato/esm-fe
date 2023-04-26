@@ -53,6 +53,8 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PWD }}
+          source: "docker-compose.yml"
+          target: "/var/www/esmfe-docker"
           script: |
             cd /var/www/esmfe-docker
             docker pull snowflower1408/esmfe:latest
