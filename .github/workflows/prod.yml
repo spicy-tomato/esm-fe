@@ -17,11 +17,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
         with:
-          node-version: '16'
-          cache: 'npm'
+          version: 8.1.1
+          run_install: |
+            - args: [--frozen-lockfile]
 
       - name: Generate env files
         run: node ./scripts/env.js
