@@ -17,6 +17,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'npm'
+
+      - name: Generate env files
+        run: node ./scripts/env.js
+        env:
+          BASE_URL: '${{ secrets.BASE_URL }}'
+          SYNCFUSION_LICENSE: '${{ secrets.SYNCFUSION_LICENSE }}'
+
+      - name: Setup Node
+        uses: actions/setup-node
+        with:
+          version: 8.1.1
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:

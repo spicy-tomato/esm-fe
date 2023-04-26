@@ -7,8 +7,8 @@ COPY package.json pnpm-lock.yaml /app/
 RUN pnpm install
 COPY ./ /app/
 ARG configuration=production
-RUN npm run build -- --output-path=./dist/out --configuration $configuration
+RUN pnpm run build --configuration $configuration
 
 FROM nginx:1.24
-COPY --from=dependencies /app/dist/out/ /usr/share/nginx/html
+COPY --from=dependencies /app/dist/esm-fe/ /usr/share/nginx/html
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
