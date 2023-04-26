@@ -29,11 +29,6 @@ jobs:
           BASE_URL: '${{ secrets.BASE_URL }}'
           SYNCFUSION_LICENSE: '${{ secrets.SYNCFUSION_LICENSE }}'
 
-      - name: Setup Node
-        uses: actions/setup-node
-        with:
-          version: 8.1.1
-
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
