@@ -2,7 +2,7 @@ version: "1.0"
 services:
   esmfe:
     container_name: esmfe
-    image: "snowflower1408/esmfe@latest"
+    image: "snowflower1408/esmfe"
     #ports:
     #  - "80:80"
     environment:
