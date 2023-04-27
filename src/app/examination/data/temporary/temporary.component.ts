@@ -32,7 +32,7 @@ import {
   TuiScrollbarModule,
   TuiSvgModule,
 } from '@taiga-ui/core';
-import { TuiInputNumberModule } from '@taiga-ui/kit';
+import { TuiInputNumberModule, TuiLineClampModule } from '@taiga-ui/kit';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { filter, tap } from 'rxjs';
 import { ExaminationDataTemporaryStore } from './temporary.store';
@@ -43,6 +43,7 @@ export const TAIGA_UI = [
   TuiDataListModule,
   TuiDropdownModule,
   TuiInputNumberModule,
+  TuiLineClampModule,
   TuiLoaderModule,
   TuiScrollbarModule,
   TuiSvgModule,

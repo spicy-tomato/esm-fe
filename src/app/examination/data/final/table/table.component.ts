@@ -6,9 +6,15 @@ import { LetModule } from '@ngrx/component';
 import { TuiTableModule } from '@taiga-ui/addon-table';
 import { TuiLoaderModule, TuiScrollbarModule } from '@taiga-ui/core';
 import { ExaminationDataFinalStore } from '../final.store';
+import { TuiLineClampModule } from '@taiga-ui/kit';
 
 export const NGRX = [LetModule];
-export const TAIGA_UI = [TuiLoaderModule, TuiScrollbarModule, TuiTableModule];
+export const TAIGA_UI = [
+  TuiLineClampModule,
+  TuiLoaderModule,
+  TuiScrollbarModule,
+  TuiTableModule,
+];
 
 @Component({
   selector: 'esm-examination-data-final-table',

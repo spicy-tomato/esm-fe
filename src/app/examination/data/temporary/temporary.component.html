@@ -110,14 +110,30 @@
                 {{ item.value.moduleId }}
               </ng-template>
             </td>
-            <td *tuiCell="'moduleName'" tuiTd class="w-52 max-w-[13rem]">
-              {{ item.value.moduleName }}
+            <td *tuiCell="'moduleName'" tuiTd class="min-w-[13rem]">
+              <tui-line-clamp
+                [content]="moduleNameTmpl"
+                [linesLimit]="1"
+              ></tui-line-clamp>
+              <ng-template #moduleNameTmpl>
+                <div class="whitespace-nowrap">{{ item.value.moduleName }}</div>
+              </ng-template>
+
               <esm-error-flag
                 [error]="item.value.errors['moduleName']"
               ></esm-error-flag>
             </td>
-            <td *tuiCell="'moduleClass'" tuiTd class="w-[450px] max-w-[450px]">
-              {{ item.value.moduleClass }}
+            <td *tuiCell="'moduleClass'" tuiTd class="min-w-[450px]">
+              <tui-line-clamp
+                [content]="moduleClassTmpl"
+                [linesLimit]="1"
+              ></tui-line-clamp>
+              <ng-template #moduleClassTmpl>
+                <div class="whitespace-nowrap">
+                  {{ item.value.moduleClass }}
+                </div>
+              </ng-template>
+
               <esm-error-flag
                 [error]="item.value.errors['moduleClass']"
               ></esm-error-flag>
