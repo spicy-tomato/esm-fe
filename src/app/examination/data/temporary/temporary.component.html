@@ -1,22 +1,21 @@
-<ng-container *ngrxLet="dataStatus$ as dataStatus">
+<ng-container *ngrxLet="headerObservables$ as obs">
   <div class="mb-4 flex justify-end">
-    <ng-container *ngrxLet="hasError$ as hasError">
-      <button
-        *ngrxLet="activateStatus$ as activateStatus"
-        tuiButton
-        (click)="activate()"
-        [showLoader]="dataStatus === 'loading' || activateStatus === 'loading'"
-        [disabled]="hasError || activateStatus === 'loading'"
-        icon="tuiIconCheckLarge"
-      >
-        Kích hoạt kỳ thi
-      </button>
-    </ng-container>
+    <button
+      tuiButton
+      (click)="activate()"
+      [showLoader]="
+        obs.dataStatus === 'loading' || obs.activateStatus === 'loading'
+      "
+      [disabled]="obs.hasError || obs.activateStatus === 'loading'"
+      icon="tuiIconCheckLarge"
+    >
+      Kích hoạt kỳ thi
+    </button>
 
     <button
       tuiButton
       (click)="getData()"
-      [showLoader]="dataStatus === 'loading'"
+      [showLoader]="obs.dataStatus === 'loading'"
       [disabled]="disableReload"
       icon="tuiIconRefreshCcw"
       class="ml-4"
@@ -26,7 +25,7 @@
   </div>
 
   <tui-loader
-    *ngIf="dataStatus === 'loading'; else loaded"
+    *ngIf="obs.dataStatus === 'loading'; else loaded"
     class="h-40"
   ></tui-loader>
 </ng-container>

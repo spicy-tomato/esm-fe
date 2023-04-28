@@ -94,7 +94,7 @@ export class ExaminationHandoverComponent implements OnInit {
   ];
   readonly data$ = this.store.data$;
   readonly dataStatus$ = this.store.dataStatus$;
-  readonly handoverPersonStatus$ = this.store.handoverPersonStatus$;
+  readonly tableObservables$ = this.store.tableObservables$;
 
   // LIFECYCLE
   ngOnInit(): void {

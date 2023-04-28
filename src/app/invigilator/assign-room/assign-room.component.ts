@@ -94,10 +94,10 @@ type InvigilatorItem =
 })
 export class InvigilatorAssignRoomComponent implements OnInit {
   // INJECT PROPERTIES
-  private readonly dialogService = inject(TuiDialogService);
   private readonly fb = inject(NonNullableFormBuilder);
-  private readonly injector = inject(Injector);
   private readonly store = inject(InvigilatorAssignRoomStore);
+  private readonly injector = inject(Injector);
+  private readonly dialogService = inject(TuiDialogService);
 
   // PUBLIC PROPERTIES
   form?: FormGroup<{
@@ -124,47 +124,12 @@ export class InvigilatorAssignRoomComponent implements OnInit {
     $implicit: GetAvailableInvigilatorsInShiftGroupVerifiedInvigilator;
     shiftGroupId: string;
   };
+
   readonly data$ = this.store.data$;
   readonly dataStatus$ = this.store.dataStatus$;
-  readonly examination$ = this.store.examination$;
-  readonly updateStatus$ = this.store.updateStatus$;
-  readonly invigilatorsData$ = this.store.invigilatorsData$;
-  readonly invigilatorFacultyMap$ = this.store.invigilatorFacultyMap$;
-  readonly invigilatorsList$ = this.invigilatorsData$.pipe(
-    map((data) => {
-      const res: InvigilatorItem[] = [];
-
-      Object.values(data).forEach((invigilators) => {
-        invigilators.forEach((i) => {
-          res.push(i);
-        });
-      });
-
-      return res;
-    })
-  );
-  readonly usedInvigilatorsMap$ = new BehaviorSubject<
-    Record<string, Record<string, string | null>>
-  >({});
-  readonly showLoader$ = combineLatest([
-    this.store.dataStatus$,
-    this.store.autoAssignStatus$,
-  ]).pipe(map((statuses) => statuses.includes('loading')));
-  readonly tableObservables$ = combineLatest([
-    this.data$,
-    this.invigilatorsData$,
-    this.invigilatorsList$,
-    this.invigilatorFacultyMap$,
-    this.usedInvigilatorsMap$,
-  ]).pipe(
-    map((arr) => ({
-      data: arr[0],
-      invigilatorsData: arr[1],
-      invigilatorsList: arr[2],
-      invigilatorFacultyMap: arr[3],
-      usedInvigilatorsMap: arr[4],
-    }))
-  );
+  readonly tableObservables$ = this.store.tableObservables$;
+  readonly headerObservables$ = this.store.headerObservables$;
+  readonly usedInvigilatorsMap$ = this.store.usedInvigilatorsMap$;
 
   // LIFECYCLE
   ngOnInit(): void {

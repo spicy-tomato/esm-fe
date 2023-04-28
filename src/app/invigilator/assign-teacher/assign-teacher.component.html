@@ -8,10 +8,9 @@
       *ngIf="obs.role === 'ExaminationDepartmentHead'; else buttons"
     >
       <tui-select
-        *ngrxLet="faculties$ as faculties"
         [ngModel]="obs.faculty?.id"
         (ngModelChange)="onSelectFaculty($event)"
-        [valueContent]="stringify(faculties)"
+        [valueContent]="stringify(obs.faculties)"
         [tuiTextfieldLabelOutside]="true"
         tuiTextfieldSize="m"
         class="w-48"
@@ -20,7 +19,7 @@
           <tui-data-list>
             <button
               tuiOption
-              *ngFor="let faculty of faculties"
+              *ngFor="let faculty of obs.faculties"
               [value]="faculty.id"
               role="menuitemradio"
             >

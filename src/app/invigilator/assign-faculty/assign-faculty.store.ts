@@ -5,7 +5,14 @@ import { ExaminationService } from '@esm/services';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
-import { switchMap, takeUntil, tap, withLatestFrom } from 'rxjs';
+import {
+  combineLatest,
+  map,
+  switchMap,
+  takeUntil,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
 
 type InvigilatorAssignFacultyState = {
   data: GetAllGroupsResponseResponseItem[];
@@ -21,23 +28,82 @@ export class InvigilatorAssignFacultyStore extends ComponentStore<InvigilatorAss
   private readonly appStore = inject(Store<AppState>);
   private readonly examinationService = inject(ExaminationService);
 
-  // PUBLIC PROPERTIES
+  // STATE SELECTORS
+  readonly data$ = this.select((s) => s.data);
+  readonly finishStatus$ = this.select((s) => s.finishStatus);
+  readonly calculateStatus$ = this.select((s) => s.calculateStatus);
+
+  private readonly dataStatus$ = this.select((s) => s.dataStatus);
+  private readonly updateRows$ = this.select((s) => s.updateRows);
+
+  // GLOBAL SELECTORS
   readonly faculties$ = this.appStore
     .select(AppSelector.faculties)
     .pipe(takeUntil(this.destroy$));
-  readonly examination$ = this.appStore
+
+  private readonly examination$ = this.appStore
     .select(AppSelector.examination)
     .pipe(takeUntil(this.destroy$));
-  readonly data$ = this.select((s) => s.data);
-  readonly dataStatus$ = this.select((s) => s.dataStatus);
-  readonly calculateStatus$ = this.select((s) => s.calculateStatus);
-  readonly finishStatus$ = this.select((s) => s.finishStatus);
-  readonly updateRows$ = this.select((s) => s.updateRows);
 
-  // PRIVATE PROPERTIES
   private readonly examinationId$ = this.appStore
     .select(AppSelector.examinationId)
     .pipe(ObservableHelper.filterNullish(), takeUntil(this.destroy$));
+
+  // CUSTOM SELECTORS
+  private readonly columns$ = this.faculties$.pipe(
+    map((faculties) => [
+      'index',
+      'moduleId',
+      'moduleName',
+      'method',
+      'startAt',
+      'shift',
+      'facultyName',
+      'roomsCount',
+      'invigilatorsCount',
+      ...faculties.map((f) => f.id),
+      'total',
+      'difference',
+    ])
+  );
+
+  readonly headerObservables$ = combineLatest([
+    this.dataStatus$,
+    this.finishStatus$,
+    this.calculateStatus$,
+    this.updateRows$,
+    this.examination$,
+  ]).pipe(
+    map(
+      ([
+        dataStatus,
+        finishStatus,
+        calculateStatus,
+        updateRows,
+        examination,
+      ]) => ({
+        dataStatus,
+        finishStatus,
+        calculateStatus,
+        updateRows,
+        examination,
+      })
+    )
+  );
+
+  readonly tableObservables$ = combineLatest([
+    this.columns$,
+    this.faculties$,
+    this.updateRows$,
+    this.examination$,
+  ]).pipe(
+    map(([columns, faculties, updateRows, examination]) => ({
+      columns,
+      faculties,
+      updateRows,
+      examination,
+    }))
+  );
 
   // EFFECTS
   readonly getData = this.effect<void>((params$) =>

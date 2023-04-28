@@ -61,14 +61,13 @@ export class DataDepartmentComponent implements OnInit {
   private readonly dialogService = inject(TuiDialogService);
 
   // PUBLIC PROPERTIES
-  readonly invigilatorRouterLink = '/data/invigilator';
   readonly columns = ['displayId', 'name', 'facultyName', 'action'];
-  readonly faculties$ = this.store.faculties$;
-  readonly departments$ = this.store.departments$;
-  readonly selectedFacultyId$ = this.store.selectedFacultyId$;
-  readonly selectedFacultyName$ = this.store.selectedFacultyName$;
-  readonly status$ = this.store.status$;
   readonly facultyStringify = StringifyHelper.idName;
+  readonly invigilatorRouterLink = '/data/invigilator';
+
+  readonly status$ = this.store.status$;
+  readonly tableObservables$ = this.store.tableObservables$;
+  readonly headerObservables$ = this.store.headerObservables$;
 
   // LIFECYCLE
   ngOnInit(): void {

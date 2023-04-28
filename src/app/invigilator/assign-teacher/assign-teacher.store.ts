@@ -109,12 +109,14 @@ export class InvigilatorAssignTeacherStore
 
   readonly headerObservables$ = combineLatest([
     this.showLoader$,
+    this.faculties$,
     this.faculty$,
     this.examination$,
     this.role$,
   ]).pipe(
-    map(([showLoader, faculty, examination, role]) => ({
+    map(([showLoader, faculties, faculty, examination, role]) => ({
       showLoader,
+      faculties,
       faculty,
       examination,
       role,
@@ -137,7 +139,7 @@ export class InvigilatorAssignTeacherStore
     }))
   );
 
-  // PRIVATE METHODS
+  // PRIVATE PROPERTIES
   private gotExaminationDepartmentHeadRole$ = new Subject<void>();
 
   // EFFECTS

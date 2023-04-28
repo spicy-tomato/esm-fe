@@ -75,14 +75,6 @@ export class ExaminationDataTemporaryComponent implements OnInit {
   private readonly store = inject(ExaminationDataTemporaryStore);
 
   // PUBLIC PROPERTIES
-  form!: FormGroup<{
-    data: FormArray<
-      FormGroup<{
-        [K in keyof TemporaryExamination]: FormControl<TemporaryExamination[K]>;
-      }>
-    >;
-  }>;
-  disableReload = true;
   readonly columns = [
     'index',
     'moduleId',
@@ -101,9 +93,16 @@ export class ExaminationDataTemporaryComponent implements OnInit {
     'department',
     'departmentAssign',
   ];
-  readonly dataStatus$ = this.store.dataStatus$;
-  readonly activateStatus$ = this.store.activateStatus$;
-  readonly hasError$ = this.store.hasError$;
+  readonly headerObservables$ = this.store.headerObservables$;
+
+  form!: FormGroup<{
+    data: FormArray<
+      FormGroup<{
+        [K in keyof TemporaryExamination]: FormControl<TemporaryExamination[K]>;
+      }>
+    >;
+  }>;
+  disableReload = true;
 
   // PRIVATE PROPERTIES
   private readonly data$ = this.store.data$;

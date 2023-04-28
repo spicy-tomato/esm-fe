@@ -5,7 +5,14 @@ import { ExaminationService } from '@esm/services';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
-import { switchMap, takeUntil, tap, withLatestFrom } from 'rxjs';
+import {
+  combineLatest,
+  map,
+  switchMap,
+  takeUntil,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
 
 type ExaminationHandoverState = {
   data: GetHandoverDataResponseItem[];
@@ -19,15 +26,31 @@ export class ExaminationHandoverStore extends ComponentStore<ExaminationHandover
   private readonly appStore = inject(Store<AppState>);
   private readonly examinationService = inject(ExaminationService);
 
-  // PUBLIC PROPERTIES
+  // STATE SELECTORS
   readonly data$ = this.select((s) => s.data);
   readonly dataStatus$ = this.select((s) => s.dataStatus);
-  readonly handoverPersonStatus$ = this.select((s) => s.handoverPersonStatus);
 
-  // PRIVATE PROPERTIES
+  private readonly handoverPersonStatus$ = this.select(
+    (s) => s.handoverPersonStatus
+  );
+
+  // GLOBAL SELECTORS
   private readonly examinationId$ = this.appStore
     .select(AppSelector.examinationId)
     .pipe(ObservableHelper.filterNullish(), takeUntil(this.destroy$));
+
+  // CUSTOM SELECTORS
+  readonly tableObservables$ = combineLatest([
+    this.dataStatus$,
+    this.data$,
+    this.handoverPersonStatus$,
+  ]).pipe(
+    map(([dataStatus, data, handoverPersonStatus]) => ({
+      dataStatus,
+      data,
+      handoverPersonStatus,
+    }))
+  );
 
   // EFFECTS
   readonly getData = this.effect<void>((params$) =>

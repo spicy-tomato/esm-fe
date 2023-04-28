@@ -70,9 +70,12 @@ export class AddModuleDialogComponent implements OnInit {
   });
 
   readonly stringify = StringifyHelper.idName;
-  readonly faculties$ = this.store.faculties$;
-  readonly departments$ = this.store.departments$;
-  readonly status$ = this.store.status$;
+  readonly observables$ = this.store.observables$;
+
+  // PRIVATE PROPERTIES
+  private readonly status$ = this.store.status$;
+  private readonly faculties$ = this.store.faculties$;
+  private readonly departments$ = this.store.departments$;
 
   // LIFECYCLE
   ngOnInit(): void {

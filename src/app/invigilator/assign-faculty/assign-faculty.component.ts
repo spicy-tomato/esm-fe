@@ -53,6 +53,18 @@ export const TAIGA_UI = [
   TuiTooltipModule,
 ];
 
+type InputStyle = {
+  top: string;
+  left: string;
+  width: string;
+  height: string;
+};
+
+type FocusedCellData = {
+  rowId: number;
+  facultyId: string;
+};
+
 @Component({
   templateUrl: './assign-faculty.component.html',
   styleUrls: ['./assign-faculty.component.less'],
@@ -75,11 +87,11 @@ export const TAIGA_UI = [
 })
 export class InvigilatorAssignFacultyComponent implements OnInit {
   // INJECT PROPERTIES
-  private readonly injector = inject(Injector);
   private readonly fb = inject(NonNullableFormBuilder);
+  private readonly store = inject(InvigilatorAssignFacultyStore);
+  private readonly injector = inject(Injector);
   private readonly alertService = inject(TuiAlertService);
   private readonly dialogService = inject(TuiDialogService);
-  private readonly store = inject(InvigilatorAssignFacultyStore);
 
   // VIEWCHILD
   @ViewChild('input') input!: TuiInputNumberComponent;
@@ -89,42 +101,17 @@ export class InvigilatorAssignFacultyComponent implements OnInit {
   form!: FormGroup;
   inputValue = 0;
   inputOldValue = 0;
-  inputStyle: {
-    top: string;
-    left: string;
-    width: string;
-    height: string;
-  } | null = null;
-  focusedCellData: {
-    rowId: number;
-    facultyId: string;
-  } | null = null;
+  inputStyle: InputStyle | null = null;
   focusedControl: FormControl | null = null;
+  focusedCellData: FocusedCellData | null = null;
 
+  readonly ExaminationStatus = ExaminationStatus;
   readonly data$ = this.store.data$;
   readonly faculties$ = this.store.faculties$;
-  readonly updateRows$ = this.store.updateRows$;
-  readonly dataStatus$ = this.store.dataStatus$;
-  readonly examination$ = this.store.examination$;
   readonly finishStatus$ = this.store.finishStatus$;
   readonly calculateStatus$ = this.store.calculateStatus$;
-  readonly columns$ = this.store.faculties$.pipe(
-    map((faculties) => [
-      'index',
-      'moduleId',
-      'moduleName',
-      'method',
-      'startAt',
-      'shift',
-      'facultyName',
-      'roomsCount',
-      'invigilatorsCount',
-      ...faculties.map((f) => f.id),
-      'total',
-      'difference',
-    ])
-  );
-  readonly ExaminationStatus = ExaminationStatus;
+  readonly tableObservables$ = this.store.tableObservables$;
+  readonly headerObservables$ = this.store.headerObservables$;
 
   // LIFECYCLE
   ngOnInit(): void {

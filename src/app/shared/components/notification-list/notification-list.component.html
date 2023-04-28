@@ -1,121 +1,117 @@
-<ng-container *ngrxLet="data$ as data">
-  <ng-container *ngrxLet="hasUnread$ as hasUnread">
-    <div *ngrxLet="activeTabIndex$ as activeTabIndex" class="p-0.5">
-      <!-- Title -->
-      <div class="flex justify-between mr-4 mb-2 ml-5">
-        <h2 class="text-xl font-bold">Thông báo</h2>
-        <tui-hosted-dropdown [(open)]="openOptions" [content]="more">
-          <button
-            tuiIconButton
-            [pseudoHover]="openOptions || null"
-            icon="tuiIconMoreHorizontalLarge"
-            aria-label="Notification more options"
-          ></button>
-        </tui-hosted-dropdown>
-      </div>
-
-      <!-- Buttons -->
-      <div class="ml-4">
+<ng-container *ngrxLet="observables$ as obs">
+  <div class="p-0.5">
+    <!-- Title -->
+    <div class="flex justify-between mr-4 mb-2 ml-5">
+      <h2 class="text-xl font-bold">Thông báo</h2>
+      <tui-hosted-dropdown [(open)]="openOptions" [content]="more">
         <button
-          *ngFor="let btn of tabsBtn; index as i; first as first"
-          tuiButton
-          [appearance]="activeTabIndex === i ? 'primary' : 'flat'"
-          [class.ml-2]="!first"
-          (click)="activeTabIndex$.next(i)"
-        >
-          {{ btn }}
-        </button>
-      </div>
-
-      <!-- List -->
-      <tui-data-list [emptyContent]="emptyContent" size="s">
-        <a
-          tuiOption
-          *ngFor="let notification of data[activeTabIndex]"
-          class="group relative"
-        >
-          <div class="self-start">
-            <tui-marker-icon src="tuiIconClockLarge" size="s"></tui-marker-icon>
-          </div>
-          <div
-            [ngClass]="
-              notification.readAt ? 'text-tui-text-02' : 'text-tui-text-01'
-            "
-            class="flex flex-col flex-grow ml-2 text-sm"
-          >
-            <tui-line-clamp
-              [content]="notification.data.content"
-              [linesLimit]="3"
-              [lineHeight]="17"
-              class="leading-4"
-            >
-            </tui-line-clamp>
-            <div
-              [ngClass]="{ 'text-tui-primary font-bold': !notification.readAt }"
-              class="text-xs text-tui-primary"
-            >
-              {{ notification.createdAt | relativeTime }}
-            </div>
-          </div>
-
-          <!-- Dot -->
-          <div *ngIf="!notification.readAt" class="flex items-center">
-            <span class="w-2 h-2 block bg-tui-primary rounded-full"></span>
-          </div>
-
-          <!-- Notification more -->
-          <div
-            *ngIf="!notification.readAt"
-            class="absolute right-8 opacity-0 duration-200 group-hover:opacity-100"
-          >
-            <button
-              tuiIconButton
-              (click)="markAsRead(notification.id)"
-              icon="tuiIconCheck"
-              appearance="whiteblock"
-              tuiHint="Đánh dấu là đã đọc"
-              aria-label="Mark as read"
-            ></button>
-          </div>
-        </a>
-      </tui-data-list>
-
-      <!-- See more -->
-      <ng-container *ngrxLet="hasNext$ as hasNext">
-        <div *ngIf="hasNext[activeTabIndex]" class="flex justify-center">
-          <button tuiButton (click)="onSeeMore(activeTabIndex)">
-            Xem thêm
-          </button>
-        </div>
-      </ng-container>
+          tuiIconButton
+          [pseudoHover]="openOptions || null"
+          icon="tuiIconMoreHorizontalLarge"
+          aria-label="Notification more options"
+        ></button>
+      </tui-hosted-dropdown>
     </div>
 
-    <ng-template #more>
-      <tui-data-list
-        [tuiActiveZoneParent]="activeZone ?? null"
-        size="s"
-        role="menu"
+    <!-- Buttons -->
+    <div class="ml-4">
+      <button
+        *ngFor="let btn of tabsBtn; index as i; first as first"
+        tuiButton
+        [appearance]="obs.activeTabIndex === i ? 'primary' : 'flat'"
+        [class.ml-2]="!first"
+        (click)="activeTabIndex$.next(i)"
       >
-        <button tuiOption [disabled]="!hasUnread" (click)="markAllAsRead()">
-          <tui-svg src="tuiIconCheck"></tui-svg>
-          <div class="flex-grow ml-1.5">Đánh dấu tất cả là đã đọc</div>
-        </button>
-        <button tuiOption *ngIf="options.forBell" (click)="openNotification()">
-          <tui-svg src="tuiIconFlag"></tui-svg>
-          <div class="flex-grow ml-1.5">Mở thông báo</div>
-        </button>
-      </tui-data-list>
-    </ng-template>
+        {{ btn }}
+      </button>
+    </div>
 
-    <ng-template #emptyContent>
-      <div class="flex flex-col text-center font-bold">
-        <div class="flex justify-center">
-          <img src="/assets/img/bell.svg" class="h-28" alt="bell"/>
+    <!-- List -->
+    <tui-data-list [emptyContent]="emptyContent" size="s">
+      <a
+        tuiOption
+        *ngFor="let notification of obs.data[obs.activeTabIndex]"
+        class="group relative"
+      >
+        <div class="self-start">
+          <tui-marker-icon src="tuiIconClockLarge" size="s"></tui-marker-icon>
         </div>
-        <div *ngrxLet="nameTitle$ as nameTitle" class="mt-2 text-tui-text-02">
-          {{ nameTitle }} không có thông báo nào
+        <div
+          [ngClass]="
+            notification.readAt ? 'text-tui-text-02' : 'text-tui-text-01'
+          "
+          class="flex flex-col flex-grow ml-2 text-sm"
+        >
+          <tui-line-clamp
+            [content]="notification.data.content"
+            [linesLimit]="3"
+            [lineHeight]="17"
+            class="leading-4"
+          >
+          </tui-line-clamp>
+          <div
+            [ngClass]="{ 'text-tui-primary font-bold': !notification.readAt }"
+            class="text-xs text-tui-primary"
+          >
+            {{ notification.createdAt | relativeTime }}
+          </div>
         </div>
+
+        <!-- Dot -->
+        <div *ngIf="!notification.readAt" class="flex items-center">
+          <span class="w-2 h-2 block bg-tui-primary rounded-full"></span>
+        </div>
+
+        <!-- Notification more -->
+        <div
+          *ngIf="!notification.readAt"
+          class="absolute right-8 opacity-0 duration-200 group-hover:opacity-100"
+        >
+          <button
+            tuiIconButton
+            (click)="markAsRead(notification.id)"
+            icon="tuiIconCheck"
+            appearance="whiteblock"
+            tuiHint="Đánh dấu là đã đọc"
+            aria-label="Mark as read"
+          ></button>
+        </div>
+      </a>
+    </tui-data-list>
+
+    <!-- See more -->
+    <div *ngIf="obs.hasNext[obs.activeTabIndex]" class="flex justify-center">
+      <button tuiButton (click)="onSeeMore(obs.activeTabIndex)">
+        Xem thêm
+      </button>
+    </div>
+  </div>
+
+  <ng-template #more>
+    <tui-data-list
+      [tuiActiveZoneParent]="activeZone ?? null"
+      size="s"
+      role="menu"
+    >
+      <button tuiOption [disabled]="!obs.hasUnread" (click)="markAllAsRead()">
+        <tui-svg src="tuiIconCheck"></tui-svg>
+        <div class="flex-grow ml-1.5">Đánh dấu tất cả là đã đọc</div>
+      </button>
+      <button tuiOption *ngIf="options.forBell" (click)="openNotification()">
+        <tui-svg src="tuiIconFlag"></tui-svg>
+        <div class="flex-grow ml-1.5">Mở thông báo</div>
+      </button>
+    </tui-data-list>
+  </ng-template>
+
+  <ng-template #emptyContent>
+    <div class="flex flex-col text-center font-bold">
+      <div class="flex justify-center">
+        <img src="/assets/img/bell.svg" class="h-28" alt="bell" />
       </div>
-    </ng-template>
-  </ng-container>
+      <div class="mt-2 text-tui-text-02">
+        {{ obs.nameTitle }} không có thông báo nào
+      </div>
+    </div>
+  </ng-template>
 </ng-container>

@@ -57,6 +57,7 @@ export const TAIGA_UI = [
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExaminationExamHeaderComponent implements OnInit {
+  // INJECT PROPERTIES
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly store = inject(ExaminationExamStore);
 
