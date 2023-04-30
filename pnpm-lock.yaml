@@ -104,7 +104,7 @@ dependencies:
 devDependencies:
   '@angular-devkit/build-angular':
     specifier: ^14.2.11
-    version: 14.2.11(@angular/compiler-cli@14.3.0)(karma@6.4.1)(tailwindcss@3.2.7)(typescript@4.8.4)
+    version: 14.2.11(@angular/compiler-cli@14.3.0)(karma@6.4.2)(tailwindcss@3.2.7)(typescript@4.8.4)
   '@angular-eslint/builder':
     specifier: 14.4.0
     version: 14.4.0(eslint@8.36.0)(typescript@4.8.4)
@@ -163,20 +163,20 @@ devDependencies:
     specifier: ^0.9.2
     version: 0.9.2(rxjs@7.5.7)
   karma:
-    specifier: ~6.4.0
-    version: 6.4.1
+    specifier: ^6.4.2
+    version: 6.4.2
   karma-chrome-launcher:
-    specifier: ~3.1.0
+    specifier: ^3.1.0
     version: 3.1.1
   karma-coverage:
-    specifier: ~2.2.0
+    specifier: ^2.2.0
     version: 2.2.0
   karma-jasmine:
-    specifier: ~5.1.0
-    version: 5.1.0(karma@6.4.1)
+    specifier: ^5.1.0
+    version: 5.1.0(karma@6.4.2)
   karma-jasmine-html-reporter:
-    specifier: ~2.0.0
-    version: 2.0.0(jasmine-core@4.3.0)(karma-jasmine@5.1.0)(karma@6.4.1)
+    specifier: ^2.0.0
+    version: 2.0.0(jasmine-core@4.3.0)(karma-jasmine@5.1.0)(karma@6.4.2)
   postcss:
     specifier: ^8.4.21
     version: 8.4.21
@@ -214,7 +214,7 @@ packages:
       - chokidar
     dev: true
 
-  /@angular-devkit/build-angular@14.2.11(@angular/compiler-cli@14.3.0)(karma@6.4.1)(tailwindcss@3.2.7)(typescript@4.8.4):
+  /@angular-devkit/build-angular@14.2.11(@angular/compiler-cli@14.3.0)(karma@6.4.2)(tailwindcss@3.2.7)(typescript@4.8.4):
     resolution: {integrity: sha512-O3X7GXcCBCGceVSHT+GIJ2JrRCg2YcO7HtNavpmPrraNr1o+aCdTkmT5WTS2cqWkZBm/z0wqKR8PsX/ZoD2r1A==}
     engines: {node: ^14.15.0 || >=16.10.0, npm: ^6.11.0 || ^7.5.6 || >=8.0.0, yarn: '>= 1.13.0'}
     peerDependencies:
@@ -269,7 +269,7 @@ packages:
       https-proxy-agent: 5.0.1
       inquirer: 8.2.4
       jsonc-parser: 3.1.0
-      karma: 6.4.1
+      karma: 6.4.2
       karma-source-map-support: 1.4.0
       less: 4.1.3
       less-loader: 11.0.0(less@4.1.3)(webpack@5.76.1)
@@ -2526,7 +2526,7 @@ packages:
     engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
     dependencies:
       '@gar/promisify': 1.1.3
-      semver: 7.3.7
+      semver: 7.3.8
     dev: true
 
   /@npmcli/git@3.0.2:
@@ -4333,7 +4333,7 @@ packages:
   /builtins@5.0.1:
     resolution: {integrity: sha512-qwVpFEHNfhYJIzNRBvd2C1kyo6jz3ZSMPyyuR47OPdiKWlbYnZNyDWuyR175qDnAJLiCo5fBBqPb3RiXgWlkOQ==}
     dependencies:
-      semver: 7.3.7
+      semver: 7.3.8
     dev: true
 
   /bytes@3.0.0:
@@ -7054,7 +7054,7 @@ packages:
       - supports-color
     dev: true
 
-  /karma-jasmine-html-reporter@2.0.0(jasmine-core@4.3.0)(karma-jasmine@5.1.0)(karma@6.4.1):
+  /karma-jasmine-html-reporter@2.0.0(jasmine-core@4.3.0)(karma-jasmine@5.1.0)(karma@6.4.2):
     resolution: {integrity: sha512-SB8HNNiazAHXM1vGEzf8/tSyEhkfxuDdhYdPBX2Mwgzt0OuF2gicApQ+uvXLID/gXyJQgvrM9+1/2SxZFUUDIA==}
     peerDependencies:
       jasmine-core: ^4.0.0
@@ -7062,18 +7062,18 @@ packages:
       karma-jasmine: ^5.0.0
     dependencies:
       jasmine-core: 4.3.0
-      karma: 6.4.1
-      karma-jasmine: 5.1.0(karma@6.4.1)
+      karma: 6.4.2
+      karma-jasmine: 5.1.0(karma@6.4.2)
     dev: true
 
-  /karma-jasmine@5.1.0(karma@6.4.1):
+  /karma-jasmine@5.1.0(karma@6.4.2):
     resolution: {integrity: sha512-i/zQLFrfEpRyQoJF9fsCdTMOF5c2dK7C7OmsuKg2D0YSsuZSfQDiLuaiktbuio6F2wiCsZSnSnieIQ0ant/uzQ==}
     engines: {node: '>=12'}
     peerDependencies:
       karma: ^6.0.0
     dependencies:
       jasmine-core: 4.3.0
-      karma: 6.4.1
+      karma: 6.4.2
     dev: true
 
   /karma-source-map-support@1.4.0:
@@ -7082,8 +7082,8 @@ packages:
       source-map-support: 0.5.21
     dev: true
 
-  /karma@6.4.1:
-    resolution: {integrity: sha512-Cj57NKOskK7wtFWSlMvZf459iX+kpYIPXmkNUzP2WAFcA7nhr/ALn5R7sw3w+1udFDcpMx/tuB8d5amgm3ijaA==}
+  /karma@6.4.2:
+    resolution: {integrity: sha512-C6SU/53LB31BEgRg+omznBEMY4SjHU3ricV6zBcAe1EeILKkeScr+fZXtaI5WyDbkVowJxxAI6h73NcFPmXolQ==}
     engines: {node: '>= 10'}
     hasBin: true
     dependencies:
@@ -7781,7 +7781,7 @@ packages:
       nopt: 6.0.0
       npmlog: 6.0.2
       rimraf: 3.0.2
-      semver: 7.3.7
+      semver: 7.3.8
       tar: 6.1.13
       which: 2.0.2
     transitivePeerDependencies:
@@ -7826,7 +7826,7 @@ packages:
     dependencies:
       hosted-git-info: 5.2.1
       is-core-module: 2.11.0
-      semver: 7.3.7
+      semver: 7.3.8
       validate-npm-package-license: 3.0.4
     dev: true
 
