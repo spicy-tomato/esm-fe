@@ -157,11 +157,11 @@ devDependencies:
     specifier: ^8.0.3
     version: 8.0.3
   jasmine:
-    specifier: ^4.5.0
+    specifier: ^4.6.0
     version: 4.6.0
   jasmine-core:
-    specifier: ~4.3.0
-    version: 4.3.0
+    specifier: ^4.6.0
+    version: 4.6.0
   jasmine-marbles:
     specifier: ^0.9.2
     version: 0.9.2(rxjs@7.5.7)
@@ -179,7 +179,7 @@ devDependencies:
     version: 5.1.0(karma@6.4.2)
   karma-jasmine-html-reporter:
     specifier: ^2.0.0
-    version: 2.0.0(jasmine-core@4.3.0)(karma-jasmine@5.1.0)(karma@6.4.2)
+    version: 2.0.0(jasmine-core@4.6.0)(karma-jasmine@5.1.0)(karma@6.4.2)
   postcss:
     specifier: ^8.4.23
     version: 8.4.23
@@ -4440,7 +4440,7 @@ packages:
       '@npmcli/move-file': 2.0.1
       chownr: 2.0.0
       fs-minipass: 2.1.0
-      glob: 8.0.3
+      glob: 8.1.0
       infer-owner: 1.0.4
       lru-cache: 7.18.3
       minipass: 3.3.6
@@ -7009,10 +7009,6 @@ packages:
       istanbul-lib-report: 3.0.0
     dev: true
 
-  /jasmine-core@4.3.0:
-    resolution: {integrity: sha512-qybtBUesniQdW6n+QIHMng2vDOHscIC/dEXjW+JzO9+LoAZMb03RCUC5xFOv/btSKPm1xL42fn+RjlU4oB42Lg==}
-    dev: true
-
   /jasmine-core@4.6.0:
     resolution: {integrity: sha512-O236+gd0ZXS8YAjFx8xKaJ94/erqUliEkJTDedyE7iHvv4ZVqi+q+8acJxu05/WJDKm512EUNn809In37nWlAQ==}
     dev: true
@@ -7153,14 +7149,14 @@ packages:
       - supports-color
     dev: true
 
-  /karma-jasmine-html-reporter@2.0.0(jasmine-core@4.3.0)(karma-jasmine@5.1.0)(karma@6.4.2):
+  /karma-jasmine-html-reporter@2.0.0(jasmine-core@4.6.0)(karma-jasmine@5.1.0)(karma@6.4.2):
     resolution: {integrity: sha512-SB8HNNiazAHXM1vGEzf8/tSyEhkfxuDdhYdPBX2Mwgzt0OuF2gicApQ+uvXLID/gXyJQgvrM9+1/2SxZFUUDIA==}
     peerDependencies:
       jasmine-core: ^4.0.0
       karma: ^6.0.0
       karma-jasmine: ^5.0.0
     dependencies:
-      jasmine-core: 4.3.0
+      jasmine-core: 4.6.0
       karma: 6.4.2
       karma-jasmine: 5.1.0(karma@6.4.2)
     dev: true
@@ -7171,7 +7167,7 @@ packages:
     peerDependencies:
       karma: ^6.0.0
     dependencies:
-      jasmine-core: 4.3.0
+      jasmine-core: 4.6.0
       karma: 6.4.2
     dev: true
 
