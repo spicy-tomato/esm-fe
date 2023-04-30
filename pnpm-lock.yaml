@@ -133,14 +133,14 @@ devDependencies:
     specifier: ^17.6.1
     version: 17.6.1
   '@commitlint/config-conventional':
-    specifier: ^17.4.4
-    version: 17.4.4
+    specifier: ^17.6.1
+    version: 17.6.1
   '@types/dompurify':
     specifier: 2.2.3
     version: 2.2.3
   '@types/jasmine':
-    specifier: ~4.0.0
-    version: 4.0.3
+    specifier: ^4.3.1
+    version: 4.3.1
   '@typescript-eslint/eslint-plugin':
     specifier: 5.43.0
     version: 5.43.0(@typescript-eslint/parser@5.43.0)(eslint@8.36.0)(typescript@4.8.4)
@@ -1892,8 +1892,8 @@ packages:
       - '@swc/wasm'
     dev: true
 
-  /@commitlint/config-conventional@17.4.4:
-    resolution: {integrity: sha512-u6ztvxqzi6NuhrcEDR7a+z0yrh11elY66nRrQIpqsqW6sZmpxYkDLtpRH8jRML+mmxYQ8s4qqF06Q/IQx5aJeQ==}
+  /@commitlint/config-conventional@17.6.1:
+    resolution: {integrity: sha512-ng/ybaSLuTCH9F+7uavSOnEQ9EFMl7lHEjfAEgRh1hwmEe8SpLKpQeMo2aT1IWvHaGMuTb+gjfbzoRf2IR23NQ==}
     engines: {node: '>=v14'}
     dependencies:
       conventional-changelog-conventionalcommits: 5.0.0
@@ -3482,8 +3482,8 @@ packages:
       '@types/node': 18.15.3
     dev: true
 
-  /@types/jasmine@4.0.3:
-    resolution: {integrity: sha512-Opp1LvvEuZdk8fSSvchK2mZwhVrsNT0JgJE9Di6MjnaIpmEXM8TLCPPrVtNTYh8+5MPdY8j9bAHMu2SSfwpZJg==}
+  /@types/jasmine@4.3.1:
+    resolution: {integrity: sha512-Vu8l+UGcshYmV1VWwULgnV/2RDbBaO6i2Ptx7nd//oJPIZGhoI1YLST4VKagD2Pq/Bc2/7zvtvhM7F3p4SN7kQ==}
     dev: true
 
   /@types/json-schema@7.0.11:
