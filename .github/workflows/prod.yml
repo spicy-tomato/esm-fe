@@ -21,8 +21,12 @@ jobs:
         uses: pnpm/action-setup@v2
         with:
           version: 8.1.1
-          run_install: |
-            - args: [--frozen-lockfile]
+      
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'pnpm'
 
       - name: Generate env files
         run: node ./scripts/env.js
@@ -31,13 +35,13 @@ jobs:
           SYNCFUSION_LICENSE: "${{ secrets.SYNCFUSION_LICENSE }}"
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Build
         run: pnpm build --configuration production
 
       - name: Copy bundle to VPS
-        uses: appleboy/scp-action@v0.1.3
+        uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
