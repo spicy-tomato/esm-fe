@@ -26,7 +26,14 @@ import {
   TuiSvgModule,
 } from '@taiga-ui/core';
 import { TuiLineClampModule, TuiMarkerIconModule } from '@taiga-ui/kit';
-import { BehaviorSubject, filter, takeUntil, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  filter,
+  map,
+  takeUntil,
+  tap,
+} from 'rxjs';
 import { NOTIFICATION_LIST_OPTIONS } from './data-access';
 import { EchoMessage } from './data-access/models';
 import {
@@ -64,23 +71,44 @@ export const TAIGA_UI = [
 })
 export class NotificationListComponent implements OnInit {
   // INJECT PROPERTIES
-  public readonly options = inject(NOTIFICATION_LIST_OPTIONS);
-  private readonly router = inject(Router);
+  readonly options = inject(NOTIFICATION_LIST_OPTIONS);
+
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly store = inject(Store<NotificationState>);
+  private readonly router = inject(Router);
   private readonly appStore = inject(Store<AppState>);
   private readonly destroy$ = inject(TuiDestroyService);
-  private readonly store = inject(Store<NotificationState>);
 
   // INPUT
   @Input() activeZone?: TuiActiveZoneDirective;
 
+  // PRIVATE PROPERTIES
+  private readonly hasNext$ = this.store.select(NotificationSelector.hasNext);
+  private readonly hasUnread$ = this.store.select(
+    NotificationSelector.selectHasUnread
+  );
+  private readonly nameTitle$ = this.appStore.select(AppSelector.user);
+
   // PUBLIC PROPERTIES
   readonly tabsBtn = ['Tất cả', 'Chưa đọc'];
-  readonly activeTabIndex$ = new BehaviorSubject<number>(0);
+
   readonly data$ = this.store.select(NotificationSelector.data);
-  readonly hasNext$ = this.store.select(NotificationSelector.hasNext);
-  readonly hasUnread$ = this.store.select(NotificationSelector.selectHasUnread);
-  readonly nameTitle$ = this.appStore.select(AppSelector.user);
+  readonly activeTabIndex$ = new BehaviorSubject<number>(0);
+  readonly observables$ = combineLatest([
+    this.activeTabIndex$,
+    this.data$,
+    this.hasNext$,
+    this.hasUnread$,
+    this.nameTitle$,
+  ]).pipe(
+    map(([activeTabIndex, data, hasNext, hasUnread, nameTitle]) => ({
+      activeTabIndex,
+      data,
+      hasNext,
+      hasUnread,
+      nameTitle,
+    }))
+  );
 
   openDropdown = false;
   openOptions = false;

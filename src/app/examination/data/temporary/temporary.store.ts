@@ -5,7 +5,14 @@ import { ExaminationService } from '@esm/services';
 import { AppPageAction, AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
-import { switchMap, takeUntil, tap, withLatestFrom } from 'rxjs';
+import {
+  combineLatest,
+  map,
+  switchMap,
+  takeUntil,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
 
 type ExaminationDataTemporaryState = {
   data: TemporaryExamination[];
@@ -21,18 +28,33 @@ export class ExaminationDataTemporaryStore extends ComponentStore<ExaminationDat
   private readonly examinationService = inject(ExaminationService);
   private readonly appStore = inject(Store<AppState>);
 
-  // PUBLIC PROPERTIES
+  // STATE SELECTORS
   readonly data$ = this.select((s) => s.data);
-  readonly hasError$ = this.select(
-    (s) => !!s.data.find((d) => Object.keys(d.errors).length > 0)
-  );
-  readonly dataStatus$ = this.select((s) => s.dataStatus);
-  readonly activateStatus$ = this.select((s) => s.activateStatus);
 
-  // PRIVATE PROPERTIES
+  private readonly dataStatus$ = this.select((s) => s.dataStatus);
+  private readonly activateStatus$ = this.select((s) => s.activateStatus);
+
+  // GLOBAL SELECTORS
   private readonly examinationId$ = this.appStore
     .select(AppSelector.examinationId)
     .pipe(ObservableHelper.filterNullish(), takeUntil(this.destroy$));
+
+  // CUSTOM SELECTORS
+  private readonly hasError$ = this.select(
+    (s) => !!s.data.find((d) => Object.keys(d.errors).length > 0)
+  );
+
+  readonly headerObservables$ = combineLatest([
+    this.dataStatus$,
+    this.hasError$,
+    this.activateStatus$,
+  ]).pipe(
+    map(([dataStatus, hasError, activateStatus]) => ({
+      dataStatus,
+      hasError,
+      activateStatus,
+    }))
+  );
 
   // EFFECTS
   readonly activate = this.effect<void>((params$) =>

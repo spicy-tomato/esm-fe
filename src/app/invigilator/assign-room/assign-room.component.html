@@ -1,32 +1,31 @@
-<ng-container *ngrxLet="showLoader$ as showLoader">
-  <div
-    class="py-3 flex flex-0 justify-between items-center bg-white text-3xl font-bold"
-  >
-    <h3 id="title">Phân công phòng thi</h3>
-    <div *ngrxLet="examination$ as examination" class="buttons">
-      <button
-        tuiButton
-        *ngIf="examination?.status === ExaminationStatus.AssignInvigilator"
-        (click)="autoAssign()"
-        [showLoader]="showLoader"
-        icon="tuiIconAirplayLarge"
-      >
-        Tự động phân bổ
-      </button>
-      <button
-        tuiButton
-        *ngIf="examination?.status === ExaminationStatus.AssignInvigilator"
-        (click)="saveChange()"
-        [showLoader]="showLoader"
-        icon="tuiIconSaveLarge"
-      >
-        Lưu
-      </button>
-      <!-- TODO -->
-      <!-- <button tuiButton icon="tuiIconDownloadLarge">Tải file Excel</button> -->
-    </div>
+<div
+  *ngrxLet="headerObservables$ as obs"
+  class="py-3 flex flex-0 justify-between items-center bg-white text-3xl font-bold"
+>
+  <h3 id="title">Phân công phòng thi</h3>
+  <div class="buttons">
+    <button
+      tuiButton
+      *ngIf="obs.examination?.status === ExaminationStatus.AssignInvigilator"
+      (click)="autoAssign()"
+      [showLoader]="obs.showLoader"
+      icon="tuiIconAirplayLarge"
+    >
+      Tự động phân bổ
+    </button>
+    <button
+      tuiButton
+      *ngIf="obs.examination?.status === ExaminationStatus.AssignInvigilator"
+      (click)="saveChange()"
+      [showLoader]="obs.showLoader"
+      icon="tuiIconSaveLarge"
+    >
+      Lưu
+    </button>
+    <!-- TODO -->
+    <!-- <button tuiButton icon="tuiIconDownloadLarge">Tải file Excel</button> -->
   </div>
-</ng-container>
+</div>
 
 <ng-container *ngrxLet="dataStatus$ as dataStatus">
   <tui-loader
@@ -130,17 +129,15 @@
         </thead>
 
         <tbody tuiTbody>
-          <ng-container *ngrxLet="tableObservables$ as tableObservables">
+          <ng-container *ngrxLet="tableObservables$ as obs">
             <ng-container
               *ngrxLet="
-                invigilatorStringify(
-                  tableObservables.invigilatorsList
-                ) as invigilatorContent
+                invigilatorStringify(obs.invigilatorsList) as invigilatorContent
               "
             >
               <tr
                 tuiTr
-                *cdkVirtualFor="let row of tableObservables.data; let i = index"
+                *cdkVirtualFor="let row of obs.data; let i = index"
                 [class.no-invigilator]="!row.invigilator"
                 [class.duplicated]="row.isDuplicated"
               >
@@ -162,7 +159,11 @@
                 <td *tuiCell="'room'" tuiTd class="w-24 !text-center">
                   {{ row.room.displayId }}
                 </td>
-                <td *tuiCell="'candidatesCount'" tuiTd class="w-24 !text-center">
+                <td
+                  *tuiCell="'candidatesCount'"
+                  tuiTd
+                  class="w-24 !text-center"
+                >
                   {{ row.candidatesCount }}
                 </td>
                 <td *tuiCell="'orderIndex'" tuiTd class="w-24 !text-center">
@@ -171,11 +172,6 @@
 
                 <td *tuiCell="'teacher'" tuiTd class="w-64">
                   <tui-select
-                    *ngrxLet="
-                      invigilatorStringify(
-                        tableObservables.invigilatorsList
-                      ) as invigilatorContent
-                    "
                     (ngModelChange)="
                       onInvigilatorChanges(row.shiftGroup.id, row.id, $event)
                     "
@@ -185,14 +181,13 @@
                     class="w-64"
                   >
                     <ng-template tuiDataList>
-                      <tui-data-list
-                        *ngrxLet="tableObservables$ as tableObservables"
-                      >
+                      <tui-data-list>
                         <tui-opt-group>
                           <ng-container
                             *ngFor="
-                              let invigilator of tableObservables
-                                .invigilatorsData[row.shiftGroup.id]
+                              let invigilator of obs.invigilatorsData[
+                                row.shiftGroup.id
+                              ]
                             "
                           >
                             <!-- Only show prior invigilators on first row, else show other ones -->
@@ -240,7 +235,7 @@
                               <ng-template #selection>
                                 <button
                                   tuiOption
-                                  *ngIf="!(tableObservables.usedInvigilatorsMap[row.shiftGroup.id]?.[$any(invigilator).id])"
+                                  *ngIf="!(obs.usedInvigilatorsMap[row.shiftGroup.id]?.[$any(invigilator).id])"
                                   [value]="$any(invigilator).id"
                                 >
                                   {{ $any(invigilator).fullName }}
@@ -274,9 +269,8 @@
                 <td *tuiCell="'teacherFaculty'" tuiTd class="w-40">
                   {{
                     form.controls[row.id].value
-                      ? tableObservables.invigilatorFacultyMap[
-                          form.controls[row.id].value!
-                        ]?.facultyName
+                      ? obs.invigilatorFacultyMap[form.controls[row.id].value!]
+                          ?.facultyName
                       : ""
                   }}
                 </td>
@@ -284,9 +278,8 @@
                 <td *tuiCell="'teacherDepartment'" tuiTd class="w-48">
                   {{
                     form.controls[row.id].value
-                      ? tableObservables.invigilatorFacultyMap[
-                          form.controls[row.id].value!
-                        ]?.departmentName
+                      ? obs.invigilatorFacultyMap[form.controls[row.id].value!]
+                          ?.departmentName
                       : ""
                   }}
                 </td>
@@ -294,9 +287,8 @@
                 <td *tuiCell="'phoneNumber'" tuiTd class="w-32">
                   {{
                     form.controls[row.id].value
-                      ? tableObservables.invigilatorFacultyMap[
-                          form.controls[row.id].value!
-                        ]?.phoneNumber
+                      ? obs.invigilatorFacultyMap[form.controls[row.id].value!]
+                          ?.phoneNumber
                       : ""
                   }}
                 </td>

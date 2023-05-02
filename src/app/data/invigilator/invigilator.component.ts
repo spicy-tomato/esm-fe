@@ -66,6 +66,7 @@ export class DataInvigilatorComponent implements OnInit {
 
   // PUBLIC PROPERTIES
   readonly routerLink = '/data/invigilator';
+  readonly facultyStringify = StringifyHelper.idName;
   readonly columns = [
     'displayId',
     'name',
@@ -73,15 +74,10 @@ export class DataInvigilatorComponent implements OnInit {
     'departmentName',
     'action',
   ];
-  readonly facultyStringify = StringifyHelper.idName;
-  readonly faculties$ = this.store.faculties$;
-  readonly departments$ = this.store.departments$;
-  readonly invigilators$ = this.store.invigilators$;
-  readonly selectedFacultyId$ = this.store.selectedFacultyId$;
-  readonly selectedFacultyName$ = this.store.selectedFacultyName$;
-  readonly selectedDepartmentId$ = this.store.selectedDepartmentId$;
-  readonly selectedDepartmentName$ = this.store.selectedDepartmentName$;
+
   readonly status$ = this.store.status$;
+  readonly tableObservables$ = this.store.tableObservables$;
+  readonly headerObservables$ = this.store.headerObservables$;
 
   // LIFECYCLE
   ngOnInit(): void {

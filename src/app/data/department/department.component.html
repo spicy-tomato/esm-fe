@@ -1,24 +1,19 @@
-<div class="flex justify-between items-center mb-6">
-  <h1
-    *ngrxLet="selectedFacultyName$ as selectedFacultyName"
-    id="title"
-    class="text-3xl font-bold"
-  >
+<div
+  *ngrxLet="headerObservables$ as obs"
+  class="flex justify-between items-center mb-6"
+>
+  <h1 id="title" class="text-3xl font-bold">
     {{
-      selectedFacultyName
-        ? "Dữ liệu các bộ môn thuộc khoa " + selectedFacultyName
+      obs.selectedFacultyName
+        ? "Dữ liệu các bộ môn thuộc khoa " + obs.selectedFacultyName
         : "Dữ liệu tất cả bộ môn"
     }}
   </h1>
-  <div
-    *ngrxLet="selectedFacultyId$ as selectedFacultyId"
-    class="flex items-center"
-  >
+  <div class="flex items-center">
     <tui-select
-      *ngrxLet="faculties$ as faculties"
       (ngModelChange)="onChangeSelectedFaculty($event)"
-      [ngModel]="selectedFacultyId"
-      [valueContent]="facultyStringify(faculties)"
+      [ngModel]="obs.selectedFacultyId"
+      [valueContent]="facultyStringify(obs.faculties)"
       class="w-60 mr-4"
     >
       Khoa
@@ -33,7 +28,7 @@
           Tất cả
         </a>
         <a
-          *ngFor="let faculty of faculties"
+          *ngFor="let faculty of obs.faculties"
           tuiOption
           routerLink="/data/department"
           routerLinkActive
@@ -58,10 +53,10 @@
 </ng-container>
 
 <ng-template #loaded>
-  <ng-container *ngrxLet="departments$ as departments">
+  <ng-container *ngrxLet="tableObservables$ as obs">
     <table
       tuiTable
-      *ngIf="departments.length; else noData"
+      *ngIf="obs.departments.length; else noData"
       [columns]="columns"
       class="w-full"
       aria-describedby="title"
@@ -74,15 +69,11 @@
           <th tuiTh class="!text-center">Thao tác</th>
         </tr>
       </thead>
-      <tbody
-        tuiTbody
-        *ngrxLet="selectedFacultyId$ as selectedFacultyId"
-        [data]="departments"
-      >
+      <tbody tuiTbody [data]="obs.departments">
         <tr
           *ngFor="
-            let department of departments
-              | tuiFilter : departmentMatcher : selectedFacultyId
+            let department of obs.departments
+              | tuiFilter : departmentMatcher : obs.selectedFacultyId
           "
           tuiTr
         >

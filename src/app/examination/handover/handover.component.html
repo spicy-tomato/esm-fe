@@ -16,7 +16,7 @@
   <tui-scrollbar class="h-full">
     <cdk-virtual-scroll-viewport
       #viewport
-      *ngrxLet="data$ as data"
+      *ngrxLet="tableObservables$ as obs"
       tuiScrollable
       class="h-full tui-zero-scrollbar"
       [itemSize]="45"
@@ -65,11 +65,8 @@
           </tr>
         </thead>
 
-        <tbody
-          tuiTbody
-          *ngrxLet="handoverPersonStatus$ as handoverPersonStatus"
-        >
-          <tr *cdkVirtualFor="let row of data; let i = index" tuiTr>
+        <tbody tuiTbody>
+          <tr *cdkVirtualFor="let row of obs.data; let i = index" tuiTr>
             <td *tuiCell="'index'" tuiTd class="w-8">{{ i + 1 }}</td>
             <td *tuiCell="'moduleId'" tuiTd class="w-24 max-w-[6rem]">
               {{ row.shiftGroup.module.displayId }}
@@ -94,7 +91,7 @@
             </td>
             <td *tuiCell="'handover'" tuiTd class="w-60">
               <tui-loader
-                [showLoader]="handoverPersonStatus[row.id] === 'loading'"
+                [showLoader]="obs.handoverPersonStatus[row.id] === 'loading'"
               >
                 <tui-select
                   (ngModelChange)="onHandoverChanges(row.id, $event)"

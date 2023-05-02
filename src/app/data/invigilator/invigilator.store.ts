@@ -30,24 +30,33 @@ export class DataInvigilatorStore extends ComponentStore<DataInvigilatorState> {
   private readonly appStore = inject(Store<AppState>);
   private readonly facultyService = inject(FacultyService);
 
-  // PUBLIC PROPERTIES
-  readonly faculties$ = this.appStore
+  // STATE SELECTORS
+  readonly status$ = this.select((s) => s.status);
+  readonly invigilators$ = this.select((s) => s.invigilators);
+  readonly cachedFacultyIds$ = this.select((s) => s.cachedFacultyIds);
+
+  private readonly selectedFacultyId$ = this.select((s) => s.selectedFacultyId);
+  private readonly selectedDepartmentId$ = this.select(
+    (s) => s.selectedDepartmentId
+  );
+
+  // GLOBAL SELECTORS
+  private readonly faculties$ = this.appStore
     .select(AppSelector.faculties)
     .pipe(takeUntil(this.destroy$));
-  readonly facultiesWithDepartment$ = this.appStore
+  private readonly facultiesWithDepartment$ = this.appStore
     .select(AppSelector.facultiesWithDepartment)
     .pipe(takeUntil(this.destroy$));
-  readonly selectedFacultyId$ = this.select((s) => s.selectedFacultyId);
-  readonly cachedFacultyIds$ = this.select((s) => s.cachedFacultyIds);
-  readonly invigilators$ = this.select((s) => s.invigilators);
-  readonly status$ = this.select((s) => s.status);
-  readonly selectedFacultyName$ = combineLatest([
+
+  // CUSTOM SELECTORS
+  private readonly selectedFacultyName$ = combineLatest([
     this.faculties$,
     this.selectedFacultyId$,
   ]).pipe(
     map(([faculties, id]) => faculties.find((f) => f.id === id)?.name || '')
   );
-  readonly departments$ = combineLatest([
+
+  private readonly departments$ = combineLatest([
     this.facultiesWithDepartment$,
     this.selectedFacultyId$,
   ]).pipe(
@@ -55,12 +64,51 @@ export class DataInvigilatorStore extends ComponentStore<DataInvigilatorState> {
       ([faculties, id]) => faculties.find((f) => f.id === id)?.departments || []
     )
   );
-  readonly selectedDepartmentId$ = this.select((s) => s.selectedDepartmentId);
-  readonly selectedDepartmentName$ = combineLatest([
+
+  private readonly selectedDepartmentName$ = combineLatest([
     this.departments$,
     this.selectedDepartmentId$,
   ]).pipe(
     map(([departments, id]) => departments.find((d) => d.id === id)?.name || '')
+  );
+
+  readonly headerObservables$ = combineLatest([
+    this.selectedFacultyName$,
+    this.selectedFacultyId$,
+    this.selectedDepartmentName$,
+    this.selectedDepartmentId$,
+    this.faculties$,
+    this.departments$,
+  ]).pipe(
+    map(
+      ([
+        selectedFacultyName,
+        selectedFacultyId,
+        selectedDepartmentName,
+        selectedDepartmentId,
+        faculties,
+        departments,
+      ]) => ({
+        selectedFacultyName,
+        selectedFacultyId,
+        selectedDepartmentName,
+        selectedDepartmentId,
+        faculties,
+        departments,
+      })
+    )
+  );
+
+  readonly tableObservables$ = combineLatest([
+    this.invigilators$,
+    this.selectedFacultyId$,
+    this.selectedDepartmentId$,
+  ]).pipe(
+    map(([invigilators, selectedFacultyId, selectedDepartmentId]) => ({
+      invigilators,
+      selectedFacultyId,
+      selectedDepartmentId,
+    }))
   );
 
   // EFFECTS

@@ -53,12 +53,13 @@ export const TAIGA_UI = [
 })
 export class EditShiftReportDialogComponent implements OnInit {
   // INJECT PROPERTIES
-  private readonly alertService = inject(TuiAlertService);
-  private readonly store = inject(EditShiftReportDialogStore);
-  public readonly context = inject(POLYMORPHEUS_CONTEXT) as TuiDialogContext<
+  readonly context = inject(POLYMORPHEUS_CONTEXT) as TuiDialogContext<
     string | null,
     GetHandoverDataResponseItem
   >;
+
+  private readonly alertService = inject(TuiAlertService);
+  private readonly store = inject(EditShiftReportDialogStore);
 
   // PUBLIC PROPERTIES
   reportValue = this.context.data.report || '';

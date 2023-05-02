@@ -9,13 +9,28 @@ import { ExaminationService } from '@esm/services';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
-import { switchMap, takeUntil, tap, withLatestFrom } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  map,
+  switchMap,
+  takeUntil,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
 
 export type ShiftUiModel = Omit<
   ExaminationGetShiftResponseItem,
   'invigilatorShift' | 'id'
 > &
   ExaminationGetShiftResponseItem['invigilatorShift'][number];
+
+export type InvigilatorItem =
+  | {
+      id: string;
+      fullName: string;
+    }
+  | { temporaryName: string };
 
 type InvigilatorMapType = Record<
   string,
@@ -47,20 +62,73 @@ export class InvigilatorAssignRoomStore extends ComponentStore<InvigilatorAssign
   private readonly examinationService = inject(ExaminationService);
 
   // PUBLIC PROPERTIES
-  readonly examination$ = this.appStore
-    .select(AppSelector.examination)
-    .pipe(takeUntil(this.destroy$));
   readonly data$ = this.select((s) => s.data);
   readonly dataStatus$ = this.select((s) => s.dataStatus);
-  readonly invigilatorsData$ = this.select((s) => s.invigilatorsData);
-  readonly invigilatorFacultyMap$ = this.select((s) => s.invigilatorMap);
-  readonly updateStatus$ = this.select((s) => s.updateStatus);
-  readonly autoAssignStatus$ = this.select((s) => s.autoAssignStatus);
 
-  // PRIVATE PROPERTIES
+  private readonly invigilatorsData$ = this.select((s) => s.invigilatorsData);
+  private readonly autoAssignStatus$ = this.select((s) => s.autoAssignStatus);
+  private readonly invigilatorFacultyMap$ = this.select(
+    (s) => s.invigilatorMap
+  );
+
+  // GLOBAL SELECTORS
+  private readonly examination$ = this.appStore
+    .select(AppSelector.examination)
+    .pipe(takeUntil(this.destroy$));
+
   private readonly examinationId$ = this.appStore
     .select(AppSelector.examinationId)
     .pipe(ObservableHelper.filterNullish(), takeUntil(this.destroy$));
+
+  // CUSTOM SELECTORS
+  private readonly showLoader$ = combineLatest([
+    this.dataStatus$,
+    this.autoAssignStatus$,
+  ]).pipe(map((statuses) => statuses.includes('loading')));
+
+  private readonly invigilatorsList$ = this.invigilatorsData$.pipe(
+    map((data) => {
+      const res: InvigilatorItem[] = [];
+
+      Object.values(data).forEach((invigilators) => {
+        invigilators.forEach((i) => {
+          res.push(i);
+        });
+      });
+
+      return res;
+    })
+  );
+
+  readonly usedInvigilatorsMap$ = new BehaviorSubject<
+    Record<string, Record<string, string | null>>
+  >({});
+
+  readonly headerObservables$ = combineLatest([
+    this.showLoader$,
+    this.examination$,
+  ]).pipe(
+    map(([showLoader, examination]) => ({
+      showLoader,
+      examination,
+    }))
+  );
+
+  readonly tableObservables$ = combineLatest([
+    this.data$,
+    this.invigilatorsData$,
+    this.invigilatorsList$,
+    this.invigilatorFacultyMap$,
+    this.usedInvigilatorsMap$,
+  ]).pipe(
+    map((arr) => ({
+      data: arr[0],
+      invigilatorsData: arr[1],
+      invigilatorsList: arr[2],
+      invigilatorFacultyMap: arr[3],
+      usedInvigilatorsMap: arr[4],
+    }))
+  );
 
   // EFFECTS
   readonly getData = this.effect<void>((params$) =>

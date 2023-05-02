@@ -5,19 +5,22 @@ import { FacultyService } from '@esm/services';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
-import { map, switchMap, takeUntil, tap } from 'rxjs';
+import { combineLatest, map, switchMap, takeUntil, tap } from 'rxjs';
 
 type AddModuleDialogState = {
   status: Status;
   error: string | null;
 };
+
 export type AddModuleDialogFaculty = Omit<
   FacultyWithDepartments,
   'departments'
 >;
+
 export type AddModuleDialogDepartment = DepartmentSimple & {
   facultyId: string;
 };
+
 export type AddModuleDialogCreateParams = {
   displayId: string;
   name: string;
@@ -31,13 +34,19 @@ export class AddModuleDialogStore extends ComponentStore<AddModuleDialogState> {
   private readonly appStore = inject(Store<AppState>);
   private readonly facultyService = inject(FacultyService);
 
-  // PROPERTIES
+  // STATE SELECTORS
+  readonly status$ = this.select((s) => s.status);
+
+  // GLOBAL SELECTORS
   private readonly facultiesWithDepartment$ = this.appStore
     .select(AppSelector.facultiesWithDepartment)
     .pipe(takeUntil(this.destroy$));
+
+  // CUSTOM SELECTORS
   readonly faculties$ = this.facultiesWithDepartment$.pipe(
     map((e) => e.map(({ departments, ...rest }) => rest))
   );
+
   readonly departments$ = this.facultiesWithDepartment$.pipe(
     map((e) =>
       e.reduce((acc, curr) => {
@@ -49,8 +58,18 @@ export class AddModuleDialogStore extends ComponentStore<AddModuleDialogState> {
       }, [] as AddModuleDialogDepartment[])
     )
   );
-  readonly status$ = this.select((s) => s.status);
-  readonly error$ = this.select((s) => s.error);
+
+  readonly observables$ = combineLatest([
+    this.faculties$,
+    this.departments$,
+    this.status$,
+  ]).pipe(
+    map(([faculties, departments, status]) => ({
+      faculties,
+      departments,
+      status,
+    }))
+  );
 
   // EFFECTS
   readonly create = this.effect<AddModuleDialogCreateParams>((params$) =>

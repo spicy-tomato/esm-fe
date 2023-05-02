@@ -1,28 +1,21 @@
-<div class="flex justify-between items-center mb-6">
-  <h1
-    *ngrxLet="selectedFacultyName$ as selectedFacultyName"
-    id="title"
-    class="text-3xl font-bold"
-  >
+<div
+  *ngrxLet="headerObservables$ as obs"
+  class="flex justify-between items-center mb-6"
+>
+  <h1 id="title" class="text-3xl font-bold">
     {{
-      selectedFacultyName
-        ? "Dữ liệu CBCT thuộc khoa " + selectedFacultyName
+      obs.selectedFacultyName
+        ? "Dữ liệu CBCT thuộc khoa " + obs.selectedFacultyName
         : "Dữ liệu CBCT"
     }}
-    <ng-container *ngrxLet="selectedDepartmentName$ as selectedDepartmentName">
-      <ng-container *ngIf="selectedDepartmentName">
-        , bộ môn {{ selectedDepartmentName }}
-      </ng-container>
+    <ng-container *ngIf="obs.selectedDepartmentName">
+      , bộ môn {{ obs.selectedDepartmentName }}
     </ng-container>
   </h1>
-  <div
-    *ngrxLet="selectedFacultyId$ as selectedFacultyId"
-    class="header-right flex items-center"
-  >
+  <div class="header-right flex items-center">
     <tui-select
-      *ngrxLet="faculties$ as faculties"
-      [ngModel]="selectedFacultyId"
-      [valueContent]="facultyStringify(faculties)"
+      [ngModel]="obs.selectedFacultyId"
+      [valueContent]="facultyStringify(obs.faculties)"
     >
       Khoa
       <tui-data-list *tuiDataList>
@@ -36,7 +29,7 @@
           Tất cả
         </a>
         <a
-          *ngFor="let faculty of faculties"
+          *ngFor="let faculty of obs.faculties"
           tuiOption
           routerLinkActive
           [routerLink]="routerLink"
@@ -49,40 +42,37 @@
         </a>
       </tui-data-list>
     </tui-select>
-    <ng-container *ngrxLet="departments$ as departments">
-      <tui-select
-        *ngrxLet="selectedDepartmentId$ as selectedDepartmentId"
-        [ngModel]="selectedDepartmentId"
-        [valueContent]="facultyStringify(departments)"
-      >
-        Bộ môn
-        <tui-data-list *tuiDataList>
-          <a
-            tuiOption
-            routerLinkActive
-            [routerLink]="routerLink"
-            [queryParams]="{ departmentId: '' }"
-            queryParamsHandling="merge"
-            [value]="''"
-            role="menuitemradio"
-          >
-            Tất cả
-          </a>
-          <a
-            *ngFor="let department of departments"
-            tuiOption
-            routerLinkActive
-            [routerLink]="routerLink"
-            [queryParams]="{ departmentId: department.id }"
-            queryParamsHandling="merge"
-            [value]="department.id"
-            role="menuitemradio"
-          >
-            {{ department.name }}
-          </a>
-        </tui-data-list>
-      </tui-select>
-    </ng-container>
+    <tui-select
+      [ngModel]="obs.selectedDepartmentId"
+      [valueContent]="facultyStringify(obs.departments)"
+    >
+      Bộ môn
+      <tui-data-list *tuiDataList>
+        <a
+          tuiOption
+          routerLinkActive
+          [routerLink]="routerLink"
+          [queryParams]="{ departmentId: '' }"
+          queryParamsHandling="merge"
+          [value]="''"
+          role="menuitemradio"
+        >
+          Tất cả
+        </a>
+        <a
+          *ngFor="let department of obs.departments"
+          tuiOption
+          routerLinkActive
+          [routerLink]="routerLink"
+          [queryParams]="{ departmentId: department.id }"
+          queryParamsHandling="merge"
+          [value]="department.id"
+          role="menuitemradio"
+        >
+          {{ department.name }}
+        </a>
+      </tui-data-list>
+    </tui-select>
     <button tuiButton (click)="openDialog()" icon="tuiIconPlusCircleLarge">
       Thêm
     </button>
@@ -99,7 +89,7 @@
   <tui-scrollbar class="h-full">
     <cdk-virtual-scroll-viewport
       #viewport
-      *ngrxLet="invigilators$ as invigilators"
+      *ngrxLet="tableObservables$ as obs"
       tuiScrollable
       class="h-full tui-zero-scrollbar"
       [itemSize]="45"
@@ -108,7 +98,7 @@
     >
       <table
         tuiTable
-        *ngIf="invigilators.length; else noData"
+        *ngIf="obs.invigilators.length; else noData"
         [columns]="columns"
         class="w-full"
         aria-describedby="title"
@@ -132,48 +122,42 @@
             </th>
           </tr>
         </thead>
-        <ng-container *ngrxLet="selectedDepartmentId$ as selectedDepartmentId">
-          <tbody
-            *ngrxLet="selectedFacultyId$ as selectedFacultyId"
-            tuiTbody
-            [data]="invigilators"
+        <tbody tuiTbody [data]="obs.invigilators">
+          <tr
+            tuiTr
+            *cdkVirtualFor="
+              let invigilator of obs.invigilators
+                | tuiFilter
+                  : userMatcher
+                  : obs.selectedFacultyId
+                  : obs.selectedDepartmentId
+            "
           >
-            <tr
-              tuiTr
-              *cdkVirtualFor="
-                let invigilator of invigilators
-                  | tuiFilter
-                    : userMatcher
-                    : selectedFacultyId
-                    : selectedDepartmentId
-              "
-            >
-              <td *tuiCell="'displayId'" tuiTd>
-                {{ invigilator.invigilatorId }}
-              </td>
-              <td *tuiCell="'name'" tuiTd>
-                {{ invigilator.fullName }}
-              </td>
-              <td *tuiCell="'facultyName'" tuiTd>
-                {{ invigilator.department?.faculty?.name }}
-              </td>
-              <td *tuiCell="'departmentName'" tuiTd>
-                {{ invigilator.department?.name }}
-              </td>
-              <td *tuiCell="'action'" tuiTd class="w-40">
-                <div class="flex justify-center">
-                  <button
-                    tuiIconButton
-                    (click)="openDialog(invigilator)"
-                    tuiHint="Chỉnh sửa"
-                    appearance="icon"
-                    icon="tuiIconEditLarge"
-                  ></button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </ng-container>
+            <td *tuiCell="'displayId'" tuiTd>
+              {{ invigilator.invigilatorId }}
+            </td>
+            <td *tuiCell="'name'" tuiTd>
+              {{ invigilator.fullName }}
+            </td>
+            <td *tuiCell="'facultyName'" tuiTd>
+              {{ invigilator.department?.faculty?.name }}
+            </td>
+            <td *tuiCell="'departmentName'" tuiTd>
+              {{ invigilator.department?.name }}
+            </td>
+            <td *tuiCell="'action'" tuiTd class="w-40">
+              <div class="flex justify-center">
+                <button
+                  tuiIconButton
+                  (click)="openDialog(invigilator)"
+                  tuiHint="Chỉnh sửa"
+                  appearance="icon"
+                  icon="tuiIconEditLarge"
+                ></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
       </table>
     </cdk-virtual-scroll-viewport>
   </tui-scrollbar>

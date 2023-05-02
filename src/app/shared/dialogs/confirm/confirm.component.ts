@@ -28,7 +28,7 @@ export const TAIGA_UI = [TuiButtonModule, TuiSvgModule];
 })
 export class ConfirmDialogComponent implements OnInit {
   // INJECT PROPERTIES
-  public readonly context = inject(POLYMORPHEUS_CONTEXT) as TuiDialogContext<
+  readonly context = inject(POLYMORPHEUS_CONTEXT) as TuiDialogContext<
     boolean,
     {
       message: string;
