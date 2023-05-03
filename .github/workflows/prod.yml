@@ -49,3 +49,4 @@ jobs:
           source: "./dist/esm-fe/*"
           target: "/var/www/esm"
           strip_components: 2
+          overwrite: true
