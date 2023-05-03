@@ -38,7 +38,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: npm build --configuration production
+        run: npm run build:prod
 
       - name: Copy bundle to VPS
         uses: appleboy/scp-action@v0.1.4
