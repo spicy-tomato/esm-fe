@@ -47,4 +47,4 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           source: "./dist/esm-fe/*"
-          target: "/var/www/esmfe"
+          target: "/var/www/esm"
