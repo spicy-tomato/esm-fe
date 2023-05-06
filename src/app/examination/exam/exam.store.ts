@@ -10,6 +10,7 @@ import { TuiDayRange } from '@taiga-ui/cdk';
 import {
   combineLatest,
   filter,
+  map,
   switchMap,
   takeUntil,
   tap,
@@ -34,21 +35,28 @@ export class ExaminationExamStore extends ComponentStore<ExaminationExamState> {
   private readonly examinationService = inject(ExaminationService);
   private readonly appStore = inject(Store<AppState>);
 
-  // PUBLIC PROPERTIES
+  // STATE SELECTORS
   readonly data$ = this.select((s) => s.data);
-  private readonly filter$ = this.select((s) => s.filter);
-  readonly displayData$ = shiftFilterObservable(this.data$, this.filter$);
-  readonly dataStatus$ = this.select((s) => s.dataStatus);
   readonly updateStatus$ = this.select((s) => s.updateStatus);
+  readonly dataStatus$ = this.select((s) => s.dataStatus);
   readonly tableFormIsPristine$ = this.select((s) => s.tableFormIsPristine);
 
-  // PRIVATE PROPERTIES
+  private readonly filter$ = this.select((s) => s.filter);
+
+  // GLOBAL SELECTORS
   private readonly examinationId$ = this.appStore
     .select(AppSelector.examinationId)
     .pipe(ObservableHelper.filterNullish(), takeUntil(this.destroy$));
   private readonly examination$ = this.appStore
     .select(AppSelector.examination)
     .pipe(ObservableHelper.filterNullish(), takeUntil(this.destroy$));
+
+  // CUSTOM SELECTORS
+  readonly displayData$ = shiftFilterObservable(this.data$, this.filter$);
+  readonly showLoader$ = combineLatest([
+    this.dataStatus$,
+    this.updateStatus$,
+  ]).pipe(map((statuses) => statuses.includes('loading')));
 
   // EFFECTS
   readonly getData = this.effect<void>((params$) =>

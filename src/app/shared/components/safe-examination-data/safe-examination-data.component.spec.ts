@@ -1,23 +1,16 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
 import { APP_ENV } from '@esm/core';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { ExaminationExamComponent } from './exam.component';
+import { SafeExaminationDataComponent } from './safe-examination-data.component';
 
-describe('ExaminationExamComponent', () => {
-  let component: ExaminationExamComponent;
-  let fixture: ComponentFixture<ExaminationExamComponent>;
+describe('SafeExaminationDataComponent', () => {
+  let component: SafeExaminationDataComponent;
+  let fixture: ComponentFixture<SafeExaminationDataComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        RouterTestingModule,
-        ReactiveFormsModule,
-      ],
+      imports: [SafeExaminationDataComponent],
       providers: [
         provideMockStore({
           initialState: {
@@ -28,7 +21,7 @@ describe('ExaminationExamComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ExaminationExamComponent);
+    fixture = TestBed.createComponent(SafeExaminationDataComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

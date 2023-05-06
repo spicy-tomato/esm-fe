@@ -1,24 +1,20 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
 import { APP_ENV } from '@esm/core';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { ExaminationExamComponent } from './exam.component';
+import { InvigilatorAssignFacultyStore } from '../assign-faculty.store';
+import { InvigilatorAssignFacultyHeaderComponent } from './header.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-describe('ExaminationExamComponent', () => {
-  let component: ExaminationExamComponent;
-  let fixture: ComponentFixture<ExaminationExamComponent>;
+describe('InvigilatorAssignFacultyHeaderComponent', () => {
+  let component: InvigilatorAssignFacultyHeaderComponent;
+  let fixture: ComponentFixture<InvigilatorAssignFacultyHeaderComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        RouterTestingModule,
-        ReactiveFormsModule,
-      ],
+      imports: [HttpClientTestingModule],
       providers: [
+        InvigilatorAssignFacultyStore,
         provideMockStore({
           initialState: {
             [appFeatureKey]: appInitialState,
@@ -28,7 +24,7 @@ describe('ExaminationExamComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ExaminationExamComponent);
+    fixture = TestBed.createComponent(InvigilatorAssignFacultyHeaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

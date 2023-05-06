@@ -6,20 +6,17 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { LetModule } from '@ngrx/component';
+import { ExaminationStatus } from '@esm/data';
+import { SafeExaminationDataComponent } from '@esm/shared/components';
 import {
   TuiAlertService,
   tuiButtonOptionsProvider,
-  TuiLoaderModule,
   TuiNotification,
 } from '@taiga-ui/core';
-import { combineLatest, filter, map, switchMap } from 'rxjs';
+import { filter, Subscription, switchMap } from 'rxjs';
 import { ExaminationExamStore } from './exam.store';
 import { ExaminationExamHeaderComponent } from './header/header.component';
 import { ExaminationExamTableComponent } from './table/table.component';
-
-export const NGRX = [LetModule];
-export const TAIGA_UI = [TuiLoaderModule];
 
 @Component({
   templateUrl: './exam.component.html',
@@ -28,10 +25,9 @@ export const TAIGA_UI = [TuiLoaderModule];
   standalone: true,
   imports: [
     CommonModule,
+    SafeExaminationDataComponent,
     ExaminationExamHeaderComponent,
     ExaminationExamTableComponent,
-    ...NGRX,
-    ...TAIGA_UI,
   ],
   providers: [
     ExaminationExamStore,
@@ -48,10 +44,8 @@ export class ExaminationExamComponent implements OnInit {
   table!: ExaminationExamTableComponent;
 
   // PUBLIC PROPERTIES
-  readonly showLoader$ = combineLatest([
-    this.store.dataStatus$,
-    this.store.updateStatus$,
-  ]).pipe(map((statuses) => statuses.includes('loading')));
+  ExaminationStatus = ExaminationStatus;
+  readonly showLoader$ = this.store.showLoader$;
 
   // PRIVATE PROPERTIES
   private readonly updateStatus$ = this.store.updateStatus$;
@@ -59,10 +53,13 @@ export class ExaminationExamComponent implements OnInit {
   // LIFECYCLE
   ngOnInit(): void {
     this.handleUpdateSuccess();
-    this.store.getData();
   }
 
   // PUBLIC METHODS
+  readonly getDataFunc = (): void => {
+    this.store.getData();
+  };
+
   save(): void {
     this.table.save();
   }

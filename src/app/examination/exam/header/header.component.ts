@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
-  Input,
   OnInit,
   Output,
   inject,
@@ -61,9 +60,6 @@ export class ExaminationExamHeaderComponent implements OnInit {
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly store = inject(ExaminationExamStore);
 
-  @Input()
-  showLoader = true;
-
   @Output()
   save = new EventEmitter<void>();
 
@@ -79,6 +75,8 @@ export class ExaminationExamHeaderComponent implements OnInit {
   readonly shiftContentContext!: { $implicit: number[] };
   readonly methodContentContext!: { $implicit: number[] };
 
+  readonly data$ = this.store.displayData$;
+  readonly showLoader$ = this.store.showLoader$;
   readonly tableFormIsPristine$ = this.store.tableFormIsPristine$;
   readonly minMaxDate$ = this.store.data$.pipe(
     map((data) =>

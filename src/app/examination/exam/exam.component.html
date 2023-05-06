@@ -1,12 +1,10 @@
-<ng-container *ngrxLet="showLoader$ as showLoader">
-  <esm-examination-exam-header
-    (save)="save()"
-    [showLoader]="showLoader"
-  ></esm-examination-exam-header>
+<esm-examination-exam-header (save)="save()"></esm-examination-exam-header>
 
-  <tui-loader *ngIf="showLoader; else loaded" class="h-40"></tui-loader>
-</ng-container>
-
-<ng-template #loaded>
+<esm-safe-examination-data
+  [minimumStatus]="ExaminationStatus.AssignFaculty"
+  [getDataFunc]="getDataFunc"
+  [showLoader]="showLoader$"
+  class="grow"
+>
   <esm-examination-exam-table></esm-examination-exam-table>
-</ng-template>
+</esm-safe-examination-data>
