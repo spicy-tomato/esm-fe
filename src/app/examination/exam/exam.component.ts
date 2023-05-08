@@ -44,7 +44,7 @@ export class ExaminationExamComponent implements OnInit {
   table!: ExaminationExamTableComponent;
 
   // PUBLIC PROPERTIES
-  ExaminationStatus = ExaminationStatus;
+  readonly ExaminationStatus = ExaminationStatus;
   readonly showLoader$ = this.store.showLoader$;
 
   // PRIVATE PROPERTIES
@@ -56,9 +56,7 @@ export class ExaminationExamComponent implements OnInit {
   }
 
   // PUBLIC METHODS
-  readonly getDataFunc = (): void => {
-    this.store.getData();
-  };
+  readonly getDataFunc = (): Subscription => this.store.getData();
 
   save(): void {
     this.table.save();

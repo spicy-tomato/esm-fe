@@ -10,6 +10,7 @@ import {
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { StringHelper } from '@esm/cdk';
 import { ExamMethodPipe } from '@esm/core';
+import { MinimumExaminationStatusDirective } from '@esm/shared/directives';
 import { LetModule } from '@ngrx/component';
 import {
   TUI_FIRST_DAY,
@@ -30,6 +31,7 @@ import {
 import { PolymorpheusModule } from '@tinkoff/ng-polymorpheus';
 import { map, tap } from 'rxjs';
 import { ExaminationExamStore } from '../exam.store';
+import { ExaminationStatus } from '@esm/data';
 
 export const TAIGA_UI = [
   TuiButtonModule,
@@ -49,6 +51,7 @@ export const TAIGA_UI = [
     ReactiveFormsModule,
     PolymorpheusModule,
     ExamMethodPipe,
+    MinimumExaminationStatusDirective,
     ...TAIGA_UI,
   ],
   templateUrl: './header.component.html',
@@ -63,6 +66,7 @@ export class ExaminationExamHeaderComponent implements OnInit {
   @Output()
   save = new EventEmitter<void>();
 
+  readonly ExaminationStatus = ExaminationStatus;
   readonly shifts = [1, 2, 3, 4];
   readonly methods = Object.keys(StringHelper.EXAM_METHOD_MAPPING).map(
     (k) => +k

@@ -1,34 +1,35 @@
-<ng-container *ngrxLet="loadMessage$ as loadMessage">
-  <ng-container *ngIf="loadMessage !== null">
-    <div *ngIf="loadMessage; else loader" class="text-center">
-      <ng-container
-        *ngrxLet="examinationStatus$ as examinationStatus"
-        [ngSwitch]="examinationStatus"
-      >
-        <ng-container *ngSwitchCase="ExaminationStatus.Idle">
-          <h4 class="text-lg">Chưa có dữ liệu lịch thi</h4>
-          <a tuiLink routerLink="data">
-            <span class="text-base">Đến trang nhập dữ liệu</span>
-          </a>
-        </ng-container>
-
-        <ng-container *ngSwitchCase="ExaminationStatus.Setup">
-          <h4 class="text-lg">Kỳ thi chưa được kích hoạt</h4>
-          <a tuiLink routerLink="data">
-            <span class="text-base">Vui lòng Kích hoạt tại đây</span>
-          </a>
-        </ng-container>
-      </ng-container>
-    </div>
+<ng-container *ngrxLet="showLoader as showLoader">
+  <ng-container
+    *esmMinimumExaminationStatus="
+      minimumStatus;
+      else message;
+      load: getDataFunc
+    "
+  >
+    <ng-container *ngIf="!showLoader; else loader">
+      <ng-content></ng-content>
+    </ng-container>
   </ng-container>
 </ng-container>
 
 <ng-template #loader>
-  <ng-container *ngrxLet="showLoader as showLoader">
-    <tui-loader *ngIf="showLoader; else content" class="h-40"></tui-loader>
-  </ng-container>
+  <tui-loader class="h-40"></tui-loader>
 </ng-template>
 
-<ng-template #content>
-  <ng-content></ng-content>
+<ng-template #message let-status="status" let-examination="examination">
+  <div [ngSwitch]="status" class="text-center">
+    <ng-container *ngSwitchCase="ExaminationStatus.Idle">
+      <h4 class="text-lg">Chưa có dữ liệu lịch thi</h4>
+      <a tuiLink routerLink="data">
+        <span class="text-base">Đến trang nhập dữ liệu</span>
+      </a>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="ExaminationStatus.Setup">
+      <h4 class="text-lg">Kỳ thi chưa được kích hoạt</h4>
+      <a tuiLink routerLink="data">
+        <span class="text-base">Vui lòng Kích hoạt tại đây</span>
+      </a>
+    </ng-container>
+  </div>
 </ng-template>

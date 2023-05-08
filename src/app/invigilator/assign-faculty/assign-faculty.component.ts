@@ -45,7 +45,7 @@ export class InvigilatorAssignFacultyComponent implements OnInit {
   private readonly store = inject(InvigilatorAssignFacultyStore);
   private readonly alertService = inject(TuiAlertService);
 
-  ExaminationStatus = ExaminationStatus;
+  readonly ExaminationStatus = ExaminationStatus;
   readonly dataStatus$ = this.store.dataStatus$;
   private readonly finishStatus$ = this.store.finishStatus$;
 

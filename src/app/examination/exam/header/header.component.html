@@ -4,7 +4,10 @@
   <h2 id="title">Danh sách phòng và số đề thi</h2>
 
   <ng-container *ngrxLet="data$ as data">
-    <div *ngIf="data.length" class="flex">
+    <div
+      *esmMinimumExaminationStatus="ExaminationStatus.AssignFaculty"
+      class="flex"
+    >
       <form [formGroup]="form" class="flex">
         <tui-select
           formControlName="methods"

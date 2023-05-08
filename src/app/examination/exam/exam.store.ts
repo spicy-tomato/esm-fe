@@ -60,13 +60,11 @@ export class ExaminationExamStore extends ComponentStore<ExaminationExamState> {
 
   // EFFECTS
   readonly getData = this.effect<void>((params$) =>
-    combineLatest([
-      params$.pipe(tap(() => this.patchState({ dataStatus: 'loading' }))),
-      this.examination$,
-    ]).pipe(
-      withLatestFrom(this.examinationId$),
-      filter(([{ 1: examination }, id]) => examination.id === id),
-      switchMap(([_, id]) =>
+    params$.pipe(
+      tap(() => this.patchState({ dataStatus: 'loading' })),
+      withLatestFrom(this.examination$, this.examinationId$),
+      filter(([_, examination, id]) => examination.id === id),
+      switchMap(({ 2: id }) =>
         this.examinationService.getData(id).pipe(
           tapResponse(
             ({ data }) =>

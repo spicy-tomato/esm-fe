@@ -28,11 +28,11 @@ export class RoleDirective {
 
   // PRIVATE PROPERTIES
   private _esmRole?: string[] | null;
-  private role = this.appStore
+  private hadElse = false;
+  private readonly bind$ = new Subject<void>();
+  private readonly role$ = this.appStore
     .select(AppSelector.role)
     .pipe(takeUntil(this.destroy$));
-  private bind$ = new Subject<void>();
-  private hadElse = false;
 
   // SETTER
   @Input() set esmRole(acceptRoles: string[] | undefined | null) {
@@ -54,7 +54,7 @@ export class RoleDirective {
   // PRIVATE METHODS
   private triggerUpdateView(): void {
     combineLatest([
-      this.role.pipe(ObservableHelper.filterNullish()),
+      this.role$.pipe(ObservableHelper.filterNullish()),
       this.bind$,
     ])
       .pipe(tap(([role]) => this.updateView(role)))
