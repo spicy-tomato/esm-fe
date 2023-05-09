@@ -16,7 +16,11 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { ArrayPipe, ExamMethodPipe } from '@esm/core';
-import { ExaminationStatus, FacultySummary, GetAllGroupsResponseResponseItem } from '@esm/data';
+import {
+  ExaminationStatus,
+  FacultySummary,
+  GetAllGroupsResponseResponseItem,
+} from '@esm/data';
 import { LetModule } from '@ngrx/component';
 import { TuiTableModule } from '@taiga-ui/addon-table';
 import { TuiScrollbarModule, TuiTooltipModule } from '@taiga-ui/core';
@@ -136,6 +140,23 @@ export class InvigilatorAssignFacultyTableComponent implements OnInit {
       .subscribe();
   }
 
+  private buildForm(
+    faculties: FacultySummary[],
+    data: GetAllGroupsResponseResponseItem[]
+  ): void {
+    this.form = this.fb.group({
+      data: this.fb.array(
+        data.map((row) =>
+          this.fb.group({
+            ...this.buildFormDataPart(row),
+            ...this.buildFormFacultyPart(row, faculties),
+            ...this.buildFormCalculatePart(row),
+          })
+        )
+      ),
+    }) as any;
+  }
+
   private buildFormDataPart(
     group: GetAllGroupsResponseResponseItem
   ): Record<string, any[]> {
@@ -170,23 +191,6 @@ export class InvigilatorAssignFacultyTableComponent implements OnInit {
     return {
       total: [group.assignNumerate['total']],
     };
-  }
-
-  private buildForm(
-    faculties: FacultySummary[],
-    data: GetAllGroupsResponseResponseItem[]
-  ): void {
-    this.form = this.fb.group({
-      data: this.fb.array(
-        data.map((row) =>
-          this.fb.group({
-            ...this.buildFormDataPart(row),
-            ...this.buildFormFacultyPart(row, faculties),
-            ...this.buildFormCalculatePart(row),
-          })
-        )
-      ),
-    }) as any;
   }
 
   private getFacultyControl(index: number, facultyId: string): FormControl {

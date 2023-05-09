@@ -17,7 +17,15 @@
 </ng-template>
 
 <ng-template #message let-status="status" let-examination="examination">
-  <div [ngSwitch]="status" class="text-center">
+  <div #customMessage>
+    <ng-content select="[message]"></ng-content>
+  </div>
+
+  <div
+    *ngIf="!customMessage.children.length"
+    [ngSwitch]="status"
+    class="text-center"
+  >
     <ng-container *ngSwitchCase="ExaminationStatus.Idle">
       <h4 class="text-lg">Chưa có dữ liệu lịch thi</h4>
       <a tuiLink routerLink="data">
