@@ -30,10 +30,10 @@ export class InvigilatorAssignFacultyStore extends ComponentStore<InvigilatorAss
 
   // STATE SELECTORS
   readonly data$ = this.select((s) => s.data);
+  readonly dataStatus$ = this.select((s) => s.dataStatus);
   readonly finishStatus$ = this.select((s) => s.finishStatus);
   readonly calculateStatus$ = this.select((s) => s.calculateStatus);
 
-  private readonly dataStatus$ = this.select((s) => s.dataStatus);
   private readonly updateRows$ = this.select((s) => s.updateRows);
 
   // GLOBAL SELECTORS

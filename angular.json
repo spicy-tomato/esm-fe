@@ -7,7 +7,12 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "less"
+          "style": "less",
+          "changeDetection": "OnPush",
+          "standalone": true
+        },
+        "@schematics/angular:directive": {
+          "standalone": true
         }
       },
       "root": "",
