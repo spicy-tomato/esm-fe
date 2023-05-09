@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
-  Input,
   OnInit,
   Output,
   inject,
@@ -11,6 +10,7 @@ import {
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { StringHelper } from '@esm/cdk';
 import { ExamMethodPipe } from '@esm/core';
+import { MinimumExaminationStatusDirective } from '@esm/shared/directives';
 import { LetModule } from '@ngrx/component';
 import {
   TUI_FIRST_DAY,
@@ -31,6 +31,7 @@ import {
 import { PolymorpheusModule } from '@tinkoff/ng-polymorpheus';
 import { map, tap } from 'rxjs';
 import { ExaminationExamStore } from '../exam.store';
+import { ExaminationStatus } from '@esm/data';
 
 export const TAIGA_UI = [
   TuiButtonModule,
@@ -50,6 +51,7 @@ export const TAIGA_UI = [
     ReactiveFormsModule,
     PolymorpheusModule,
     ExamMethodPipe,
+    MinimumExaminationStatusDirective,
     ...TAIGA_UI,
   ],
   templateUrl: './header.component.html',
@@ -61,12 +63,10 @@ export class ExaminationExamHeaderComponent implements OnInit {
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly store = inject(ExaminationExamStore);
 
-  @Input()
-  showLoader = true;
-
   @Output()
   save = new EventEmitter<void>();
 
+  readonly ExaminationStatus = ExaminationStatus;
   readonly shifts = [1, 2, 3, 4];
   readonly methods = Object.keys(StringHelper.EXAM_METHOD_MAPPING).map(
     (k) => +k
@@ -79,6 +79,8 @@ export class ExaminationExamHeaderComponent implements OnInit {
   readonly shiftContentContext!: { $implicit: number[] };
   readonly methodContentContext!: { $implicit: number[] };
 
+  readonly data$ = this.store.displayData$;
+  readonly showLoader$ = this.store.showLoader$;
   readonly tableFormIsPristine$ = this.store.tableFormIsPristine$;
   readonly minMaxDate$ = this.store.data$.pipe(
     map((data) =>

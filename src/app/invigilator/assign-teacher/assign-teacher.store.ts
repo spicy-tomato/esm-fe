@@ -46,6 +46,8 @@ type InvigilatorAssignTeacherState = {
   updateStatus: Status;
   //
   autoAssignStatus: Status;
+  //
+  disableSaveBtn: boolean;
 };
 
 @Injectable()
@@ -60,12 +62,12 @@ export class InvigilatorAssignTeacherStore
 
   // STATE SELECTORS
   readonly data$ = this.select((s) => s.data);
-  readonly dataError$ = this.select((s) => s.dataError);
   readonly dataStatus$ = this.select((s) => s.dataStatus);
   readonly updateStatus$ = this.select((s) => s.updateStatus);
   readonly autoAssignStatus$ = this.select((s) => s.autoAssignStatus);
 
   private readonly faculty$ = this.select((s) => s.faculty);
+  private readonly disableSaveBtn$ = this.select((s) => s.disableSaveBtn);
   private readonly invigilatorsData$ = this.select((s) => s.invigilatorsData);
   private readonly invigilatorInfoMap$ = this.select(
     (s) => s.invigilatorInfoMap
@@ -75,10 +77,6 @@ export class InvigilatorAssignTeacherStore
   readonly faculties$ = this.appStore
     .select(AppSelector.faculties)
     .pipe(ObservableHelper.filterNullish(), takeUntil(this.destroy$));
-
-  private readonly examination$ = this.appStore
-    .select(AppSelector.examination)
-    .pipe(takeUntil(this.destroy$));
 
   private readonly examinationId$ = this.appStore
     .select(AppSelector.examinationId)
@@ -90,6 +88,8 @@ export class InvigilatorAssignTeacherStore
   );
 
   // CUSTOM SELECTORS
+  role$ = this.user$.pipe(map((u) => u.role));
+
   private readonly departmentsInFaculty$ = combineLatest([
     this.appStore.select(AppSelector.departmentsWithFaculty),
     this.faculty$,
@@ -100,8 +100,6 @@ export class InvigilatorAssignTeacherStore
     takeUntil(this.destroy$)
   );
 
-  private role$ = this.user$.pipe(map((u) => u.role));
-
   private readonly showLoader$ = combineLatest([
     this.dataStatus$,
     this.autoAssignStatus$,
@@ -111,15 +109,15 @@ export class InvigilatorAssignTeacherStore
     this.showLoader$,
     this.faculties$,
     this.faculty$,
-    this.examination$,
     this.role$,
+    this.disableSaveBtn$,
   ]).pipe(
-    map(([showLoader, faculties, faculty, examination, role]) => ({
+    map(([showLoader, faculties, faculty, role, disableSaveBtn]) => ({
       showLoader,
       faculties,
       faculty,
-      examination,
       role,
+      disableSaveBtn,
     }))
   );
 
@@ -280,6 +278,7 @@ export class InvigilatorAssignTeacherStore
       invigilatorInfoMap: {},
       updateStatus: 'idle',
       autoAssignStatus: 'idle',
+      disableSaveBtn: true,
     });
   }
 
