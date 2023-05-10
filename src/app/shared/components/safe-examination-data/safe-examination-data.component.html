@@ -39,5 +39,15 @@
         <span class="text-base">Vui lòng Kích hoạt tại đây</span>
       </a>
     </ng-container>
+
+    <ng-container *ngSwitchCase="ExaminationStatus.AssignFaculty">
+      <h4 class="text-lg">Chưa chốt số lượng CBCT tới các khoa</h4>
+      <a
+        tuiLink
+        [routerLink]="['/', examination.id, 'invigilator', 'assign-faculty']"
+      >
+        <span class="text-base">Vui lòng chốt số lượng tại đây</span>
+      </a>
+    </ng-container>
   </div>
 </ng-template>

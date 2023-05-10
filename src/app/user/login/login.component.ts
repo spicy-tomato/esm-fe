@@ -13,16 +13,12 @@ import {
 import { StringHelper } from '@esm/cdk';
 import { slideUp } from '@esm/core';
 import { LetModule } from '@ngrx/component';
-import { TuiDestroyService } from '@taiga-ui/cdk';
 import {
   TuiButtonModule,
   TuiErrorModule,
-  TuiHintModule,
-  TuiLinkModule,
   TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
 import {
-  TuiCheckboxLabeledModule,
   TuiFieldErrorPipeModule,
   TuiInputModule,
   TuiInputPasswordModule,
@@ -33,13 +29,10 @@ import { LoginStore } from './login.store';
 export const NGRX = [LetModule];
 export const TAIGA_UI = [
   TuiButtonModule,
-  TuiCheckboxLabeledModule,
   TuiErrorModule,
   TuiFieldErrorPipeModule,
-  TuiHintModule,
   TuiInputModule,
   TuiInputPasswordModule,
-  TuiLinkModule,
   TuiTextfieldControllerModule,
 ];
 
@@ -48,7 +41,7 @@ export const TAIGA_UI = [
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, ...NGRX, ...TAIGA_UI],
-  providers: [LoginStore, TuiDestroyService],
+  providers: [LoginStore],
   animations: [slideUp],
 })
 export class LoginComponent implements OnInit {

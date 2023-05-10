@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { ExaminationStatus } from '@esm/data';
 import { MinimumExaminationStatusDirective } from '@esm/shared/directives';
 import { LetModule } from '@ngrx/component';
@@ -13,6 +14,7 @@ export const TAIGA_UI = [TuiLinkModule, TuiLoaderModule];
   standalone: true,
   imports: [
     CommonModule,
+    RouterModule,
     LetModule,
     MinimumExaminationStatusDirective,
     ...TAIGA_UI,
