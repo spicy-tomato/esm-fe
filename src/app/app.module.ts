@@ -1,21 +1,21 @@
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { inject, NgModule } from '@angular/core';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { NgModule, inject } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { duplicatedFactory, emailFactory, requiredFactory } from '@esm/cdk';
 import { AuthInterceptor } from '@esm/interceptors';
 import { AppEffects, appFeatureKey, appReducer } from '@esm/store';
 import { EffectsModule } from '@ngrx/effects';
-import { routerReducer, StoreRouterConnectingModule } from '@ngrx/router-store';
+import { StoreRouterConnectingModule, routerReducer } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { TUI_IS_CYPRESS } from '@taiga-ui/cdk';
 import {
+  TUI_ANIMATIONS_DURATION,
+  TUI_SANITIZER,
   TuiAlertModule,
   TuiDialogModule,
   TuiRootModule,
-  TUI_ANIMATIONS_DURATION,
-  TUI_SANITIZER,
 } from '@taiga-ui/core';
 import { TUI_LANGUAGE, TUI_VIETNAMESE_LANGUAGE } from '@taiga-ui/i18n';
 import { TUI_VALIDATION_ERRORS } from '@taiga-ui/kit';
@@ -23,7 +23,7 @@ import { NgDompurifySanitizer } from '@tinkoff/ng-dompurify';
 import { of } from 'rxjs';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
-import { LayoutComponent, LoaderComponent } from './shared/components';
+import { LoaderComponent } from './shared/components';
 
 const NGRX = [
   StoreModule.forRoot({ router: routerReducer }, {}),
@@ -40,12 +40,11 @@ const TAIGA_UI = [TuiRootModule, TuiAlertModule, TuiDialogModule];
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    AppRoutingModule,
     HttpClientModule,
-    LayoutComponent,
     LoaderComponent,
     ...NGRX,
     ...TAIGA_UI,
+    AppRoutingModule,
   ],
   declarations: [AppComponent],
   providers: [
