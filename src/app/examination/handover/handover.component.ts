@@ -115,7 +115,7 @@ export class ExaminationHandoverComponent implements OnInit {
     );
 
     return ({ $implicit }: TuiContextWithImplicit<string>) =>
-      map.get($implicit) || '';
+      map.get($implicit) ?? '';
   }
 
   onHandoverChanges(shiftId: string, handoverUserId: string): void {

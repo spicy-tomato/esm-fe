@@ -145,7 +145,7 @@ export class EditInvigilatorDialogComponent implements OnInit {
     );
 
     return ({ $implicit }: TuiContextWithImplicit<string>) =>
-      map.get($implicit) || '';
+      map.get($implicit) ?? '';
   }
 
   // PRIVATE METHODS

@@ -48,7 +48,11 @@ describe('AuthInterceptor', () => {
   });
 
   it('[Token exists] should has Authorization header', fakeAsync(() => {
-    let response: HttpRequest<any> | null = null;
+    let response:
+      | HttpRequest<any>
+      | { headers: { get: (_: string) => string } } = {
+      headers: { get: () => '' },
+    };
     next = {
       handle: (responseHandle): Observable<HttpEvent<any>> => {
         response = responseHandle;
@@ -58,6 +62,6 @@ describe('AuthInterceptor', () => {
     mockTokenService.get.and.returnValue('saved token');
     interceptor.intercept(mockRequest, next);
 
-    expect(response!.headers.get('Authorization')).toContain('saved token');
+    expect(response.headers.get('Authorization')).toContain('saved token');
   }));
 });

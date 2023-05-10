@@ -44,7 +44,7 @@ export class PermissionGuard
           return true;
         }
 
-        if (acceptRoles && acceptRoles.includes(role)) {
+        if (acceptRoles.includes(role)) {
           return true;
         }
 
