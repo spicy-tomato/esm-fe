@@ -47,7 +47,7 @@ import {
   PolymorpheusComponent,
   PolymorpheusModule,
 } from '@tinkoff/ng-polymorpheus';
-import { BehaviorSubject, combineLatest, filter, map, tap } from 'rxjs';
+import { filter, tap } from 'rxjs';
 import { InvigilatorAssignRoomStore, ShiftUiModel } from './assign-room.store';
 
 export const NGRX = [LetModule];
@@ -165,7 +165,7 @@ export class InvigilatorAssignRoomComponent implements OnInit {
     );
 
     return ({ $implicit }: TuiContextWithImplicit<string>) =>
-      map.get($implicit) || '';
+      map.get($implicit) ?? '';
   }
 
   onInvigilatorChanges(

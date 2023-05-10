@@ -20,7 +20,6 @@ export const TAIGA_UI = [TuiLinkModule, TuiLoaderModule];
     ...TAIGA_UI,
   ],
   templateUrl: './safe-examination-data.component.html',
-  styleUrls: ['./safe-examination-data.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SafeExaminationDataComponent {

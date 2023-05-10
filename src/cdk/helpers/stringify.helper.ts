@@ -15,6 +15,6 @@ export class StringifyHelper {
     map.set('', 'Tất cả');
 
     return ({ $implicit }: TuiContextWithImplicit<string>) =>
-      map.get($implicit) || '';
+      map.get($implicit) ?? '';
   }
 }

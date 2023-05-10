@@ -78,7 +78,7 @@ export class LayoutComponent {
   private isCommonPage(url: string): boolean {
     return (
       url === '/' ||
-      this.commonPages.find((p) => url.indexOf(p) === 0) !== undefined
+      this.commonPages.find((p) => url.startsWith(p)) !== undefined
     );
   }
 }

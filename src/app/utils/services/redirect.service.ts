@@ -13,7 +13,7 @@ export class RedirectService {
       redirect = '';
     }
     this.router.navigate(['/login'], {
-      queryParams: { redirect: redirect || null },
+      queryParams: { redirect: redirect ?? null },
     });
   }
 
