@@ -5,7 +5,7 @@
 <ng-container *ngrxLet="dataStatus$ as dataStatus">
   <ng-container *ngrxLet="role$ as role">
     <esm-safe-examination-data
-      [minimumStatus]="ExaminationStatus.AssignFaculty"
+      [minimumStatus]="ExaminationStatus.AssignInvigilator"
       [getDataFunc]="getDataFunc"
       [showLoader]="dataStatus === 'loading'"
       class="grow"
