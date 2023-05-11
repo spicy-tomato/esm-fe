@@ -4,8 +4,6 @@
 name: VPS Prod
 
 on:
-  push:
-    branches: ["prod"]
   pull_request:
     branches: ["prod"]
 
@@ -38,14 +36,3 @@ jobs:
 
       - name: Build
         run: npm run build:prod
-
-      - name: Copy bundle to VPS
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PWD }}
-          source: "./dist/esm-fe/*"
-          target: "/var/www/esm"
-          strip_components: 2
-          overwrite: true
