@@ -21,6 +21,9 @@
         "plugin:@angular-eslint/recommended",
         "plugin:@angular-eslint/template/process-inline-templates"
       ],
+      "plugins": [
+        "deprecation"
+      ],
       "rules": {
         "@angular-eslint/directive-selector": [
           "error",
@@ -38,7 +41,8 @@
             "style": "kebab-case"
           }
         ],
-        "@typescript-eslint/explicit-function-return-type": "warn"
+        "@typescript-eslint/explicit-function-return-type": "warn",
+        "deprecation/deprecation": "warn"
       }
     },
     {

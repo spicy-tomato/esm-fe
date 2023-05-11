@@ -1,7 +1,7 @@
 import { importProvidersFrom, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { Role } from '@esm/data';
-import { AuthGuard, PermissionGuard } from '@esm/guards';
+import { authGuard, permissionGuard } from '@esm/guards';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import {
@@ -14,13 +14,13 @@ import { LayoutComponent } from './shared/components/layout/layout.component';
 const routes: Routes = [
   {
     path: 'login',
-    canActivate: [AuthGuard],
+    canActivate: [authGuard],
     loadComponent: async () =>
       (await import('./user/login/login.component')).LoginComponent,
   },
   {
     path: '',
-    canActivate: [AuthGuard],
+    canActivate: [authGuard],
     component: LayoutComponent,
     providers: [
       importProvidersFrom(
@@ -49,7 +49,7 @@ const routes: Routes = [
       },
       {
         path: ':examinationId',
-        canActivate: [AuthGuard],
+        canActivate: [authGuard],
         children: [
           {
             path: '',
@@ -61,13 +61,13 @@ const routes: Routes = [
             children: [
               {
                 path: '',
-                canActivate: [PermissionGuard],
+                canActivate: [permissionGuard],
                 loadChildren: async () =>
                   (await import('./examination/exam/exam.routing')).ROUTES,
               },
               {
                 path: 'data',
-                canActivate: [PermissionGuard],
+                canActivate: [permissionGuard],
                 data: {
                   roles: [Role.EXAMINATION_DEPARTMENT_HEAD],
                 },
@@ -76,7 +76,7 @@ const routes: Routes = [
               },
               {
                 path: 'handover',
-                canActivate: [PermissionGuard],
+                canActivate: [permissionGuard],
                 data: {
                   roles: [Role.EXAMINATION_DEPARTMENT_HEAD],
                 },
@@ -91,7 +91,7 @@ const routes: Routes = [
             children: [
               {
                 path: 'assign-faculty',
-                canActivate: [PermissionGuard],
+                canActivate: [permissionGuard],
                 data: {
                   roles: [Role.EXAMINATION_DEPARTMENT_HEAD],
                 },
@@ -104,7 +104,7 @@ const routes: Routes = [
               },
               {
                 path: 'assign-teacher',
-                canActivate: [PermissionGuard],
+                canActivate: [permissionGuard],
                 loadChildren: async () =>
                   (
                     await import(
@@ -114,7 +114,7 @@ const routes: Routes = [
               },
               {
                 path: 'assign-room',
-                canActivate: [PermissionGuard],
+                canActivate: [permissionGuard],
                 data: {
                   roles: [Role.EXAMINATION_DEPARTMENT_HEAD],
                 },

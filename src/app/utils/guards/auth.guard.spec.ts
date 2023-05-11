@@ -1,16 +1,108 @@
 import { TestBed } from '@angular/core/testing';
+import { RouterModule, RouterStateSnapshot } from '@angular/router';
+import { TokenService } from '@esm/cdk';
+import { RedirectService } from '../services/redirect.service';
+import { authGuard } from './auth.guard';
 
-import { AuthGuard } from './auth.guard';
+describe('authGuard', () => {
+  let mockTokenService: jasmine.SpyObj<TokenService>;
+  let mockRedirectService: jasmine.SpyObj<RedirectService>;
 
-describe('AuthGuard', () => {
-  let guard: AuthGuard;
+  beforeEach(async () => {
+    mockTokenService = jasmine.createSpyObj<TokenService>('TokenService', [
+      'get',
+    ]);
+    mockRedirectService = jasmine.createSpyObj<RedirectService>(
+      'RedirectService',
+      ['login', 'app']
+    );
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    guard = TestBed.inject(AuthGuard);
+    await TestBed.configureTestingModule({
+      providers: [
+        RouterModule,
+        {
+          provide: TokenService,
+          useValue: mockTokenService,
+        },
+        {
+          provide: RedirectService,
+          useValue: mockRedirectService,
+        },
+      ],
+    }).compileComponents();
   });
 
-  it('should be created', () => {
-    expect(guard).toBeTruthy();
+  describe('Do NOT have access token', () => {
+    it('should return true if is login page', () => {
+      mockTokenService.get.and.returnValue(null);
+
+      const testUrls = ['login', 'login?redirect=example-path'];
+
+      testUrls.forEach((url) => {
+        TestBed.runInInjectionContext(() => {
+          const canActive = authGuard(
+            null as any,
+            { url } as RouterStateSnapshot
+          );
+
+          expect(canActive).toBeTrue();
+        });
+      });
+    });
+
+    it('should return false if is NOT login page', () => {
+      mockTokenService.get.and.returnValue(null);
+
+      const testUrls = ['', '/', 'data'];
+
+      testUrls.forEach((url) => {
+        TestBed.runInInjectionContext(() => {
+          const canActive = authGuard(
+            null as any,
+            { url } as RouterStateSnapshot
+          );
+
+          expect(canActive).toBeFalse();
+          expect(mockRedirectService.login).toHaveBeenCalledWith(url);
+        });
+      });
+    });
+  });
+
+  describe('Had access token', () => {
+    it('should return true if is NOT login page', () => {
+      mockTokenService.get.and.returnValue('mock-token');
+
+      const testUrls = ['', '/', 'data'];
+
+      testUrls.forEach((url) => {
+        TestBed.runInInjectionContext(() => {
+          const canActive = authGuard(
+            null as any,
+            { url } as RouterStateSnapshot
+          );
+
+          expect(canActive).toBeTrue();
+        });
+      });
+    });
+
+    it('should return false if is login page', () => {
+      mockTokenService.get.and.returnValue('mock-token');
+
+      const testUrls = ['login', 'login?redirect=example-path'];
+
+      testUrls.forEach((url) => {
+        TestBed.runInInjectionContext(() => {
+          const canActive = authGuard(
+            null as any,
+            { url: 'login' } as RouterStateSnapshot
+          );
+
+          expect(canActive).toBeFalse();
+          expect(mockRedirectService.app).toHaveBeenCalled();
+        });
+      });
+    });
   });
 });
