@@ -1,0 +1,49 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: VPS Prod
+
+on:
+  push:
+    branches: ["prod"]
+
+jobs:
+  build:
+    name: Build Prod
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.3.1
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.20.0
+
+      - name: Generate env files
+        run: node ./scripts/env.js
+        env:
+          BASE_URL: "${{ secrets.BASE_URL }}"
+          SYNCFUSION_LICENSE: "${{ secrets.SYNCFUSION_LICENSE }}"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: npm run build:prod
+
+      - name: Copy bundle to VPS
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PWD }}
+          source: "./dist/esm-fe/*"
+          target: "/var/www/esm"
+          strip_components: 2
+          overwrite: true
