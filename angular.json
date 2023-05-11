@@ -20,7 +20,7 @@
       "prefix": "esm",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:browser-esbuild",
           "options": {
             "outputPath": "dist/esm-fe",
             "index": "src/index.html",
