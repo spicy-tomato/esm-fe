@@ -1,59 +1,34 @@
-import { inject, Injectable, OnDestroy } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
 import { ObservableHelper } from '@esm/cdk';
 import { Store } from '@ngrx/store';
-import { map, Observable, ReplaySubject, takeUntil } from 'rxjs';
+import { map } from 'rxjs';
 import { AppSelector } from '../store/app.selectors';
 import { AppState } from '../store/app.state';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class PermissionGuard
-  extends ReplaySubject<void>
-  implements CanActivate, OnDestroy
-{
-  // INJECT PROPERTIES
-  private readonly router = inject(Router);
-  private readonly appStore = inject(Store<AppState>);
+export const permissionGuard: CanActivateFn = (route) => {
+  const router = inject(Router);
+  const appStore = inject(Store<AppState>);
 
-  // PRIVATE PROPERTIES
-  private readonly user$ = this.appStore
-    .select(AppSelector.user)
-    .pipe(takeUntil(this));
+  const user$ = appStore.select(AppSelector.user);
 
-  // CONSTRUCTOR
-  constructor() {
-    super(1);
-  }
+  return user$.pipe(
+    ObservableHelper.filterNullish(),
+    map(({ role }) => {
+      const acceptRoles = route.data['roles'] as string[] | undefined;
 
-  // LIFECYCLE
-  ngOnDestroy(): void {
-    this.next();
-    this.complete();
-  }
+      if (!acceptRoles || acceptRoles.length === 0) {
+        return true;
+      }
 
-  // IMPLEMENTATIONS
-  canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
-    return this.user$.pipe(
-      ObservableHelper.filterNullish(),
-      map(({ role }) => {
-        const acceptRoles = route.data['roles'] as string[] | undefined;
+      if (acceptRoles.includes(role)) {
+        return true;
+      }
 
-        if (!acceptRoles || acceptRoles.length === 0) {
-          return true;
-        }
+      const redirect = route.data['redirect'] as string;
+      router.navigate([redirect ?? '/403']);
 
-        if (acceptRoles.includes(role)) {
-          return true;
-        }
-
-        const redirect = route.data['redirect'] as string;
-        this.router.navigate([redirect ?? '/403']);
-
-        return false;
-      }),
-      takeUntil(this)
-    );
-  }
-}
+      return false;
+    })
+  );
+};
