@@ -1,9 +1,6 @@
 import { HttpClient, HttpEvent, HttpRequest } from '@angular/common/http';
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-} from '@angular/common/http/testing';
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { HttpTestingController } from '@angular/common/http/testing';
+import { TestBed, fakeAsync } from '@angular/core/testing';
 import { TESTING_COMMON_IMPORTS, TokenService } from '@esm/cdk';
 import { Observable } from 'rxjs';
 import { AuthInterceptor } from './auth.interceptor';

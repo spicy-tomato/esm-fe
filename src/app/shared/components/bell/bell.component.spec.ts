@@ -1,8 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { provideMockStore } from '@ngrx/store/testing';
-import { BellComponent, NGRX, TAIGA_UI } from './bell.component';
 import { APP_STORE_PROVIDER, TESTING_COMMON_IMPORTS } from '@esm/cdk';
+import { BellComponent, NGRX, TAIGA_UI } from './bell.component';
 
 describe('BellComponent', () => {
   let component: BellComponent;

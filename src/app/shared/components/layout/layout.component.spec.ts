@@ -1,7 +1,5 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
+import { TESTING_COMMON_IMPORTS } from '@esm/cdk';
 import { APP_ENV } from '@esm/core';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -16,7 +14,6 @@ import { LayoutComponent, NGRX, TAIGA_UI } from './layout.component';
 import { MainViewComponent } from './main-view/main-view.component';
 import { SideBarComponent } from './side-bar';
 import { TopBarComponent } from './top-bar';
-import { TESTING_COMMON_IMPORTS } from '@esm/cdk';
 
 describe('LayoutComponent', () => {
   let component: LayoutComponent;
