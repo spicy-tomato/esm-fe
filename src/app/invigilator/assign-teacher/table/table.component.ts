@@ -176,10 +176,7 @@ export class InvigilatorAssignTeacherTableComponent implements OnInit {
 
     this.form.valueChanges
       .pipe(
-        tap(() => {
-          console.log('ok');
-          this.store.patchState({ disableSaveBtn: false });
-        }),
+        tap(() => this.store.patchState({ disableSaveBtn: false })),
         takeUntil(this.destroy$)
       )
       .subscribe();

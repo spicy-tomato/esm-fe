@@ -1,14 +1,9 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { APP_ENV } from '@esm/core';
-import { appFeatureKey, appInitialState } from '@esm/store';
-import { provideMockStore } from '@ngrx/store/testing';
-import {
-  InvigilatorAssignRoomComponent,
-  NGRX,
-  TAIGA_UI,
-} from './assign-room.component';
+import { APP_STORE_PROVIDER } from '@esm/cdk';
+import { LetModule } from '@ngrx/component';
+import { InvigilatorAssignRoomComponent } from './assign-room.component';
 
 describe('AssignRoomComponent', () => {
   let component: InvigilatorAssignRoomComponent;
@@ -16,20 +11,8 @@ describe('AssignRoomComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        HttpClientTestingModule,
-        ...NGRX,
-        ...TAIGA_UI,
-      ],
-      providers: [
-        provideMockStore({
-          initialState: {
-            [appFeatureKey]: appInitialState,
-          },
-        }),
-        { provide: APP_ENV, useValue: {} },
-      ],
+      imports: [ReactiveFormsModule, HttpClientTestingModule, LetModule],
+      providers: [APP_STORE_PROVIDER],
     }).compileComponents();
 
     fixture = TestBed.createComponent(InvigilatorAssignRoomComponent);
