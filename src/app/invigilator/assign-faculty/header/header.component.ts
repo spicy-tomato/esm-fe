@@ -2,11 +2,14 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  EventEmitter,
   Injector,
+  Output,
   inject,
 } from '@angular/core';
 import { ExaminationStatus } from '@esm/data';
 import { ConfirmDialogComponent } from '@esm/shared/dialogs';
+import { LetModule } from '@ngrx/component';
 import {
   TuiButtonModule,
   TuiDialogService,
@@ -14,7 +17,6 @@ import {
 } from '@taiga-ui/core';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { InvigilatorAssignFacultyStore } from '../assign-faculty.store';
-import { LetModule } from '@ngrx/component';
 
 export const TAIGA_UI = [TuiButtonModule, TuiLoaderModule];
 
@@ -32,9 +34,14 @@ export class InvigilatorAssignFacultyHeaderComponent {
   private readonly injector = inject(Injector);
   private readonly dialogService = inject(TuiDialogService);
 
+  @Output()
+  readonly exportFile = new EventEmitter<void>();
+
+  // PROPERTIES
   readonly ExaminationStatus = ExaminationStatus;
   readonly headerObservables$ = this.store.headerObservables$;
 
+  // PUBLIC METHODS
   calculate(): void {
     this.dialogService
       .open<boolean>(

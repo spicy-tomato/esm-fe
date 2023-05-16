@@ -36,11 +36,10 @@
         Chốt số lượng
       </button>
 
-      <!-- TODO -->
       <button
         tuiButton
         *ngIf="obs.dataStatus === 'success'"
-        [disabled]="true"
+        (click)="exportFile.emit()"
         icon="tuiIconDownloadLarge"
       >
         Tải file Excel

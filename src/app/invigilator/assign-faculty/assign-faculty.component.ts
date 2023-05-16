@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   OnInit,
+  ViewChild,
   inject,
 } from '@angular/core';
 import { ExaminationStatus } from '@esm/data';
@@ -45,6 +46,11 @@ export class InvigilatorAssignFacultyComponent implements OnInit {
   private readonly store = inject(InvigilatorAssignFacultyStore);
   private readonly alertService = inject(TuiAlertService);
 
+  // VIEW CHILD
+  @ViewChild('table')
+  table?: InvigilatorAssignFacultyTableComponent;
+
+  // PROPERTIES
   readonly ExaminationStatus = ExaminationStatus;
   readonly dataStatus$ = this.store.dataStatus$;
   private readonly finishStatus$ = this.store.finishStatus$;
