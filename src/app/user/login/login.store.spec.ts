@@ -1,10 +1,13 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { ResultBuilder, TokenService } from '@esm/cdk';
-import { APP_ENV } from '@esm/core';
+import {
+  APP_STORE_PROVIDER,
+  ResultBuilder,
+  TESTING_COMMON_IMPORTS,
+  TokenService,
+} from '@esm/cdk';
 import { UserService } from '@esm/services';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { MockStore } from '@ngrx/store/testing';
 import { cold } from 'jasmine-marbles';
 import { of } from 'rxjs';
 import { LoginStore } from './login.store';
@@ -25,8 +28,9 @@ describe('LoginStore', () => {
     ]);
 
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [TESTING_COMMON_IMPORTS],
       providers: [
+        APP_STORE_PROVIDER,
         LoginStore,
         {
           provide: UserService,
@@ -36,8 +40,6 @@ describe('LoginStore', () => {
           provide: TokenService,
           useValue: mockTokenService,
         },
-        { provide: APP_ENV, useValue: {} },
-        provideMockStore({}),
       ],
     }).compileComponents();
 

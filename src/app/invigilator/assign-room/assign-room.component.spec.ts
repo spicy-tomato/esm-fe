@@ -1,7 +1,5 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { APP_STORE_PROVIDER } from '@esm/cdk';
+import { APP_STORE_PROVIDER, TESTING_COMMON_IMPORTS } from '@esm/cdk';
 import { LetModule } from '@ngrx/component';
 import { InvigilatorAssignRoomComponent } from './assign-room.component';
 
@@ -11,7 +9,7 @@ describe('AssignRoomComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, HttpClientTestingModule, LetModule],
+      imports: [TESTING_COMMON_IMPORTS, LetModule],
       providers: [APP_STORE_PROVIDER],
     }).compileComponents();
 

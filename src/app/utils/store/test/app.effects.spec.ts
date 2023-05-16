@@ -1,14 +1,15 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { TokenService } from '@esm/cdk';
-import { APP_ENV } from '@esm/core';
+import {
+  APP_STORE_PROVIDER,
+  TESTING_COMMON_IMPORTS,
+  TokenService,
+} from '@esm/cdk';
 import { UserSummary } from '@esm/data';
 import { UserService } from '@esm/services';
 import { AppEffects } from '@esm/store';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
-import { provideMockStore } from '@ngrx/store/testing';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable, of } from 'rxjs';
 
@@ -44,10 +45,10 @@ describe('AppEffects', () => {
     mockUserService = jasmine.createSpyObj<UserService>('UserService', ['me']);
 
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [TESTING_COMMON_IMPORTS],
       providers: [
+        APP_STORE_PROVIDER,
         AppEffects,
-        provideMockStore({}),
         provideMockActions(() => actions$),
         {
           provide: TokenService,
@@ -57,7 +58,6 @@ describe('AppEffects', () => {
           provide: UserService,
           useValue: mockUserService,
         },
-        { provide: APP_ENV, useValue: {} },
       ],
     });
 

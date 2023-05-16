@@ -9,8 +9,8 @@ describe('InvigilatorAssignRoomHeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [...TESTING_COMMON_IMPORTS],
-      providers: [...APP_STORE_PROVIDER, InvigilatorAssignRoomStore],
+      imports: [TESTING_COMMON_IMPORTS],
+      providers: [APP_STORE_PROVIDER, InvigilatorAssignRoomStore],
     }).compileComponents();
 
     fixture = TestBed.createComponent(InvigilatorAssignRoomHeaderComponent);

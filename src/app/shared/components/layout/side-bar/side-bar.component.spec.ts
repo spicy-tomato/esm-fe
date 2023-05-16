@@ -1,8 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { APP_STORE_PROVIDER, TESTING_COMMON_IMPORTS } from '@esm/cdk';
 import { RoleDirective } from '@esm/shared/directives';
-import { appFeatureKey, appInitialState } from '@esm/store';
-import { provideMockStore } from '@ngrx/store/testing';
 import { NGRX, SideBarComponent, TAIGA_UI } from './side-bar.component';
 
 describe('SideBarComponent', () => {
@@ -11,14 +9,8 @@ describe('SideBarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, RoleDirective, ...NGRX, ...TAIGA_UI],
-      providers: [
-        provideMockStore({
-          initialState: {
-            [appFeatureKey]: appInitialState,
-          },
-        }),
-      ],
+      imports: [TESTING_COMMON_IMPORTS, RoleDirective, NGRX, TAIGA_UI],
+      providers: [APP_STORE_PROVIDER],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SideBarComponent);

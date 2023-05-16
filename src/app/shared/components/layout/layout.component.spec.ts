@@ -16,6 +16,7 @@ import { LayoutComponent, NGRX, TAIGA_UI } from './layout.component';
 import { MainViewComponent } from './main-view/main-view.component';
 import { SideBarComponent } from './side-bar';
 import { TopBarComponent } from './top-bar';
+import { TESTING_COMMON_IMPORTS } from '@esm/cdk';
 
 describe('LayoutComponent', () => {
   let component: LayoutComponent;
@@ -24,16 +25,14 @@ describe('LayoutComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        NoopAnimationsModule,
-        HttpClientTestingModule,
-        RouterTestingModule,
+        TESTING_COMMON_IMPORTS,
         TopBarComponent,
         SideBarComponent,
         MainViewComponent,
         StoreModule.forRoot({}),
         EffectsModule.forRoot([]),
-        ...NGRX,
-        ...TAIGA_UI,
+        NGRX,
+        TAIGA_UI,
       ],
       providers: [
         EchoService,

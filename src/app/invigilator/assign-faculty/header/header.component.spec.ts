@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TESTING_COMMON_IMPORTS } from '@esm/cdk';
 import { APP_ENV } from '@esm/core';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { InvigilatorAssignFacultyStore } from '../assign-faculty.store';
 import { InvigilatorAssignFacultyHeaderComponent } from './header.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('InvigilatorAssignFacultyHeaderComponent', () => {
   let component: InvigilatorAssignFacultyHeaderComponent;
@@ -12,7 +12,7 @@ describe('InvigilatorAssignFacultyHeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [TESTING_COMMON_IMPORTS],
       providers: [
         InvigilatorAssignFacultyStore,
         provideMockStore({

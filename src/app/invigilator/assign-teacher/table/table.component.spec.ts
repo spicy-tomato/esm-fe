@@ -1,9 +1,6 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { APP_ENV } from '@esm/core';
-import { appFeatureKey, appInitialState } from '@esm/store';
+import { APP_STORE_PROVIDER, TESTING_COMMON_IMPORTS } from '@esm/cdk';
 import { provideComponentStore } from '@ngrx/component-store';
-import { provideMockStore } from '@ngrx/store/testing';
 import { InvigilatorAssignTeacherStore } from '../assign-teacher.store';
 import {
   InvigilatorAssignTeacherTableComponent,
@@ -16,15 +13,10 @@ describe('InvigilatorAssignTeacherTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, ...TAIGA_UI],
+      imports: [TESTING_COMMON_IMPORTS, TAIGA_UI],
       providers: [
+        APP_STORE_PROVIDER,
         provideComponentStore(InvigilatorAssignTeacherStore),
-        provideMockStore({
-          initialState: {
-            [appFeatureKey]: appInitialState,
-          },
-        }),
-        { provide: APP_ENV, useValue: {} },
       ],
     }).compileComponents();
 

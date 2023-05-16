@@ -9,6 +9,7 @@ import {
   NGRX,
   TAIGA_UI,
 } from './assign-faculty.component';
+import { TESTING_COMMON_IMPORTS } from '@esm/cdk';
 
 describe('AssignFacultyComponent', () => {
   let component: InvigilatorAssignFacultyComponent;
@@ -17,10 +18,9 @@ describe('AssignFacultyComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        HttpClientTestingModule,
-        ReactiveFormsModule,
-        ...NGRX,
-        ...TAIGA_UI,
+        TESTING_COMMON_IMPORTS,
+        NGRX,
+        TAIGA_UI,
       ],
       providers: [
         provideMockStore({

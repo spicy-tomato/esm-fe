@@ -4,7 +4,7 @@ import {
   fakeAsync,
   TestBed,
 } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { TESTING_COMMON_IMPORTS } from '@esm/cdk';
 import { RelativeTimePipe } from '@esm/core';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -27,7 +27,7 @@ describe('NotificationListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, RelativeTimePipe, ...NGRX, ...TAIGA_UI],
+      imports: [TESTING_COMMON_IMPORTS, RelativeTimePipe, NGRX, TAIGA_UI],
       providers: [
         provideMockStore({
           initialState: {

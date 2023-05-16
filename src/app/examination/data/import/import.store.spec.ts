@@ -1,6 +1,5 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { fakeAsync, TestBed } from '@angular/core/testing';
-import { ResultBuilder } from '@esm/cdk';
+import { ResultBuilder, TESTING_COMMON_IMPORTS } from '@esm/cdk';
 import { APP_ENV } from '@esm/core';
 import { ExaminationService } from '@esm/services';
 import { appFeatureKey, appInitialState } from '@esm/store';
@@ -19,7 +18,7 @@ describe('ExaminationDataImportStore', () => {
     );
 
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [TESTING_COMMON_IMPORTS],
       providers: [
         ExaminationDataImportStore,
         {

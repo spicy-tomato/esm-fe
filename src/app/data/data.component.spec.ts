@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { TESTING_COMMON_IMPORTS } from '@esm/cdk';
 import { TUI_SANITIZER } from '@taiga-ui/core';
 import { NgDompurifySanitizer } from '@tinkoff/ng-dompurify';
 import { DataComponent, TAIGA_UI } from './data.component';
@@ -10,7 +10,7 @@ describe('DataComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, ...TAIGA_UI],
+      imports: [TESTING_COMMON_IMPORTS, TAIGA_UI],
       providers: [
         {
           provide: TUI_SANITIZER,

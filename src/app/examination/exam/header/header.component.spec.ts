@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ExaminationExamHeaderComponent } from './header.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TESTING_COMMON_IMPORTS } from '@esm/cdk';
 import { APP_ENV } from '@esm/core';
-import { ExaminationExamStore } from '../exam.store';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { provideMockStore } from '@ngrx/store/testing';
+import { ExaminationExamStore } from '../exam.store';
+import { ExaminationExamHeaderComponent } from './header.component';
 
 describe('ExaminationExamHeaderComponent', () => {
   let component: ExaminationExamHeaderComponent;
@@ -12,7 +12,7 @@ describe('ExaminationExamHeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [TESTING_COMMON_IMPORTS],
       providers: [
         ExaminationExamStore,
         provideMockStore({

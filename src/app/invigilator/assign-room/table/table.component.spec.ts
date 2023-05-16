@@ -9,8 +9,8 @@ describe('InvigilatorAssignRoomTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [...TESTING_COMMON_IMPORTS, ...TAIGA_UI],
-      providers: [...APP_STORE_PROVIDER, InvigilatorAssignRoomStore],
+      imports: [TESTING_COMMON_IMPORTS, TAIGA_UI],
+      providers: [APP_STORE_PROVIDER, InvigilatorAssignRoomStore],
     }).compileComponents();
 
     fixture = TestBed.createComponent(InvigilatorAssignRoomTableComponent);

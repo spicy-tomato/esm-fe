@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { TESTING_COMMON_IMPORTS } from '@esm/cdk';
 import { provideMockStore } from '@ngrx/store/testing';
 import { TuiRootModule } from '@taiga-ui/core';
 import { AppComponent } from './app.component';
@@ -10,7 +10,7 @@ describe('AppComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TuiRootModule, LoaderComponent, RouterTestingModule],
+      imports: [TESTING_COMMON_IMPORTS, TuiRootModule, LoaderComponent],
       declarations: [AppComponent],
       providers: [provideMockStore({})],
     }).compileComponents();

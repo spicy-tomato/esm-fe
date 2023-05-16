@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { appFeatureKey, appInitialState } from '@esm/store';
-import { provideMockStore } from '@ngrx/store/testing';
+import { APP_STORE_PROVIDER } from '@esm/cdk';
 import { WorkflowDialogComponent } from './workflow.component';
 
 describe('WorkflowDialogComponent', () => {
@@ -9,14 +8,8 @@ describe('WorkflowDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [WorkflowDialogComponent],
-      providers: [
-        provideMockStore({
-          initialState: {
-            [appFeatureKey]: appInitialState,
-          },
-        }),
-      ],
+      imports: [],
+      providers: [APP_STORE_PROVIDER],
     }).compileComponents();
 
     fixture = TestBed.createComponent(WorkflowDialogComponent);

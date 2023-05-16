@@ -1,11 +1,7 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { APP_ENV, ExamMethodPipe } from '@esm/core';
+import { APP_STORE_PROVIDER, TESTING_COMMON_IMPORTS } from '@esm/cdk';
+import { ExamMethodPipe } from '@esm/core';
 import { ExamMethod, GetHandoverDataResponseItem } from '@esm/data';
-import { appFeatureKey, appInitialState } from '@esm/store';
-import { provideMockStore } from '@ngrx/store/testing';
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
 import {
   EditShiftReportDialogComponent,
@@ -49,21 +45,9 @@ describe('EditShiftReportDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        NoopAnimationsModule,
-        FormsModule,
-        ExamMethodPipe,
-        ...NGRX,
-        ...TAIGA_UI,
-      ],
+      imports: [TESTING_COMMON_IMPORTS, ExamMethodPipe, NGRX, TAIGA_UI],
       providers: [
-        provideMockStore({
-          initialState: {
-            [appFeatureKey]: appInitialState,
-          },
-        }),
-        { provide: APP_ENV, useValue: {} },
+        APP_STORE_PROVIDER,
         {
           provide: POLYMORPHEUS_CONTEXT,
           useValue: {

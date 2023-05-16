@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideMockStore } from '@ngrx/store/testing';
+import { APP_STORE_PROVIDER } from '@esm/cdk';
 import { RoleDirective } from './role.directive';
 
 @Component({
@@ -17,7 +17,7 @@ describe('RoleDirective', () => {
     await TestBed.configureTestingModule({
       imports: [RoleDirective],
       declarations: [HostComponent],
-      providers: [provideMockStore({})],
+      providers: [APP_STORE_PROVIDER],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HostComponent);

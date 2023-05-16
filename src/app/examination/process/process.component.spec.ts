@@ -1,6 +1,5 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
+import { TESTING_COMMON_IMPORTS } from '@esm/cdk';
 import { APP_ENV } from '@esm/core';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { LetModule } from '@ngrx/component';
@@ -20,12 +19,11 @@ describe('ExaminationProcessComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        FormsModule,
-        HttpClientTestingModule,
+        TESTING_COMMON_IMPORTS,
         DiagramModule,
         DiagramAllModule,
         LetModule,
-        ...TAIGA_UI,
+        TAIGA_UI,
       ],
       providers: [
         ExaminationProcessStore,

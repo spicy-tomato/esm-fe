@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ExaminationGeneralComponent } from './general.component';
 
 describe('GeneralComponent', () => {
@@ -7,8 +6,7 @@ describe('GeneralComponent', () => {
   let fixture: ComponentFixture<ExaminationGeneralComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-    }).compileComponents();
+    await TestBed.configureTestingModule({}).compileComponents();
 
     fixture = TestBed.createComponent(ExaminationGeneralComponent);
     component = fixture.componentInstance;

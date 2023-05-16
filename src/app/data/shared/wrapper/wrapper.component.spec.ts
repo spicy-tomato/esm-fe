@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { TESTING_COMMON_IMPORTS } from '@esm/cdk';
 import { DataWrapperComponent } from './wrapper.component';
 
 describe('WrapperComponent', () => {
@@ -8,7 +8,7 @@ describe('WrapperComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [TESTING_COMMON_IMPORTS],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DataWrapperComponent);

@@ -8,7 +8,7 @@ describe('ConfirmDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [...NGRX, ...TAIGA_UI],
+      imports: [NGRX, TAIGA_UI],
       providers: [
         {
           provide: POLYMORPHEUS_CONTEXT,
