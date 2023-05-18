@@ -53,7 +53,7 @@ export class LayoutComponent {
 
   // PUBLIC PROPERTIES
   readonly isInCommonPage$ = new BehaviorSubject<boolean>(true);
-  readonly hideCreateButton$ = new BehaviorSubject<boolean>(true);
+  readonly isInCreatePage$ = new BehaviorSubject<boolean>(true);
   readonly commonPages = ['/create', '/data'];
 
   // LIFECYCLE
@@ -69,7 +69,7 @@ export class LayoutComponent {
         tap((e) => {
           e = e as NavigationEnd;
           this.isInCommonPage$.next(this.isCommonPage(e.url));
-          this.hideCreateButton$.next(e.url === '/create');
+          this.isInCreatePage$.next(e.url === '/create');
         })
       )
       .subscribe();

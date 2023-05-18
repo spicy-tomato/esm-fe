@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { StringHelper } from '@esm/cdk';
-import { AppSelector, AppState } from '@esm/store';
+import { AppPageAction, AppSelector, AppState } from '@esm/store';
 import { ComponentStore } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
 import { combineLatest, map, takeUntil } from 'rxjs';
@@ -20,6 +20,7 @@ export class TopBarStore extends ComponentStore<{}> {
     .pipe(takeUntil(this.destroy$));
 
   private readonly user$ = this.appStore.pipe(AppSelector.notNullUser);
+  private readonly role$ = this.appStore.select(AppSelector.role);
 
   private readonly userTitle$ = this.appStore.pipe(
     AppSelector.userTitle(false)
@@ -38,15 +39,21 @@ export class TopBarStore extends ComponentStore<{}> {
     map(({ fullName }) => StringHelper.getFirstName(fullName))
   );
 
+  private readonly isInvigilator$ = this.role$.pipe(
+    map((r) => r === 'ExaminationDepartmentHead')
+  );
+
   readonly navObservables$ = combineLatest([
     this.examinationStatus$,
     this.userTitle$,
     this.userName$,
+    this.isInvigilator$,
   ]).pipe(
-    map(([examinationStatus, userTitle, userName]) => ({
+    map(([examinationStatus, userTitle, userName, isInvigilator]) => ({
       examinationStatus,
       userTitle,
       userName,
+      isInvigilator,
     }))
   );
 
@@ -63,5 +70,10 @@ export class TopBarStore extends ComponentStore<{}> {
   // CONSTRUCTOR
   constructor() {
     super({});
+  }
+
+  // PUBLIC METHODS
+  logOut(): void {
+    this.appStore.dispatch(AppPageAction.logOut());
   }
 }

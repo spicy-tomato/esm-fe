@@ -34,7 +34,7 @@
 
   <div class="right flex items-center">
     <a
-      *ngIf="!hideCreateButton"
+      *ngIf="!isInCreatePage && obs.isInvigilator"
       [@fadeInOut]
       tuiButton
       routerLink="/create"

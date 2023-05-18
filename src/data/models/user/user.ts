@@ -1,4 +1,5 @@
 import { DepartmentSummary } from '../department';
+import { FacultySummary } from '../faculty';
 import { Role } from './role';
 
 export class UserSummary {
@@ -8,7 +9,8 @@ export class UserSummary {
   email!: string;
   createdAt!: Date;
   department!: DepartmentSummary | null;
-  role!: typeof Role[keyof typeof Role];
+  faculty!: FacultySummary | null;
+  role!: (typeof Role)[keyof typeof Role];
   isMale!: boolean;
   phoneNumber!: string | null;
 

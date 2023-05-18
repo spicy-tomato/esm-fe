@@ -24,6 +24,7 @@ describe('AppEffects', () => {
       id: 'fac',
       name: 'fn',
     },
+    faculty: null,
     invigilatorId: '',
     id: 'id',
     isMale: true,

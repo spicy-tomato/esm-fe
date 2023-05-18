@@ -11,9 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { fadeInOut } from '@esm/core';
 import { ExaminationSummary, GetRelatedResponseItem } from '@esm/data';
-import { AppPageAction, AppState } from '@esm/store';
 import { LetModule } from '@ngrx/component';
-import { Store } from '@ngrx/store';
 import {
   TuiActiveZoneModule,
   TuiFilterPipeModule,
@@ -76,14 +74,13 @@ export class TopBarComponent implements OnInit {
   // INJECT PROPERTIES
   readonly options = inject(TOP_BAR_OPTIONS);
 
-  private readonly router = inject(Router);
-  private readonly store = inject(TopBarStore);
   private readonly cdr = inject(ChangeDetectorRef);
-  private readonly appStore = inject(Store<AppState>);
+  private readonly store = inject(TopBarStore);
+  private readonly router = inject(Router);
 
   // INPUT
   @Input() isInCommonPage!: boolean;
-  @Input() hideCreateButton!: boolean;
+  @Input() isInCreatePage!: boolean;
 
   // PUBLIC PROPERTIES
   selectedExamination: ExaminationSummary | null = null;
@@ -115,7 +112,7 @@ export class TopBarComponent implements OnInit {
   onClickUserDropdownItem(action: string): void {
     this.openUserDropdown = false;
     if (action === TopBarConstants.keys.LOG_OUT) {
-      this.appStore.dispatch(AppPageAction.logOut());
+      this.store.logOut();
     }
   }
 

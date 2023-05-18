@@ -84,6 +84,7 @@ describe('CreateStore', () => {
               email: 'Mock',
               createdAt: new Date(2023, 1, 1),
               department: null,
+              faculty: null,
               role: 'ExaminationDepartmentHead' as any,
               isMale: true,
               phoneNumber: '',
