@@ -88,6 +88,9 @@ dependencies:
   dompurify:
     specifier: 2.2.9
     version: 2.2.9
+  ng-recaptcha:
+    specifier: ^11.0.0
+    version: 11.0.0(@angular/core@15.2.9)
   rxjs:
     specifier: ^7.4.0
     version: 7.5.7
@@ -3582,6 +3585,10 @@ packages:
       '@types/qs': 6.9.7
       '@types/serve-static': 1.15.1
     dev: true
+
+  /@types/grecaptcha@3.0.4:
+    resolution: {integrity: sha512-7l1Y8DTGXkx/r4pwU1nMVAR+yD/QC+MCHKXAyEX/7JZhwcN1IED09aZ9vCjjkcGdhSQiu/eJqcXInpl6eEEEwg==}
+    dev: false
 
   /@types/http-proxy@1.17.10:
     resolution: {integrity: sha512-Qs5aULi+zV1bwKAg5z1PWnDXWmsn+LxIvUGv6E2+OOMYhclZMO+OXd9pYVf2gLykf2I7IV2u7oTHwChPNsvJ7g==}
@@ -7842,6 +7849,16 @@ packages:
       ts-morph: 10.0.2
     dev: false
     optional: true
+
+  /ng-recaptcha@11.0.0(@angular/core@15.2.9):
+    resolution: {integrity: sha512-DS0ESI9ODmAW2ToBU5EuizusAmGcJCmYCKGB5CYWntPQOHDEcCWLxkQ6RJrF2USLtq9vooN5KVV45pNUpmPhNw==}
+    peerDependencies:
+      '@angular/core': ^15.0.0
+    dependencies:
+      '@angular/core': 15.2.9(rxjs@7.5.7)(zone.js@0.11.8)
+      '@types/grecaptcha': 3.0.4
+      tslib: 2.5.0
+    dev: false
 
   /nice-napi@1.0.2:
     resolution: {integrity: sha512-px/KnJAJZf5RuBGcfD+Sp2pAKq0ytz8j+1NehvgIGFkvtvFrDM3T8E4x/JJODXK9WZow8RRGrbA9QQ3hs+pDhA==}

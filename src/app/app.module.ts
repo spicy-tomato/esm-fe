@@ -3,6 +3,7 @@ import { NgModule, inject } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { duplicatedFactory, emailFactory, requiredFactory } from '@esm/cdk';
+import { APP_ENV } from '@esm/core';
 import { AuthInterceptor } from '@esm/interceptors';
 import { AppEffects, appFeatureKey, appReducer } from '@esm/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -20,6 +21,7 @@ import {
 import { TUI_LANGUAGE, TUI_VIETNAMESE_LANGUAGE } from '@taiga-ui/i18n';
 import { TUI_VALIDATION_ERRORS } from '@taiga-ui/kit';
 import { NgDompurifySanitizer } from '@tinkoff/ng-dompurify';
+import { RECAPTCHA_SETTINGS } from 'ng-recaptcha';
 import { of } from 'rxjs';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
@@ -52,6 +54,10 @@ const TAIGA_UI = [TuiRootModule, TuiAlertModule, TuiDialogModule];
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true,
+    },
+    {
+      provide: RECAPTCHA_SETTINGS,
+      useFactory: (): { siteKey: string } => inject(APP_ENV).recaptcha,
     },
     {
       provide: TUI_SANITIZER,

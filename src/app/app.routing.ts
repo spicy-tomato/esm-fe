@@ -62,6 +62,11 @@ const routes: Routes = [
           (await import('./notification/notification.routing')).ROUTES,
       },
       {
+        path: 'settings',
+        loadChildren: async () =>
+          (await import('./settings/settings.routing')).ROUTES,
+      },
+      {
         path: ':examinationId',
         canActivate: [authGuard],
         children: [
