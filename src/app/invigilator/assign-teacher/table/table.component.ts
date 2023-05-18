@@ -16,6 +16,7 @@ import {
 } from '@angular/forms';
 import { StringifyHelper } from '@esm/cdk';
 import {
+  DepartmentSummary,
   GetGroupByFacultyIdResponseItem,
   UpdateTeacherAssignmentRequest,
   UserSimple,
@@ -23,7 +24,7 @@ import {
 } from '@esm/data';
 import { LetModule } from '@ngrx/component';
 import { TuiTableModule } from '@taiga-ui/addon-table';
-import { TuiDestroyService, TuiFilterPipeModule } from '@taiga-ui/cdk';
+import { TuiDestroyService, TuiFilterPipeModule, tuiPure } from '@taiga-ui/cdk';
 import { TuiDataListModule, TuiScrollbarModule } from '@taiga-ui/core';
 import { TuiComboBoxModule, TuiSelectModule } from '@taiga-ui/kit';
 import { filter, takeUntil, tap } from 'rxjs';
@@ -132,6 +133,16 @@ export class InvigilatorAssignTeacherTableComponent implements OnInit {
     );
 
     this.store.save(dataToSave);
+  }
+
+  @tuiPure
+  getDepartmentOfAnonymousInvigilator(
+    departments: DepartmentSummary[],
+    departmentId?: string | null
+  ): string {
+    if (!departmentId) return '';
+
+    return departments.find((d) => d.id === departmentId)?.name || '';
   }
 
   // PRIVATE METHODS
