@@ -61,6 +61,7 @@ export class SideBarConstant {
     {
       name: 'Thanh toán',
       icon: 'far fa-wallet',
+      roles: [Role.EXAMINATION_DEPARTMENT_HEAD],
       subItems: [
         {
           name: 'Ban coi thi',
@@ -81,6 +82,7 @@ export class SideBarConstant {
     },
     {
       name: 'Báo cáo, thống kê',
+      roles: [Role.EXAMINATION_DEPARTMENT_HEAD],
       icon: 'far fa-chart-pie',
       subItems: [
         {
