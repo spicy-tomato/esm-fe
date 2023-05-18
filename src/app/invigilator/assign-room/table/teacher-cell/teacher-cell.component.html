@@ -8,7 +8,7 @@
 >
   <ng-template tuiDataList>
     <tui-data-list>
-      <tui-opt-group>
+      <tui-opt-group *ngrxLet="usedInvigilatorsMap$ as usedInvigilatorsMap">
         <ng-container *ngFor="let invigilator of invigilatorsData">
           <!-- Only show prior invigilators on first row, else show other ones -->
           <ng-container
@@ -48,17 +48,15 @@
 
             <!-- Show selection -->
             <ng-template #selection>
-              <ng-container
-                *ngrxLet="usedInvigilatorsMap$ as usedInvigilatorsMap"
+              <button
+                tuiOption
+                *ngIf="
+                  !usedInvigilatorsMap[row.shiftGroup.id]?.[$any(invigilator).id]
+                "
+                [value]="$any(invigilator).id"
               >
-                <button
-                  tuiOption
-                  *ngIf="!usedInvigilatorsMap[$any(invigilator).id]"
-                  [value]="$any(invigilator).id"
-                >
-                  {{ $any(invigilator).fullName }}
-                </button>
-              </ng-container>
+                {{ $any(invigilator).fullName }}
+              </button>
             </ng-template>
           </ng-container>
         </ng-container>
