@@ -1,5 +1,4 @@
 import { inject, Injectable } from '@angular/core';
-import { StringHelper } from '@esm/cdk';
 import { AppPageAction, AppSelector, AppState } from '@esm/store';
 import { ComponentStore } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
@@ -19,7 +18,8 @@ export class TopBarStore extends ComponentStore<{}> {
     .select(AppSelector.examinationStatus)
     .pipe(takeUntil(this.destroy$));
 
-  private readonly user$ = this.appStore.pipe(AppSelector.notNullUser);
+  private readonly userName$ = this.appStore.pipe(AppSelector.userName);
+
   private readonly role$ = this.appStore.select(AppSelector.role);
 
   private readonly userTitle$ = this.appStore.pipe(
@@ -35,10 +35,6 @@ export class TopBarStore extends ComponentStore<{}> {
     .pipe(takeUntil(this.destroy$));
 
   // CUSTOM SELECTORS
-  private readonly userName$ = this.user$.pipe(
-    map(({ fullName }) => StringHelper.getFirstName(fullName))
-  );
-
   private readonly isInvigilator$ = this.role$.pipe(
     map((r) => r === 'ExaminationDepartmentHead')
   );

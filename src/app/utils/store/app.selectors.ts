@@ -1,7 +1,7 @@
-import { ObservableHelper } from '@esm/cdk';
-import { DepartmentSummary, FacultySummary } from '@esm/data';
+import { ObservableHelper, StringHelper } from '@esm/cdk';
+import { DepartmentSummary, FacultySummary, UserSummary } from '@esm/data';
 import { createFeatureSelector, createSelector, select } from '@ngrx/store';
-import { map, Observable, pipe, UnaryFunction } from 'rxjs';
+import { Observable, UnaryFunction, map, pipe } from 'rxjs';
 import { appFeatureKey } from './app.reducer';
 import { AppState } from './app.state';
 
@@ -23,13 +23,24 @@ export class AppSelector {
     (state) => state.user?.role
   );
 
+  static readonly userName = pipe(
+    this.notNullUser,
+    map((user) =>
+      this.isOrganizationAccount(user)
+        ? user.fullName
+        : StringHelper.getFirstName(user.fullName)
+    )
+  );
+
   static readonly userTitle = (
     useTitleCase = true
-  ): UnaryFunction<Observable<object>, Observable<string>> =>
+  ): UnaryFunction<Observable<object>, Observable<string | null>> =>
     pipe(
       this.notNullUser,
-      map(({ isMale }) => {
-        let title = isMale ? 'Thầy' : 'Cô';
+      map((user) => {
+        if (this.isOrganizationAccount(user)) return null;
+
+        let title = user.isMale ? 'Thầy' : 'Cô';
         if (!useTitleCase) {
           title = title.toLocaleLowerCase();
         }
@@ -104,4 +115,11 @@ export class AppSelector {
         return acc;
       }, [] as DepartmentSummary[])
   );
+
+  private static isOrganizationAccount({
+    faculty,
+    role,
+  }: UserSummary): boolean {
+    return !!faculty || role === 'ExaminationDepartmentHead';
+  }
 }
