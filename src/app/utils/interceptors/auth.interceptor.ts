@@ -6,7 +6,7 @@ import {
   HttpInterceptor,
   HttpRequest,
 } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { TokenService } from '@esm/cdk';
 import { RedirectService } from '@esm/services';
 import { Observable, tap } from 'rxjs';
@@ -31,19 +31,40 @@ export class AuthInterceptor implements HttpInterceptor {
       tap({
         error: (error) => {
           if (!(error instanceof HttpErrorResponse)) return;
-          const currentUrl = this.location.path();
 
-          if (error.status === 401) {
-            const token = error.headers.get('Authorization');
-            if (token) {
-              this.tokenService.save(token);
-            } else if (!currentUrl.includes('login')) {
-              this.tokenService.clear();
-              this.redirectService.login(currentUrl);
-            }
+          switch (error.status) {
+            case 401:
+              this.handleUnauthorized(error);
+              break;
+            case 403:
+              this.handlePermissionDenied();
+              break;
+            case 404:
+              this.handleNotFound();
+              break;
           }
         },
       })
     );
+  }
+
+  private handleUnauthorized(error: HttpErrorResponse): void {
+    const token = error.headers.get('Authorization');
+    const currentUrl = this.location.path();
+
+    if (token) {
+      this.tokenService.save(token);
+    } else if (!currentUrl.includes('login')) {
+      this.tokenService.clear();
+      this.redirectService.login(currentUrl);
+    }
+  }
+
+  private handlePermissionDenied(): void {
+    this.redirectService.permissionDenied();
+  }
+
+  private handleNotFound(): void {
+    this.redirectService.notFound();
   }
 }

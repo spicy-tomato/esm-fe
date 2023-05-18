@@ -1,4 +1,5 @@
 export * from './bell';
+export * from './error';
 export * from './error-flag';
 export * from './safe-examination-data';
 export * from './layout';

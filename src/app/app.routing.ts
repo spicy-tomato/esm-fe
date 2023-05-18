@@ -19,6 +19,16 @@ const routes: Routes = [
       (await import('./user/login/login.component')).LoginComponent,
   },
   {
+    path: '403',
+    loadChildren: async () =>
+      (await import('./error/forbidden/forbidden.routing')).ROUTES,
+  },
+  {
+    path: '404',
+    loadChildren: async () =>
+      (await import('./error/not-found/not-found.routing')).ROUTES,
+  },
+  {
     path: '',
     canActivate: [authGuard],
     component: LayoutComponent,
@@ -35,6 +45,10 @@ const routes: Routes = [
       },
       {
         path: 'create',
+        canActivate: [permissionGuard],
+        data: {
+          roles: [Role.EXAMINATION_DEPARTMENT_HEAD],
+        },
         loadChildren: async () =>
           (await import('./examination/create/create.routing')).ROUTES,
       },

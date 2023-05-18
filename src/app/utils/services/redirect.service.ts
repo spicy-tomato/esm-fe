@@ -25,4 +25,12 @@ export class RedirectService {
 
     this.router.navigate(['/']);
   }
+
+  permissionDenied(): void {
+    this.router.navigate(['/403']);
+  }
+
+  notFound(): void {
+    this.router.navigate(['/404']);
+  }
 }
