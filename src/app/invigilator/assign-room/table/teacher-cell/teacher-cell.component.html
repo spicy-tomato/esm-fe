@@ -48,13 +48,17 @@
 
             <!-- Show selection -->
             <ng-template #selection>
-              <button
-                tuiOption
-                *ngIf="!usedInvigilatorsMap[$any(invigilator).id]"
-                [value]="$any(invigilator).id"
+              <ng-container
+                *ngrxLet="usedInvigilatorsMap$ as usedInvigilatorsMap"
               >
-                {{ $any(invigilator).fullName }}
-              </button>
+                <button
+                  tuiOption
+                  *ngIf="!usedInvigilatorsMap[$any(invigilator).id]"
+                  [value]="$any(invigilator).id"
+                >
+                  {{ $any(invigilator).fullName }}
+                </button>
+              </ng-container>
             </ng-template>
           </ng-container>
         </ng-container>

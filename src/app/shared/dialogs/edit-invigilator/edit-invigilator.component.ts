@@ -21,13 +21,16 @@ import {
   TuiStringHandler,
 } from '@taiga-ui/cdk';
 import {
+  TUI_TEXTFIELD_APPEARANCE_DIRECTIVE,
   TuiAlertService,
+  TuiAppearance,
   TuiButtonModule,
   TuiDataListModule,
   TuiDialogContext,
   TuiErrorModule,
   TuiLabelModule,
   TuiNotification,
+  TuiTextfieldAppearanceDirective,
   TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
 import {
@@ -73,7 +76,17 @@ type FormType = {
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, ...NGRX, ...TAIGA_UI],
-  providers: [EditInvigilatorDialogStore],
+  providers: [
+    {
+      provide: TUI_TEXTFIELD_APPEARANCE_DIRECTIVE,
+      useFactory: (): TuiTextfieldAppearanceDirective => {
+        const directive = new TuiTextfieldAppearanceDirective();
+        directive.appearance = TuiAppearance.Textfield;
+        return directive;
+      },
+    },
+    EditInvigilatorDialogStore,
+  ],
 })
 export class EditInvigilatorDialogComponent implements OnInit {
   // INJECT PROPERTIES

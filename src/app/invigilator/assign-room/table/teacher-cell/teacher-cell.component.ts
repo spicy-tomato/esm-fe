@@ -40,6 +40,7 @@ import {
   InvigilatorAssignRoomStore,
   ShiftUiModel,
 } from '../../assign-room.store';
+import { LetModule } from '@ngrx/component';
 
 export const TAIGA_UI = [
   TuiDataListModule,
@@ -51,7 +52,13 @@ export const TAIGA_UI = [
 @Component({
   selector: 'esm-invigilator-assign-room-table-teacher-cell',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ObjectPipe, ...TAIGA_UI],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    LetModule,
+    ObjectPipe,
+    ...TAIGA_UI,
+  ],
   templateUrl: './teacher-cell.component.html',
   styleUrls: ['./teacher-cell.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -81,9 +88,6 @@ export class InvigilatorAssignRoomTableTeacherCellComponent
 
   @Input()
   invigilatorsData!: GetAvailableInvigilatorsInShiftGroupResponseItem[string];
-
-  @Input()
-  usedInvigilatorsMap: Record<string, string | null> = {};
 
   // VIEW CHILD
   @ViewChild(DefaultValueAccessor)

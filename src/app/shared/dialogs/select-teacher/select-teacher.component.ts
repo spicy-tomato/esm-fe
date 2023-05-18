@@ -10,10 +10,13 @@ import { UserSummary } from '@esm/data';
 import { LetModule } from '@ngrx/component';
 import { TuiDestroyService } from '@taiga-ui/cdk';
 import {
+  TUI_TEXTFIELD_APPEARANCE_DIRECTIVE,
+  TuiAppearance,
   TuiButtonModule,
   TuiDataListModule,
   TuiDialogContext,
   TuiLoaderModule,
+  TuiTextfieldAppearanceDirective,
   TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
 import { TuiComboBoxModule } from '@taiga-ui/kit';
@@ -50,7 +53,18 @@ export const TAIGA_UI = [
   ],
   templateUrl: './select-teacher.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [SelectTeacherDialogStore, TuiDestroyService],
+  providers: [
+    {
+      provide: TUI_TEXTFIELD_APPEARANCE_DIRECTIVE,
+      useFactory: (): TuiTextfieldAppearanceDirective => {
+        const directive = new TuiTextfieldAppearanceDirective();
+        directive.appearance = TuiAppearance.Textfield;
+        return directive;
+      },
+    },
+    TuiDestroyService,
+    SelectTeacherDialogStore,
+  ],
 })
 export class SelectTeacherDialogComponent implements OnInit {
   // INJECT PROPERTIES
