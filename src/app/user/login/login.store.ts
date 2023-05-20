@@ -34,7 +34,12 @@ export class LoginStore extends ComponentStore<LoginState> {
             ({ data }) => {
               this.tokenService.save(data.token);
               this.appStore.dispatch(AppPageAction.getUserInfo());
-              this.router.navigate(['']).then(() => null);
+              this.router.navigate(['']).catch((error) =>
+                this.patchState({
+                  status: 'error',
+                  error: error as string,
+                })
+              );
             },
             (error) =>
               this.patchState({

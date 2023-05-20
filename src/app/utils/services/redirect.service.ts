@@ -17,23 +17,23 @@ export class RedirectService {
       .navigate(['/login'], {
         queryParams: { redirect: redirect ?? null },
       })
-      .then(() => null);
+      .catch(() => null);
   }
 
   app(redirect?: string | null): void {
     if (redirect) {
-      this.router.navigate([redirect]).then(() => null);
+      this.router.navigate([redirect]).catch(() => null);
       return;
     }
 
-    this.router.navigate(['/']).then(() => null);
+    this.router.navigate(['/']).catch(() => null);
   }
 
   permissionDenied(): void {
-    this.router.navigate(['/403']).then(() => null);
+    this.router.navigate(['/403']).catch(() => null);
   }
 
   notFound(): void {
-    this.router.navigate(['/404']).then(() => null);
+    this.router.navigate(['/404']).catch(() => null);
   }
 }

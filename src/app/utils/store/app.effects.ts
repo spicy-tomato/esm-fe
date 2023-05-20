@@ -45,9 +45,9 @@ export class AppEffects {
     () => {
       return this.actions$.pipe(
         ofType(AppPageAction.logOut),
-        tap(async () => {
+        tap(() => {
           this.tokenService.clear();
-          await this.router.navigate(['/login']);
+          this.router.navigate(['/login']).catch(() => null);
         })
       );
     },

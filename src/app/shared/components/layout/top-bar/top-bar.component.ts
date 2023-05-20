@@ -104,9 +104,8 @@ export class TopBarComponent implements OnInit {
     item.name.toLowerCase().includes(search.toLowerCase());
 
   onClickExaminationDropdownItem(id: string): void {
-    this.router
-      .navigateByUrl(`${id}/exam`)
-      .then(() => (this.openExaminationDropdown = false));
+    this.router.navigateByUrl(`${id}/exam`).catch(() => null);
+    this.openExaminationDropdown = false;
   }
 
   onClickUserDropdownItem(action: string): void {
