@@ -7,7 +7,7 @@ on:
     types: [opened, synchronize, reopened]
 jobs:
   setup:
-    uses: ./.github/workflows/setup.yml
+    uses: ./.github/actions/setup.yml
 
   sonar-cloud:
     name: SonarCloud
