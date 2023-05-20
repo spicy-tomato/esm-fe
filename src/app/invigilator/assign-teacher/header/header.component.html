@@ -52,7 +52,7 @@
             tuiButton
             (click)="saveChange.next()"
             [showLoader]="obs.showLoader"
-            [disabled]="obs.disableSaveBtn"
+            [disabled]="obs.updateStatus === 'loading'"
             icon="tuiIconSaveLarge"
           >
             Lưu

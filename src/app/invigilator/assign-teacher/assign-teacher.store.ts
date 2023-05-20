@@ -111,14 +111,25 @@ export class InvigilatorAssignTeacherStore
     this.faculty$,
     this.role$,
     this.disableSaveBtn$,
+    this.updateStatus$,
   ]).pipe(
-    map(([showLoader, faculties, faculty, role, disableSaveBtn]) => ({
-      showLoader,
-      faculties,
-      faculty,
-      role,
-      disableSaveBtn,
-    }))
+    map(
+      ([
+        showLoader,
+        faculties,
+        faculty,
+        role,
+        disableSaveBtn,
+        updateStatus,
+      ]) => ({
+        showLoader,
+        faculties,
+        faculty,
+        role,
+        disableSaveBtn,
+        updateStatus,
+      })
+    )
   );
 
   readonly tableObservables$ = combineLatest([

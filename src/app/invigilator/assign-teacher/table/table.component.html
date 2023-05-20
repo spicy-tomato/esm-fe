@@ -121,6 +121,7 @@
               <tui-combo-box
                 *ngIf="obs.role === 'Teacher'; else teacherTmpl"
                 [(search)]="customValues[row.id]"
+                (ngModelChange)="onInvigilatorChanges(row.facultyShiftGroup.id)"
                 [formControl]="rowControl.controls.user"
                 [valueContent]="invigilatorContent"
                 [identityMatcher]="invigilatorIdentityMatcher"
@@ -134,6 +135,7 @@
                           | tuiFilter
                             : invigilatorMatcher
                             : rowControl.value.departmentId
+                            : row.facultyShiftGroup.id
                       "
                       tuiOption
                       [value]="invigilator"
