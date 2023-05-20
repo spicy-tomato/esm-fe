@@ -155,7 +155,7 @@ export class InvigilatorAssignTeacherTableComponent implements OnInit {
   ): string {
     if (!departmentId) return '';
 
-    return departments.find((d) => d.id === departmentId)?.name || '';
+    return departments.find((d) => d.id === departmentId)?.name ?? '';
   }
 
   onInvigilatorChanges(facultyShiftGroupId: string): void {

@@ -243,7 +243,7 @@ export class InvigilatorAssignFacultyTableComponent implements OnInit {
         if (ignoreColumns.includes(key)) return;
 
         // Faculty columns
-        if (key.match(/^\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$/)) {
+        if (/^\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$/.exec(key)) {
           res[key] = value.actual ?? 0;
           return;
         }
