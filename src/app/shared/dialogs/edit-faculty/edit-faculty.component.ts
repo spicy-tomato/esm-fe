@@ -57,8 +57,8 @@ export class EditFacultyDialogComponent implements OnInit {
 
   // PUBLIC PROPERTIES
   form = this.fb.group({
-    displayId: [this.context.data?.displayId || '', Validators.required],
-    name: [this.context.data?.name || '', Validators.required],
+    displayId: [this.context.data?.displayId ?? '', Validators.required],
+    name: [this.context.data?.name ?? '', Validators.required],
   });
   readonly isEditDialog = this.context.data !== undefined;
   readonly status$ = this.store.status$;

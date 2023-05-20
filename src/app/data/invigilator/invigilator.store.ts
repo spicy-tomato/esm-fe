@@ -53,7 +53,7 @@ export class DataInvigilatorStore extends ComponentStore<DataInvigilatorState> {
     this.faculties$,
     this.selectedFacultyId$,
   ]).pipe(
-    map(([faculties, id]) => faculties.find((f) => f.id === id)?.name || '')
+    map(([faculties, id]) => faculties.find((f) => f.id === id)?.name ?? '')
   );
 
   private readonly departments$ = combineLatest([
@@ -61,7 +61,7 @@ export class DataInvigilatorStore extends ComponentStore<DataInvigilatorState> {
     this.selectedFacultyId$,
   ]).pipe(
     map(
-      ([faculties, id]) => faculties.find((f) => f.id === id)?.departments || []
+      ([faculties, id]) => faculties.find((f) => f.id === id)?.departments ?? []
     )
   );
 
@@ -69,7 +69,7 @@ export class DataInvigilatorStore extends ComponentStore<DataInvigilatorState> {
     this.departments$,
     this.selectedDepartmentId$,
   ]).pipe(
-    map(([departments, id]) => departments.find((d) => d.id === id)?.name || '')
+    map(([departments, id]) => departments.find((d) => d.id === id)?.name ?? '')
   );
 
   readonly headerObservables$ = combineLatest([

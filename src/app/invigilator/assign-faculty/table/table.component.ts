@@ -99,7 +99,7 @@ export class InvigilatorAssignFacultyTableComponent implements OnInit {
 
   // PUBLIC METHODS
   get formControl(): FormArray {
-    return this.form.controls['data'] as FormArray;
+    return this.form.controls['data'];
   }
 
   onDoubleClickCell(evt: MouseEvent, rowId: number, facultyId: string): void {
@@ -206,9 +206,7 @@ export class InvigilatorAssignFacultyTableComponent implements OnInit {
   }
 
   private getFacultyControl(index: number, facultyId: string): FormControl {
-    return (this.form.controls['data'] as FormArray)
-      .at(index)
-      .get(facultyId) as FormControl;
+    return this.form.controls['data'].at(index).get(facultyId) as FormControl;
   }
 
   private handleExportFile(): void {

@@ -36,7 +36,9 @@ export class ExaminationEditStore extends ComponentStore<ExaminationEditState> {
         this.examinationService.create(param).pipe(
           tapResponse(
             ({ data }) => {
-              this.router.navigateByUrl(`${data.id}/exam/data`);
+              this.router
+                .navigateByUrl(`${data.id}/exam/data`)
+                .then(() => null);
             },
             (error) =>
               this.patchState({

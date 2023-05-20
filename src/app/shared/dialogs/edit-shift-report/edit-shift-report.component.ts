@@ -62,7 +62,7 @@ export class EditShiftReportDialogComponent implements OnInit {
   private readonly store = inject(EditShiftReportDialogStore);
 
   // PUBLIC PROPERTIES
-  reportValue = this.context.data.report || '';
+  reportValue = this.context.data.report ?? '';
   readonly handoverInvigilatorName = this.context.data.invigilatorShift.find(
     (ivs) => ivs.invigilator?.id === this.context.data.handedOverUserId
   )?.invigilator?.fullName;
