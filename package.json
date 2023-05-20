@@ -11,6 +11,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:coverage": "ng test --code-coverage",
+    "test:ci": "ng test --code-coverage --no-watch --browsers=ChromeHeadlessCI",
     "prepare": "husky install",
     "lint": "ng lint",
     "preinstall": "npx only-allow pnpm"
