@@ -6,33 +6,13 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
-  sonarcloud:
+  setup:
+    uses: ./.github/workflows/setup.yml
+
+  sonar-cloud:
     name: SonarCloud
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8.3.1
-
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.20.0
-
-      - name: Generate env files
-        run: node ./scripts/env.js
-        env:
-          BASE_URL: "${{ secrets.BASE_URL }}"
-          SYNCFUSION_LICENSE: "${{ secrets.SYNCFUSION_LICENSE }}"
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
       - name: Test and coverage
         run: npm run test:ci
 

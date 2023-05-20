@@ -1,15 +1,10 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
-name: Verify PR
-
+name: Setup
 on:
-  pull_request:
-    branches: ["prod"]
+  workflow_call:
 
 jobs:
-  build:
-    name: Build Prod
+  setup:
+    name: Setup
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -18,8 +13,8 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 8.3.1
-      
+          version: 8.4.0
+
       - name: Setup node
         uses: actions/setup-node@v3
         with:
@@ -30,9 +25,7 @@ jobs:
         env:
           BASE_URL: "${{ secrets.BASE_URL }}"
           SYNCFUSION_LICENSE: "${{ secrets.SYNCFUSION_LICENSE }}"
+          RECAPTCHA_SITE_KEY: "${{ secrets.RECAPTCHA_SITE_KEY }}"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-
-      - name: Build
-        run: npm run build:prod

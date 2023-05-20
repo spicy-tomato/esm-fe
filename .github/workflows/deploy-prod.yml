@@ -1,0 +1,27 @@
+name: Deploy
+
+on:
+  push:
+    branches: ["prod"]
+
+jobs:
+  setup:
+    uses: ./.github/workflows/setup.yml
+
+  build:
+    name: Build Prod
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build
+        run: npm run build:prod
+
+      - name: Copy bundle to VPS
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PWD }}
+          source: "./dist/esm-fe/*"
+          target: "/var/www/esm"
+          strip_components: 2
+          overwrite: true
