@@ -27,7 +27,7 @@ import {
   TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
 import { TuiInputModule } from '@taiga-ui/kit';
-import { tap, withLatestFrom } from 'rxjs';
+import { combineLatest, debounceTime, tap } from 'rxjs';
 import { BellComponent } from '../../bell';
 import { TopBarConstants } from './top-bar.constant';
 import { TopBarStore } from './top-bar.store';
@@ -93,7 +93,6 @@ export class TopBarComponent implements OnInit {
   readonly examination$ = this.store.examination$;
   readonly navObservables$ = this.store.navObservables$;
   readonly examinationStatus$ = this.store.examinationStatus$;
-  readonly dropdownObservables$ = this.store.dropdownObservables$;
 
   // IMPLEMENTATIONS
   ngOnInit(): void {
@@ -118,9 +117,9 @@ export class TopBarComponent implements OnInit {
 
   // PRIVATE METHODS
   private triggerBindCurrentExamination(): void {
-    this.examinationStatus$
+    combineLatest([this.examinationStatus$, this.examination$])
       .pipe(
-        withLatestFrom(this.examination$),
+        debounceTime(0),
         tap(({ 1: examination }) => {
           this.selectedExamination = examination;
           this.cdr.markForCheck();

@@ -44,23 +44,26 @@ export class TopBarStore extends ComponentStore<{}> {
     this.userTitle$,
     this.userName$,
     this.isInvigilator$,
-  ]).pipe(
-    map(([examinationStatus, userTitle, userName, isInvigilator]) => ({
-      examinationStatus,
-      userTitle,
-      userName,
-      isInvigilator,
-    }))
-  );
-
-  readonly dropdownObservables$ = combineLatest([
     this.relatedStatus$,
     this.relatedExaminations$,
   ]).pipe(
-    map(([relatedStatus, relatedExaminations]) => ({
-      relatedStatus,
-      relatedExaminations,
-    }))
+    map(
+      ([
+        examinationStatus,
+        userTitle,
+        userName,
+        isInvigilator,
+        relatedStatus,
+        relatedExaminations,
+      ]) => ({
+        examinationStatus,
+        userTitle,
+        userName,
+        isInvigilator,
+        relatedStatus,
+        relatedExaminations,
+      })
+    )
   );
 
   // CONSTRUCTOR

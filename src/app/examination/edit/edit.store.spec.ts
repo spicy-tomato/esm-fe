@@ -1,16 +1,18 @@
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { ResultBuilder, TESTING_COMMON_IMPORTS } from '@esm/cdk';
-import { APP_ENV } from '@esm/core';
+import {
+  APP_STORE_PROVIDER,
+  ResultBuilder,
+  TESTING_COMMON_IMPORTS,
+} from '@esm/cdk';
 import { CreateExaminationRequest, ExaminationStatus } from '@esm/data';
 import { ExaminationService } from '@esm/services';
-import { provideMockStore } from '@ngrx/store/testing';
 import { cold } from 'jasmine-marbles';
 import { of } from 'rxjs';
-import { ExaminationCreateStore } from './create.store';
+import { ExaminationEditStore } from './edit.store';
 
 describe('CreateStore', () => {
-  let store: ExaminationCreateStore;
+  let store: ExaminationEditStore;
   let mockExaminationService: jasmine.SpyObj<ExaminationService>;
   let router: Router;
 
@@ -23,17 +25,16 @@ describe('CreateStore', () => {
     await TestBed.configureTestingModule({
       imports: [TESTING_COMMON_IMPORTS],
       providers: [
-        ExaminationCreateStore,
+        APP_STORE_PROVIDER,
+        ExaminationEditStore,
         {
           provide: ExaminationService,
           useValue: mockExaminationService,
         },
-        { provide: APP_ENV, useValue: {} },
-        provideMockStore({}),
       ],
     }).compileComponents();
 
-    store = TestBed.inject(ExaminationCreateStore);
+    store = TestBed.inject(ExaminationEditStore);
     router = TestBed.inject(Router);
   });
 
@@ -72,8 +73,8 @@ describe('CreateStore', () => {
             displayId: 'Mock display ID',
             name: 'Mock name',
             description: 'Mock description',
-            expectStartAt: params.expectStartAt,
-            expectEndAt: params.expectEndAt,
+            expectStartAt: params.expectStartAt?.toUTCString() || '',
+            expectEndAt: params.expectEndAt?.toUTCString() || '',
             status: ExaminationStatus.Idle,
             createdAt: new Date(),
             updatedAt: null,

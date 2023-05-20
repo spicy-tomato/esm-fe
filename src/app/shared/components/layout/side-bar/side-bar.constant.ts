@@ -107,5 +107,10 @@ export class SideBarConstant {
       icon: 'far fa-folders',
       routerLink: '/document',
     },
+    {
+      name: 'Quản lý kỳ thi',
+      icon: 'far fa-cog',
+      routerLink: '/edit',
+    },
   ];
 }
