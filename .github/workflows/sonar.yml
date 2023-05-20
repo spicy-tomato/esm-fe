@@ -12,6 +12,7 @@ jobs:
   sonar-cloud:
     name: SonarCloud
     runs-on: ubuntu-latest
+    needs: setup
     steps:
       - name: Test and coverage
         run: npm run test:ci
