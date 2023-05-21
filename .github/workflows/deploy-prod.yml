@@ -6,7 +6,8 @@ on:
 
 jobs:
   setup:
-    uses: ./.github/actions/setup.yml
+    name: Setup
+    uses: ./.github/actions/setup
 
   build:
     name: Build Prod
