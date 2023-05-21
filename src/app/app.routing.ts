@@ -19,6 +19,16 @@ const routes: Routes = [
       (await import('./user/login/login.component')).LoginComponent,
   },
   {
+    path: '403',
+    loadChildren: async () =>
+      (await import('./error/forbidden/forbidden.routing')).ROUTES,
+  },
+  {
+    path: '404',
+    loadChildren: async () =>
+      (await import('./error/not-found/not-found.routing')).ROUTES,
+  },
+  {
     path: '',
     canActivate: [authGuard],
     component: LayoutComponent,
@@ -35,8 +45,13 @@ const routes: Routes = [
       },
       {
         path: 'create',
+        canActivate: [permissionGuard],
+        data: {
+          roles: [Role.EXAMINATION_DEPARTMENT_HEAD],
+          isCreateMode: true,
+        },
         loadChildren: async () =>
-          (await import('./examination/create/create.routing')).ROUTES,
+          (await import('./examination/edit/edit.routing')).ROUTES,
       },
       {
         path: 'data',
@@ -46,6 +61,11 @@ const routes: Routes = [
         path: 'notification',
         loadChildren: async () =>
           (await import('./notification/notification.routing')).ROUTES,
+      },
+      {
+        path: 'settings',
+        loadChildren: async () =>
+          (await import('./settings/settings.routing')).ROUTES,
       },
       {
         path: ':examinationId',
@@ -170,6 +190,15 @@ const routes: Routes = [
             path: 'document',
             loadChildren: async () =>
               (await import('./examination/document/document.routing')).ROUTES,
+          },
+          {
+            path: 'edit',
+            canActivate: [permissionGuard],
+            data: {
+              roles: [Role.EXAMINATION_DEPARTMENT_HEAD],
+            },
+            loadChildren: async () =>
+              (await import('./examination/edit/edit.routing')).ROUTES,
           },
         ],
       },

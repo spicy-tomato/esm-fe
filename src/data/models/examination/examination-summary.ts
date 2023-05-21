@@ -6,8 +6,8 @@ export type ExaminationSummary = {
   displayId: string;
   name: string;
   description: string | null;
-  expectStartAt: Date | null;
-  expectEndAt: Date | null;
+  expectStartAt: string | null;
+  expectEndAt: string | null;
   status: ExaminationStatus;
   createdAt: Date;
   updatedAt: Date | null;

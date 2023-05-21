@@ -1,6 +1,5 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { APP_ENV } from '@esm/core';
+import { APP_STORE_PROVIDER, TESTING_COMMON_IMPORTS } from '@esm/cdk';
 import { ExaminationService } from './examination.service';
 
 describe('ExaminationService', () => {
@@ -8,8 +7,8 @@ describe('ExaminationService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [ExaminationService, { provide: APP_ENV, useValue: {} }],
+      imports: [TESTING_COMMON_IMPORTS],
+      providers: [APP_STORE_PROVIDER, ExaminationService],
     });
     service = TestBed.inject(ExaminationService);
   });

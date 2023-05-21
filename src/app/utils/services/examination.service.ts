@@ -17,6 +17,7 @@ import {
   GetHandoverDataResponseItem,
   GetRelatedResponseItem,
   TemporaryExamination,
+  UpdateExaminationRequest,
   UpdateShiftRequest,
   UpdateTeacherAssignmentRequest,
   UserSummary,
@@ -61,6 +62,14 @@ export class ExaminationService {
   // [POST] /examination/{examinationId}
   import(id: string, formData: FormData): Observable<Result<boolean>> {
     return this.http.post<Result<boolean>>(this.url + id, formData);
+  }
+
+  // [PATCH] /examination/{examinationId}
+  update(
+    id: string,
+    request: UpdateExaminationRequest
+  ): Observable<Result<ExaminationSummary>> {
+    return this.http.patch<Result<ExaminationSummary>>(this.url + id, request);
   }
 
   // [GET] /examination/{examinationId}/events

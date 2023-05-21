@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { MinimumExaminationStatusDirective } from './minimum-examination-status.directive';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideMockStore } from '@ngrx/store/testing';
+import { APP_STORE_PROVIDER } from '@esm/cdk';
 import { ExaminationStatus } from '@esm/data';
+import { MinimumExaminationStatusDirective } from './minimum-examination-status.directive';
 
 @Component({
   template: '<div *esmMinimumExaminationStatus="status"></div>',
@@ -18,7 +18,7 @@ describe('MinimumExaminationStatusDirective', () => {
     await TestBed.configureTestingModule({
       imports: [MinimumExaminationStatusDirective],
       declarations: [HostComponent],
-      providers: [provideMockStore({})],
+      providers: [APP_STORE_PROVIDER],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HostComponent);

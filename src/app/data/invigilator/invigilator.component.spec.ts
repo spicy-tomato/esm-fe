@@ -1,8 +1,6 @@
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
+import { TESTING_COMMON_IMPORTS } from '@esm/cdk';
 import { APP_ENV } from '@esm/core';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -18,14 +16,7 @@ describe('DataInvigilatorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule,
-        HttpClientTestingModule,
-        FormsModule,
-        ScrollingModule,
-        ...NGRX,
-        ...TAIGA_UI,
-      ],
+      imports: [TESTING_COMMON_IMPORTS, NGRX, TAIGA_UI, ScrollingModule],
       providers: [
         provideMockStore({
           initialState: {

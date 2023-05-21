@@ -1,0 +1,36 @@
+name: Setup
+description: Node.js setup cache
+
+on:
+  workflow_call:
+    secrets:
+      BASE_URL:
+        required: true
+      SYNCFUSION_LICENSE:
+        required: true
+      RECAPTCHA_SITE_KEY:
+        required: true
+
+jobs:
+  setup:
+    runs-on: ubuntu-lateset
+    steps:
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.4.0
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.20.0
+
+      - name: Generate env files
+        run: node ./scripts/env.js
+        env:
+          BASE_URL: "${{ secrets.BASE_URL }}"
+          SYNCFUSION_LICENSE: "${{ secrets.SYNCFUSION_LICENSE }}"
+          RECAPTCHA_SITE_KEY: "${{ secrets.RECAPTCHA_SITE_KEY }}"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile

@@ -1,9 +1,5 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { APP_ENV } from '@esm/core';
-import { appFeatureKey, appInitialState } from '@esm/store';
-import { provideMockStore } from '@ngrx/store/testing';
+import { APP_STORE_PROVIDER, TESTING_COMMON_IMPORTS } from '@esm/cdk';
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
 import {
   AddModuleDialogComponent,
@@ -17,19 +13,9 @@ describe('AddModuleDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        ReactiveFormsModule,
-        ...NGRX,
-        ...TAIGA_UI,
-      ],
+      imports: [TESTING_COMMON_IMPORTS, NGRX, TAIGA_UI],
       providers: [
-        provideMockStore({
-          initialState: {
-            [appFeatureKey]: appInitialState,
-          },
-        }),
-        { provide: APP_ENV, useValue: {} },
+        APP_STORE_PROVIDER,
         {
           provide: POLYMORPHEUS_CONTEXT,
           useValue: {

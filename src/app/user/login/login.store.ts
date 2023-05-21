@@ -31,10 +31,15 @@ export class LoginStore extends ComponentStore<LoginState> {
       switchMap((request) =>
         this.userService.login(request).pipe(
           tapResponse(
-            async ({ data }) => {
+            ({ data }) => {
               this.tokenService.save(data.token);
               this.appStore.dispatch(AppPageAction.getUserInfo());
-              await this.router.navigate(['']);
+              this.router.navigate(['']).catch((error) =>
+                this.patchState({
+                  status: 'error',
+                  error: error as string,
+                })
+              );
             },
             (error) =>
               this.patchState({

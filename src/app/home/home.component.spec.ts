@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { TESTING_COMMON_IMPORTS } from '@esm/cdk';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { HomeComponent, NGRX, TAIGA_UI } from './home.component';
@@ -10,7 +10,7 @@ describe('HomeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, ...NGRX, ...TAIGA_UI],
+      imports: [TESTING_COMMON_IMPORTS, NGRX, TAIGA_UI],
       providers: [
         provideMockStore({
           initialState: {

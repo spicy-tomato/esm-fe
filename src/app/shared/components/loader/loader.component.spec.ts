@@ -1,7 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { appFeatureKey, appInitialState } from '@esm/store';
-import { provideMockStore } from '@ngrx/store/testing';
+import { APP_STORE_PROVIDER, TESTING_COMMON_IMPORTS } from '@esm/cdk';
 import { LoaderComponent, NGRX } from './loader.component';
 
 describe('LoaderComponent', () => {
@@ -10,14 +8,8 @@ describe('LoaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, ...NGRX],
-      providers: [
-        provideMockStore({
-          initialState: {
-            [appFeatureKey]: appInitialState,
-          },
-        }),
-      ],
+      imports: [TESTING_COMMON_IMPORTS, NGRX],
+      providers: [APP_STORE_PROVIDER],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LoaderComponent);

@@ -4,4 +4,7 @@ export const environment: AppEnv = {
   production: false,
   baseUrl: '',
   SYNCFUSION_LICENSE: '',
+  recaptcha: {
+    siteKey: '',
+  },
 };

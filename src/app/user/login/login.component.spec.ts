@@ -1,9 +1,6 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { APP_ENV } from '@esm/core';
-import { provideMockStore } from '@ngrx/store/testing';
+import { Validators } from '@angular/forms';
+import { APP_STORE_PROVIDER, TESTING_COMMON_IMPORTS } from '@esm/cdk';
 import { LoginComponent, NGRX, TAIGA_UI } from './login.component';
 
 describe('LoginComponent', () => {
@@ -12,15 +9,8 @@ describe('LoginComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        NoopAnimationsModule,
-        FormsModule,
-        ReactiveFormsModule,
-        ...NGRX,
-        ...TAIGA_UI,
-      ],
-      providers: [{ provide: APP_ENV, useValue: {} }, provideMockStore({})],
+      imports: [TESTING_COMMON_IMPORTS, NGRX, TAIGA_UI],
+      providers: [APP_STORE_PROVIDER],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LoginComponent);

@@ -41,6 +41,29 @@ export const appReducer = createReducer(
     ...state,
     departmentsStatus: 'loading',
   })),
+  on(AppPageAction.updateExamination, (state, { id, data }) => ({
+    ...state,
+    examination: {
+      ...state.examination!,
+      name: data.name ?? state.examination!.name,
+      displayId: data.displayId ?? state.examination!.displayId,
+      description: data.description,
+      expectStartAt:
+        data.expectStartAt?.toUTCString() ?? state.examination!.expectStartAt,
+      expectEndAt:
+        data.expectEndAt?.toUTCString() ?? state.examination!.expectEndAt,
+      updatedAt: data.updatedAt,
+    },
+    relatedExaminations: state.relatedExaminations.map((e) =>
+      e.id !== id
+        ? e
+        : {
+            ...e,
+            displayId: data.displayId ?? state.examination!.displayId,
+            name: data.name ?? state.examination!.name,
+          }
+    ),
+  })),
   on(AppApiAction.noCacheUserInfo, (state) => ({
     ...state,
     userStatus: 'success',

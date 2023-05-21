@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Result } from '@esm/cdk';
 import { APP_ENV } from '@esm/core';
 import {
+  ChangePasswordRequest,
   CheckIfExistParams,
   GeneratedToken,
   LoginRequest,
@@ -30,6 +31,11 @@ export class UserService {
         isInvigilator: true,
       },
     });
+  }
+
+  // [PATCH] /user/change-password
+  changePassword(request: ChangePasswordRequest): Observable<Result<void>> {
+    return this.http.patch<Result<void>>(this.url + 'change-password', request);
   }
 
   // [PUT] /user/check-exist

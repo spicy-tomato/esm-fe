@@ -20,6 +20,9 @@
         >
           <ng-template tuiDataList>
             <tui-data-list>
+              <button tuiOption [value]="''" role="menuitemradio">
+                Tất cả
+              </button>
               <button
                 tuiOption
                 *ngFor="let faculty of obs.faculties"
@@ -49,7 +52,7 @@
             tuiButton
             (click)="saveChange.next()"
             [showLoader]="obs.showLoader"
-            [disabled]="obs.disableSaveBtn"
+            [disabled]="obs.updateStatus === 'loading'"
             icon="tuiIconSaveLarge"
           >
             Lưu

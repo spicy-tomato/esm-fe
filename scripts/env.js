@@ -1,5 +1,5 @@
 const fs = require('fs');
-const path= require('path');
+const path = require('path');
 
 const dir = 'src/environments';
 const file = 'environment.ts';
@@ -11,16 +11,19 @@ import { AppEnv } from '@esm/core';
 export const environment: AppEnv = {
   production: true,
   baseUrl: '${process.env.BASE_URL}',
-  SYNCFUSION_LICENSE: '${process.env.SYNCFUSION_LICENSE}'
+  SYNCFUSION_LICENSE: '${process.env.SYNCFUSION_LICENSE}',
+  recaptcha: {
+    siteKey: '${process.env.RECAPTCHA_SITE_KEY}',
+  },
 };
 `;
 
-fs.access(dir, fs.constants.F_OK,(err) => {
+fs.access(dir, fs.constants.F_OK, (err) => {
   if (err) {
     console.log(`src doesn't exist, creating now`, process.cwd());
     fs.mkdir(dir, { recursive: true }, (err) => {
       if (err) throw err;
-    })
+    });
   }
 
   try {
@@ -37,4 +40,4 @@ fs.access(dir, fs.constants.F_OK,(err) => {
     console.log(error);
     process.exit(1);
   }
-})
+});

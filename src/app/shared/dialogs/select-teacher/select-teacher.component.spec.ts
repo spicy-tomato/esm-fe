@@ -1,6 +1,5 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { APP_ENV } from '@esm/core';
+import { APP_STORE_PROVIDER, TESTING_COMMON_IMPORTS } from '@esm/cdk';
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
 import { SelectTeacherDialogComponent } from './select-teacher.component';
 
@@ -10,9 +9,9 @@ describe('SelectTeacherDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [TESTING_COMMON_IMPORTS],
       providers: [
-        { provide: APP_ENV, useValue: {} },
+        APP_STORE_PROVIDER,
         {
           provide: POLYMORPHEUS_CONTEXT,
           useValue: {},

@@ -1,26 +1,19 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { APP_ENV } from '@esm/core';
+import { APP_STORE_PROVIDER, TESTING_COMMON_IMPORTS } from '@esm/cdk';
 import { TuiDay, TuiDayRange } from '@taiga-ui/cdk';
-import { ExaminationCreateComponent, NGRX, TAIGA_UI } from './create.component';
+import { ExaminationEditComponent, TAIGA_UI } from './edit.component';
 
-describe('CreateComponent', () => {
-  let component: ExaminationCreateComponent;
-  let fixture: ComponentFixture<ExaminationCreateComponent>;
+describe('ExaminationEditComponent', () => {
+  let component: ExaminationEditComponent;
+  let fixture: ComponentFixture<ExaminationEditComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        ReactiveFormsModule,
-        ...NGRX,
-        TAIGA_UI,
-      ],
-      providers: [{ provide: APP_ENV, useValue: {} }],
+      imports: [TESTING_COMMON_IMPORTS, TAIGA_UI],
+      providers: [APP_STORE_PROVIDER],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ExaminationCreateComponent);
+    fixture = TestBed.createComponent(ExaminationEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -29,11 +22,13 @@ describe('CreateComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('onSubmit', () => {
+  describe('onCreate', () => {
     it('should call `store.create`', () => {
       const spy = spyOn(component['store'], 'create');
 
-      component.form.patchValue({
+      component['buildCreateForm']();
+
+      component.form!.patchValue({
         description: 'Mock description',
         displayId: 'Mock ID',
         name: 'Mock name',
@@ -43,7 +38,7 @@ describe('CreateComponent', () => {
         ),
       });
 
-      component.onSubmit();
+      component.onCreate();
 
       expect(spy).toHaveBeenCalled();
     });

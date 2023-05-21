@@ -1,15 +1,15 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
-name: Verify PR
+name: Sonar Analysis
 
 on:
+  push:
+    branches:
+      - master
   pull_request:
-    branches: ["prod"]
+    types: [opened, synchronize, reopened]
 
 jobs:
-  build:
-    name: Build Prod
+  sonar-cloud:
+    name: SonarCloud
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -18,8 +18,8 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 8.3.1
-      
+          version: 8.4.0
+
       - name: Setup node
         uses: actions/setup-node@v3
         with:
@@ -30,9 +30,16 @@ jobs:
         env:
           BASE_URL: "${{ secrets.BASE_URL }}"
           SYNCFUSION_LICENSE: "${{ secrets.SYNCFUSION_LICENSE }}"
+          RECAPTCHA_SITE_KEY: "${{ secrets.RECAPTCHA_SITE_KEY }}"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build
-        run: npm run build:prod
+      - name: Test and coverage
+        run: npm run test:ci
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets. SONARCLOUD_TOKEN }}

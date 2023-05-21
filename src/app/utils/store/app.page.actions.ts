@@ -1,3 +1,4 @@
+import { UpdateExaminationRequest } from '@esm/data';
 import { createAction, props } from '@ngrx/store';
 
 export class AppPageAction {
@@ -10,5 +11,9 @@ export class AppPageAction {
   static readonly getExaminationSummary = createAction(
     '[App/Page] Get examination summary',
     props<{ id: string }>()
+  );
+  static readonly updateExamination = createAction(
+    '[App/Page] Update departments',
+    props<{ id: string; data: UpdateExaminationRequest }>()
   );
 }

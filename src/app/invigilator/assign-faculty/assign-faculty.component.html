@@ -1,4 +1,6 @@
-<esm-invigilator-assign-faculty-header></esm-invigilator-assign-faculty-header>
+<esm-invigilator-assign-faculty-header
+  (exportFile)="table?.exportFile()"
+></esm-invigilator-assign-faculty-header>
 
 <ng-container *ngrxLet="dataStatus$ as dataStatus">
   <esm-safe-examination-data
@@ -7,6 +9,8 @@
     [showLoader]="dataStatus === 'loading'"
     class="grow"
   >
-    <esm-invigilator-assign-faculty-table></esm-invigilator-assign-faculty-table>
+    <esm-invigilator-assign-faculty-table
+      #table
+    ></esm-invigilator-assign-faculty-table>
   </esm-safe-examination-data>
 </ng-container>

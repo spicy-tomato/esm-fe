@@ -76,7 +76,7 @@ export class InvigilatorAssignTeacherStore
   // GLOBAL SELECTORS
   readonly faculties$ = this.appStore
     .select(AppSelector.faculties)
-    .pipe(ObservableHelper.filterNullish(), takeUntil(this.destroy$));
+    .pipe(takeUntil(this.destroy$));
 
   private readonly examinationId$ = this.appStore
     .select(AppSelector.examinationId)
@@ -88,7 +88,7 @@ export class InvigilatorAssignTeacherStore
   );
 
   // CUSTOM SELECTORS
-  role$ = this.user$.pipe(map((u) => u.role));
+  readonly role$ = this.user$.pipe(map((u) => u.role));
 
   private readonly departmentsInFaculty$ = combineLatest([
     this.appStore.select(AppSelector.departmentsWithFaculty),
@@ -111,14 +111,25 @@ export class InvigilatorAssignTeacherStore
     this.faculty$,
     this.role$,
     this.disableSaveBtn$,
+    this.updateStatus$,
   ]).pipe(
-    map(([showLoader, faculties, faculty, role, disableSaveBtn]) => ({
-      showLoader,
-      faculties,
-      faculty,
-      role,
-      disableSaveBtn,
-    }))
+    map(
+      ([
+        showLoader,
+        faculties,
+        faculty,
+        role,
+        disableSaveBtn,
+        updateStatus,
+      ]) => ({
+        showLoader,
+        faculties,
+        faculty,
+        role,
+        disableSaveBtn,
+        updateStatus,
+      })
+    )
   );
 
   readonly tableObservables$ = combineLatest([
@@ -296,7 +307,9 @@ export class InvigilatorAssignTeacherStore
               this.gotExaminationDepartmentHeadRole$.next();
               break;
             case 'Teacher':
-              this.patchState({ faculty: user.department?.faculty ?? null });
+              this.patchState({
+                faculty: user.department?.faculty ?? user.faculty ?? null,
+              });
               break;
           }
         }),

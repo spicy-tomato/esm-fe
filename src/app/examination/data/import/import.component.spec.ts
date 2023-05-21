@@ -1,6 +1,5 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
+import { TESTING_COMMON_IMPORTS } from '@esm/cdk';
 import { APP_ENV } from '@esm/core';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -17,7 +16,7 @@ describe('ExaminationDataImportComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, FormsModule, ...NGRX, ...TAIGA_UI],
+      imports: [TESTING_COMMON_IMPORTS, NGRX, TAIGA_UI],
       providers: [
         ExaminationDataImportStore,
         provideMockStore({

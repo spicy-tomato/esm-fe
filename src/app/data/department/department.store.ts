@@ -33,7 +33,7 @@ export class DataDepartmentStore extends ComponentStore<DataDepartmentState> {
     this.faculties$,
     this.selectedFacultyId$,
   ]).pipe(
-    map(([faculties, id]) => faculties.find((f) => f.id === id)?.name || '')
+    map(([faculties, id]) => faculties.find((f) => f.id === id)?.name ?? '')
   );
 
   readonly headerObservables$ = combineLatest([

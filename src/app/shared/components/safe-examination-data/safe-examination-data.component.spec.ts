@@ -1,7 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { APP_ENV } from '@esm/core';
-import { appFeatureKey, appInitialState } from '@esm/store';
-import { provideMockStore } from '@ngrx/store/testing';
+import { APP_STORE_PROVIDER } from '@esm/cdk';
 import { SafeExaminationDataComponent } from './safe-examination-data.component';
 
 describe('SafeExaminationDataComponent', () => {
@@ -10,15 +8,8 @@ describe('SafeExaminationDataComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SafeExaminationDataComponent],
-      providers: [
-        provideMockStore({
-          initialState: {
-            [appFeatureKey]: appInitialState,
-          },
-        }),
-        { provide: APP_ENV, useValue: {} },
-      ],
+      imports: [],
+      providers: [APP_STORE_PROVIDER],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SafeExaminationDataComponent);

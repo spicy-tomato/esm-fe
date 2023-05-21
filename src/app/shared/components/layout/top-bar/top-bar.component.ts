@@ -11,9 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { fadeInOut } from '@esm/core';
 import { ExaminationSummary, GetRelatedResponseItem } from '@esm/data';
-import { AppPageAction, AppState } from '@esm/store';
 import { LetModule } from '@ngrx/component';
-import { Store } from '@ngrx/store';
 import {
   TuiActiveZoneModule,
   TuiFilterPipeModule,
@@ -29,7 +27,7 @@ import {
   TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
 import { TuiInputModule } from '@taiga-ui/kit';
-import { tap, withLatestFrom } from 'rxjs';
+import { combineLatest, debounceTime, tap } from 'rxjs';
 import { BellComponent } from '../../bell';
 import { TopBarConstants } from './top-bar.constant';
 import { TopBarStore } from './top-bar.store';
@@ -76,14 +74,13 @@ export class TopBarComponent implements OnInit {
   // INJECT PROPERTIES
   readonly options = inject(TOP_BAR_OPTIONS);
 
-  private readonly router = inject(Router);
-  private readonly store = inject(TopBarStore);
   private readonly cdr = inject(ChangeDetectorRef);
-  private readonly appStore = inject(Store<AppState>);
+  private readonly store = inject(TopBarStore);
+  private readonly router = inject(Router);
 
   // INPUT
   @Input() isInCommonPage!: boolean;
-  @Input() hideCreateButton!: boolean;
+  @Input() isInCreatePage!: boolean;
 
   // PUBLIC PROPERTIES
   selectedExamination: ExaminationSummary | null = null;
@@ -96,7 +93,6 @@ export class TopBarComponent implements OnInit {
   readonly examination$ = this.store.examination$;
   readonly navObservables$ = this.store.navObservables$;
   readonly examinationStatus$ = this.store.examinationStatus$;
-  readonly dropdownObservables$ = this.store.dropdownObservables$;
 
   // IMPLEMENTATIONS
   ngOnInit(): void {
@@ -108,22 +104,22 @@ export class TopBarComponent implements OnInit {
     item.name.toLowerCase().includes(search.toLowerCase());
 
   onClickExaminationDropdownItem(id: string): void {
-    this.router.navigateByUrl(`${id}/exam`);
+    this.router.navigateByUrl(`${id}/exam`).catch(() => null);
     this.openExaminationDropdown = false;
   }
 
   onClickUserDropdownItem(action: string): void {
     this.openUserDropdown = false;
     if (action === TopBarConstants.keys.LOG_OUT) {
-      this.appStore.dispatch(AppPageAction.logOut());
+      this.store.logOut();
     }
   }
 
   // PRIVATE METHODS
   private triggerBindCurrentExamination(): void {
-    this.examinationStatus$
+    combineLatest([this.examinationStatus$, this.examination$])
       .pipe(
-        withLatestFrom(this.examination$),
+        debounceTime(0),
         tap(({ 1: examination }) => {
           this.selectedExamination = examination;
           this.cdr.markForCheck();

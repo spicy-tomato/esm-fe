@@ -1,13 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
+import { TESTING_COMMON_IMPORTS } from '@esm/cdk';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import {
-  DataDepartmentComponent,
-  NGRX,
-  TAIGA_UI,
-} from './department.component';
+import { DataDepartmentComponent, TAIGA_UI } from './department.component';
 
 describe('DataDepartmentComponent', () => {
   let component: DataDepartmentComponent;
@@ -15,7 +10,7 @@ describe('DataDepartmentComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, FormsModule, ...NGRX, ...TAIGA_UI],
+      imports: [TESTING_COMMON_IMPORTS, TAIGA_UI],
       providers: [
         provideMockStore({
           initialState: {

@@ -1,5 +1,5 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TESTING_COMMON_IMPORTS } from '@esm/cdk';
 import { APP_ENV } from '@esm/core';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -11,7 +11,7 @@ describe('ExaminationDataComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, ...NGRX],
+      imports: [TESTING_COMMON_IMPORTS, NGRX],
       providers: [
         provideMockStore({
           initialState: {

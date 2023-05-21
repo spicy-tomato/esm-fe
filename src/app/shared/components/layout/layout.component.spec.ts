@@ -1,7 +1,5 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
+import { TESTING_COMMON_IMPORTS } from '@esm/cdk';
 import { APP_ENV } from '@esm/core';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -24,16 +22,14 @@ describe('LayoutComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        NoopAnimationsModule,
-        HttpClientTestingModule,
-        RouterTestingModule,
+        TESTING_COMMON_IMPORTS,
         TopBarComponent,
         SideBarComponent,
         MainViewComponent,
         StoreModule.forRoot({}),
         EffectsModule.forRoot([]),
-        ...NGRX,
-        ...TAIGA_UI,
+        NGRX,
+        TAIGA_UI,
       ],
       providers: [
         EchoService,

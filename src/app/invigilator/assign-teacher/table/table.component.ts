@@ -16,6 +16,7 @@ import {
 } from '@angular/forms';
 import { StringifyHelper } from '@esm/cdk';
 import {
+  DepartmentSummary,
   GetGroupByFacultyIdResponseItem,
   UpdateTeacherAssignmentRequest,
   UserSimple,
@@ -23,7 +24,7 @@ import {
 } from '@esm/data';
 import { LetModule } from '@ngrx/component';
 import { TuiTableModule } from '@taiga-ui/addon-table';
-import { TuiDestroyService, TuiFilterPipeModule } from '@taiga-ui/cdk';
+import { TuiDestroyService, TuiFilterPipeModule, tuiPure } from '@taiga-ui/cdk';
 import { TuiDataListModule, TuiScrollbarModule } from '@taiga-ui/core';
 import { TuiComboBoxModule, TuiSelectModule } from '@taiga-ui/kit';
 import { filter, takeUntil, tap } from 'rxjs';
@@ -42,8 +43,8 @@ type FormType = {
   [key: string]: FormGroup<{
     departmentId: FormControl<string | null>;
     user: FormControl<UserSimple | UserSummary | null>;
-    shiftGroup: FormControl<
-      GetGroupByFacultyIdResponseItem['facultyShiftGroup']['shiftGroup']
+    facultyShiftGroup: FormControl<
+      GetGroupByFacultyIdResponseItem['facultyShiftGroup']
     >;
   }>;
 };
@@ -85,6 +86,13 @@ export class InvigilatorAssignTeacherTableComponent implements OnInit {
   ];
   customValues: Record<string, string | null> = {};
 
+  /**
+   * Used to mark selected invigilators, to exclude from combo box
+   * @field key  : facultyShiftGroupId
+   * @field value: array of selected invigilators in shift
+   */
+  selectedInvigilatorsInShift: Record<string, string[]> = {};
+
   readonly stringify = StringifyHelper.idName;
   readonly data$ = this.store.data$;
   readonly tableObservables$ = this.store.tableObservables$;
@@ -96,10 +104,16 @@ export class InvigilatorAssignTeacherTableComponent implements OnInit {
 
   // PUBLIC METHODS
   readonly invigilatorMatcher = (
-    item: UserSummary,
-    departmentId: string
+    invigilator: UserSummary,
+    departmentId: string,
+    facultyShiftGroupId: string
   ): boolean => {
-    return item.department?.id === departmentId;
+    return (
+      invigilator.department?.id === departmentId &&
+      !this.selectedInvigilatorsInShift[facultyShiftGroupId]?.includes(
+        invigilator.id
+      )
+    );
   };
 
   readonly invigilatorIdentityMatcher = (
@@ -134,6 +148,28 @@ export class InvigilatorAssignTeacherTableComponent implements OnInit {
     this.store.save(dataToSave);
   }
 
+  @tuiPure
+  getDepartmentOfAnonymousInvigilator(
+    departments: DepartmentSummary[],
+    departmentId?: string | null
+  ): string {
+    if (!departmentId) return '';
+
+    return departments.find((d) => d.id === departmentId)?.name ?? '';
+  }
+
+  onInvigilatorChanges(facultyShiftGroupId: string): void {
+    const currentSelectedInvigilatorsIdInForm = Object.values(
+      this.form?.getRawValue() ?? {}
+    )
+      .filter((row) => row.facultyShiftGroup.id === facultyShiftGroupId)
+      .map((row) => row.user?.id)
+      .filter((id): id is string => !!id);
+
+    this.selectedInvigilatorsInShift[facultyShiftGroupId] =
+      currentSelectedInvigilatorsIdInForm;
+  }
+
   // PRIVATE METHODS
   private handleBuildForm(): void {
     this.data$
@@ -141,6 +177,7 @@ export class InvigilatorAssignTeacherTableComponent implements OnInit {
         filter((data) => !!data.length),
         tap((data) => {
           this.buildForm(data);
+          this.updateSelectedInvigilators(data);
           this.cdr.markForCheck();
         })
       )
@@ -160,7 +197,7 @@ export class InvigilatorAssignTeacherTableComponent implements OnInit {
                   })
                 : null),
           ],
-          shiftGroup: [curr.facultyShiftGroup.shiftGroup],
+          facultyShiftGroup: [curr.facultyShiftGroup],
         });
         return acc;
       }, {})
@@ -176,12 +213,27 @@ export class InvigilatorAssignTeacherTableComponent implements OnInit {
 
     this.form.valueChanges
       .pipe(
-        tap(() => {
-          console.log('ok');
-          this.store.patchState({ disableSaveBtn: false });
-        }),
+        tap(() => this.store.patchState({ disableSaveBtn: false })),
         takeUntil(this.destroy$)
       )
       .subscribe();
+  }
+
+  private updateSelectedInvigilators(
+    data: GetGroupByFacultyIdResponseItem[]
+  ): void {
+    const result: Record<string, string[]> = {};
+
+    data.forEach((row) => {
+      if (!result[row.facultyShiftGroup.id]) {
+        result[row.facultyShiftGroup.id] = [];
+      }
+
+      if (row.user) {
+        result[row.facultyShiftGroup.id].push(row.user.id);
+      }
+    });
+
+    this.selectedInvigilatorsInShift = result;
   }
 }

@@ -1,6 +1,6 @@
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TESTING_COMMON_IMPORTS } from '@esm/cdk';
 import { APP_ENV } from '@esm/core';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -16,7 +16,7 @@ describe('ExaminationDataFinalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, ScrollingModule, ...NGRX, ...TAIGA_UI],
+      imports: [TESTING_COMMON_IMPORTS, ScrollingModule, NGRX, TAIGA_UI],
       providers: [
         provideMockStore({
           initialState: {
