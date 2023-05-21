@@ -17,6 +17,10 @@ jobs:
 
       - name: Build
         run: npm run build:prod
+        env:
+          BASE_URL: ${{ secrets.BASE_URL }}
+          SYNCFUSION_LICENSE: ${{ secrets.SYNCFUSION_LICENSE }}
+          RECAPTCHA_SITE_KEY: ${{ secrets.RECAPTCHA_SITE_KEY }}
 
       - name: Copy bundle to VPS
         uses: appleboy/scp-action@v0.1.4
