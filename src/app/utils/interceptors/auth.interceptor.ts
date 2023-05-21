@@ -36,12 +36,6 @@ export class AuthInterceptor implements HttpInterceptor {
             case 401:
               this.handleUnauthorized(error);
               break;
-            case 403:
-              this.handlePermissionDenied();
-              break;
-            case 404:
-              this.handleNotFound();
-              break;
           }
         },
       })
@@ -58,13 +52,5 @@ export class AuthInterceptor implements HttpInterceptor {
       this.tokenService.clear();
       this.redirectService.login(currentUrl);
     }
-  }
-
-  private handlePermissionDenied(): void {
-    this.redirectService.permissionDenied();
-  }
-
-  private handleNotFound(): void {
-    this.redirectService.notFound();
   }
 }
