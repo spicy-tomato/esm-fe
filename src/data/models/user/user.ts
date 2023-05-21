@@ -6,6 +6,7 @@ export class UserSummary {
   id!: string;
   invigilatorId!: string;
   fullName!: string;
+  userName?: string;
   email!: string;
   createdAt!: Date;
   department!: DepartmentSummary | null;

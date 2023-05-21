@@ -164,7 +164,7 @@ export class DataInvigilatorStore extends ComponentStore<DataInvigilatorState> {
 
         const request = facultyId
           ? this.facultyService.getUsers(facultyId)
-          : this.userService.getAllInvigilators();
+          : this.userService.getAllInvigilators('isInvigilator');
 
         return request.pipe(
           tapResponse(

@@ -11,7 +11,7 @@ import { AppEnv } from '@esm/core';
 export const environment: AppEnv = {
   production: true,
   baseUrl: '${process.env.BASE_URL}',
-  SYNCFUSION_LICENSE: '${process.env.SYNCFUSION_LICENSE}',
+  syncfusionLicense: '${process.env.SYNCFUSION_LICENSE}',
   recaptcha: {
     siteKey: '${process.env.RECAPTCHA_SITE_KEY}',
   },

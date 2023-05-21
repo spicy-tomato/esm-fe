@@ -6,7 +6,7 @@ import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
 // Registering Syncfusion license key
-registerLicense(environment.SYNCFUSION_LICENSE);
+registerLicense(environment.syncfusionLicense);
 
 if (environment.production) {
   enableProdMode();
