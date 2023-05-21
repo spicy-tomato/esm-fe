@@ -55,6 +55,10 @@ const routes: Routes = [
       },
       {
         path: 'data',
+        canActivate: [permissionGuard],
+        data: {
+          roles: [Role.EXAMINATION_DEPARTMENT_HEAD],
+        },
         loadChildren: async () => (await import('./data/data.routing')).ROUTES,
       },
       {
