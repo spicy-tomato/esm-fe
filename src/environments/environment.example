@@ -3,7 +3,7 @@ import { AppEnv } from '@esm/core';
 export const environment: AppEnv = {
   production: false,
   baseUrl: '',
-  SYNCFUSION_LICENSE: '',
+  syncfusionLicense: '',
   recaptcha: {
     siteKey: '',
   },

@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { ObservableHelper, Status } from '@esm/cdk';
 import { ExaminationStatus, GetAllGroupsResponseResponseItem } from '@esm/data';
 import { ExaminationService } from '@esm/services';
-import { AppSelector, AppState } from '@esm/store';
+import { AppApiAction, AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
 import {
@@ -157,6 +157,9 @@ export class InvigilatorAssignFacultyStore extends ComponentStore<InvigilatorAss
             tapResponse(
               () => {
                 this.patchState({ finishStatus: 'success' });
+                this.appStore.dispatch(
+                  AppApiAction.commitNumberOfInvigilatorForFacultySuccessful()
+                );
                 this.getData();
               },
               () => this.patchState({ finishStatus: 'error' })

@@ -1,15 +1,11 @@
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   OnInit,
   inject,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { LetModule } from '@ngrx/component';
-import { TuiTableModule } from '@taiga-ui/addon-table';
-import { TuiButtonModule, TuiScrollbarModule } from '@taiga-ui/core';
-import { TuiInputNumberModule } from '@taiga-ui/kit';
-import { ScrollingModule } from '@angular/cdk/scrolling';
 import {
   FormArray,
   FormControl,
@@ -19,7 +15,11 @@ import {
   Validators,
 } from '@angular/forms';
 import { ExamMethodPipe } from '@esm/core';
-import { ExaminationGetDataResponseItem } from '@esm/data';
+import { ExaminationGetDataResponseItem, ExaminationStatus } from '@esm/data';
+import { LetModule } from '@ngrx/component';
+import { TuiTableModule } from '@taiga-ui/addon-table';
+import { TuiButtonModule, TuiScrollbarModule } from '@taiga-ui/core';
+import { TuiInputNumberModule } from '@taiga-ui/kit';
 import { filter, tap, withLatestFrom } from 'rxjs';
 import { ExaminationExamStore } from '../exam.store';
 
@@ -39,17 +39,24 @@ export const TAIGA_UI = [
     ExamMethodPipe,
     ReactiveFormsModule,
     ScrollingModule,
-    ...NGRX,
-    ...TAIGA_UI,
+    NGRX,
+    TAIGA_UI,
   ],
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExaminationExamTableComponent implements OnInit {
+  // INJECT PROPERTIES
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly store = inject(ExaminationExamStore);
 
+  // PUBLIC PROPERTIES
+  form?: FormGroup<{
+    data: FormArray<FormControl<number>>;
+  }>;
+
+  readonly ExaminationStatus = ExaminationStatus;
   readonly columns = [
     'index',
     'moduleId',
@@ -64,21 +71,30 @@ export class ExaminationExamTableComponent implements OnInit {
     'candidatesCount',
     'examsCount',
   ];
+
   readonly data$ = this.store.displayData$;
-  readonly tableFormIsPristine$ = this.store.tableFormIsPristine$;
+  readonly tableObs$ = this.store.tableObs$;
 
-  form?: FormGroup<{
-    data: FormArray<FormControl<number>>;
-  }>;
+  // PRIVATE PROPERTIES
+  private readonly tableFormIsPristine$ = this.store.tableFormIsPristine$;
 
+  // LIFECYCLE
   ngOnInit(): void {
     this.handleDataChanges();
   }
 
+  // PUBLIC METHODS
   examsCountControl(index: number): FormControl {
     return this.form?.controls.data.controls.at(index) as FormControl;
   }
 
+  save(): void {
+    if (this.form) {
+      this.store.save(this.form.controls.data.value);
+    }
+  }
+
+  // PRIVATE METHODS
   private handleDataChanges(): void {
     this.data$.pipe(tap((data) => this.buildForm(data))).subscribe();
   }
@@ -101,11 +117,5 @@ export class ExaminationExamTableComponent implements OnInit {
         tap(() => this.store.patchState({ tableFormIsPristine: false }))
       )
       .subscribe();
-  }
-
-  save(): void {
-    if (this.form) {
-      this.store.save(this.form.controls.data.value);
-    }
   }
 }

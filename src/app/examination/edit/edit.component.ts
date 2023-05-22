@@ -14,6 +14,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { ExaminationStatus, ExaminationSummary } from '@esm/data';
 import { LetModule } from '@ngrx/component';
 import { TuiDay, TuiDayRange } from '@taiga-ui/cdk';
 import {
@@ -33,7 +34,7 @@ import {
 } from '@taiga-ui/kit';
 import { combineLatest, filter, map, switchMap, tap } from 'rxjs';
 import { ExaminationEditStore } from './edit.store';
-import { ExaminationSummary } from '@esm/data';
+import { ExaminationEditFinishExaminationComponent } from './finish-examination/finish-examination.component';
 
 export const TAIGA_UI = [
   TuiButtonModule,
@@ -59,12 +60,18 @@ type FormType = {
   styleUrls: ['./edit.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, LetModule, ...TAIGA_UI],
   providers: [
     tuiButtonOptionsProvider({
       size: 'm',
     }),
     ExaminationEditStore,
+  ],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    LetModule,
+    ExaminationEditFinishExaminationComponent,
+    TAIGA_UI,
   ],
 })
 export class ExaminationEditComponent implements OnInit {
@@ -75,12 +82,13 @@ export class ExaminationEditComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly alertService = inject(TuiAlertService);
 
-  // PRIVATE PROPERTIES
-  private readonly examination$ = this.store.examination$;
-
   // PUBLIC PROPERTIES
   form?: FormGroup<FormType>;
+
+  readonly ExaminationStatus = ExaminationStatus;
+  readonly obs$ = this.store.obs$;
   readonly status$ = this.store.status$;
+  readonly examination$ = this.store.examination$;
   readonly isCreateMode$ = this.route.data.pipe(
     map((data) => data['isCreateMode'] ?? false)
   );
@@ -123,7 +131,7 @@ export class ExaminationEditComponent implements OnInit {
       .pipe(
         filter((s) => s === 'success'),
         switchMap(() =>
-          this.alertService.open('Đã chốt số lượng CBCT!', {
+          this.alertService.open('Chỉnh sửa thông tin thành công!', {
             status: TuiNotification.Success,
           })
         )

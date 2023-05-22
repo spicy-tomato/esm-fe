@@ -25,11 +25,11 @@ export class UserService {
   private readonly url = this.env.baseUrl + 'user/';
 
   // [GET] /user
-  getAllInvigilators(): Observable<Result<UserSummary[]>> {
+  getAllInvigilators(
+    search: 'isInvigilator' | 'isFaculty'
+  ): Observable<Result<UserSummary[]>> {
     return this.http.get<Result<UserSummary[]>>(this.url, {
-      params: {
-        isInvigilator: true,
-      },
+      params: { [search]: true },
     });
   }
 
@@ -48,6 +48,15 @@ export class UserService {
   // [POST] /user/login
   login(request: LoginRequest): Observable<Result<GeneratedToken>> {
     return this.http.post<Result<GeneratedToken>>(this.url + 'login', request);
+  }
+
+  // [PATCH] /user/reset-password
+  resetPassword(userId: string): Observable<Result<void>> {
+    return this.http.patch<Result<void>>(
+      this.url + 'reset-password',
+      {},
+      { params: { userId } }
+    );
   }
 
   // [GET] /user/search

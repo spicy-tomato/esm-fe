@@ -16,7 +16,12 @@
   <tui-loader class="h-40"></tui-loader>
 </ng-template>
 
-<ng-template #message let-status="status" let-examination="examination">
+<ng-template
+  #message
+  [polymorpheus]="context"
+  let-status="status"
+  let-examination="examination"
+>
   <div #customMessage>
     <ng-content select="[message]"></ng-content>
   </div>
@@ -28,14 +33,14 @@
   >
     <ng-container *ngSwitchCase="ExaminationStatus.Idle">
       <h4 class="text-lg">Chưa có dữ liệu lịch thi</h4>
-      <a tuiLink routerLink="data">
+      <a tuiLink [routerLink]="['/', examination.id, 'exam', 'data']">
         <span class="text-base">Đến trang nhập dữ liệu</span>
       </a>
     </ng-container>
 
     <ng-container *ngSwitchCase="ExaminationStatus.Setup">
       <h4 class="text-lg">Kỳ thi chưa được kích hoạt</h4>
-      <a tuiLink routerLink="data">
+      <a tuiLink [routerLink]="['/', examination.id, 'exam', 'data']">
         <span class="text-base">Vui lòng Kích hoạt tại đây</span>
       </a>
     </ng-container>

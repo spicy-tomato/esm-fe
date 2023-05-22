@@ -25,16 +25,18 @@ export class ExaminationDataFinalStore extends ComponentStore<ExaminationDataFin
   private readonly examinationService = inject(ExaminationService);
   private readonly appStore = inject(Store<AppState>);
 
-  // PUBLIC PROPERTIES
+  // STATE SELECTORS
   readonly data$ = this.select((s) => s.data);
-  private readonly filter$ = this.select((s) => s.filter);
-  readonly displayData$ = shiftFilterObservable(this.data$, this.filter$);
   readonly status$ = this.select((s) => s.status);
+  private readonly filter$ = this.select((s) => s.filter);
 
-  // PRIVATE PROPERTIES
+  // GLOBAL PROPERTIES
   private readonly examinationId$ = this.appStore
     .select(AppSelector.examinationId)
     .pipe(ObservableHelper.filterNullish(), takeUntil(this.destroy$));
+
+  // CUSTOM SELECTORS
+  readonly displayData$ = shiftFilterObservable(this.data$, this.filter$);
 
   // EFFECTS
   readonly getData = this.effect<void>((params$) =>

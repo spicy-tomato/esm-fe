@@ -42,4 +42,8 @@ export class AppApiAction {
   static readonly getDepartmentsFailed = createAction(
     '[App/API] Get departments failed'
   );
+  static readonly commitNumberOfInvigilatorForFacultySuccessful = createAction(
+    '[App/API] Commit number of invigilator for faculty successful'
+  );
+  static readonly closeSuccessful = createAction('[App/API] Close successful');
 }
