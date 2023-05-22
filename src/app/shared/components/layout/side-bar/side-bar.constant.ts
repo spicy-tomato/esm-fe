@@ -109,6 +109,7 @@ export class SideBarConstant {
     },
     {
       name: 'Quản lý kỳ thi',
+      roles: [Role.EXAMINATION_DEPARTMENT_HEAD],
       icon: 'far fa-cog',
       routerLink: '/edit',
     },

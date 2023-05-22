@@ -123,7 +123,7 @@ export class ExaminationEditComponent implements OnInit {
       .pipe(
         filter((s) => s === 'success'),
         switchMap(() =>
-          this.alertService.open('Đã chốt số lượng CBCT!', {
+          this.alertService.open('Chỉnh sửa thông tin thành công!', {
             status: TuiNotification.Success,
           })
         )
