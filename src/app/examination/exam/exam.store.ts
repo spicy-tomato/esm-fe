@@ -6,7 +6,12 @@ import { shiftFilterObservable } from '@esm/shared/observables';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
-import { TuiDayRange } from '@taiga-ui/cdk';
+import {
+  TUI_FIRST_DAY,
+  TUI_LAST_DAY,
+  TuiDay,
+  TuiDayRange,
+} from '@taiga-ui/cdk';
 import {
   combineLatest,
   filter,
@@ -32,13 +37,13 @@ type ExaminationExamState = {
 @Injectable()
 export class ExaminationExamStore extends ComponentStore<ExaminationExamState> {
   // INJECT PROPERTIES
-  private readonly examinationService = inject(ExaminationService);
   private readonly appStore = inject(Store<AppState>);
+  private readonly examinationService = inject(ExaminationService);
 
   // STATE SELECTORS
   readonly data$ = this.select((s) => s.data);
-  readonly updateStatus$ = this.select((s) => s.updateStatus);
   readonly dataStatus$ = this.select((s) => s.dataStatus);
+  readonly updateStatus$ = this.select((s) => s.updateStatus);
   readonly tableFormIsPristine$ = this.select((s) => s.tableFormIsPristine);
 
   private readonly filter$ = this.select((s) => s.filter);
@@ -47,16 +52,50 @@ export class ExaminationExamStore extends ComponentStore<ExaminationExamState> {
   private readonly examinationId$ = this.appStore
     .select(AppSelector.examinationId)
     .pipe(ObservableHelper.filterNullish(), takeUntil(this.destroy$));
+
   private readonly examination$ = this.appStore
     .select(AppSelector.examination)
     .pipe(ObservableHelper.filterNullish(), takeUntil(this.destroy$));
 
   // CUSTOM SELECTORS
   readonly displayData$ = shiftFilterObservable(this.data$, this.filter$);
+
   readonly showLoader$ = combineLatest([
     this.dataStatus$,
     this.updateStatus$,
   ]).pipe(map((statuses) => statuses.includes('loading')));
+
+  private readonly minMaxDate$ = this.data$.pipe(
+    map((data) =>
+      data.length
+        ? {
+            min: TuiDay.fromUtcNativeDate(new Date(data[0].shiftGroup.startAt)),
+            max: TuiDay.fromUtcNativeDate(
+              new Date(data[data.length - 1].shiftGroup.startAt)
+            ),
+          }
+        : { min: TUI_FIRST_DAY, max: TUI_LAST_DAY }
+    )
+  );
+
+  readonly headerObs$ = combineLatest([
+    this.examination$,
+    this.showLoader$,
+    this.tableFormIsPristine$,
+    this.minMaxDate$,
+  ]).pipe(
+    map(([examination, showLoader, tableFormIsPristine, minMaxDate]) => ({
+      examination,
+      showLoader,
+      tableFormIsPristine,
+      minMaxDate,
+    }))
+  );
+
+  readonly tableObs$ = combineLatest([
+    this.examination$,
+    this.displayData$,
+  ]).pipe(map(([examination, displayData]) => ({ examination, displayData })));
 
   // EFFECTS
   readonly getData = this.effect<void>((params$) =>

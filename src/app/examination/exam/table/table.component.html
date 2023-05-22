@@ -60,12 +60,12 @@
         </tr>
       </thead>
       <tbody
-        *ngrxLet="data$ as data"
+        *ngrxLet="tableObs$ as obs"
         tuiTbody
-        [data]="data"
+        [data]="obs.displayData"
         formArrayName="data"
       >
-        <tr *cdkVirtualFor="let item of data; let i = index" tuiTr>
+        <tr *cdkVirtualFor="let item of obs.displayData; let i = index" tuiTr>
           <td *tuiCell="'index'" tuiTd>{{ i + 1 }}</td>
           <td *tuiCell="'moduleId'" tuiTd class="w-24 max-w-[6rem]">
             {{ item.shiftGroup.module.displayId }}
@@ -99,8 +99,13 @@
           </td>
           <td *tuiCell="'examsCount'" tuiTd>
             <tui-input-number
+              *ngIf="
+                obs.examination.status !== ExaminationStatus.Closed;
+                else examsCountText
+              "
               [formControl]="examsCountControl(i)"
             ></tui-input-number>
+            <ng-template #examsCountText> {{ item.examsCount }} </ng-template>
           </td>
         </tr>
       </tbody>

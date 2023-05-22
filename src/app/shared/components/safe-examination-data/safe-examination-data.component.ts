@@ -26,7 +26,7 @@ export const TAIGA_UI = [TuiLinkModule, TuiLoaderModule];
 })
 export class SafeExaminationDataComponent {
   // INPUTS
-  @Input() minimumStatus: ExaminationStatus = ExaminationStatus.Inactive;
+  @Input() minimumStatus: ExaminationStatus = ExaminationStatus.Closed;
   @Input() getDataFunc: Function = () => null;
   @Input() showLoader: Observable<boolean> | boolean = false;
 

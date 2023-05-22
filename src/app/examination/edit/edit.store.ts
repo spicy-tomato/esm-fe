@@ -6,7 +6,14 @@ import { ExaminationService } from '@esm/services';
 import { AppPageAction, AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
-import { switchMap, takeUntil, tap, withLatestFrom } from 'rxjs';
+import {
+  combineLatest,
+  map,
+  switchMap,
+  takeUntil,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
 
 type ExaminationEditState = {
   status: Status;
@@ -27,6 +34,11 @@ export class ExaminationEditStore extends ComponentStore<ExaminationEditState> {
   readonly examination$ = this.appStore
     .select(AppSelector.examination)
     .pipe(takeUntil(this.destroy$));
+
+  // CUSTOM SELECTORS
+  readonly obs$ = combineLatest([this.examination$, this.status$]).pipe(
+    map(([examination, status]) => ({ examination, status }))
+  );
 
   // EFFECTS
   readonly create = this.effect<CreateExaminationRequest>((params$) =>

@@ -45,4 +45,5 @@ export class AppApiAction {
   static readonly commitNumberOfInvigilatorForFacultySuccessful = createAction(
     '[App/API] Commit number of invigilator for faculty successful'
   );
+  static readonly closeSuccessful = createAction('[App/API] Close successful');
 }

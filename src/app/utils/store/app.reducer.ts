@@ -136,5 +136,20 @@ export const appReducer = createReducer(
             status: ExaminationStatus.AssignInvigilator,
           }
     ),
+  })),
+  on(AppApiAction.closeSuccessful, (state) => ({
+    ...state,
+    examination: {
+      ...state.examination!,
+      status: ExaminationStatus.Closed,
+    },
+    relatedExaminations: state.relatedExaminations.map((e) =>
+      e.id !== state.examination!.id
+        ? e
+        : {
+            ...e,
+            status: ExaminationStatus.Closed,
+          }
+    ),
   }))
 );

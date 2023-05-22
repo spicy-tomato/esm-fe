@@ -35,17 +35,23 @@ export class ExaminationHandoverStore extends ComponentStore<ExaminationHandover
   );
 
   // GLOBAL SELECTORS
+  private readonly examination$ = this.appStore
+    .select(AppSelector.examination)
+    .pipe(ObservableHelper.filterNullish(), takeUntil(this.destroy$));
+
   private readonly examinationId$ = this.appStore
     .select(AppSelector.examinationId)
     .pipe(ObservableHelper.filterNullish(), takeUntil(this.destroy$));
 
   // CUSTOM SELECTORS
   readonly tableObservables$ = combineLatest([
+    this.examination$,
     this.dataStatus$,
     this.data$,
     this.handoverPersonStatus$,
   ]).pipe(
-    map(([dataStatus, data, handoverPersonStatus]) => ({
+    map(([examination, dataStatus, data, handoverPersonStatus]) => ({
+      examination,
       dataStatus,
       data,
       handoverPersonStatus,

@@ -2,13 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TESTING_COMMON_IMPORTS } from '@esm/cdk';
 import { APP_ENV } from '@esm/core';
 import { appFeatureKey, appInitialState } from '@esm/store';
+import { LetModule } from '@ngrx/component';
 import { provideMockStore } from '@ngrx/store/testing';
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
-import {
-  ExaminationHandoverComponent,
-  NGRX,
-  TAIGA_UI,
-} from './handover.component';
+import { ExaminationHandoverComponent, TAIGA_UI } from './handover.component';
 
 describe('HandoverComponent', () => {
   let component: ExaminationHandoverComponent;
@@ -16,7 +13,7 @@ describe('HandoverComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TESTING_COMMON_IMPORTS, NGRX, TAIGA_UI],
+      imports: [TESTING_COMMON_IMPORTS, LetModule, TAIGA_UI],
       providers: [
         provideMockStore({
           initialState: {

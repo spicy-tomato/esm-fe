@@ -6,4 +6,5 @@ export const DIAGRAM_STATUS_MAP: Record<ExaminationStatus, string> = {
   '2': '2-assign-faculty',
   '4': '3-assign-department',
   '8': '4-assign-teacher',
+  '16': '5-closed',
 };
