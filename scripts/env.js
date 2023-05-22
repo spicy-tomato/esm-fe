@@ -15,6 +15,7 @@ export const environment: AppEnv = {
   recaptcha: {
     siteKey: '${process.env.RECAPTCHA_SITE_KEY}',
   },
+  defaultPassword: '${process.env.DEFAULT_PASSWORD}',
 };
 `;
 
