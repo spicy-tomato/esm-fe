@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { ExaminationStatus } from '@esm/data';
+import { ExaminationStatus, ExaminationSummary } from '@esm/data';
 import { MinimumExaminationStatusDirective } from '@esm/shared/directives';
 import { LetModule } from '@ngrx/component';
 import { TuiLinkModule, TuiLoaderModule } from '@taiga-ui/core';
+import { PolymorpheusModule } from '@tinkoff/ng-polymorpheus';
 import { Observable } from 'rxjs';
 
 export const TAIGA_UI = [TuiLinkModule, TuiLoaderModule];
@@ -16,6 +17,7 @@ export const TAIGA_UI = [TuiLinkModule, TuiLoaderModule];
     CommonModule,
     RouterModule,
     LetModule,
+    PolymorpheusModule,
     MinimumExaminationStatusDirective,
     ...TAIGA_UI,
   ],
@@ -30,4 +32,9 @@ export class SafeExaminationDataComponent {
 
   // PUBLIC PROPERTIES
   readonly ExaminationStatus = ExaminationStatus;
+  readonly context!: {
+    $implicit: ExaminationStatus | null;
+    status: ExaminationStatus;
+    examination: ExaminationSummary;
+  };
 }
