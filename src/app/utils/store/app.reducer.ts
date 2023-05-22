@@ -1,3 +1,4 @@
+import { ExaminationStatus } from '@esm/data';
 import { createReducer, on } from '@ngrx/store';
 import { AppApiAction } from './app.api.actions';
 import { AppPageAction } from './app.page.actions';
@@ -120,5 +121,20 @@ export const appReducer = createReducer(
     ...state,
     departments: [],
     departmentsStatus: 'error',
+  })),
+  on(AppApiAction.commitNumberOfInvigilatorForFacultySuccessful, (state) => ({
+    ...state,
+    examination: {
+      ...state.examination!,
+      status: ExaminationStatus.AssignInvigilator,
+    },
+    relatedExaminations: state.relatedExaminations.map((e) =>
+      e.id !== state.examination!.id
+        ? e
+        : {
+            ...e,
+            status: ExaminationStatus.AssignInvigilator,
+          }
+    ),
   }))
 );
