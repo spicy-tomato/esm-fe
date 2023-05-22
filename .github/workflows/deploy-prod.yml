@@ -26,6 +26,7 @@ jobs:
         run: node ./scripts/env.js
         env:
           BASE_URL: "${{ secrets.BASE_URL }}"
+          DEFAULT_PASSWORD: "${{ secrets.DEFAULT_PASSWORD }}"
           SYNCFUSION_LICENSE: "${{ secrets.SYNCFUSION_LICENSE }}"
           RECAPTCHA_SITE_KEY: "${{ secrets.RECAPTCHA_SITE_KEY }}"
 
