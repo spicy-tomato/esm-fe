@@ -35,12 +35,13 @@ import {
 } from '@taiga-ui/core';
 import { TuiSelectModule } from '@taiga-ui/kit';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
-import { filter, tap } from 'rxjs';
+import { Observable, filter, tap } from 'rxjs';
 import {
   InvigilatorAssignRoomStore,
   ShiftUiModel,
 } from '../../assign-room.store';
 import { LetModule } from '@ngrx/component';
+import { ObservableHelper } from '@esm/cdk';
 
 export const TAIGA_UI = [
   TuiDataListModule,
@@ -115,7 +116,7 @@ export class InvigilatorAssignRoomTableTeacherCellComponent
     this.valueAccessor?.registerOnTouched(fn);
   }
 
-  setDisabledState?(isDisabled: boolean): void {
+  setDisabledState(isDisabled: boolean): void {
     this.valueAccessor?.setDisabledState(isDisabled);
   }
 
@@ -123,7 +124,7 @@ export class InvigilatorAssignRoomTableTeacherCellComponent
   onInvigilatorChanges(
     currentShiftGroupId: string,
     currentShiftId: string,
-    newInvigilatorId: any
+    newInvigilatorId: string
   ): void {
     const newValue = this.usedInvigilatorsMap$.value;
     newValue[currentShiftGroupId] ??= {};
@@ -175,7 +176,10 @@ export class InvigilatorAssignRoomTableTeacherCellComponent
       .open<UserSummary>(
         new PolymorpheusComponent(SelectTeacherDialogComponent, this.injector)
       )
-      .pipe(tap(({ id }) => this.store.save({ [shiftGroupId]: id })))
+      .pipe(
+        filter((x) => !!x),
+        tap(({ id }) => this.store.save({ [shiftGroupId]: id }))
+      )
       .subscribe();
   }
 }
