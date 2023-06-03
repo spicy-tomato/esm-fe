@@ -1,15 +1,13 @@
+import { ElementRef, Renderer2 } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, NgControl } from '@angular/forms';
+import { DefaultValueAccessor, FormControl, NgControl } from '@angular/forms';
 import { APP_STORE_PROVIDER, TESTING_COMMON_IMPORTS } from '@esm/cdk';
+import { of } from 'rxjs';
 import { InvigilatorAssignRoomStore } from '../../assign-room.store';
 import {
   InvigilatorAssignRoomTableTeacherCellComponent,
   TAIGA_UI,
 } from './teacher-cell.component';
-import { DefaultValueAccessor } from '@angular/forms';
-import { Renderer2 } from '@angular/core';
-import { ElementRef } from '@angular/core';
-import { of } from 'rxjs';
 
 describe('InvigilatorAssignRoomTableTeacherCellComponent', () => {
   let component: InvigilatorAssignRoomTableTeacherCellComponent;
@@ -68,7 +66,7 @@ describe('InvigilatorAssignRoomTableTeacherCellComponent', () => {
     it('should call valueAccessor.registerOnChange', () => {
       assignValueAccessor();
 
-      const fn = (): void => {};
+      const fn = (): null => null;
       const spy = spyOn<any>(component.valueAccessor, 'registerOnChange');
 
       component.registerOnChange(fn);
@@ -80,7 +78,7 @@ describe('InvigilatorAssignRoomTableTeacherCellComponent', () => {
     it('should call valueAccessor.registerOnTouched', () => {
       assignValueAccessor();
 
-      const fn = (): void => {};
+      const fn = (): null => null;
       const spy = spyOn<any>(component.valueAccessor, 'registerOnTouched');
 
       component.registerOnTouched(fn);

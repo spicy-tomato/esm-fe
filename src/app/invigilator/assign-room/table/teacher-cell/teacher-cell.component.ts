@@ -26,6 +26,7 @@ import {
   EditInvigilatorDialogComponent,
   SelectTeacherDialogComponent,
 } from '@esm/shared/dialogs';
+import { LetModule } from '@ngrx/component';
 import { TuiContextWithImplicit, TuiStringHandler } from '@taiga-ui/cdk';
 import {
   TuiDataListModule,
@@ -35,13 +36,11 @@ import {
 } from '@taiga-ui/core';
 import { TuiSelectModule } from '@taiga-ui/kit';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
-import { Observable, filter, tap } from 'rxjs';
+import { filter, tap } from 'rxjs';
 import {
   InvigilatorAssignRoomStore,
   ShiftUiModel,
 } from '../../assign-room.store';
-import { LetModule } from '@ngrx/component';
-import { ObservableHelper } from '@esm/cdk';
 
 export const TAIGA_UI = [
   TuiDataListModule,
