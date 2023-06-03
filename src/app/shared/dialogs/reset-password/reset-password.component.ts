@@ -31,7 +31,6 @@ export const TAIGA_UI = [
   standalone: true,
   imports: [CommonModule, FormsModule, LetModule, TAIGA_UI],
   templateUrl: './reset-password.component.html',
-  styleUrls: ['./reset-password.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ResetPasswordDialogStore],
 })

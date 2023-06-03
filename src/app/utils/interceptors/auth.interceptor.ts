@@ -32,10 +32,8 @@ export class AuthInterceptor implements HttpInterceptor {
         error: (error) => {
           if (!(error instanceof HttpErrorResponse)) return;
 
-          switch (error.status) {
-            case 401:
-              this.handleUnauthorized(error);
-              break;
+          if (error.status === 401) {
+            this.handleUnauthorized(error);
           }
         },
       })

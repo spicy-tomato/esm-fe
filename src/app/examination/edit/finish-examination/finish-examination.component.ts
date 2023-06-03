@@ -12,7 +12,6 @@ export const TAIGA_UI = [TuiButtonModule, TuiIslandModule];
   standalone: true,
   imports: [CommonModule, LetModule, TAIGA_UI],
   templateUrl: './finish-examination.component.html',
-  styleUrls: ['./finish-examination.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ExaminationEditFinishExaminationStore],
 })

@@ -25,7 +25,6 @@ const TAIGA_UI = [TuiLoaderModule, TuiTableModule, TuiButtonModule];
   standalone: true,
   imports: [CommonModule, LetModule, ...TAIGA_UI],
   templateUrl: './reset-password.component.html',
-  styleUrls: ['./reset-password.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [DataResetPasswordStore, tuiButtonOptionsProvider({ size: 'm' })],
 })
