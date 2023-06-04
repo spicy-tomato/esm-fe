@@ -1,5 +1,10 @@
 import { inject, Injectable } from '@angular/core';
-import { EsmHttpErrorResponse, ObservableHelper, Status } from '@esm/cdk';
+import {
+  EsmHttpErrorResponse,
+  ObservableHelper,
+  State,
+  Status,
+} from '@esm/cdk';
 import {
   DepartmentSummary,
   FacultySummary,
@@ -31,12 +36,12 @@ type UserInfoMap = Record<
   null | { phoneNumber: string | null; department: DepartmentSummary | null }
 >;
 
-type InvigilatorAssignTeacherState = {
-  //
+type InvigilatorAssignTeacherState = State<
+  GetGroupByFacultyIdResponseItem[],
+  'data',
+  EsmHttpErrorResponse['error']
+> & {
   faculty: FacultySummary | null;
-  data: GetGroupByFacultyIdResponseItem[];
-  dataStatus: Status;
-  dataError: any;
   //
   invigilatorsData: UserSummary[];
   invigilatorsDataStatus: Status;

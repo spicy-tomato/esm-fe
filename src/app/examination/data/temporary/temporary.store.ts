@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { ObservableHelper, Status } from '@esm/cdk';
+import { ObservableHelper, State, Status } from '@esm/cdk';
 import { ExaminationStatus, TemporaryExamination } from '@esm/data';
 import { ExaminationService } from '@esm/services';
 import { AppPageAction, AppSelector, AppState } from '@esm/store';
@@ -14,11 +14,7 @@ import {
   withLatestFrom,
 } from 'rxjs';
 
-type ExaminationDataTemporaryState = {
-  data: TemporaryExamination[];
-  dataStatus: Status;
-  dataError: string | null;
-  //
+type ExaminationDataTemporaryState = State<TemporaryExamination[], 'data'> & {
   activateStatus: Status;
 };
 

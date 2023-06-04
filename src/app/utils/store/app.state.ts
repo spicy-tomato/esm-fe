@@ -1,4 +1,4 @@
-import { Status } from '@esm/cdk';
+import { State, Status } from '@esm/cdk';
 import {
   ExaminationSummary,
   FacultyWithDepartments,
@@ -18,17 +18,12 @@ type ExaminationState = {
   examinationStatus: Status;
 };
 
-type RelatedExaminationsState = {
-  relatedExaminations: GetRelatedResponseItem[];
-  relatedExaminationsStatus: Status;
-  relatedExaminationsError: string | null;
-};
+type RelatedExaminationsState = State<
+  GetRelatedResponseItem[],
+  'relatedExaminations'
+>;
 
-type DepartmentsState = {
-  departments: FacultyWithDepartments[];
-  departmentsStatus: Status;
-  departmentsError: string | null;
-};
+type DepartmentsState = State<FacultyWithDepartments[], 'departments'>;
 
 export type AppState = UserState &
   ExaminationState &
