@@ -90,6 +90,7 @@ export const appReducer = createReducer(
     examinationStatus: 'success',
     relatedExaminations:
       examination === null ||
+      examination.status === ExaminationStatus.Closed ||
       state.relatedExaminations.find((e) => e.id === examination.id)
         ? state.relatedExaminations
         : [...state.relatedExaminations, examination],
