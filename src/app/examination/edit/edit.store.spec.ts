@@ -11,7 +11,7 @@ import { cold } from 'jasmine-marbles';
 import { of } from 'rxjs';
 import { ExaminationEditStore } from './edit.store';
 
-describe('CreateStore', () => {
+describe('ExaminationEditStore', () => {
   let store: ExaminationEditStore;
   let mockExaminationService: jasmine.SpyObj<ExaminationService>;
   let router: Router;

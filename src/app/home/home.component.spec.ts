@@ -1,7 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TESTING_COMMON_IMPORTS } from '@esm/cdk';
-import { appFeatureKey, appInitialState } from '@esm/store';
-import { provideMockStore } from '@ngrx/store/testing';
+import { APP_STORE_PROVIDER, TESTING_COMMON_IMPORTS } from '@esm/cdk';
 import { HomeComponent, NGRX, TAIGA_UI } from './home.component';
 
 describe('HomeComponent', () => {
@@ -11,13 +9,7 @@ describe('HomeComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TESTING_COMMON_IMPORTS, NGRX, TAIGA_UI],
-      providers: [
-        provideMockStore({
-          initialState: {
-            [appFeatureKey]: appInitialState,
-          },
-        }),
-      ],
+      providers: [APP_STORE_PROVIDER],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HomeComponent);
@@ -27,5 +19,13 @@ describe('HomeComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('ngOnInit', () => {
+    it('should make expected calls', () => {
+      const spy = spyOn(component['store'], 'getClosedExaminations');
+      component.ngOnInit()
+      expect(spy).toHaveBeenCalled()
+    });
   });
 });

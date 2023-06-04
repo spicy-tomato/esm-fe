@@ -1,7 +1,7 @@
 <div
   class="wrapper max-w-screen-xl grid grid-rows-3 grid-cols-3 grid-flow-row gap-4 mx-auto"
 >
-  <div class="examinations">
+  <div class="col-start-1 col-end-3">
     <div class="box p-3.5 bg-white rounded-xl border border-tui-base-02">
       <h2 class="text-2xl font-bold">Các kỳ thi đang diễn ra</h2>
       <ul
@@ -20,6 +20,29 @@
     </div>
   </div>
 
+  <div class="col-start-1 col-end-3">
+    <tui-loader
+      *ngrxLet="closedExaminationsStatus$ as closedExaminationsStatus"
+      [showLoader]="closedExaminationsStatus === 'loading'"
+      class="box p-3.5 bg-white rounded-xl border border-tui-base-02"
+    >
+      <h2 class="text-2xl font-bold">Các kỳ thi đã diễn ra</h2>
+      <ul
+        *ngrxLet="closedExaminations$ as closedExaminations"
+        class="mt-4 tui-list tui-list_large"
+      >
+        <li
+          *ngFor="let examination of closedExaminations"
+          class="tui-list__item"
+        >
+          <a tuiLink [routerLink]="examination.id">
+            {{ examination.name }}
+          </a>
+        </li>
+      </ul>
+    </tui-loader>
+  </div>
+
   <!-- <a
     class="documents"
     tuiAction
@@ -36,7 +59,12 @@
   >
     <h3 class="text-lg">Thông báo</h3>
   </a> -->
-  <a class="data" tuiAction routerLink="/data" icon="tuiIconDatabaseLarge">
+  <a
+    class="row-start-1 col-start-3 self-start"
+    tuiAction
+    routerLink="/data"
+    icon="tuiIconDatabaseLarge"
+  >
     <h3 class="text-lg">Dữ liệu</h3>
   </a>
 </div>

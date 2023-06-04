@@ -58,7 +58,7 @@ export class AppEffects {
     return this.actions$.pipe(
       ofType(AppPageAction.getRelatedExaminations),
       mergeMap(() => {
-        return this.examinationService.getRelated().pipe(
+        return this.examinationService.getRelated(true).pipe(
           map(({ data: relatedExaminations }) =>
             AppApiAction.getRelatedExaminationsSuccessful({
               relatedExaminations,
