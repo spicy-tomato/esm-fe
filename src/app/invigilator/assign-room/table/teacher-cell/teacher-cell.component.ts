@@ -18,6 +18,7 @@ import {
 } from '@angular/forms';
 import { ObjectPipe } from '@esm/core';
 import {
+  ExaminationStatus,
   GetAvailableInvigilatorsInShiftGroupResponseItem,
   GetAvailableInvigilatorsInShiftGroupTemporaryInvigilator,
   UserSummary,
@@ -36,11 +37,12 @@ import {
 } from '@taiga-ui/core';
 import { TuiSelectModule } from '@taiga-ui/kit';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
-import { filter, tap } from 'rxjs';
+import { filter, map, tap } from 'rxjs';
 import {
   InvigilatorAssignRoomStore,
   ShiftUiModel,
 } from '../../assign-room.store';
+import { ObservableHelper } from '@esm/cdk';
 
 export const TAIGA_UI = [
   TuiDataListModule,
@@ -96,6 +98,10 @@ export class InvigilatorAssignRoomTableTeacherCellComponent
   // PUBLIC PROPERTIES
   readonly temporaryInvigilatorModel!: GetAvailableInvigilatorsInShiftGroupTemporaryInvigilator;
   readonly usedInvigilatorsMap$ = this.store.usedInvigilatorsMap$;
+  readonly examinationIsClosed$ = this.store.examination$.pipe(
+    ObservableHelper.filterNullish(),
+    map((e) => e.status === ExaminationStatus.Closed)
+  );
 
   // GETTERS
   get control(): FormControl {

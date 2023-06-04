@@ -72,7 +72,7 @@ export class InvigilatorAssignRoomStore extends ComponentStore<InvigilatorAssign
   );
 
   // GLOBAL SELECTORS
-  private readonly examination$ = this.appStore
+  readonly examination$ = this.appStore
     .select(AppSelector.examination)
     .pipe(takeUntil(this.destroy$));
 
