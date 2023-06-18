@@ -86,7 +86,11 @@
                 <ng-template tuiDataList>
                   <tui-data-list>
                     <ng-container *ngFor="let ivs of row.invigilatorShift">
-                      <button tuiOption [value]="ivs.invigilator.id">
+                      <button
+                        tuiOption
+                        *ngIf="ivs.invigilator.id"
+                        [value]="ivs.invigilator.id"
+                      >
                         {{ ivs.invigilator.fullName }}
                       </button>
                     </ng-container>
