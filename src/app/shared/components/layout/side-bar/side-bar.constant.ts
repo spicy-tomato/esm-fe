@@ -108,6 +108,11 @@ export class SideBarConstant {
     //   routerLink: '/document',
     // },
     {
+      name: 'Thống kê',
+      icon: 'far fa-clipboard-list',
+      routerLink: '/',
+    },
+    {
       name: 'Quản lý kỳ thi',
       roles: [Role.EXAMINATION_DEPARTMENT_HEAD],
       icon: 'far fa-cog',

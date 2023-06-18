@@ -10,6 +10,7 @@ import {
   ExaminationEvent,
   ExaminationGetDataResponseItem,
   ExaminationGetShiftResponseItem,
+  ExaminationStatistic,
   ExaminationSummary,
   GetAllGroupsResponseResponseItem,
   GetAvailableInvigilatorsInShiftGroupResponseItem,
@@ -239,6 +240,13 @@ export class ExaminationService {
     return this.http.get<
       Result<GetAvailableInvigilatorsInShiftGroupResponseItem>
     >(`${this.url}${examinationId}/invigilator`);
+  }
+
+  // [GET] /examination/{examinationId}/statistic
+  getStatistic(id: string): Observable<Result<ExaminationStatistic>> {
+    return this.http.get<Result<ExaminationStatistic>>(
+      this.url + `${id}/statistic`
+    );
   }
 
   // [GET] /examination/{examinationId}/summary
