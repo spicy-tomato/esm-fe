@@ -8,7 +8,9 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { StringifyHelper } from '@esm/cdk';
+import { ArrayPipe } from '@esm/core';
 import { ExaminationStatus } from '@esm/data';
+import { MinimumExaminationStatusDirective } from '@esm/shared/directives';
 import { LetModule } from '@ngrx/component';
 import {
   TuiButtonModule,
@@ -18,7 +20,6 @@ import {
 import { TuiSelectModule } from '@taiga-ui/kit';
 import { environment } from 'src/environments/environment';
 import { InvigilatorAssignTeacherStore } from '../assign-teacher.store';
-import { MinimumExaminationStatusDirective } from '@esm/shared/directives';
 
 export const TAIGA_UI = [
   TuiButtonModule,
@@ -35,6 +36,7 @@ export const TAIGA_UI = [
     FormsModule,
     LetModule,
     MinimumExaminationStatusDirective,
+    ArrayPipe,
     ...TAIGA_UI,
   ],
   templateUrl: './header.component.html',

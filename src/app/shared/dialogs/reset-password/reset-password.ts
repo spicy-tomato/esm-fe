@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Status } from '@esm/cdk';
-import { UserService } from '@esm/services';
+import { AuthService } from '@esm/services';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { switchMap, tap } from 'rxjs';
 
@@ -12,7 +12,7 @@ type ResetPasswordDialogState = {
 @Injectable()
 export class ResetPasswordDialogStore extends ComponentStore<ResetPasswordDialogState> {
   // INJECT PROPERTIES
-  private readonly userService = inject(UserService);
+  private readonly authService = inject(AuthService);
 
   // PUBLIC PROPERTIES
   readonly status$ = this.select((s) => s.status);
@@ -23,7 +23,7 @@ export class ResetPasswordDialogStore extends ComponentStore<ResetPasswordDialog
     params$.pipe(
       tap(() => this.patchState({ status: 'loading', errors: null })),
       switchMap((id) =>
-        this.userService.resetPassword(id).pipe(
+        this.authService.resetPassword(id).pipe(
           tapResponse(
             () => {
               this.patchState({ status: 'success' });

@@ -93,7 +93,7 @@ export class InvigilatorAssignTeacherStore
   );
 
   // CUSTOM SELECTORS
-  readonly role$ = this.user$.pipe(map((u) => u.role));
+  readonly roles$ = this.user$.pipe(map((u) => u.roles));
 
   private readonly departmentsInFaculty$ = combineLatest([
     this.appStore.select(AppSelector.departmentsWithFaculty),
@@ -114,7 +114,7 @@ export class InvigilatorAssignTeacherStore
     this.showLoader$,
     this.faculties$,
     this.faculty$,
-    this.role$,
+    this.roles$,
     this.disableSaveBtn$,
     this.updateStatus$,
   ]).pipe(
@@ -123,14 +123,14 @@ export class InvigilatorAssignTeacherStore
         showLoader,
         faculties,
         faculty,
-        role,
+        roles,
         disableSaveBtn,
         updateStatus,
       ]) => ({
         showLoader,
         faculties,
         faculty,
-        role,
+        roles,
         disableSaveBtn,
         updateStatus,
       })
@@ -142,14 +142,14 @@ export class InvigilatorAssignTeacherStore
     this.departmentsInFaculty$,
     this.invigilatorsData$,
     this.invigilatorInfoMap$,
-    this.role$,
+    this.roles$,
   ]).pipe(
-    map(([data, departments, invigilatorsData, invigilatorInfoMap, role]) => ({
+    map(([data, departments, invigilatorsData, invigilatorInfoMap, roles]) => ({
       data,
       departments,
       invigilatorsData,
       invigilatorInfoMap,
-      role,
+      roles,
     }))
   );
 
@@ -307,15 +307,12 @@ export class InvigilatorAssignTeacherStore
     this.user$
       .pipe(
         tap((user) => {
-          switch (user.role) {
-            case 'ExaminationDepartmentHead':
-              this.gotExaminationDepartmentHeadRole$.next();
-              break;
-            case 'Teacher':
-              this.patchState({
-                faculty: user.department?.faculty ?? user.faculty ?? null,
-              });
-              break;
+          if (user.roles.includes('ExaminationDepartmentHead')) {
+            this.gotExaminationDepartmentHeadRole$.next();
+          } else if (user.roles.includes('Teacher')) {
+            this.patchState({
+              faculty: user.department?.faculty ?? user.faculty ?? null,
+            });
           }
         }),
         takeUntil(this.destroy$)

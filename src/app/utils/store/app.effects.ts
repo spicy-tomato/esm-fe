@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { TokenService } from '@esm/cdk';
-import { ExaminationService, FacultyService, UserService } from '@esm/services';
+import { AuthService, ExaminationService, FacultyService } from '@esm/services';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store } from '@ngrx/store';
@@ -16,7 +16,7 @@ export class AppEffects {
   // INJECT PROPERTIES
   private readonly router = inject(Router);
   private readonly actions$ = inject(Actions);
-  private readonly userService = inject(UserService);
+  private readonly authService = inject(AuthService);
   private readonly appStore = inject(Store<AppState>);
   private readonly tokenService = inject(TokenService);
   private readonly facultyService = inject(FacultyService);
@@ -33,7 +33,7 @@ export class AppEffects {
         if (!this.tokenService.get()) {
           return of(AppApiAction.noCacheUserInfo());
         }
-        return this.userService.me().pipe(
+        return this.authService.getMySummaryInfo().pipe(
           map(({ data }) => AppApiAction.getUserInfoSuccessful({ user: data })),
           catchError(() => of(AppApiAction.getUserInfoFailed()))
         );

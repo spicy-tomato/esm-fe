@@ -105,7 +105,7 @@ export class SettingsChangePasswordComponent implements OnInit {
       const newPassword = this.newPassword.value as string;
 
       const form: ChangePasswordRequest = {
-        password: StringHelper.md5(password),
+        oldPassword: StringHelper.md5(password),
         newPassword: StringHelper.md5(newPassword),
       };
       this.store.change(form);

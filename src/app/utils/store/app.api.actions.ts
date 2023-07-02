@@ -2,7 +2,7 @@ import {
   ExaminationSummary,
   FacultyWithDepartments,
   GetRelatedResponseItem,
-  UserSummary,
+  MySummaryInfoResponse,
 } from '@esm/data';
 import { createAction, props } from '@ngrx/store';
 
@@ -12,7 +12,7 @@ export class AppApiAction {
   );
   static readonly getUserInfoSuccessful = createAction(
     '[App/API] Get user info successful',
-    props<{ user: UserSummary }>()
+    props<{ user: MySummaryInfoResponse }>()
   );
   static readonly getUserInfoFailed = createAction(
     '[App/API] Get user info failed'

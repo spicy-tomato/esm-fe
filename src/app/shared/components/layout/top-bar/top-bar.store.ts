@@ -20,7 +20,7 @@ export class TopBarStore extends ComponentStore<{}> {
 
   private readonly userName$ = this.appStore.pipe(AppSelector.userName);
 
-  private readonly role$ = this.appStore.select(AppSelector.role);
+  private readonly roles$ = this.appStore.select(AppSelector.roles);
 
   private readonly userTitle$ = this.appStore.pipe(
     AppSelector.userTitle(false)
@@ -35,8 +35,8 @@ export class TopBarStore extends ComponentStore<{}> {
     .pipe(takeUntil(this.destroy$));
 
   // CUSTOM SELECTORS
-  private readonly isInvigilator$ = this.role$.pipe(
-    map((r) => r === 'ExaminationDepartmentHead')
+  private readonly isInvigilator$ = this.roles$.pipe(
+    map((r) => r.includes('ExaminationDepartmentHead'))
   );
 
   readonly navObservables$ = combineLatest([

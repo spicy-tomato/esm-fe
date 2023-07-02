@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Status } from '@esm/cdk';
 import { ChangePasswordRequest } from '@esm/data';
-import { UserService } from '@esm/services';
+import { AuthService } from '@esm/services';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
@@ -14,14 +14,14 @@ type SettingsChangePasswordState = {
 
 @Injectable()
 export class SettingsChangePasswordStore extends ComponentStore<SettingsChangePasswordState> {
+  // INJECT PROPERTIES
+  private readonly authService = inject(AuthService);
+  private readonly appStore = inject(Store<AppState>);
+
   // PUBLIC PROPERTIES
   readonly status$ = this.select((s) => s.status);
-  readonly userTitle$ = this.appShellStore.pipe(
+  readonly userTitle$ = this.appStore.pipe(
     AppSelector.userTitle(),
-    takeUntil(this.destroy$)
-  );
-  private readonly teacher$ = this.appShellStore.pipe(
-    AppSelector.notNullUser,
     takeUntil(this.destroy$)
   );
 
@@ -30,7 +30,7 @@ export class SettingsChangePasswordStore extends ComponentStore<SettingsChangePa
     params$.pipe(
       tap(() => this.patchState({ status: 'loading', error: null })),
       switchMap((params) =>
-        this.userService.changePassword(params).pipe(
+        this.authService.changePassword(params).pipe(
           tapResponse(
             () =>
               this.patchState({
@@ -49,10 +49,7 @@ export class SettingsChangePasswordStore extends ComponentStore<SettingsChangePa
   );
 
   // CONSTRUCTOR
-  constructor(
-    private readonly userService: UserService,
-    private readonly appShellStore: Store<AppState>
-  ) {
+  constructor() {
     super({
       status: 'idle',
       error: null,

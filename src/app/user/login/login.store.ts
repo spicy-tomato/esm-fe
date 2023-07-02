@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Status, TokenService } from '@esm/cdk';
 import { LoginRequest } from '@esm/data';
-import { UserService } from '@esm/services';
+import { AuthService } from '@esm/services';
 import { AppPageAction, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
@@ -17,7 +17,7 @@ type LoginState = {
 export class LoginStore extends ComponentStore<LoginState> {
   // INJECT PROPERTIES
   private readonly router = inject(Router);
-  private readonly userService = inject(UserService);
+  private readonly authService = inject(AuthService);
   private readonly appStore = inject(Store<AppState>);
   private readonly tokenService = inject(TokenService);
 
@@ -29,7 +29,7 @@ export class LoginStore extends ComponentStore<LoginState> {
     params$.pipe(
       tap(() => this.patchState({ status: 'loading', error: null })),
       switchMap((request) =>
-        this.userService.login(request).pipe(
+        this.authService.login(request).pipe(
           tapResponse(
             ({ data }) => {
               this.tokenService.save(data.token);

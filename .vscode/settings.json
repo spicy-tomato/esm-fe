@@ -10,5 +10,7 @@
     "preinstall",
     "sonarcloud",
     "whiteblock"
-  ]
+  ],
+  "prettier.singleQuote": true,
+  "prettier.jsxSingleQuote": true
 }

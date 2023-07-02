@@ -20,7 +20,7 @@ export class NotificationEffects {
   // PRIVATE PROPERTIES
   private readonly uuidAccount$ = this.appStore.pipe(
     AppSelector.notNullUser,
-    map(({ fullName: userName }) => userName)
+    map(({ id }) => id)
   );
 
   // EFFECTS

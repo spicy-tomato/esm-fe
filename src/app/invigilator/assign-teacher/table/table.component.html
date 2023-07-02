@@ -78,7 +78,10 @@
           <ng-container *ngrxLet="form.controls[row.id] as rowControl">
             <td *tuiCell="'department'" tuiTd class="w-60">
               <tui-select
-                *ngIf="obs.role === 'Teacher'; else departmentTmpl"
+                *ngIf="
+                  obs.roles | array : 'in' : 'Teacher';
+                  else departmentTmpl
+                "
                 (ngModelChange)="rowControl.controls.user.setValue(null)"
                 [formControl]="rowControl.controls.departmentId"
                 [valueContent]="stringify(obs.departments)"
@@ -108,8 +111,8 @@
                           rowControl.value.departmentId
                         )
                     : ''
-                  }}
-                  <!-- rowControl.value.departmentId -->
+                }}
+                <!-- rowControl.value.departmentId -->
               </ng-template>
             </td>
 
@@ -120,7 +123,7 @@
               class="w-60"
             >
               <tui-combo-box
-                *ngIf="obs.role === 'Teacher'; else teacherTmpl"
+                *ngIf="obs.roles | array : 'in' : 'Teacher'; else teacherTmpl"
                 [(search)]="customValues[row.id]"
                 (ngModelChange)="onInvigilatorChanges(row.facultyShiftGroup.id)"
                 [formControl]="rowControl.controls.user"

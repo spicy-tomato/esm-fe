@@ -8,7 +8,10 @@
       *esmMinimumExaminationStatus="ExaminationStatus.AssignInvigilator"
     >
       <ng-container
-        *ngIf="obs.role === 'ExaminationDepartmentHead'; else buttons"
+        *ngIf="
+          obs.roles | array : 'in' : 'ExaminationDepartmentHead';
+          else buttons
+        "
       >
         <tui-select
           [ngModel]="obs.faculty?.id"

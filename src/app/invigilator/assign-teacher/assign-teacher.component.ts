@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Status } from '@esm/cdk';
+import { ArrayPipe } from '@esm/core';
 import { ExaminationStatus } from '@esm/data';
 import { LetModule } from '@ngrx/component';
 import { provideComponentStore } from '@ngrx/component-store';
@@ -40,6 +41,7 @@ export const NGRX = [LetModule];
     ReactiveFormsModule,
     ScrollingModule,
     LetModule,
+    ArrayPipe,
     InvigilatorAssignTeacherHeaderComponent,
     InvigilatorAssignTeacherTableComponent,
     SafeExaminationDataComponent,
@@ -57,7 +59,7 @@ export class InvigilatorAssignTeacherComponent implements OnInit {
 
   // PROPERTIES
   readonly ExaminationStatus = ExaminationStatus;
-  readonly role$ = this.store.role$;
+  readonly roles$ = this.store.roles$;
   readonly dataStatus$ = this.store.dataStatus$;
   readonly updateStatus$ = this.store.updateStatus$;
   readonly autoAssignStatus$ = this.store.autoAssignStatus$;

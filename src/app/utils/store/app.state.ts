@@ -3,12 +3,12 @@ import {
   ExaminationSummary,
   FacultyWithDepartments,
   GetRelatedResponseItem,
-  UserSummary,
+  MySummaryInfoResponse,
 } from '@esm/data';
 
 type UserState = {
   showLoader: boolean | null;
-  user: UserSummary | null;
+  user: MySummaryInfoResponse | null;
   userStatus: Status;
 };
 

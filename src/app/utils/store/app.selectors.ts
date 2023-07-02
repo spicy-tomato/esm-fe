@@ -1,5 +1,9 @@
 import { ObservableHelper, StringHelper } from '@esm/cdk';
-import { DepartmentSummary, FacultySummary, UserSummary } from '@esm/data';
+import {
+  DepartmentSummary,
+  FacultySummary,
+  MySummaryInfoResponse,
+} from '@esm/data';
 import { createFeatureSelector, createSelector, select } from '@ngrx/store';
 import { Observable, UnaryFunction, map, pipe } from 'rxjs';
 import { appFeatureKey } from './app.reducer';
@@ -18,9 +22,9 @@ export class AppSelector {
     this.selector,
     (state) => state.userStatus
   );
-  static readonly role = createSelector(
+  static readonly roles = createSelector(
     this.selector,
-    (state) => state.user?.role
+    (state) => state.user?.roles ?? []
   );
 
   static readonly userName = pipe(
@@ -28,7 +32,7 @@ export class AppSelector {
     map((user) =>
       this.isOrganizationAccount(user)
         ? user.fullName
-        : StringHelper.getFirstName(user.fullName)
+        : StringHelper.getFirstName(user.fullName ?? '')
     )
   );
 
@@ -118,8 +122,8 @@ export class AppSelector {
 
   private static isOrganizationAccount({
     faculty,
-    role,
-  }: UserSummary): boolean {
-    return !!faculty || role === 'ExaminationDepartmentHead';
+    roles,
+  }: MySummaryInfoResponse): boolean {
+    return !!faculty || roles.includes('ExaminationDepartmentHead');
   }
 }

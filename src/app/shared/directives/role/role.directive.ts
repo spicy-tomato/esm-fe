@@ -31,7 +31,7 @@ export class RoleDirective {
   private hadElse = false;
   private readonly bind$ = new Subject<void>();
   private readonly role$ = this.appStore
-    .select(AppSelector.role)
+    .select(AppSelector.roles)
     .pipe(takeUntil(this.destroy$));
 
   // SETTER
@@ -57,15 +57,15 @@ export class RoleDirective {
       this.role$.pipe(ObservableHelper.filterNullish()),
       this.bind$,
     ])
-      .pipe(tap(([role]) => this.updateView(role)))
+      .pipe(tap(([roles]) => this.updateView(roles)))
       .subscribe();
   }
 
-  private updateView(userRole: string): void {
+  private updateView(userRoles: string[]): void {
     const accept = this._esmRole;
     this.viewContainerRef.clear();
 
-    if (!accept || accept.includes(userRole)) {
+    if (!accept || accept.find((r) => userRoles.includes(r))) {
       this.viewContainerRef.createEmbeddedView(this.thenTemplateRef);
       this.cdr.detectChanges();
     } else if (this.hadElse) {

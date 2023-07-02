@@ -14,14 +14,14 @@ export const permissionGuard: CanActivateFn = (route) => {
 
   return user$.pipe(
     ObservableHelper.filterNullish(),
-    map(({ role }) => {
+    map(({ roles }) => {
       const acceptRoles = route.data['roles'] as string[] | undefined;
 
       if (!acceptRoles || acceptRoles.length === 0) {
         return true;
       }
 
-      if (acceptRoles.includes(role)) {
+      if (acceptRoles.find(r => roles.includes(r))) {
         return true;
       }
 

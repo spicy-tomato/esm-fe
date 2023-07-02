@@ -15,6 +15,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { StringifyHelper } from '@esm/cdk';
+import { ArrayPipe } from '@esm/core';
 import {
   DepartmentSummary,
   GetGroupByFacultyIdResponseItem,
@@ -58,6 +59,7 @@ type FormType = {
     ReactiveFormsModule,
     ScrollingModule,
     LetModule,
+    ArrayPipe,
     ...TAIGA_UI,
   ],
   templateUrl: './table.component.html',
