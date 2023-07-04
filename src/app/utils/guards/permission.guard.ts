@@ -21,7 +21,7 @@ export const permissionGuard: CanActivateFn = (route) => {
         return true;
       }
 
-      if (acceptRoles.find(r => roles.includes(r))) {
+      if (acceptRoles.find(r => roles.includes(r as any))) {
         return true;
       }
 

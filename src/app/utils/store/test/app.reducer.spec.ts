@@ -1,3 +1,4 @@
+import { Role } from '@esm/data';
 import { AppApiAction } from '../app.api.actions';
 import { AppPageAction } from '../app.page.actions';
 import { appReducer, appInitialState } from '../app.reducer';
@@ -6,20 +7,15 @@ import { AppState } from '../app.state';
 describe('appReducer', () => {
   const mockLoggedInState: AppState = {
     user: {
-      email: 'test@abc.com',
       fullName: 'Tester',
-      createdAt: new Date(),
       department: {
-        displayId: null,
         faculty: null,
         id: 'fac',
-        name: 'fn',
       },
       faculty: null,
-      invigilatorId: '',
       id: 'id',
       isMale: true,
-      role: 'ExaminationDepartmentHead',
+      roles: [Role.EXAMINATION_DEPARTMENT_HEAD],
       phoneNumber: '',
     },
     userStatus: 'success',

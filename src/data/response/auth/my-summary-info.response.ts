@@ -1,26 +1,22 @@
+import { Role } from 'src/data/models/user';
+
 export type MySummaryInfoResponse = {
   id: string;
   fullName?: string;
-  userName: string;
-  email?: string;
   isMale?: boolean;
-  createdAt?: string;
-  teacherId?: string;
   department?: {
     id: string;
-    displayId: string;
-    name: string;
-    faculty?: {
+    faculty: {
       id: string;
       displayId: string;
       name: string;
-    };
+    } | null;
   };
-  faculty?: {
+  faculty: {
     id: string;
     displayId: string;
     name: string;
-  };
-  roles: string[];
+  } | null;
+  roles: (typeof Role)[keyof typeof Role][];
   phoneNumber?: string;
 };
