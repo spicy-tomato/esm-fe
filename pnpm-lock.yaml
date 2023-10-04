@@ -194,8 +194,8 @@ devDependencies:
     specifier: ^8.4.24
     version: 8.4.24
   release-please:
-    specifier: ^15.11.0
-    version: 15.11.0
+    specifier: ^15.13.0
+    version: 15.13.0
   tailwindcss:
     specifier: ^3.3.3
     version: 3.3.3(ts-node@10.9.1)
@@ -5230,25 +5230,30 @@ packages:
       q: 1.5.1
     dev: true
 
-  /conventional-changelog-writer@5.0.1:
-    resolution: {integrity: sha512-5WsuKUfxW7suLblAbFnxAcrvf6r+0b7GvNaWUwUIk0bXMnENP/PEieGKVUQrjPqwPT4o3EPAASBXiY6iHooLOQ==}
-    engines: {node: '>=10'}
+  /conventional-changelog-conventionalcommits@6.1.0:
+    resolution: {integrity: sha512-3cS3GEtR78zTfMzk0AizXKKIdN4OvSh7ibNz6/DPbhWWQu7LqE/8+/GqSodV+sywUR2gpJAdP/1JFf4XtN7Zpw==}
+    engines: {node: '>=14'}
+    dependencies:
+      compare-func: 2.0.0
+    dev: true
+
+  /conventional-changelog-writer@6.0.1:
+    resolution: {integrity: sha512-359t9aHorPw+U+nHzUXHS5ZnPBOizRxfQsWT5ZDHBfvfxQOAik+yfuhKXG66CN5LEWPpMNnIMHUTCKeYNprvHQ==}
+    engines: {node: '>=14'}
     hasBin: true
     dependencies:
-      conventional-commits-filter: 2.0.7
+      conventional-commits-filter: 3.0.0
       dateformat: 3.0.3
       handlebars: 4.7.7
       json-stringify-safe: 5.0.1
-      lodash: 4.17.21
       meow: 8.1.2
-      semver: 6.3.0
+      semver: 7.5.3
       split: 1.0.1
-      through2: 4.0.2
     dev: true
 
-  /conventional-commits-filter@2.0.7:
-    resolution: {integrity: sha512-ASS9SamOP4TbCClsRHxIHXRfcGCnIoQqkvAzCSbZzTFLfcTqJVugB0agRgsEELsqaeWgsXv513eS116wnlSSPA==}
-    engines: {node: '>=10'}
+  /conventional-commits-filter@3.0.0:
+    resolution: {integrity: sha512-1ymej8b5LouPx9Ox0Dw/qAO2dVdfpRFq28e5Y0jJEU8ZrLdy0vOSkkIInwmxErFGhg6SALro60ZrwYFVTUDo4Q==}
+    engines: {node: '>=14'}
     dependencies:
       lodash.ismatch: 4.4.0
       modify-values: 1.0.1
@@ -9259,8 +9264,8 @@ packages:
       jsesc: 0.5.0
     dev: true
 
-  /release-please@15.11.0:
-    resolution: {integrity: sha512-gCo/iK6OJXMh+QpkY76+ulQnXJZEac1CPZb57rKaQgvAomAqxiYdVscY5csfo/2iYnefuQ9dahVUfsAq2K6riQ==}
+  /release-please@15.13.0:
+    resolution: {integrity: sha512-xIwTEnikX7RegDSaU+J+wou1QNcUReQEZT2MSTzuBKnk51Hnus12VDnDfJ5E0MoZMTJ0q9lB1c+vl8G/awpexA==}
     engines: {node: '>=14.0.0'}
     hasBin: true
     dependencies:
@@ -9279,9 +9284,9 @@ packages:
       '@xmldom/xmldom': 0.8.8
       chalk: 4.1.2
       code-suggester: 4.3.2
-      conventional-changelog-conventionalcommits: 5.0.0
-      conventional-changelog-writer: 5.0.1
-      conventional-commits-filter: 2.0.7
+      conventional-changelog-conventionalcommits: 6.1.0
+      conventional-changelog-writer: 6.0.1
+      conventional-commits-filter: 3.0.0
       detect-indent: 6.1.0
       diff: 5.1.0
       figures: 3.2.0
@@ -9291,7 +9296,7 @@ packages:
       jsonpath: 1.1.1
       node-html-parser: 6.1.5
       parse-github-repo-url: 1.4.1
-      semver: 7.5.0
+      semver: 7.5.3
       type-fest: 3.12.0
       typescript: 4.9.5
       unist-util-visit: 2.0.3
