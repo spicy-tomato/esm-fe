@@ -43,7 +43,7 @@ export class ObjectHelper {
     obj: Record<K, V>,
     options?: {
       uniqueValue?: boolean;
-    }
+    },
   ): Item<K, V>[] {
     const array: Item<K, V>[] = [];
     (Object.keys(obj) as K[]).forEach((key) => {
@@ -64,8 +64,28 @@ export class ObjectHelper {
    * // returns false
    */
   static isNullOrUndefined<T>(
-    obj: T | null | undefined
+    obj: T | null | undefined,
   ): obj is null | undefined {
     return obj === null || obj === undefined;
+  }
+
+  /**
+   * Determine if an object is null or undefined
+   * @param obj
+   * @returns `obj` is null or undefined or not
+   * @example
+   * ObjectHelper.isNullOrUndefined({})
+   * // returns false
+   */
+  static removeUndefinedField<T>(obj: T): Required<T> {
+    let result: Record<string, any> = {};
+
+    for (const key in obj) {
+      if (obj[key] !== undefined) {
+        result[key] = obj[key];
+      }
+    }
+
+    return result as Required<T>;
   }
 }

@@ -1,5 +1,6 @@
 {
   "cSpell.words": [
+    "acacode",
     "appleboy",
     "Buildx",
     "CBCT",
@@ -9,6 +10,7 @@
     "openxmlformats",
     "preinstall",
     "sonarcloud",
+    "varnames",
     "whiteblock"
   ],
   "prettier.singleQuote": true,

@@ -1,0 +1,40 @@
+<%
+const { utils, route, config, modelTypes } = it;
+const { _, pascalCase, require } = utils;
+const apiClassName = pascalCase(route.moduleName);
+const routes = route.routes;
+const dataContracts = _.map(modelTypes, "name");
+%>
+
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { APP_ENV } from '@esm/core';
+import { ObjectHelper } from '@esm/cdk';
+<% if (dataContracts.length) { %>
+import { <%~ dataContracts.join(", ") %> } from "./<%~ config.fileNames.dataContracts %>"
+<% } %>
+
+@Injectable({
+  providedIn: 'root',
+})
+export class <%= apiClassName %>Service {
+  // INJECT PROPERTIES
+  private readonly http = inject(HttpClient);
+  private readonly env = inject(APP_ENV);
+
+  // PRIVATE PROPERTIES
+  private readonly url = this.env.baseUrl;
+
+<% if(config.singleHttpClient) { %>
+  http: HttpClient<SecurityDataType>;
+
+  constructor (http: HttpClient<SecurityDataType>) {
+    this.http = http;
+  }
+<% } %>
+
+  <% for (const route of routes) { %>
+    <%~ includeFile('./procedure-call.ejs', { ...it, route }) %>
+  <% } %>
+}

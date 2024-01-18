@@ -7,4 +7,5 @@ export const environment: AppEnv = {
   recaptcha: {
     siteKey: '',
   },
+  defaultPassword: ''
 };
