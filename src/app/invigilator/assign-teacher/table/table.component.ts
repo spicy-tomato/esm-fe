@@ -4,8 +4,8 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  OnInit,
   inject,
+  OnInit,
 } from '@angular/core';
 import {
   FormControl,
@@ -14,13 +14,19 @@ import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
 } from '@angular/forms';
+import {
+  ESMApplicationExaminationsQueriesGetGroupsByFacultyIdGetGroupsByFacultyIdDto,
+  ESMApplicationExaminationsQueriesGetGroupsByFacultyIdGetGroupsByFacultyIdDtoInternalFacultyShiftGroup,
+  ESMDomainDtosUserUserSimple,
+  ESMDomainDtosUserUserSummary,
+  GetGroupsByFacultyIdData,
+} from '@esm/api';
 import { StringifyHelper } from '@esm/cdk';
 import { ArrayPipe } from '@esm/core';
 import {
   DepartmentSummary,
   GetGroupByFacultyIdResponseItem,
   UpdateTeacherAssignmentRequest,
-  UserSimple,
   UserSummary,
 } from '@esm/data';
 import { LetModule } from '@ngrx/component';
@@ -42,11 +48,9 @@ export const TAIGA_UI = [
 
 type FormType = {
   [key: string]: FormGroup<{
-    departmentId: FormControl<string | null>;
-    user: FormControl<UserSimple | UserSummary | null>;
-    facultyShiftGroup: FormControl<
-      GetGroupByFacultyIdResponseItem['facultyShiftGroup']
-    >;
+    departmentId: FormControl<string | null | undefined>;
+    user: FormControl<ESMDomainDtosUserUserSimple | UserSummary | null>;
+    facultyShiftGroup: FormControl<ESMApplicationExaminationsQueriesGetGroupsByFacultyIdGetGroupsByFacultyIdDtoInternalFacultyShiftGroup>;
   }>;
 };
 
@@ -106,21 +110,21 @@ export class InvigilatorAssignTeacherTableComponent implements OnInit {
 
   // PUBLIC METHODS
   readonly invigilatorMatcher = (
-    invigilator: UserSummary,
+    invigilator: ESMDomainDtosUserUserSummary,
     departmentId: string,
-    facultyShiftGroupId: string
+    facultyShiftGroupId: string,
   ): boolean => {
     return (
       invigilator.department?.id === departmentId &&
       !this.selectedInvigilatorsInShift[facultyShiftGroupId]?.includes(
-        invigilator.id
+        invigilator.id,
       )
     );
   };
 
   readonly invigilatorIdentityMatcher = (
     a: UserSummary,
-    b: UserSummary
+    b: UserSummary,
   ): boolean => {
     return a.invigilatorId === b.invigilatorId;
   };
@@ -144,7 +148,7 @@ export class InvigilatorAssignTeacherTableComponent implements OnInit {
           temporaryInvigilatorName:
             user === null ? this.customValues[departmentShiftGroupId] : null,
         };
-      }
+      },
     );
 
     this.store.save(dataToSave);
@@ -153,7 +157,7 @@ export class InvigilatorAssignTeacherTableComponent implements OnInit {
   @tuiPure
   getDepartmentOfAnonymousInvigilator(
     departments: DepartmentSummary[],
-    departmentId?: string | null
+    departmentId?: string | null,
   ): string {
     if (!departmentId) return '';
 
@@ -162,7 +166,7 @@ export class InvigilatorAssignTeacherTableComponent implements OnInit {
 
   onInvigilatorChanges(facultyShiftGroupId: string): void {
     const currentSelectedInvigilatorsIdInForm = Object.values(
-      this.form?.getRawValue() ?? {}
+      this.form?.getRawValue() ?? {},
     )
       .filter((row) => row.facultyShiftGroup.id === facultyShiftGroupId)
       .map((row) => row.user?.id)
@@ -181,28 +185,36 @@ export class InvigilatorAssignTeacherTableComponent implements OnInit {
           this.buildForm(data);
           this.updateSelectedInvigilators(data);
           this.cdr.markForCheck();
-        })
+        }),
       )
       .subscribe();
   }
 
-  private buildForm(data: GetGroupByFacultyIdResponseItem[]): void {
+  private buildForm(
+    data: ESMApplicationExaminationsQueriesGetGroupsByFacultyIdGetGroupsByFacultyIdDto[],
+  ): void {
     this.form = this.fb.group(
       data.reduce<FormType>((acc, curr) => {
-        acc[curr.id] = this.fb.group({
-          departmentId: [curr.departmentId],
-          user: [
+        acc[curr.id] = this.fb.group<{
+          departmentId: FormControl<string | null | undefined>;
+          user: FormControl<ESMDomainDtosUserUserSimple | UserSummary | null>;
+          facultyShiftGroup: FormControl<ESMApplicationExaminationsQueriesGetGroupsByFacultyIdGetGroupsByFacultyIdDtoInternalFacultyShiftGroup>;
+        }>({
+          departmentId: new FormControl(curr.departmentId),
+          user: new FormControl(
             curr.user ??
               (curr.temporaryInvigilatorName !== null
                 ? Object.assign(new UserSummary(), {
                     fullName: curr.temporaryInvigilatorName,
                   })
                 : null),
-          ],
-          facultyShiftGroup: [curr.facultyShiftGroup],
+          ),
+          facultyShiftGroup: new FormControl(
+            curr.facultyShiftGroup,
+          ) as FormControl<ESMApplicationExaminationsQueriesGetGroupsByFacultyIdGetGroupsByFacultyIdDtoInternalFacultyShiftGroup>,
         });
         return acc;
-      }, {})
+      }, {}),
     );
 
     this.customValues = data.reduce<Record<string, string | null>>(
@@ -210,19 +222,19 @@ export class InvigilatorAssignTeacherTableComponent implements OnInit {
         acc[curr.id] = null;
         return acc;
       },
-      {}
+      {},
     );
 
     this.form.valueChanges
       .pipe(
         tap(() => this.store.patchState({ disableSaveBtn: false })),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }
 
   private updateSelectedInvigilators(
-    data: GetGroupByFacultyIdResponseItem[]
+    data: ESMApplicationExaminationsQueriesGetGroupsByFacultyIdGetGroupsByFacultyIdDto[],
   ): void {
     const result: Record<string, string[]> = {};
 

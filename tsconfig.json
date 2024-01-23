@@ -41,6 +41,9 @@
       "@esm/services": [
         "src/app/utils/services"
       ],
+      "@esm/api": [
+        "src/app/shared/api"
+      ],
       "@esm/shared/components": [
         "src/app/shared/components"
       ],

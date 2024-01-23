@@ -1,7 +1,11 @@
 import { inject, Injectable } from '@angular/core';
+import {
+  DepartmentService,
+  ESMApplicationDepartmentsCommandsCreateUserInDepartmentCreateUserInDepartmentParams,
+} from '@esm/api';
 import { ErrorResult, EsmHttpErrorResponse, Status } from '@esm/cdk';
-import { CreateUserRequest, UpdateUserRequest, UserSummary } from '@esm/data';
-import { DepartmentService, UserService } from '@esm/services';
+import { UpdateUserRequest } from '@esm/data';
+import { UserService } from '@esm/services';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
@@ -10,7 +14,7 @@ import { switchMap, takeUntil, tap } from 'rxjs';
 type EditInvigilatorDialogState = {
   status: Status;
   errors: ErrorResult[] | null;
-  responseData: UserSummary | null;
+  responseData: string | null;
 };
 
 @Injectable()
@@ -31,7 +35,7 @@ export class EditInvigilatorDialogStore extends ComponentStore<EditInvigilatorDi
   // EFFECTS
   readonly create = this.effect<{
     departmentId: string;
-    request: CreateUserRequest;
+    request: ESMApplicationDepartmentsCommandsCreateUserInDepartmentCreateUserInDepartmentParams;
   }>((params$) =>
     params$.pipe(
       tap(() => this.patchState({ status: 'loading', errors: null })),
@@ -44,11 +48,11 @@ export class EditInvigilatorDialogStore extends ComponentStore<EditInvigilatorDi
               this.patchState({
                 status: 'error',
                 errors: res.error.errors,
-              })
-          )
-        )
-      )
-    )
+              }),
+          ),
+        ),
+      ),
+    ),
   );
 
   readonly update = this.effect<{ id: string; request: UpdateUserRequest }>(
@@ -59,16 +63,16 @@ export class EditInvigilatorDialogStore extends ComponentStore<EditInvigilatorDi
           this.userService.update(id, request).pipe(
             tapResponse(
               ({ data }) =>
-                this.patchState({ responseData: data, status: 'success' }),
+                this.patchState({ responseData: data.id, status: 'success' }),
               (res: EsmHttpErrorResponse) =>
                 this.patchState({
                   status: 'error',
                   errors: res.error.errors,
-                })
-            )
-          )
-        )
-      )
+                }),
+            ),
+          ),
+        ),
+      ),
   );
 
   // CONSTRUCTOR

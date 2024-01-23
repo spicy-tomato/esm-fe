@@ -1,7 +1,6 @@
 import { inject, Injectable } from '@angular/core';
+import { ExaminationService, GetAllShiftsData } from '@esm/api';
 import { ObservableHelper, Status } from '@esm/cdk';
-import { ExaminationGetDataResponseItem } from '@esm/data';
-import { ExaminationService } from '@esm/services';
 import { shiftFilterObservable } from '@esm/shared/observables';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
@@ -10,7 +9,7 @@ import { TuiDayRange } from '@taiga-ui/cdk';
 import { switchMap, takeUntil, tap, withLatestFrom } from 'rxjs';
 
 type ExaminationDataFinalState = {
-  data: ExaminationGetDataResponseItem[];
+  data: GetAllShiftsData['data'];
   status: Status;
   filter: {
     methods: number[];
@@ -44,18 +43,18 @@ export class ExaminationDataFinalStore extends ComponentStore<ExaminationDataFin
       tap(() => this.patchState({ status: 'loading' })),
       withLatestFrom(this.examinationId$),
       switchMap(({ 1: id }) =>
-        this.examinationService.getData(id).pipe(
+        this.examinationService.getAllShifts(id).pipe(
           tapResponse(
             ({ data }) =>
               this.patchState({
                 data,
                 status: 'success',
               }),
-            () => this.patchState({ status: 'error' })
-          )
-        )
-      )
-    )
+            () => this.patchState({ status: 'error' }),
+          ),
+        ),
+      ),
+    ),
   );
 
   // CONSTRUCTOR

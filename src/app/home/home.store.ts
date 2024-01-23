@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Status } from '@esm/cdk';
 import { GetRelatedResponseItem } from '@esm/data';
-import { ExaminationService } from '@esm/services';
+import { ExaminationService } from '@esm/api';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
@@ -22,7 +22,7 @@ export class HomeStore extends ComponentStore<HomeState> {
   // STATE SELECTORS
   readonly closedExaminations$ = this.select((s) => s.closedExaminations);
   readonly closedExaminationsStatus$ = this.select(
-    (s) => s.closedExaminationsStatus
+    (s) => s.closedExaminationsStatus,
   );
 
   // GLOBAL SELECTORS
@@ -40,10 +40,10 @@ export class HomeStore extends ComponentStore<HomeState> {
         this.patchState({
           closedExaminationsStatus: 'loading',
           closedExaminationsError: null,
-        })
+        }),
       ),
       switchMap(() =>
-        this.examinationService.getRelated(false).pipe(
+        this.examinationService.getRelated({ IsActive: false }).pipe(
           tapResponse(
             ({ data }) =>
               this.patchState({
@@ -55,11 +55,11 @@ export class HomeStore extends ComponentStore<HomeState> {
               this.patchState({
                 closedExaminationsStatus: 'error',
                 closedExaminationsError: error as string,
-              })
-          )
-        )
-      )
-    )
+              }),
+          ),
+        ),
+      ),
+    ),
   );
 
   // CONSTRUCTOR

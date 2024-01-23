@@ -1,7 +1,7 @@
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { ResultBuilder, TESTING_COMMON_IMPORTS } from '@esm/cdk';
 import { APP_ENV } from '@esm/core';
-import { ExaminationService } from '@esm/services';
+import { ExaminationService } from '@esm/api';
 import { appFeatureKey, appInitialState } from '@esm/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { cold } from 'jasmine-marbles';

@@ -10,8 +10,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { ESMDomainEntitiesExaminationData } from '@esm/api';
 import { StringifyHelper } from '@esm/cdk';
-import { TemporaryExamination } from '@esm/data';
 import { LetModule } from '@ngrx/component';
 import { TuiFilterPipeModule } from '@taiga-ui/cdk';
 import {
@@ -44,6 +44,7 @@ export const TAIGA_UI = [
 ];
 
 @Component({
+  selector: 'dialog-add-module',
   templateUrl: './add-module.component.html',
   styleUrls: ['./add-module.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -58,7 +59,7 @@ export class AddModuleDialogComponent implements OnInit {
   private readonly alertService = inject(TuiAlertService);
   private readonly context = inject(POLYMORPHEUS_CONTEXT) as TuiDialogContext<
     boolean,
-    TemporaryExamination
+    ESMDomainEntitiesExaminationData
   >;
 
   // PUBLIC PROPERTIES
@@ -81,6 +82,7 @@ export class AddModuleDialogComponent implements OnInit {
   ngOnInit(): void {
     this.handleGetFacultiesAndDepartmentsData();
     this.handleCreateSuccess();
+    console.log('init');
   }
 
   // PUBLIC METHODS
@@ -105,13 +107,13 @@ export class AddModuleDialogComponent implements OnInit {
         tap((faculties) => {
           const currentFacultyId = faculties.find(
             (f) =>
-              f.name.toUpperCase() === this.context.data.faculty?.toUpperCase()
+              f.name.toUpperCase() === this.context.data.faculty?.toUpperCase(),
           )?.id;
           if (currentFacultyId) {
             this.form.controls.faculty.setValue(currentFacultyId);
           }
         }),
-        take(1)
+        take(1),
       )
       .subscribe();
 
@@ -121,13 +123,13 @@ export class AddModuleDialogComponent implements OnInit {
           const currentDepartmentId = departments.find(
             (d) =>
               d.name.toUpperCase() ===
-              this.context.data.department?.toUpperCase()
+              this.context.data.department?.toUpperCase(),
           )?.id;
           if (currentDepartmentId) {
             this.form.controls.department.setValue(currentDepartmentId);
           }
         }),
-        take(1)
+        take(1),
       )
       .subscribe();
   }
@@ -143,7 +145,7 @@ export class AddModuleDialogComponent implements OnInit {
             })
             .subscribe();
           this.context.completeWith(true);
-        })
+        }),
       )
       .subscribe();
   }

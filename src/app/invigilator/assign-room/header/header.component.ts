@@ -3,10 +3,10 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
-  Output,
   inject,
+  Output,
 } from '@angular/core';
-import { ExaminationStatus } from '@esm/data';
+import { ESMDomainEnumsExaminationStatus } from '@esm/api';
 import { LetModule } from '@ngrx/component';
 import { TuiButtonModule } from '@taiga-ui/core';
 import { InvigilatorAssignRoomStore } from '../assign-room.store';
@@ -29,7 +29,7 @@ export class InvigilatorAssignRoomHeaderComponent {
   @Output() save = new EventEmitter<void>();
 
   // PUBLIC PROPERTIES
-  readonly ExaminationStatus = ExaminationStatus;
+  readonly ExaminationStatus = ESMDomainEnumsExaminationStatus;
   readonly headerObservables$ = this.store.headerObservables$;
 
   // PUBLIC METHODS

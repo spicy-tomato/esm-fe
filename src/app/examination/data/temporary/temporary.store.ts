@@ -1,7 +1,10 @@
 import { inject, Injectable } from '@angular/core';
+import {
+  ESMDomainEnumsExaminationStatus,
+  ExaminationService,
+  GetTemporaryDataData,
+} from '@esm/api';
 import { ObservableHelper, State, Status } from '@esm/cdk';
-import { ExaminationStatus, TemporaryExamination } from '@esm/data';
-import { ExaminationService } from '@esm/services';
 import { AppPageAction, AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
@@ -14,7 +17,10 @@ import {
   withLatestFrom,
 } from 'rxjs';
 
-type ExaminationDataTemporaryState = State<TemporaryExamination[], 'data'> & {
+type ExaminationDataTemporaryState = State<
+  GetTemporaryDataData['data'],
+  'data'
+> & {
   activateStatus: Status;
 };
 
@@ -37,7 +43,7 @@ export class ExaminationDataTemporaryStore extends ComponentStore<ExaminationDat
 
   // CUSTOM SELECTORS
   private readonly hasError$ = this.select(
-    (s) => !!s.data.find((d) => Object.keys(d.errors).length > 0)
+    (s) => !!s.data.find((d) => Object.keys(d.errors).length > 0),
   );
 
   readonly headerObservables$ = combineLatest([
@@ -49,7 +55,7 @@ export class ExaminationDataTemporaryStore extends ComponentStore<ExaminationDat
       dataStatus,
       hasError,
       activateStatus,
-    }))
+    })),
   );
 
   // EFFECTS
@@ -60,7 +66,7 @@ export class ExaminationDataTemporaryStore extends ComponentStore<ExaminationDat
       switchMap(({ 1: id }) =>
         this.examinationService
           .changeStatus(id, {
-            status: ExaminationStatus.AssignFaculty,
+            status: ESMDomainEnumsExaminationStatus.AssignFaculty,
             createdAt: new Date(),
           })
           .pipe(
@@ -68,14 +74,14 @@ export class ExaminationDataTemporaryStore extends ComponentStore<ExaminationDat
               () => {
                 this.patchState({ activateStatus: 'success' });
                 this.appStore.dispatch(
-                  AppPageAction.getExaminationSummary({ id })
+                  AppPageAction.getExaminationSummary({ id }),
                 );
               },
-              () => this.patchState({ activateStatus: 'error' })
-            )
-          )
-      )
-    )
+              () => this.patchState({ activateStatus: 'error' }),
+            ),
+          ),
+      ),
+    ),
   );
 
   readonly getData = this.effect<void>((params$) =>
@@ -95,11 +101,11 @@ export class ExaminationDataTemporaryStore extends ComponentStore<ExaminationDat
               this.patchState({
                 dataStatus: 'error',
                 dataError: error as string,
-              })
-          )
-        )
-      )
-    )
+              }),
+          ),
+        ),
+      ),
+    ),
   );
 
   // CONSTRUCTOR

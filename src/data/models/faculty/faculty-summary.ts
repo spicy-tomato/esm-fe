@@ -1,5 +1,5 @@
 export type FacultySummary = {
   id: string;
-  displayId: string | null;
+  displayId?: string | null;
   name: string;
 };

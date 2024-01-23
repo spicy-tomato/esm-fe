@@ -10,9 +10,10 @@
  */
 
 export type AssignInvigilatorNumerateOfShiftToFacultyData =
-  ESMApplicationCommonModelsResultSystemBoolean;
+  ESMApplicationCommonModelsResultESMApplicationGroupsCommandsAssignInvigilatorsNumberToFacultyAssignInvigilatorsNumberToFacultyDto;
 
-export type AssignInvigilatorNumerateOfShiftToFacultyPayload = any;
+/** @format int32 */
+export type AssignInvigilatorNumerateOfShiftToFacultyPayload = number;
 
 export type AssignInvigilatorsNumberToFacultyData =
   ESMApplicationCommonModelsResultESMApplicationGroupsCommandsAssignInvigilatorsNumberToFacultyAssignInvigilatorsNumberToFacultyDto;
@@ -21,96 +22,82 @@ export type AssignInvigilatorsNumberToFacultyData =
 export type AssignInvigilatorsNumberToFacultyPayload = number;
 
 export type AssignInvigilatorsToShiftsData =
-  ESMApplicationCommonModelsResultSystemBoolean;
+  | ESMApplicationCommonModelsResultSystemBoolean
+  | ESMApplicationCommonModelsResult;
 
 export type AssignInvigilatorsToShiftsPayload = Record<string, string>;
 
 export type AutoAssignTeachersToGroupsData =
-  ESMApplicationCommonModelsResultSystemBoolean;
+  | ESMApplicationCommonModelsResultSystemBoolean
+  | ESMApplicationCommonModelsResult;
 
 export type AutoAssignTeachersToShiftData =
-  ESMApplicationCommonModelsResultSystemBoolean;
+  | ESMApplicationCommonModelsResultSystemBoolean
+  | ESMApplicationCommonModelsResult;
 
 export type CalculateInvigilatorNumerateOfShiftForEachFacultyData =
-  ESMApplicationCommonModelsResultSystemBoolean;
+  | ESMApplicationCommonModelsResultSystemBoolean
+  | ESMApplicationCommonModelsResult;
 
-export type ChangePasswordData = ESMApplicationCommonModelsResultSystemBoolean;
+export type ChangePasswordData =
+  | ESMApplicationCommonModelsResultSystemBoolean
+  | ESMApplicationCommonModelsResult;
 
-export type ChangePasswordPayload =
-  ESMApplicationAuthCommandsChangePasswordChangePasswordCommand;
-
-export type ChangeStatusData = ESMApplicationCommonModelsResultSystemBoolean;
-
-export type ChangeStatusPayload =
-  ESMApplicationExaminationsCommandsChangeStatusChangeStatusRequest;
+export type ChangeStatusData =
+  | ESMApplicationCommonModelsResultSystemBoolean
+  | ESMApplicationCommonModelsResult;
 
 export type CreateDepartmentData = ESMApplicationCommonModelsResultSystemGuid;
 
-export type CreateDepartmentPayload =
-  ESMApplicationDepartmentsCommandsCreateDepartmentCreateDepartmentCommand;
-
 export type CreateExaminationData = ESMApplicationCommonModelsResultSystemGuid;
-
-export type CreateExaminationPayload =
-  ESMApplicationExaminationsCommandsCreateCreateCommand;
 
 export type CreateFacultyData =
   ESMApplicationCommonModelsResultESMDomainDtosFacultyFacultySummary;
 
-export type CreateFacultyPayload =
-  ESMApplicationFacultiesCommandsCreateCreateCommand;
-
 export type CreateModuleData = ESMApplicationCommonModelsResultSystemGuid;
 
 export type CreateModuleFacultyData =
-  ESMApplicationCommonModelsResultSystemBoolean;
+  | ESMApplicationCommonModelsResultSystemBoolean
+  | ESMApplicationCommonModelsResult;
 
 export type CreateModuleFacultyPayload = any;
 
-export type CreateModulePayload =
-  ESMApplicationModulesCommandsCreateCreateCommand;
-
 export type CreateRoomData = ESMApplicationCommonModelsResultSystemGuid;
-
-export type CreateRoomPayload = ESMApplicationRoomsCommandsCreateCreateCommand;
 
 export type CreateUserData = ESMApplicationCommonModelsResultSystemGuid;
 
-export type CreateUserPayload =
-  ESMApplicationDepartmentsCommandsCreateUserInDepartmentCreateUserInDepartmentCommand;
-
 export interface ESMApplicationAuthCommandsChangePasswordChangePasswordCommand {
-  newPassword?: string;
-  oldPassword?: string;
+  newPassword: string;
+  oldPassword: string;
 }
 
 export interface ESMApplicationAuthCommandsLoginLoginCommand {
-  password?: string;
-  userName?: string;
+  password: string;
+  userName: string;
 }
 
 export interface ESMApplicationAuthQueriesMySummaryInfoInternalDepartment {
-  faculty?: ESMApplicationAuthQueriesMySummaryInfoInternalFaculty | null;
+  faculty: ESMApplicationAuthQueriesMySummaryInfoInternalFaculty;
   /** @format uuid */
-  id?: string;
+  id: string;
 }
 
 export interface ESMApplicationAuthQueriesMySummaryInfoInternalFaculty {
   displayId?: string | null;
   /** @format uuid */
-  id?: string;
-  name?: string;
+  id: string;
+  name: string;
 }
 
 export interface ESMApplicationAuthQueriesMySummaryInfoMySummaryInfoDto {
-  department?: ESMApplicationAuthQueriesMySummaryInfoInternalDepartment | null;
-  faculty?: ESMApplicationAuthQueriesMySummaryInfoInternalFaculty | null;
+  department: ESMApplicationAuthQueriesMySummaryInfoInternalDepartment;
+  faculty: ESMApplicationAuthQueriesMySummaryInfoInternalFaculty;
   fullName?: string | null;
   /** @format uuid */
-  id?: string;
+  id: string;
   isMale?: boolean | null;
   phoneNumber?: string | null;
-  roles?: string[];
+  roles: string[];
 }
 
 export interface ESMApplicationCommonModelsError {
@@ -239,165 +226,175 @@ export interface ESMApplicationCommonModelsError {
    *
    * 511 = NetworkAuthenticationRequired
    */
-  code?: SystemNetHttpStatusCode | null;
-  message?: string;
+  code: SystemNetHttpStatusCode;
+  message: string;
   property?: string | null;
 }
 
+export type ESMApplicationCommonModelsResult =
+  ESMApplicationCommonModelsResultSystemBoolean;
+
 export interface ESMApplicationCommonModelsResultESMApplicationAuthQueriesMySummaryInfoMySummaryInfoDto {
-  data?: ESMApplicationAuthQueriesMySummaryInfoMySummaryInfoDto;
+  data: ESMApplicationAuthQueriesMySummaryInfoMySummaryInfoDto;
   errors?: ESMApplicationCommonModelsError[] | null;
-  success?: boolean;
+  success: boolean;
 }
 
 export interface ESMApplicationCommonModelsResultESMApplicationExaminationsQueriesGetAvailableInvigilatorsInGroupsGetAvailableInvigilatorsInGroupsDto {
-  data?: Record<
+  data: Record<
     string,
-    ESMApplicationExaminationsQueriesGetAvailableInvigilatorsInGroupsGetAvailableInvigilatorsInGroupsItemResponseItem[]
+    (
+      | ESMApplicationExaminationsQueriesGetAvailableInvigilatorsInGroupsGetAvailableInvigilatorsInGroupsItemVerifiedInvigilator
+      | ESMApplicationExaminationsQueriesGetAvailableInvigilatorsInGroupsGetAvailableInvigilatorsInGroupsItemTemporaryInvigilator
+    )[]
   >;
   errors?: ESMApplicationCommonModelsError[] | null;
-  success?: boolean;
+  success: boolean;
+}
+
+export interface ESMApplicationCommonModelsResultESMApplicationExaminationsQueriesGetStatisticGetStatisticDto {
+  data: ESMApplicationExaminationsQueriesGetStatisticGetStatisticDto;
+  errors?: ESMApplicationCommonModelsError[] | null;
+  success: boolean;
 }
 
 export interface ESMApplicationCommonModelsResultESMApplicationGroupsCommandsAssignInvigilatorsNumberToFacultyAssignInvigilatorsNumberToFacultyDto {
-  data?: ESMApplicationGroupsCommandsAssignInvigilatorsNumberToFacultyAssignInvigilatorsNumberToFacultyDto;
+  data: ESMApplicationGroupsCommandsAssignInvigilatorsNumberToFacultyAssignInvigilatorsNumberToFacultyDto;
   errors?: ESMApplicationCommonModelsError[] | null;
-  success?: boolean;
+  success: boolean;
 }
 
 export interface ESMApplicationCommonModelsResultESMDomainDtosExaminationExaminationSummary {
-  data?: ESMDomainDtosExaminationExaminationSummary;
+  data: ESMDomainDtosExaminationExaminationSummary;
   errors?: ESMApplicationCommonModelsError[] | null;
-  success?: boolean;
+  success: boolean;
 }
 
 export interface ESMApplicationCommonModelsResultESMDomainDtosFacultyFacultySummary {
-  data?: ESMDomainDtosFacultyFacultySummary;
+  data: ESMDomainDtosFacultyFacultySummary;
   errors?: ESMApplicationCommonModelsError[] | null;
-  success?: boolean;
+  success: boolean;
 }
 
 export interface ESMApplicationCommonModelsResultESMDomainDtosGeneratedToken {
-  data?: ESMDomainDtosGeneratedToken;
+  data: ESMDomainDtosGeneratedToken;
   errors?: ESMApplicationCommonModelsError[] | null;
-  success?: boolean;
+  success: boolean;
 }
 
 export interface ESMApplicationCommonModelsResultSystemBoolean {
-  data?: boolean;
+  data: boolean;
   errors?: ESMApplicationCommonModelsError[] | null;
-  success?: boolean;
+  success: boolean;
 }
 
 export interface ESMApplicationCommonModelsResultSystemCollectionsGenericIEnumerableESMApplicationTeachersQueriesGetGetDto {
-  data?: ESMApplicationTeachersQueriesGetGetDto[];
+  data: ESMApplicationTeachersQueriesGetGetDto[];
   errors?: ESMApplicationCommonModelsError[] | null;
-  success?: boolean;
+  success: boolean;
 }
 
 export interface ESMApplicationCommonModelsResultSystemCollectionsGenericIEnumerableESMDomainDtosUserUserSummary {
-  data?: ESMDomainDtosUserUserSummary[];
+  data: ESMDomainDtosUserUserSummary[];
   errors?: ESMApplicationCommonModelsError[] | null;
-  success?: boolean;
+  success: boolean;
 }
 
 export interface ESMApplicationCommonModelsResultSystemCollectionsGenericListESMApplicationExaminationsQueriesGetAllGroupsGetAllGroupsDto {
-  data?: ESMApplicationExaminationsQueriesGetAllGroupsGetAllGroupsDto[];
+  data: ESMApplicationExaminationsQueriesGetAllGroupsGetAllGroupsDto[];
   errors?: ESMApplicationCommonModelsError[] | null;
-  success?: boolean;
+  success: boolean;
 }
 
 export interface ESMApplicationCommonModelsResultSystemCollectionsGenericListESMApplicationExaminationsQueriesGetAllShiftsDetailsShiftDetailsDto {
-  data?: ESMApplicationExaminationsQueriesGetAllShiftsDetailsShiftDetailsDto[];
+  data: ESMApplicationExaminationsQueriesGetAllShiftsDetailsShiftDetailsDto[];
   errors?: ESMApplicationCommonModelsError[] | null;
-  success?: boolean;
+  success: boolean;
 }
 
 export interface ESMApplicationCommonModelsResultSystemCollectionsGenericListESMApplicationExaminationsQueriesGetAllShiftsGetAllShiftDto {
-  data?: ESMApplicationExaminationsQueriesGetAllShiftsGetAllShiftDto[];
+  data: ESMApplicationExaminationsQueriesGetAllShiftsGetAllShiftDto[];
   errors?: ESMApplicationCommonModelsError[] | null;
-  success?: boolean;
+  success: boolean;
 }
 
 export interface ESMApplicationCommonModelsResultSystemCollectionsGenericListESMApplicationExaminationsQueriesGetGroupsByFacultyIdGetGroupsByFacultyIdDto {
-  data?: ESMApplicationExaminationsQueriesGetGroupsByFacultyIdGetGroupsByFacultyIdDto[];
+  data: ESMApplicationExaminationsQueriesGetGroupsByFacultyIdGetGroupsByFacultyIdDto[];
   errors?: ESMApplicationCommonModelsError[] | null;
-  success?: boolean;
+  success: boolean;
 }
 
 export interface ESMApplicationCommonModelsResultSystemCollectionsGenericListESMApplicationExaminationsQueriesGetHandoverDataHandoverDataDto {
-  data?: ESMApplicationExaminationsQueriesGetHandoverDataHandoverDataDto[];
+  data: ESMApplicationExaminationsQueriesGetHandoverDataHandoverDataDto[];
   errors?: ESMApplicationCommonModelsError[] | null;
-  success?: boolean;
+  success: boolean;
 }
 
 export interface ESMApplicationCommonModelsResultSystemCollectionsGenericListESMApplicationExaminationsQueriesGetRelatedExaminationsRelatedExaminationDto {
-  data?: ESMApplicationExaminationsQueriesGetRelatedExaminationsRelatedExaminationDto[];
+  data: ESMApplicationExaminationsQueriesGetRelatedExaminationsRelatedExaminationDto[];
   errors?: ESMApplicationCommonModelsError[] | null;
-  success?: boolean;
+  success: boolean;
 }
 
 export interface ESMApplicationCommonModelsResultSystemCollectionsGenericListESMApplicationFacultiesQueriesGetAllGetAllDto {
-  data?: ESMApplicationFacultiesQueriesGetAllGetAllDto[];
+  data: ESMApplicationFacultiesQueriesGetAllGetAllDto[];
   errors?: ESMApplicationCommonModelsError[] | null;
-  success?: boolean;
+  success: boolean;
 }
 
 export interface ESMApplicationCommonModelsResultSystemCollectionsGenericListESMDomainDtosUserUserSummary {
-  data?: ESMDomainDtosUserUserSummary[];
+  data: ESMDomainDtosUserUserSummary[];
   errors?: ESMApplicationCommonModelsError[] | null;
-  success?: boolean;
+  success: boolean;
 }
 
 export interface ESMApplicationCommonModelsResultSystemCollectionsGenericListESMDomainEntitiesExaminationData {
-  data?: ESMDomainEntitiesExaminationData[];
+  data: ESMDomainEntitiesExaminationData[];
   errors?: ESMApplicationCommonModelsError[] | null;
-  success?: boolean;
+  success: boolean;
 }
 
 export interface ESMApplicationCommonModelsResultSystemCollectionsGenericListESMDomainEntitiesExaminationEvent {
-  data?: ESMDomainEntitiesExaminationEvent[];
+  data: ESMDomainEntitiesExaminationEvent[];
   errors?: ESMApplicationCommonModelsError[] | null;
-  success?: boolean;
+  success: boolean;
 }
 
 export interface ESMApplicationCommonModelsResultSystemGuid {
   /** @format uuid */
-  data?: string;
+  data: string;
   errors?: ESMApplicationCommonModelsError[] | null;
-  success?: boolean;
+  success: boolean;
 }
 
 export interface ESMApplicationDepartmentsCommandsCreateDepartmentCreateDepartmentCommand {
   displayId?: string | null;
   /** @format uuid */
   facultyId?: string | null;
-  name?: string;
+  name: string;
 }
 
-export interface ESMApplicationDepartmentsCommandsCreateUserInDepartmentCreateUserInDepartmentCommand {
-  departmentId?: string;
-  email?: string;
-  fullName?: string;
-  isMale?: boolean;
+export interface ESMApplicationDepartmentsCommandsCreateUserInDepartmentCreateUserInDepartmentParams {
+  email: string;
+  fullName: string;
+  isMale: boolean;
   phoneNumber?: string | null;
   teacherId?: string | null;
 }
 
 export interface ESMApplicationDepartmentsCommandsImportDepartmentImportDepartmentCommand {
-  files?: File[];
+  files: File[];
 }
 
-export interface ESMApplicationDepartmentsCommandsUpdateDepartmentUpdateDepartmentCommand {
-  departmentId?: string;
-  displayId?: string;
-  facultyId?: string;
-  name?: string;
+export interface ESMApplicationDepartmentsCommandsUpdateDepartmentUpdateDepartmentParams {
+  displayId: string;
+  facultyId: string;
+  name: string;
 }
 
 export interface ESMApplicationExaminationsCommandsChangeStatusChangeStatusRequest {
   /** @format date-time */
-  createdAt?: string;
+  createdAt: Date;
   /**
    *
    *
@@ -413,25 +410,19 @@ export interface ESMApplicationExaminationsCommandsChangeStatusChangeStatusReque
    *
    * 16 = Closed
    */
-  status?:
-    | 'None'
-    | 'Idle'
-    | 'Setup'
-    | 'AssignFaculty'
-    | 'AssignInvigilator'
-    | 'Closed';
+  status: ESMDomainEnumsExaminationStatus;
 }
 
 export interface ESMApplicationExaminationsCommandsCreateCreateCommand {
   /** @format date-time */
-  createdAt?: string;
+  createdAt: Date;
   description?: string | null;
   displayId?: string | null;
   /** @format date-time */
-  expectEndAt?: string | null;
+  expectEndAt?: Date | null;
   /** @format date-time */
-  expectStartAt?: string | null;
-  name?: string;
+  expectStartAt?: Date | null;
+  name: string;
 }
 
 export interface ESMApplicationExaminationsCommandsUpdateTeacherAssignmentUpdateTeacherAssignmentDto {
@@ -440,26 +431,25 @@ export interface ESMApplicationExaminationsCommandsUpdateTeacherAssignmentUpdate
   userId?: string | null;
 }
 
-export interface ESMApplicationExaminationsCommandsUpdateUpdateCommand {
+export interface ESMApplicationExaminationsCommandsUpdateUpdateParams {
   description?: string | null;
   displayId?: string | null;
-  examinationId?: string;
   /** @format date-time */
-  expectEndAt?: string | null;
+  expectEndAt?: Date | null;
   /** @format date-time */
-  expectStartAt?: string | null;
+  expectStartAt?: Date | null;
   name?: string | null;
   /** @format date-time */
-  updatedAt?: string | null;
+  updatedAt?: Date | null;
 }
 
 export interface ESMApplicationExaminationsQueriesGetAllGroupsGetAllGroupsDto {
-  assignNumerate?: Record<string, ESMDomainDtosExaminationShiftGroupDataCell>;
-  departmentAssign?: boolean;
+  assignNumerate: Record<string, ESMDomainDtosExaminationShiftGroupDataCell>;
+  departmentAssign: boolean;
   /** @format uuid */
-  id?: string;
+  id: string;
   /** @format int32 */
-  invigilatorsCount?: number;
+  invigilatorsCount: number;
   /**
    *
    *
@@ -475,58 +465,58 @@ export interface ESMApplicationExaminationsQueriesGetAllGroupsGetAllGroupsDto {
    *
    * 5 = Report2
    */
-  method?: 'Select' | 'Write' | 'Practice' | 'Oral' | 'Report1' | 'Report2';
-  module?: ESMApplicationExaminationsQueriesGetAllGroupsGetAllGroupsDtoInternalModule;
+  method: ESMDomainEnumsExamMethod;
+  module: ESMApplicationExaminationsQueriesGetAllGroupsGetAllGroupsDtoInternalModule;
   /** @format int32 */
-  roomsCount?: number;
+  roomsCount: number;
   /** @format int32 */
   shift?: number | null;
   /** @format date-time */
-  startAt?: string;
+  startAt: Date;
 }
 
 export interface ESMApplicationExaminationsQueriesGetAllGroupsGetAllGroupsDtoInternalFaculty {
-  name?: string;
+  name: string;
 }
 
 export interface ESMApplicationExaminationsQueriesGetAllGroupsGetAllGroupsDtoInternalModule {
-  displayId?: string;
-  faculty?: ESMApplicationExaminationsQueriesGetAllGroupsGetAllGroupsDtoInternalFaculty;
-  name?: string;
+  displayId: string;
+  faculty: ESMApplicationExaminationsQueriesGetAllGroupsGetAllGroupsDtoInternalFaculty;
+  name: string;
 }
 
 export interface ESMApplicationExaminationsQueriesGetAllShiftsDetailsShiftDetailsDto {
   /** @format int32 */
-  candidatesCount?: number;
-  invigilatorShift?: ESMApplicationExaminationsQueriesGetAllShiftsDetailsShiftDetailsDtoInternalInvigilatorShift[];
-  isDuplicated?: boolean;
-  room?: ESMDomainDtosRoomRoomSummary;
-  shiftGroup?: ESMApplicationExaminationsQueriesGetAllShiftsDetailsShiftDetailsDtoInternalShiftGroup;
+  candidatesCount: number;
+  invigilatorShift: ESMApplicationExaminationsQueriesGetAllShiftsDetailsShiftDetailsDtoInternalInvigilatorShift[];
+  isDuplicated: boolean;
+  room: ESMDomainDtosRoomRoomSummary;
+  shiftGroup: ESMApplicationExaminationsQueriesGetAllShiftsDetailsShiftDetailsDtoInternalShiftGroup;
 }
 
 export interface ESMApplicationExaminationsQueriesGetAllShiftsDetailsShiftDetailsDtoInternalDepartment {
   displayId?: string | null;
-  faculty?: ESMApplicationExaminationsQueriesGetAllShiftsDetailsShiftDetailsDtoInternalFaculty | null;
-  name?: string;
+  faculty: ESMApplicationExaminationsQueriesGetAllShiftsDetailsShiftDetailsDtoInternalFaculty;
+  name: string;
 }
 
 export interface ESMApplicationExaminationsQueriesGetAllShiftsDetailsShiftDetailsDtoInternalFaculty {
   displayId?: string | null;
-  name?: string;
+  name: string;
 }
 
 export interface ESMApplicationExaminationsQueriesGetAllShiftsDetailsShiftDetailsDtoInternalInvigilatorShift {
   /** @format uuid */
-  id?: string;
-  invigilator?: ESMApplicationExaminationsQueriesGetAllShiftsDetailsShiftDetailsDtoInternalTeacher | null;
+  id: string;
+  invigilator: ESMApplicationExaminationsQueriesGetAllShiftsDetailsShiftDetailsDtoInternalTeacher;
   /** @format int32 */
-  orderIndex?: number;
+  orderIndex: number;
 }
 
 export interface ESMApplicationExaminationsQueriesGetAllShiftsDetailsShiftDetailsDtoInternalShiftGroup {
-  departmentAssign?: boolean;
+  departmentAssign: boolean;
   /** @format uuid */
-  id?: string;
+  id: string;
   /**
    *
    *
@@ -542,50 +532,50 @@ export interface ESMApplicationExaminationsQueriesGetAllShiftsDetailsShiftDetail
    *
    * 5 = Report2
    */
-  method?: 'Select' | 'Write' | 'Practice' | 'Oral' | 'Report1' | 'Report2';
-  module?: ESMDomainDtosModuleModuleSimple;
+  method: ESMDomainEnumsExamMethod;
+  module: ESMDomainDtosModuleModuleSimple;
   /** @format int32 */
   shift?: number | null;
   /** @format date-time */
-  startAt?: string;
+  startAt: Date;
 }
 
 export interface ESMApplicationExaminationsQueriesGetAllShiftsDetailsShiftDetailsDtoInternalTeacher {
-  department?: ESMApplicationExaminationsQueriesGetAllShiftsDetailsShiftDetailsDtoInternalDepartment | null;
-  fullName?: string;
+  department: ESMApplicationExaminationsQueriesGetAllShiftsDetailsShiftDetailsDtoInternalDepartment;
+  fullName: string;
   /** @format uuid */
-  id?: string;
+  id: string;
   invigilatorId?: string | null;
 }
 
 export interface ESMApplicationExaminationsQueriesGetAllShiftsGetAllShiftDto {
   /** @format int32 */
-  candidatesCount?: number;
+  candidatesCount: number;
   /** @format int32 */
-  examsCount?: number;
+  examsCount: number;
   /** @format uuid */
-  id?: string;
+  id: string;
   /** @format int32 */
-  invigilatorsCount?: number;
-  room?: ESMApplicationExaminationsQueriesGetAllShiftsGetAllShiftDtoInternalRoom;
-  shiftGroup?: ESMApplicationExaminationsQueriesGetAllShiftsGetAllShiftDtoInternalShiftGroup;
+  invigilatorsCount: number;
+  room: ESMApplicationExaminationsQueriesGetAllShiftsGetAllShiftDtoInternalRoom;
+  shiftGroup: ESMApplicationExaminationsQueriesGetAllShiftsGetAllShiftDtoInternalShiftGroup;
 }
 
 export interface ESMApplicationExaminationsQueriesGetAllShiftsGetAllShiftDtoInternalModule {
   /** @format int32 */
-  credits?: number;
-  displayId?: string;
-  name?: string;
+  credits: number;
+  displayId: string;
+  name: string;
 }
 
 export interface ESMApplicationExaminationsQueriesGetAllShiftsGetAllShiftDtoInternalRoom {
-  displayId?: string;
+  displayId: string;
 }
 
 export interface ESMApplicationExaminationsQueriesGetAllShiftsGetAllShiftDtoInternalShiftGroup {
-  departmentAssign?: boolean;
+  departmentAssign: boolean;
   /** @format uuid */
-  id?: string;
+  id: string;
   /**
    *
    *
@@ -601,91 +591,109 @@ export interface ESMApplicationExaminationsQueriesGetAllShiftsGetAllShiftDtoInte
    *
    * 5 = Report2
    */
-  method?: 'Select' | 'Write' | 'Practice' | 'Oral' | 'Report1' | 'Report2';
-  module?: ESMApplicationExaminationsQueriesGetAllShiftsGetAllShiftDtoInternalModule;
+  method: ESMDomainEnumsExamMethod;
+  module: ESMApplicationExaminationsQueriesGetAllShiftsGetAllShiftDtoInternalModule;
   /** @format int32 */
   shift?: number | null;
   /** @format date-time */
-  startAt?: string;
+  startAt: Date;
 }
 
 export interface ESMApplicationExaminationsQueriesGetAvailableInvigilatorsInGroupsGetAvailableInvigilatorsInGroupsItemResponseItem {
-  isPriority?: boolean;
+  isPriority: boolean;
 }
+
+export type ESMApplicationExaminationsQueriesGetAvailableInvigilatorsInGroupsGetAvailableInvigilatorsInGroupsItemTemporaryInvigilator =
+  ESMApplicationExaminationsQueriesGetAvailableInvigilatorsInGroupsGetAvailableInvigilatorsInGroupsItemResponseItem & {
+    /** @format uuid */
+    departmentId?: string | null;
+    temporaryName: string;
+  };
+
+export type ESMApplicationExaminationsQueriesGetAvailableInvigilatorsInGroupsGetAvailableInvigilatorsInGroupsItemVerifiedInvigilator =
+  ESMApplicationExaminationsQueriesGetAvailableInvigilatorsInGroupsGetAvailableInvigilatorsInGroupsItemResponseItem & {
+    departmentName?: string | null;
+    facultyName?: string | null;
+    fullName: string;
+    /** @format uuid */
+    id: string;
+    invigilatorId?: string | null;
+    phoneNumber?: string | null;
+  };
 
 export interface ESMApplicationExaminationsQueriesGetGroupsByFacultyIdGetGroupsByFacultyIdDto {
   /** @format uuid */
   departmentId?: string | null;
-  facultyShiftGroup?: ESMApplicationExaminationsQueriesGetGroupsByFacultyIdGetGroupsByFacultyIdDtoInternalFacultyShiftGroup;
+  facultyShiftGroup: ESMApplicationExaminationsQueriesGetGroupsByFacultyIdGetGroupsByFacultyIdDtoInternalFacultyShiftGroup;
   /** @format uuid */
-  id?: string;
+  id: string;
   temporaryInvigilatorName?: string | null;
-  user?: ESMDomainDtosUserUserSimple | null;
+  user: ESMDomainDtosUserUserSimple;
 }
 
 export interface ESMApplicationExaminationsQueriesGetGroupsByFacultyIdGetGroupsByFacultyIdDtoInternalFacultyShiftGroup {
   /** @format uuid */
-  id?: string;
-  shiftGroup?: ESMApplicationExaminationsQueriesGetGroupsByFacultyIdGetGroupsByFacultyIdDtoInternalShiftGroup;
+  id: string;
+  shiftGroup: ESMApplicationExaminationsQueriesGetGroupsByFacultyIdGetGroupsByFacultyIdDtoInternalShiftGroup;
 }
 
 export interface ESMApplicationExaminationsQueriesGetGroupsByFacultyIdGetGroupsByFacultyIdDtoInternalModule {
-  displayId?: string;
-  name?: string;
+  displayId: string;
+  name: string;
 }
 
 export interface ESMApplicationExaminationsQueriesGetGroupsByFacultyIdGetGroupsByFacultyIdDtoInternalShiftGroup {
-  module?: ESMApplicationExaminationsQueriesGetGroupsByFacultyIdGetGroupsByFacultyIdDtoInternalModule;
+  module: ESMApplicationExaminationsQueriesGetGroupsByFacultyIdGetGroupsByFacultyIdDtoInternalModule;
   /** @format int32 */
   shift?: number | null;
   /** @format date-time */
-  startAt?: string;
+  startAt: Date;
 }
 
 export interface ESMApplicationExaminationsQueriesGetHandoverDataHandoverDataDto {
   /** @format uuid */
   handedOverUserId?: string | null;
   /** @format uuid */
-  id?: string;
-  invigilatorShift?: ESMApplicationExaminationsQueriesGetHandoverDataHandoverDataDtoInternalInvigilatorShift[];
+  id: string;
+  invigilatorShift: ESMApplicationExaminationsQueriesGetHandoverDataHandoverDataDtoInternalInvigilatorShift[];
   report?: string | null;
-  room?: ESMApplicationExaminationsQueriesGetHandoverDataHandoverDataDtoInternalRoom;
-  shiftGroup?: ESMApplicationExaminationsQueriesGetHandoverDataHandoverDataDtoInternalShiftGroup;
+  room: ESMApplicationExaminationsQueriesGetHandoverDataHandoverDataDtoInternalRoom;
+  shiftGroup: ESMApplicationExaminationsQueriesGetHandoverDataHandoverDataDtoInternalShiftGroup;
 }
 
 export interface ESMApplicationExaminationsQueriesGetHandoverDataHandoverDataDtoInternalDepartment {
   displayId?: string | null;
-  faculty?: ESMApplicationExaminationsQueriesGetHandoverDataHandoverDataDtoInternalFaculty | null;
-  name?: string;
+  faculty: ESMApplicationExaminationsQueriesGetHandoverDataHandoverDataDtoInternalFaculty;
+  name: string;
 }
 
 export interface ESMApplicationExaminationsQueriesGetHandoverDataHandoverDataDtoInternalFaculty {
   displayId?: string | null;
-  name?: string;
+  name: string;
 }
 
 export interface ESMApplicationExaminationsQueriesGetHandoverDataHandoverDataDtoInternalInvigilatorShift {
   /** @format uuid */
-  id?: string;
-  invigilator?: ESMApplicationExaminationsQueriesGetHandoverDataHandoverDataDtoInternalUser | null;
+  id: string;
+  invigilator: ESMApplicationExaminationsQueriesGetHandoverDataHandoverDataDtoInternalUser;
   /** @format int32 */
-  orderIndex?: number;
+  orderIndex: number;
 }
 
 export interface ESMApplicationExaminationsQueriesGetHandoverDataHandoverDataDtoInternalModule {
-  displayId?: string;
-  faculty?: ESMApplicationExaminationsQueriesGetHandoverDataHandoverDataDtoInternalFaculty;
-  name?: string;
+  displayId: string;
+  faculty: ESMApplicationExaminationsQueriesGetHandoverDataHandoverDataDtoInternalFaculty;
+  name: string;
 }
 
 export interface ESMApplicationExaminationsQueriesGetHandoverDataHandoverDataDtoInternalRoom {
-  displayId?: string;
+  displayId: string;
 }
 
 export interface ESMApplicationExaminationsQueriesGetHandoverDataHandoverDataDtoInternalShiftGroup {
-  departmentAssign?: boolean;
+  departmentAssign: boolean;
   /** @format uuid */
-  id?: string;
+  id: string;
   /**
    *
    *
@@ -701,61 +709,86 @@ export interface ESMApplicationExaminationsQueriesGetHandoverDataHandoverDataDto
    *
    * 5 = Report2
    */
-  method?: 'Select' | 'Write' | 'Practice' | 'Oral' | 'Report1' | 'Report2';
-  module?: ESMApplicationExaminationsQueriesGetHandoverDataHandoverDataDtoInternalModule;
+  method: ESMDomainEnumsExamMethod;
+  module: ESMApplicationExaminationsQueriesGetHandoverDataHandoverDataDtoInternalModule;
   /** @format int32 */
   shift?: number | null;
   /** @format date-time */
-  startAt?: string;
+  startAt: Date;
 }
 
 export interface ESMApplicationExaminationsQueriesGetHandoverDataHandoverDataDtoInternalUser {
-  department?: ESMApplicationExaminationsQueriesGetHandoverDataHandoverDataDtoInternalDepartment | null;
-  fullName?: string;
+  department: ESMApplicationExaminationsQueriesGetHandoverDataHandoverDataDtoInternalDepartment;
+  fullName: string;
   /** @format uuid */
-  id?: string;
+  id: string;
   invigilatorId?: string | null;
 }
 
 export interface ESMApplicationExaminationsQueriesGetRelatedExaminationsRelatedExaminationDto {
-  displayId?: string;
+  displayId: string;
   /** @format uuid */
-  id?: string;
-  name?: string;
+  id: string;
+  name: string;
+}
+
+export interface ESMApplicationExaminationsQueriesGetStatisticGetStatisticDto {
+  displayId?: string | null;
+  /** @format date-time */
+  endAt?: Date | null;
+  /** @format uuid */
+  id: string;
+  name: string;
+  /** @format int32 */
+  numberOfCandidates: number;
+  /** @format int32 */
+  numberOfInvigilators: number;
+  /** @format int32 */
+  numberOfModules: number;
+  /** @format int32 */
+  numberOfModulesOver: number;
+  /** @format int32 */
+  numberOfShifts: number;
+  /** @format int32 */
+  numberOfShiftsOver: number;
+  /** @format date-time */
+  startAt?: Date | null;
+  /** @format double */
+  timePercent: number;
 }
 
 export interface ESMApplicationFacultiesCommandsCreateCreateCommand {
   displayId?: string | null;
-  name?: string;
+  name: string;
 }
 
 export interface ESMApplicationFacultiesCommandsUpdateUpdateRequest {
-  displayId?: string;
-  name?: string;
+  displayId: string;
+  name: string;
 }
 
 export interface ESMApplicationFacultiesQueriesGetAllGetAllDto {
-  departments?: ESMApplicationFacultiesQueriesGetAllGetAllDtoInternalDepartment[];
+  departments: ESMApplicationFacultiesQueriesGetAllGetAllDtoInternalDepartment[];
   displayId?: string | null;
   /** @format uuid */
-  id?: string;
-  name?: string;
+  id: string;
+  name: string;
 }
 
 export interface ESMApplicationFacultiesQueriesGetAllGetAllDtoInternalDepartment {
   displayId?: string | null;
   /** @format uuid */
-  id?: string;
-  name?: string;
+  id: string;
+  name: string;
 }
 
 export interface ESMApplicationGroupsCommandsAssignInvigilatorsNumberToFacultyAssignInvigilatorsNumberToFacultyDto {
-  assignNumerate?: Record<string, ESMDomainDtosExaminationShiftGroupDataCell>;
-  departmentAssign?: boolean;
+  assignNumerate: Record<string, ESMDomainDtosExaminationShiftGroupDataCell>;
+  departmentAssign: boolean;
   /** @format uuid */
-  id?: string;
+  id: string;
   /** @format int32 */
-  invigilatorsCount?: number;
+  invigilatorsCount: number;
   /**
    *
    *
@@ -771,45 +804,45 @@ export interface ESMApplicationGroupsCommandsAssignInvigilatorsNumberToFacultyAs
    *
    * 5 = Report2
    */
-  method?: 'Select' | 'Write' | 'Practice' | 'Oral' | 'Report1' | 'Report2';
-  module?: ESMApplicationGroupsCommandsAssignInvigilatorsNumberToFacultyAssignInvigilatorsNumberToFacultyDtoInternalModule;
+  method: ESMDomainEnumsExamMethod;
+  module: ESMApplicationGroupsCommandsAssignInvigilatorsNumberToFacultyAssignInvigilatorsNumberToFacultyDtoInternalModule;
   /** @format int32 */
-  roomsCount?: number;
+  roomsCount: number;
   /** @format int32 */
   shift?: number | null;
   /** @format date-time */
-  startAt?: string;
+  startAt: Date;
 }
 
 export interface ESMApplicationGroupsCommandsAssignInvigilatorsNumberToFacultyAssignInvigilatorsNumberToFacultyDtoInternalFaculty {
-  name?: string;
+  name: string;
 }
 
 export interface ESMApplicationGroupsCommandsAssignInvigilatorsNumberToFacultyAssignInvigilatorsNumberToFacultyDtoInternalModule {
-  displayId?: string;
-  faculty?: ESMApplicationGroupsCommandsAssignInvigilatorsNumberToFacultyAssignInvigilatorsNumberToFacultyDtoInternalFaculty;
-  name?: string;
+  displayId: string;
+  faculty: ESMApplicationGroupsCommandsAssignInvigilatorsNumberToFacultyAssignInvigilatorsNumberToFacultyDtoInternalFaculty;
+  name: string;
 }
 
 export interface ESMApplicationGroupsCommandsUpdateTemporaryNameToTeacherUpdateTemporaryNameToTeacherRequest {
-  userId?: string;
+  userId: string;
 }
 
 export interface ESMApplicationModulesCommandsCreateCreateCommand {
   departmentId?: string | null;
-  displayId?: string;
-  facultyId?: string;
-  name?: string;
+  displayId: string;
+  facultyId: string;
+  name: string;
 }
 
 export interface ESMApplicationModulesCommandsImportImportCommand {
-  files?: File[];
+  files: File[];
 }
 
 export interface ESMApplicationRoomsCommandsCreateCreateCommand {
   /** @format int32 */
-  capacity?: number;
-  displayId?: string;
+  capacity: number;
+  displayId: string;
 }
 
 export interface ESMApplicationShiftsCommandsUpdateUpdateRequest {
@@ -819,50 +852,67 @@ export interface ESMApplicationShiftsCommandsUpdateUpdateRequest {
 
 export interface ESMApplicationTeachersCommandsUpdateUpdateRequest {
   departmentId?: string | null;
-  email?: string;
-  fullName?: string;
-  isMale?: boolean;
+  email: string;
+  fullName: string;
+  isMale: boolean;
   teacherId?: string | null;
 }
 
 export interface ESMApplicationTeachersQueriesGetGetDto {
   /** @format date-time */
-  createdAt?: string;
-  department?: ESMDomainDtosDepartmentDepartmentSummary | null;
+  createdAt: Date;
+  department: ESMDomainDtosDepartmentDepartmentSummary;
   email?: string | null;
-  faculty?: ESMDomainDtosFacultyFacultySummary | null;
-  fullName?: string;
+  faculty: ESMDomainDtosFacultyFacultySummary;
+  fullName: string;
   /** @format uuid */
-  id?: string;
+  id: string;
   invigilatorId?: string | null;
-  isMale?: boolean;
+  isMale: boolean;
   phoneNumber?: string | null;
-  userName?: string;
+  userName: string;
+}
+
+export type ESMDomainCommonBaseAuditableEntity = ESMDomainCommonBaseEntity & {
+  /** @format date-time */
+  created: Date;
+  /** @format uuid */
+  createdBy?: string | null;
+  /** @format date-time */
+  lastModified?: Date | null;
+  /** @format uuid */
+  lastModifiedBy?: string | null;
+};
+
+export interface ESMDomainCommonBaseEntity {
+  domainEvents: ESMDomainCommonBaseEvent[];
+  /** @format uuid */
+  id: string;
 }
 
 export type ESMDomainCommonBaseEvent = object;
 
 export interface ESMDomainDtosDepartmentDepartmentSummary {
   displayId?: string | null;
-  faculty?: ESMDomainDtosFacultyFacultySummary | null;
+  faculty: ESMDomainDtosFacultyFacultySummary;
   /** @format uuid */
-  id?: string;
-  name?: string;
+  id: string;
+  name: string;
 }
 
 export interface ESMDomainDtosExaminationExaminationSummary {
   /** @format date-time */
-  createdAt?: string;
-  createdBy?: ESMDomainDtosUserUserSummary;
+  createdAt: Date;
+  createdBy: ESMDomainDtosUserUserSummary;
   description?: string | null;
-  displayId?: string;
+  displayId: string;
   /** @format date-time */
-  expectEndAt?: string | null;
+  expectEndAt?: Date | null;
   /** @format date-time */
-  expectStartAt?: string | null;
+  expectStartAt?: Date | null;
   /** @format uuid */
-  id?: string;
-  name?: string;
+  id: string;
+  name: string;
   /**
    *
    *
@@ -878,212 +928,179 @@ export interface ESMDomainDtosExaminationExaminationSummary {
    *
    * 16 = Closed
    */
-  status?:
-    | 'None'
-    | 'Idle'
-    | 'Setup'
-    | 'AssignFaculty'
-    | 'AssignInvigilator'
-    | 'Closed';
+  status: ESMDomainEnumsExaminationStatus;
   /** @format date-time */
-  updatedAt?: string | null;
+  updatedAt?: Date | null;
 }
 
 export interface ESMDomainDtosExaminationShiftGroupDataCell {
   /** @format int32 */
-  actual?: number;
+  actual: number;
   /** @format int32 */
-  calculated?: number;
+  calculated: number;
   /** @format int32 */
-  maximum?: number;
+  maximum: number;
 }
 
 export interface ESMDomainDtosFacultyFacultySummary {
   displayId?: string | null;
   /** @format uuid */
-  id?: string;
-  name?: string;
+  id: string;
+  name: string;
 }
 
 export interface ESMDomainDtosGeneratedToken {
   /** @format date-time */
-  expiration?: string;
-  token?: string;
+  expiration: Date;
+  token: string;
 }
 
 export interface ESMDomainDtosModuleModuleSimple {
   /** @format int32 */
-  credits?: number;
-  displayId?: string;
-  faculty?: ESMDomainDtosFacultyFacultySummary;
+  credits: number;
+  displayId: string;
+  faculty: ESMDomainDtosFacultyFacultySummary;
   /** @format uuid */
-  id?: string;
-  name?: string;
+  id: string;
+  name: string;
 }
 
 export interface ESMDomainDtosRoomRoomSummary {
   /** @format int32 */
   capacity?: number | null;
-  displayId?: string;
+  displayId: string;
   /** @format uuid */
-  id?: string;
+  id: string;
 }
 
 export interface ESMDomainDtosUserUserSimple {
   /** @format date-time */
-  createdAt?: string;
-  email?: string;
-  fullName?: string;
+  createdAt: Date;
+  email: string;
+  fullName: string;
   /** @format uuid */
-  id?: string;
+  id: string;
   invigilatorId?: string | null;
-  isMale?: boolean;
+  isMale: boolean;
 }
 
 export interface ESMDomainDtosUserUserSummary {
   /** @format date-time */
-  createdAt?: string;
-  department?: ESMDomainDtosDepartmentDepartmentSummary | null;
+  createdAt: Date;
+  department: ESMDomainDtosDepartmentDepartmentSummary;
   email?: string | null;
-  faculty?: ESMDomainDtosFacultyFacultySummary | null;
-  fullName?: string;
+  faculty: ESMDomainDtosFacultyFacultySummary;
+  fullName: string;
   /** @format uuid */
-  id?: string;
+  id: string;
   invigilatorId?: string | null;
-  isMale?: boolean;
+  isMale: boolean;
   phoneNumber?: string | null;
-  role?: string;
-  userName?: string;
+  role: string;
+  userName: string;
 }
 
 export interface ESMDomainEntitiesCandidate {
-  candidateShift?: ESMDomainEntitiesCandidateShift[];
-  displayId?: string;
-  examinationModules?: ESMDomainEntitiesCandidateExaminationModule[];
+  candidateShift: ESMDomainEntitiesCandidateShift[];
+  displayId: string;
+  examinationModules: ESMDomainEntitiesCandidateExaminationModule[];
   /** @format uuid */
-  id?: string;
-  isStudent?: boolean;
-  name?: string;
+  id: string;
+  isStudent: boolean;
+  name: string;
   /** @format date-time */
-  updatedAt?: string;
+  updatedAt: Date;
 }
 
 export interface ESMDomainEntitiesCandidateExaminationModule {
-  candidate?: ESMDomainEntitiesCandidate;
+  candidate: ESMDomainEntitiesCandidate;
   /** @format uuid */
-  candidateId?: string;
+  candidateId: string;
   /** @format date-time */
-  createAt?: string;
+  createAt: Date;
   /** @format date-time */
-  deletedAt?: string | null;
-  examination?: ESMDomainEntitiesExamination;
+  deletedAt?: Date | null;
+  examination: ESMDomainEntitiesExamination;
   /** @format uuid */
-  examinationId?: string;
+  examinationId: string;
   /** @format uuid */
-  id?: string;
-  module?: ESMDomainEntitiesModule;
+  id: string;
+  module: ESMDomainEntitiesModule;
   /** @format uuid */
-  moduleId?: string;
+  moduleId: string;
 }
 
 export interface ESMDomainEntitiesCandidateShift {
-  candidate?: ESMDomainEntitiesCandidate;
+  candidate: ESMDomainEntitiesCandidate;
   /** @format uuid */
-  candidateId?: string;
+  candidateId: string;
   /** @format uuid */
-  id?: string;
+  id: string;
   /** @format int32 */
-  orderIndex?: number;
-  shift?: ESMDomainEntitiesShift;
+  orderIndex: number;
+  shift: ESMDomainEntitiesShift;
   /** @format uuid */
-  shiftId?: string;
+  shiftId: string;
 }
 
-export interface ESMDomainEntitiesDepartment {
-  /** @format date-time */
-  created?: string;
-  /** @format uuid */
-  createdBy?: string | null;
-  departmentShiftGroups?: ESMDomainEntitiesDepartmentShiftGroup[];
+export type ESMDomainEntitiesDepartment = ESMDomainCommonBaseAuditableEntity & {
+  departmentShiftGroups: ESMDomainEntitiesDepartmentShiftGroup[];
   displayId?: string | null;
-  domainEvents?: ESMDomainCommonBaseEvent[];
-  faculty?: ESMDomainEntitiesFaculty | null;
+  faculty: ESMDomainEntitiesFaculty;
   /** @format uuid */
   facultyId?: string | null;
-  /** @format uuid */
-  id?: string;
-  /** @format date-time */
-  lastModified?: string | null;
-  /** @format uuid */
-  lastModifiedBy?: string | null;
-  name?: string;
-  teachers?: ESMDomainEntitiesTeacher[];
-}
+  name: string;
+  teachers: ESMDomainEntitiesTeacher[];
+};
 
 export interface ESMDomainEntitiesDepartmentShiftGroup {
-  department?: ESMDomainEntitiesDepartment | null;
+  department: ESMDomainEntitiesDepartment;
   /** @format uuid */
   departmentId?: string | null;
-  facultyShiftGroup?: ESMDomainEntitiesFacultyShiftGroup;
+  facultyShiftGroup: ESMDomainEntitiesFacultyShiftGroup;
   /** @format uuid */
-  facultyShiftGroupId?: string;
+  facultyShiftGroupId: string;
   /** @format uuid */
-  id?: string;
+  id: string;
   temporaryInvigilatorName?: string | null;
-  user?: ESMDomainIdentityApplicationUser | null;
+  user: ESMDomainIdentityApplicationUser;
   /** @format uuid */
   userId?: string | null;
 }
 
-export interface ESMDomainEntitiesExamination {
-  candidatesOfModule?: ESMDomainEntitiesCandidateExaminationModule[];
-  /** @format date-time */
-  created?: string;
-  /** @format date-time */
-  createdAt?: string;
-  /** @format uuid */
-  createdBy?: string | null;
-  description?: string | null;
-  displayId?: string | null;
-  domainEvents?: ESMDomainCommonBaseEvent[];
-  events?: ESMDomainEntitiesExaminationEvent[];
-  /** @format date-time */
-  expectEndAt?: string | null;
-  /** @format date-time */
-  expectStartAt?: string | null;
-  /** @format uuid */
-  id?: string;
-  /** @format date-time */
-  lastModified?: string | null;
-  /** @format uuid */
-  lastModifiedBy?: string | null;
-  name?: string;
-  shiftGroups?: ESMDomainEntitiesShiftGroup[];
-  /**
-   *
-   *
-   * 0 = None
-   *
-   * 1 = Idle
-   *
-   * 2 = Setup
-   *
-   * 4 = AssignFaculty
-   *
-   * 8 = AssignInvigilator
-   *
-   * 16 = Closed
-   */
-  status?:
-    | 'None'
-    | 'Idle'
-    | 'Setup'
-    | 'AssignFaculty'
-    | 'AssignInvigilator'
-    | 'Closed';
-  /** @format date-time */
-  updatedAt?: string | null;
-}
+export type ESMDomainEntitiesExamination =
+  ESMDomainCommonBaseAuditableEntity & {
+    candidatesOfModule: ESMDomainEntitiesCandidateExaminationModule[];
+    /** @format date-time */
+    createdAt: Date;
+    description?: string | null;
+    displayId?: string | null;
+    events: ESMDomainEntitiesExaminationEvent[];
+    /** @format date-time */
+    expectEndAt?: Date | null;
+    /** @format date-time */
+    expectStartAt?: Date | null;
+    name: string;
+    shiftGroups: ESMDomainEntitiesShiftGroup[];
+    /**
+     *
+     *
+     * 0 = None
+     *
+     * 1 = Idle
+     *
+     * 2 = Setup
+     *
+     * 4 = AssignFaculty
+     *
+     * 8 = AssignInvigilator
+     *
+     * 16 = Closed
+     */
+    status: ESMDomainEnumsExaminationStatus;
+    /** @format date-time */
+    updatedAt?: Date | null;
+  };
 
 export interface ESMDomainEntitiesExaminationData {
   /** @format int32 */
@@ -1091,18 +1108,23 @@ export interface ESMDomainEntitiesExaminationData {
   /** @format int32 */
   credit?: number | null;
   /** @format date-time */
-  date?: string | null;
+  date?: Date | null;
   department?: string | null;
   departmentAssign?: boolean | null;
   /** @format date-time */
-  endAt?: string | null;
-  errors?: Record<string, ESMDomainEntitiesExaminationDataError>;
-  examination?: ESMDomainEntitiesExamination;
+  endAt?: Date | null;
+  errors: Record<
+    string,
+    | ESMDomainEntitiesExaminationDataError
+    | ESMDomainEntitiesExaminationDataErrorT
+    | null
+  >;
+  examination: ESMDomainEntitiesExamination;
   /** @format uuid */
-  examinationId?: string;
+  examinationId: string;
   faculty?: string | null;
   /** @format uuid */
-  id?: string;
+  id: string;
   /**
    *
    *
@@ -1118,7 +1140,7 @@ export interface ESMDomainEntitiesExaminationData {
    *
    * 5 = Report2
    */
-  method?: ESMDomainEnumsExamMethod | null;
+  method: ESMDomainEnumsExamMethod;
   moduleClass?: string | null;
   moduleId?: string | null;
   moduleName?: string | null;
@@ -1128,25 +1150,30 @@ export interface ESMDomainEntitiesExaminationData {
   /** @format int32 */
   shift?: number | null;
   /** @format date-time */
-  startAt?: string | null;
-  suggestions?: Record<
+  startAt?: Date | null;
+  suggestions: Record<
     string,
     SystemCollectionsGenericKeyValuePairSystemStringSystemString[] | null
   >;
 }
 
 export interface ESMDomainEntitiesExaminationDataError {
-  message?: string;
+  message: string;
 }
+
+export type ESMDomainEntitiesExaminationDataErrorT =
+  ESMDomainEntitiesExaminationDataError & {
+    data?: T[] | null;
+  };
 
 export interface ESMDomainEntitiesExaminationEvent {
   /** @format date-time */
-  createAt?: string;
-  examination?: ESMDomainEntitiesExamination;
+  createAt: Date;
+  examination: ESMDomainEntitiesExamination;
   /** @format uuid */
-  examinationId?: string;
+  examinationId: string;
   /** @format uuid */
-  id?: string;
+  id: string;
   /**
    *
    *
@@ -1162,129 +1189,112 @@ export interface ESMDomainEntitiesExaminationEvent {
    *
    * 16 = Closed
    */
-  status?:
-    | 'None'
-    | 'Idle'
-    | 'Setup'
-    | 'AssignFaculty'
-    | 'AssignInvigilator'
-    | 'Closed';
+  status: ESMDomainEnumsExaminationStatus;
 }
 
-export interface ESMDomainEntitiesFaculty {
-  /** @format date-time */
-  created?: string;
-  /** @format uuid */
-  createdBy?: string | null;
-  departments?: ESMDomainEntitiesDepartment[];
+export type ESMDomainEntitiesFaculty = ESMDomainCommonBaseAuditableEntity & {
+  departments: ESMDomainEntitiesDepartment[];
   displayId?: string | null;
-  domainEvents?: ESMDomainCommonBaseEvent[];
-  facultyShiftGroups?: ESMDomainEntitiesFacultyShiftGroup[];
-  /** @format uuid */
-  id?: string;
-  /** @format date-time */
-  lastModified?: string | null;
-  /** @format uuid */
-  lastModifiedBy?: string | null;
-  name?: string;
-  teachers?: ESMDomainEntitiesTeacher[];
-}
+  facultyShiftGroups: ESMDomainEntitiesFacultyShiftGroup[];
+  name: string;
+  teachers: ESMDomainEntitiesTeacher[];
+};
 
 export interface ESMDomainEntitiesFacultyShiftGroup {
   /** @format int32 */
-  calculatedInvigilatorsCount?: number;
-  departmentShiftGroups?: ESMDomainEntitiesDepartmentShiftGroup[];
-  faculty?: ESMDomainEntitiesFaculty;
+  calculatedInvigilatorsCount: number;
+  departmentShiftGroups: ESMDomainEntitiesDepartmentShiftGroup[];
+  faculty: ESMDomainEntitiesFaculty;
   /** @format uuid */
-  facultyId?: string;
+  facultyId: string;
   /** @format uuid */
-  id?: string;
+  id: string;
   /** @format int32 */
-  invigilatorsCount?: number;
-  shiftGroup?: ESMDomainEntitiesShiftGroup;
+  invigilatorsCount: number;
+  shiftGroup: ESMDomainEntitiesShiftGroup;
   /** @format uuid */
-  shiftGroupId?: string;
+  shiftGroupId: string;
 }
 
 export interface ESMDomainEntitiesInvigilatorShift {
   /** @format date-time */
-  createdAt?: string;
+  createdAt: Date;
   /** @format date-time */
-  deletedAt?: string | null;
+  deletedAt?: Date | null;
   /** @format uuid */
-  id?: string;
-  invigilator?: ESMDomainIdentityApplicationUser | null;
+  id: string;
+  invigilator: ESMDomainIdentityApplicationUser;
   /** @format uuid */
   invigilatorId?: string | null;
   /** @format int32 */
-  orderIndex?: number;
+  orderIndex: number;
   /** @format int32 */
-  paid?: number;
-  shift?: ESMDomainEntitiesShift;
+  paid: number;
+  shift: ESMDomainEntitiesShift;
   /** @format uuid */
-  shiftId?: string;
+  shiftId: string;
 }
 
 export interface ESMDomainEntitiesModule {
-  candidatesOfExamination?: ESMDomainEntitiesCandidateExaminationModule[];
+  candidatesOfExamination: ESMDomainEntitiesCandidateExaminationModule[];
   /** @format int32 */
-  credits?: number;
-  department?: ESMDomainEntitiesDepartment | null;
+  credits: number;
+  department: ESMDomainEntitiesDepartment;
   /** @format uuid */
   departmentId?: string | null;
-  displayId?: string;
+  displayId: string;
   /** @format int32 */
-  durationInMinutes?: number;
-  faculty?: ESMDomainEntitiesFaculty;
+  durationInMinutes: number;
+  faculty: ESMDomainEntitiesFaculty;
   /** @format uuid */
-  facultyId?: string;
+  facultyId: string;
   /** @format uuid */
-  id?: string;
-  name?: string;
+  id: string;
+  name: string;
 }
 
 export interface ESMDomainEntitiesRoom {
   /** @format int32 */
   capacity?: number | null;
-  displayId?: string;
+  displayId: string;
   /** @format uuid */
-  id?: string;
-  shift?: ESMDomainEntitiesShift[];
+  id: string;
+  shift: ESMDomainEntitiesShift[];
 }
 
 export interface ESMDomainEntitiesShift {
-  candidateShift?: ESMDomainEntitiesCandidateShift[];
+  candidateShift: ESMDomainEntitiesCandidateShift[];
   /** @format int32 */
-  candidatesCount?: number;
+  candidatesCount: number;
   /** @format int32 */
-  examsCount?: number;
-  handedOverUser?: ESMDomainIdentityApplicationUser | null;
+  examsCount: number;
+  handedOverUser: ESMDomainIdentityApplicationUser;
   /** @format uuid */
   handedOverUserId?: string | null;
   /** @format uuid */
-  id?: string;
-  invigilatorShift?: ESMDomainEntitiesInvigilatorShift[];
+  id: string;
+  invigilatorShift: ESMDomainEntitiesInvigilatorShift[];
   /** @format int32 */
-  invigilatorsCount?: number;
+  invigilatorsCount: number;
   report?: string | null;
-  room?: ESMDomainEntitiesRoom;
+  room: ESMDomainEntitiesRoom;
   /** @format uuid */
   roomId?: string | null;
-  shiftGroup?: ESMDomainEntitiesShiftGroup;
+  shiftGroup: ESMDomainEntitiesShiftGroup;
   /** @format uuid */
-  shiftGroupId?: string;
+  shiftGroupId: string;
 }
 
 export interface ESMDomainEntitiesShiftGroup {
-  departmentAssign?: boolean;
-  examination?: ESMDomainEntitiesExamination;
+  departmentAssign: boolean;
+  examination: ESMDomainEntitiesExamination;
   /** @format uuid */
-  examinationId?: string;
-  facultyShiftGroups?: ESMDomainEntitiesFacultyShiftGroup[];
+  examinationId: string;
+  facultyShiftGroups: ESMDomainEntitiesFacultyShiftGroup[];
   /** @format uuid */
-  id?: string;
+  id: string;
   /** @format int32 */
-  invigilatorsCount?: number;
+  invigilatorsCount: number;
   /**
    *
    *
@@ -1300,47 +1310,36 @@ export interface ESMDomainEntitiesShiftGroup {
    *
    * 5 = Report2
    */
-  method?: 'Select' | 'Write' | 'Practice' | 'Oral' | 'Report1' | 'Report2';
-  module?: ESMDomainEntitiesModule;
+  method: ESMDomainEnumsExamMethod;
+  module: ESMDomainEntitiesModule;
   /** @format uuid */
-  moduleId?: string;
+  moduleId: string;
   /** @format int32 */
-  roomsCount?: number;
+  roomsCount: number;
   /** @format int32 */
   shift?: number | null;
-  shifts?: ESMDomainEntitiesShift[];
+  shifts: ESMDomainEntitiesShift[];
   /** @format date-time */
-  startAt?: string;
+  startAt: Date;
 }
 
-export interface ESMDomainEntitiesTeacher {
-  /** @format date-time */
-  created?: string;
-  /** @format uuid */
-  createdBy?: string | null;
-  department?: ESMDomainEntitiesDepartment | null;
+export type ESMDomainEntitiesTeacher = ESMDomainCommonBaseAuditableEntity & {
+  department: ESMDomainEntitiesDepartment;
   /** @format uuid */
   departmentId?: string | null;
-  domainEvents?: ESMDomainCommonBaseEvent[];
-  examinations?: ESMDomainEntitiesExamination[];
-  faculty?: ESMDomainEntitiesFaculty | null;
+  examinations: ESMDomainEntitiesExamination[];
+  faculty: ESMDomainEntitiesFaculty;
   /** @format uuid */
   facultyId?: string | null;
-  fullName?: string;
-  handedOverShifts?: ESMDomainEntitiesShift[];
-  /** @format uuid */
-  id?: string;
-  invigilatorShifts?: ESMDomainEntitiesInvigilatorShift[];
-  isMale?: boolean;
-  /** @format date-time */
-  lastModified?: string | null;
-  /** @format uuid */
-  lastModifiedBy?: string | null;
+  fullName: string;
+  handedOverShifts: ESMDomainEntitiesShift[];
+  invigilatorShifts: ESMDomainEntitiesInvigilatorShift[];
+  isMale: boolean;
   teacherId?: string | null;
-  user?: ESMDomainIdentityApplicationUser;
+  user: ESMDomainIdentityApplicationUser;
   /** @format uuid */
-  userId?: string;
-}
+  userId: string;
+};
 
 /**
  *
@@ -1394,23 +1393,23 @@ export enum ESMDomainEnumsExaminationStatus {
 
 export interface ESMDomainIdentityApplicationUser {
   /** @format int32 */
-  accessFailedCount?: number;
+  accessFailedCount: number;
   concurrencyStamp?: string | null;
   email?: string | null;
-  emailConfirmed?: boolean;
+  emailConfirmed: boolean;
   /** @format uuid */
-  id?: string;
-  lockoutEnabled?: boolean;
+  id: string;
+  lockoutEnabled: boolean;
   /** @format date-time */
-  lockoutEnd?: string | null;
+  lockoutEnd?: Date | null;
   normalizedEmail?: string | null;
   normalizedUserName?: string | null;
   passwordHash?: string | null;
   phoneNumber?: string | null;
-  phoneNumberConfirmed?: boolean;
+  phoneNumberConfirmed: boolean;
   securityStamp?: string | null;
-  teacher?: ESMDomainEntitiesTeacher | null;
-  twoFactorEnabled?: boolean;
+  teacher: ESMDomainEntitiesTeacher;
+  twoFactorEnabled: boolean;
   userName?: string | null;
 }
 
@@ -1426,7 +1425,7 @@ export type GetAllShiftsData =
 export type GetAllTeacherData =
   ESMApplicationCommonModelsResultSystemCollectionsGenericIEnumerableESMApplicationTeachersQueriesGetGetDto;
 
-export interface GetAllTeacherParams {
+export interface GetAllTeacherQuery {
   IsFaculty?: boolean;
   IsInvigilator?: boolean;
 }
@@ -1449,12 +1448,15 @@ export type GetMySummaryInfoData =
 export type GetRelatedData =
   ESMApplicationCommonModelsResultSystemCollectionsGenericListESMApplicationExaminationsQueriesGetRelatedExaminationsRelatedExaminationDto;
 
-export interface GetRelatedParams {
+export interface GetRelatedQuery {
   IsActive?: boolean;
 }
 
 export type GetShiftsData =
   ESMApplicationCommonModelsResultSystemCollectionsGenericListESMApplicationExaminationsQueriesGetAllShiftsDetailsShiftDetailsDto;
+
+export type GetStatisticData =
+  ESMApplicationCommonModelsResultESMApplicationExaminationsQueriesGetStatisticGetStatisticDto;
 
 export type GetSummaryData =
   ESMApplicationCommonModelsResultESMDomainDtosExaminationExaminationSummary;
@@ -1466,54 +1468,52 @@ export type GetUserData =
   ESMApplicationCommonModelsResultSystemCollectionsGenericListESMDomainDtosUserUserSummary;
 
 export type ImportDepartmentData =
-  ESMApplicationCommonModelsResultSystemBoolean;
-
-export type ImportDepartmentPayload =
-  ESMApplicationDepartmentsCommandsImportDepartmentImportDepartmentCommand;
+  | ESMApplicationCommonModelsResultSystemBoolean
+  | ESMApplicationCommonModelsResult;
 
 export type ImportExaminationData =
-  ESMApplicationCommonModelsResultSystemBoolean;
+  | ESMApplicationCommonModelsResultSystemBoolean
+  | ESMApplicationCommonModelsResult;
 
 export type ImportExaminationModuleData =
-  ESMApplicationCommonModelsResultSystemBoolean;
-
-export type ImportExaminationModulePayload =
-  ESMApplicationModulesCommandsImportImportCommand;
+  | ESMApplicationCommonModelsResultSystemBoolean
+  | ESMApplicationCommonModelsResult;
 
 export interface ImportExaminationPayload {
-  /** @format date-time */
-  CreatedAt?: string;
   /** @format binary */
-  File?: File;
+  File: File;
 }
 
-export type ImportRoomData = ESMApplicationCommonModelsResultSystemBoolean;
+export type ImportRoomData =
+  | ESMApplicationCommonModelsResultSystemBoolean
+  | ESMApplicationCommonModelsResult;
 
 export interface ImportRoomPayload {
-  Files?: File[];
+  /** @format binary */
+  File: File;
 }
 
 export type LoginData =
   ESMApplicationCommonModelsResultESMDomainDtosGeneratedToken;
 
-export type LoginPayload = ESMApplicationAuthCommandsLoginLoginCommand;
+export type ResetPasswordData =
+  | ESMApplicationCommonModelsResultSystemBoolean
+  | ESMApplicationCommonModelsResult;
 
-export type ResetPasswordData = ESMApplicationCommonModelsResultSystemBoolean;
-
-export interface ResetPasswordParams {
+export interface ResetPasswordQuery {
   userId?: string;
 }
 
 export type SearchData =
   ESMApplicationCommonModelsResultSystemCollectionsGenericIEnumerableESMDomainDtosUserUserSummary;
 
-export interface SearchParams {
+export interface SearchQuery {
   FullName?: string;
 }
 
 export interface SystemCollectionsGenericKeyValuePairSystemStringSystemString {
-  key?: string;
-  value?: string;
+  key: string;
+  value: string;
 }
 
 /**
@@ -1706,45 +1706,43 @@ export enum SystemNetHttpStatusCode {
   NetworkAuthenticationRequired = 511,
 }
 
-export type UpdateDepartmentData =
-  ESMApplicationCommonModelsResultSystemBoolean;
+export type T = object;
 
-export type UpdateDepartmentPayload =
-  ESMApplicationDepartmentsCommandsUpdateDepartmentUpdateDepartmentCommand;
+export type UpdateDepartmentData =
+  | ESMApplicationCommonModelsResultSystemBoolean
+  | ESMApplicationCommonModelsResult;
 
 export type UpdateExaminationData =
-  ESMApplicationCommonModelsResultSystemBoolean;
-
-export type UpdateExaminationPayload =
-  ESMApplicationExaminationsCommandsUpdateUpdateCommand;
+  | ESMApplicationCommonModelsResultSystemBoolean
+  | ESMApplicationCommonModelsResult;
 
 export type UpdateExamsCountData =
-  ESMApplicationCommonModelsResultSystemBoolean;
+  | ESMApplicationCommonModelsResultSystemBoolean
+  | ESMApplicationCommonModelsResult;
 
 export type UpdateExamsCountPayload = Record<string, number>;
 
-export type UpdateFacultyData = ESMApplicationCommonModelsResultSystemBoolean;
+export type UpdateFacultyData =
+  | ESMApplicationCommonModelsResultSystemBoolean
+  | ESMApplicationCommonModelsResult;
 
-export type UpdateFacultyPayload =
-  ESMApplicationFacultiesCommandsUpdateUpdateRequest;
+export type UpdateInfoData =
+  | ESMApplicationCommonModelsResultSystemBoolean
+  | ESMApplicationCommonModelsResult;
 
-export type UpdateInfoData = ESMApplicationCommonModelsResultSystemBoolean;
-
-export type UpdateInfoPayload =
-  ESMApplicationTeachersCommandsUpdateUpdateRequest;
-
-export type UpdateShiftData = ESMApplicationCommonModelsResultSystemBoolean;
+export type UpdateShiftData =
+  | ESMApplicationCommonModelsResultSystemBoolean
+  | ESMApplicationCommonModelsResult;
 
 export type UpdateShiftExaminationData =
-  ESMApplicationCommonModelsResultSystemBoolean;
+  | ESMApplicationCommonModelsResultSystemBoolean
+  | ESMApplicationCommonModelsResult;
 
 export type UpdateShiftExaminationPayload = any;
 
-export type UpdateShiftPayload =
-  ESMApplicationShiftsCommandsUpdateUpdateRequest;
-
 export type UpdateTeacherAssignmentData =
-  ESMApplicationCommonModelsResultSystemBoolean;
+  | ESMApplicationCommonModelsResultSystemBoolean
+  | ESMApplicationCommonModelsResult;
 
 export type UpdateTeacherAssignmentPayload = Record<
   string,
@@ -1752,12 +1750,11 @@ export type UpdateTeacherAssignmentPayload = Record<
 >;
 
 export type UpdateTemporaryNameToTeacherData =
-  ESMApplicationCommonModelsResultSystemBoolean;
-
-export type UpdateTemporaryNameToTeacherPayload =
-  ESMApplicationGroupsCommandsUpdateTemporaryNameToTeacherUpdateTemporaryNameToTeacherRequest;
+  | ESMApplicationCommonModelsResultSystemBoolean
+  | ESMApplicationCommonModelsResult;
 
 export type UpdateTemporaryTeacherToUserIdInDepartmentShiftGroupData =
-  ESMApplicationCommonModelsResultSystemBoolean;
+  | ESMApplicationCommonModelsResultSystemBoolean
+  | ESMApplicationCommonModelsResult;
 
 export type UpdateTemporaryTeacherToUserIdInDepartmentShiftGroupPayload = any;

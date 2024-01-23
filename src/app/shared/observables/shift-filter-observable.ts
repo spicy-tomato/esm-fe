@@ -1,3 +1,4 @@
+import { GetAllShiftsData } from '@esm/api';
 import { ExaminationGetDataResponseItem } from '@esm/data';
 import { TuiDay, TuiDayRange } from '@taiga-ui/cdk';
 import { Observable, combineLatest, map } from 'rxjs';
@@ -9,9 +10,9 @@ export type ShiftFilterFilterType = {
 };
 
 export const shiftFilterObservable = (
-  data$: Observable<ExaminationGetDataResponseItem[]>,
-  filter$: Observable<ShiftFilterFilterType>
-): Observable<ExaminationGetDataResponseItem[]> =>
+  data$: Observable<GetAllShiftsData['data']>,
+  filter$: Observable<ShiftFilterFilterType>,
+): Observable<GetAllShiftsData['data']> =>
   combineLatest([data$, filter$]).pipe(
     map(([data, { methods, date, shifts }]) =>
       data.filter(({ shiftGroup }) => {
@@ -28,6 +29,6 @@ export const shiftFilterObservable = (
           (shifts.length === 0 ||
             (shiftGroup.shift && shifts.includes(shiftGroup.shift)))
         );
-      })
-    )
+      }),
+    ),
   );

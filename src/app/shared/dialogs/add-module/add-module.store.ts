@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Status } from '@esm/cdk';
 import { DepartmentSimple, FacultyWithDepartments } from '@esm/data';
-import { FacultyService } from '@esm/services';
+import { FacultyService } from '@esm/api';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
@@ -76,7 +76,7 @@ export class AddModuleDialogStore extends ComponentStore<AddModuleDialogState> {
     params$.pipe(
       tap(() => this.patchState({ status: 'loading', error: null })),
       switchMap(({ facultyId, ...rest }) =>
-        this.facultyService.createModule(facultyId, rest).pipe(
+        this.facultyService.createModuleFaculty(facultyId, rest).pipe(
           tapResponse(
             () => {
               this.patchState({ status: 'success' });

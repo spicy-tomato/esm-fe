@@ -1,17 +1,17 @@
 import {
   ChangeDetectorRef,
   Directive,
+  inject,
   Input,
   TemplateRef,
   ViewContainerRef,
-  inject,
 } from '@angular/core';
+import { ESMDomainEnumsExaminationStatus, GetSummaryData } from '@esm/api';
 import { ObservableHelper } from '@esm/cdk';
-import { ExaminationStatus, ExaminationSummary } from '@esm/data';
 import { AppSelector, AppState } from '@esm/store';
 import { Store } from '@ngrx/store';
 import { TuiDestroyService } from '@taiga-ui/cdk';
-import { Subject, combineLatest, takeUntil, tap } from 'rxjs';
+import { combineLatest, Subject, takeUntil, tap } from 'rxjs';
 
 @Directive({
   selector: '[esmMinimumExaminationStatus]',
@@ -27,19 +27,19 @@ export class MinimumExaminationStatusDirective {
   private readonly destroy$ = inject(TuiDestroyService);
   private readonly viewContainerRef = inject(ViewContainerRef);
   private readonly thenTemplateRef = inject(
-    TemplateRef<MinimumExaminationStatusContext>
+    TemplateRef<MinimumExaminationStatusContext>,
   );
 
   // INPUTS
   @Input('esmMinimumExaminationStatus')
-  set minimumStatus(status: ExaminationStatus | null) {
+  set minimumStatus(status: ESMDomainEnumsExaminationStatus | null) {
     this._minimumStatus = status;
     this.bind$.next();
   }
 
   @Input()
   set esmMinimumExaminationStatusElse(
-    templateRef: TemplateRef<MinimumExaminationStatusContext> | null
+    templateRef: TemplateRef<MinimumExaminationStatusContext> | null,
   ) {
     this.elseTemplateRef = templateRef;
     this.bind$.next();
@@ -49,7 +49,7 @@ export class MinimumExaminationStatusDirective {
   esmMinimumExaminationStatusLoad: Function = () => null;
 
   // PRIVATE PROPERTIES
-  private _minimumStatus!: ExaminationStatus | null;
+  private _minimumStatus!: ESMDomainEnumsExaminationStatus | null;
   private readonly bind$ = new Subject<void>();
 
   private readonly examination$ = this.appStore
@@ -68,12 +68,12 @@ export class MinimumExaminationStatusDirective {
       .subscribe();
   }
 
-  private updateView(examination: ExaminationSummary): void {
+  private updateView(examination: GetSummaryData['data']): void {
     const currentStatus = examination.status;
     const context = new MinimumExaminationStatusContext(
       this._minimumStatus,
       currentStatus,
-      examination
+      examination,
     );
 
     this.viewContainerRef.clear();
@@ -91,8 +91,8 @@ export class MinimumExaminationStatusDirective {
 
 export class MinimumExaminationStatusContext {
   constructor(
-    public $implicit: ExaminationStatus | null = null,
-    public status: ExaminationStatus = null!,
-    public examination: ExaminationSummary = null!
+    public $implicit: ESMDomainEnumsExaminationStatus | null = null,
+    public status: ESMDomainEnumsExaminationStatus = null!,
+    public examination: GetSummaryData['data'] = null!,
   ) {}
 }

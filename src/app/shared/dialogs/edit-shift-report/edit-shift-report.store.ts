@@ -5,7 +5,7 @@ import {
   ObservableHelper,
   Status,
 } from '@esm/cdk';
-import { ExaminationService } from '@esm/services';
+import { ExaminationService } from '@esm/api';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
@@ -39,7 +39,7 @@ export class EditShiftReportDialogStore extends ComponentStore<EditShiftReportDi
       withLatestFrom(this.examinationId$),
       switchMap(([{ shiftId, report }, examinationId]) =>
         this.examinationService
-          .updateShift(examinationId, shiftId, { report })
+          .updateShiftExamination(examinationId, shiftId, { report })
           .pipe(
             tapResponse(
               () => this.patchState({ status: 'success' }),
@@ -47,11 +47,11 @@ export class EditShiftReportDialogStore extends ComponentStore<EditShiftReportDi
                 this.patchState({
                   status: 'error',
                   errors: res.error.errors,
-                })
-            )
-          )
-      )
-    )
+                }),
+            ),
+          ),
+      ),
+    ),
   );
 
   // CONSTRUCTOR

@@ -6,7 +6,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { ExaminationStatus } from '@esm/data';
+import { ESMDomainEnumsExaminationStatus } from '@esm/api';
 import { SafeExaminationDataComponent } from '@esm/shared/components';
 import {
   TuiAlertService,
@@ -44,7 +44,7 @@ export class ExaminationExamComponent implements OnInit {
   table!: ExaminationExamTableComponent;
 
   // PUBLIC PROPERTIES
-  readonly ExaminationStatus = ExaminationStatus;
+  readonly ExaminationStatus = ESMDomainEnumsExaminationStatus;
   readonly showLoader$ = this.store.showLoader$;
 
   // PRIVATE PROPERTIES
@@ -70,8 +70,8 @@ export class ExaminationExamComponent implements OnInit {
         switchMap(() =>
           this.alertService.open('Thêm học phần thành công!', {
             status: TuiNotification.Success,
-          })
-        )
+          }),
+        ),
       )
       .subscribe();
   }

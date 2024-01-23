@@ -13,6 +13,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { ESMApplicationRoomsCommandsCreateCreateCommand } from '@esm/api';
 import { CreateRoomRequest } from '@esm/data';
 import { LetModule } from '@ngrx/component';
 import { TuiTableModule } from '@taiga-ui/addon-table';
@@ -92,7 +93,9 @@ export class AddRoomDialogComponent implements OnInit {
   }
 
   public onCreate(rowId: number): void {
-    const params = this.form.getRawValue().rooms[rowId] as CreateRoomRequest;
+    const params = this.form.getRawValue().rooms[
+      rowId
+    ] as ESMApplicationRoomsCommandsCreateCreateCommand;
     this.store.create({ rowId, params });
   }
 
@@ -110,7 +113,7 @@ export class AddRoomDialogComponent implements OnInit {
             })
             .subscribe();
           this.onRemove(i);
-        })
+        }),
       )
       .subscribe();
   }
@@ -125,11 +128,11 @@ export class AddRoomDialogComponent implements OnInit {
                 this.fb.group({
                   displayId: [displayId, Validators.required],
                   capacity: [capacity],
-                })
-              )
+                }),
+              ),
             ),
           });
-        })
+        }),
       )
       .subscribe();
   }

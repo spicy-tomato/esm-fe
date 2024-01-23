@@ -1,14 +1,13 @@
 import { inject, Injectable } from '@angular/core';
+import { ExaminationService, GetStatisticData } from '@esm/api';
 import { ObservableHelper, Status } from '@esm/cdk';
-import { ExaminationStatistic } from '@esm/data';
-import { ExaminationService } from '@esm/services';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
 import { switchMap, takeUntil, tap, withLatestFrom } from 'rxjs';
 
 type ExaminationProcessState = {
-  data: ExaminationStatistic | null;
+  data: GetStatisticData['data'] | null;
   status: Status;
 };
 
@@ -40,11 +39,11 @@ export class ExaminationProcessStore extends ComponentStore<ExaminationProcessSt
                 data,
                 status: 'success',
               }),
-            () => this.patchState({ status: 'error' })
-          )
-        )
-      )
-    )
+            () => this.patchState({ status: 'error' }),
+          ),
+        ),
+      ),
+    ),
   );
 
   // CONSTRUCTOR

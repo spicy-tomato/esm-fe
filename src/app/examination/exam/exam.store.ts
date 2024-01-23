@@ -1,16 +1,15 @@
 import { inject, Injectable } from '@angular/core';
+import { ExaminationService, GetAllShiftsData } from '@esm/api';
 import { ObservableHelper, Status } from '@esm/cdk';
-import { ExaminationGetDataResponseItem } from '@esm/data';
-import { ExaminationService } from '@esm/services';
 import { shiftFilterObservable } from '@esm/shared/observables';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
 import {
-  TUI_FIRST_DAY,
-  TUI_LAST_DAY,
   TuiDay,
   TuiDayRange,
+  TUI_FIRST_DAY,
+  TUI_LAST_DAY,
 } from '@taiga-ui/cdk';
 import {
   combineLatest,
@@ -23,7 +22,7 @@ import {
 } from 'rxjs';
 
 type ExaminationExamState = {
-  data: ExaminationGetDataResponseItem[];
+  data: GetAllShiftsData['data'];
   dataStatus: Status;
   updateStatus: Status;
   tableFormIsPristine: boolean;
@@ -71,11 +70,11 @@ export class ExaminationExamStore extends ComponentStore<ExaminationExamState> {
         ? {
             min: TuiDay.fromUtcNativeDate(new Date(data[0].shiftGroup.startAt)),
             max: TuiDay.fromUtcNativeDate(
-              new Date(data[data.length - 1].shiftGroup.startAt)
+              new Date(data[data.length - 1].shiftGroup.startAt),
             ),
           }
-        : { min: TUI_FIRST_DAY, max: TUI_LAST_DAY }
-    )
+        : { min: TUI_FIRST_DAY, max: TUI_LAST_DAY },
+    ),
   );
 
   readonly headerObs$ = combineLatest([
@@ -89,7 +88,7 @@ export class ExaminationExamStore extends ComponentStore<ExaminationExamState> {
       showLoader,
       tableFormIsPristine,
       minMaxDate,
-    }))
+    })),
   );
 
   readonly tableObs$ = combineLatest([
@@ -104,18 +103,18 @@ export class ExaminationExamStore extends ComponentStore<ExaminationExamState> {
       withLatestFrom(this.examination$, this.examinationId$),
       filter(([_, examination, id]) => examination.id === id),
       switchMap(({ 2: id }) =>
-        this.examinationService.getData(id).pipe(
+        this.examinationService.getAllShifts(id).pipe(
           tapResponse(
             ({ data }) =>
               this.patchState({
                 data,
                 dataStatus: 'success',
               }),
-            () => this.patchState({ data: [], dataStatus: 'error' })
-          )
-        )
-      )
-    )
+            () => this.patchState({ data: [], dataStatus: 'error' }),
+          ),
+        ),
+      ),
+    ),
   );
 
   readonly save = this.effect<number[]>((params$) =>
@@ -123,23 +122,26 @@ export class ExaminationExamStore extends ComponentStore<ExaminationExamState> {
       tap(() => this.patchState({ updateStatus: 'loading' })),
       withLatestFrom(this.displayData$, this.examinationId$),
       switchMap(([values, data, id]) => {
-        const params = values.reduce((acc, curr, i) => {
-          const shiftId = data[i].id;
-          acc[shiftId] = curr;
-          return acc;
-        }, {} as Record<string, number>);
+        const params = values.reduce(
+          (acc, curr, i) => {
+            const shiftId = data[i].id;
+            acc[shiftId] = curr;
+            return acc;
+          },
+          {} as Record<string, number>,
+        );
 
-        return this.examinationService.updateExamsNumber(id, params).pipe(
+        return this.examinationService.updateExamsCount(id, params).pipe(
           tapResponse(
             () => {
               this.patchState({ updateStatus: 'success' });
               this.getData();
             },
-            () => this.patchState({ updateStatus: 'error' })
-          )
+            () => this.patchState({ updateStatus: 'error' }),
+          ),
         );
-      })
-    )
+      }),
+    ),
   );
 
   // CONSTRUCTOR

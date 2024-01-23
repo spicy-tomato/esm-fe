@@ -8,6 +8,7 @@ const dataContracts = _.map(modelTypes, "name");
 
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { createAction, props } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { APP_ENV } from '@esm/core';
 import { ObjectHelper } from '@esm/cdk';
@@ -26,15 +27,15 @@ export class <%= apiClassName %>Service {
   // PRIVATE PROPERTIES
   private readonly url = this.env.baseUrl;
 
-<% if(config.singleHttpClient) { %>
-  http: HttpClient<SecurityDataType>;
-
-  constructor (http: HttpClient<SecurityDataType>) {
-    this.http = http;
-  }
-<% } %>
-
   <% for (const route of routes) { %>
     <%~ includeFile('./procedure-call.ejs', { ...it, route }) %>
+
+  <% } %>
+}
+
+export class <%= apiClassName %>ApiAction {
+  <% for (const route of routes) { %>
+    <%~ includeFile('./api-actions.ejs', { ...it, apiClassName, route }) %>
+
   <% } %>
 }

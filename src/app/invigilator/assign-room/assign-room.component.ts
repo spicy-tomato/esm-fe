@@ -5,7 +5,7 @@ import {
   inject,
   ViewChild,
 } from '@angular/core';
-import { ExaminationStatus } from '@esm/data';
+import { ESMDomainEnumsExaminationStatus } from '@esm/api';
 import { SafeExaminationDataComponent } from '@esm/shared/components';
 import { LetModule } from '@ngrx/component';
 import { tuiButtonOptionsProvider } from '@taiga-ui/core';
@@ -39,7 +39,7 @@ export class InvigilatorAssignRoomComponent {
   table?: InvigilatorAssignRoomTableComponent;
 
   // PUBLIC PROPERTIES
-  readonly ExaminationStatus = ExaminationStatus;
+  readonly ExaminationStatus = ESMDomainEnumsExaminationStatus;
   readonly dataStatus$ = this.store.dataStatus$;
 
   // PUBLIC METHODS

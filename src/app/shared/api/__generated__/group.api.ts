@@ -9,19 +9,20 @@
  * ---------------------------------------------------------------
  */
 
-import { HttpClient } from "@angular/common/http";
-import { Injectable, inject } from "@angular/core";
-import { APP_ENV } from "@esm/core";
-import { Observable } from "rxjs";
+import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { APP_ENV } from '@esm/core';
+import { createAction, props } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import {
   AssignInvigilatorsNumberToFacultyData,
   AssignInvigilatorsNumberToFacultyPayload,
+  ESMApplicationGroupsCommandsUpdateTemporaryNameToTeacherUpdateTemporaryNameToTeacherRequest,
   UpdateTemporaryNameToTeacherData,
-  UpdateTemporaryNameToTeacherPayload,
-} from "./data-contracts";
+} from './data-contracts';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class GroupService {
   // INJECT PROPERTIES
@@ -41,10 +42,14 @@ export class GroupService {
    */
   updateTemporaryNameToTeacher(
     groupId: string,
-    data: UpdateTemporaryNameToTeacherPayload,
+    data: ESMApplicationGroupsCommandsUpdateTemporaryNameToTeacherUpdateTemporaryNameToTeacherRequest,
   ): Observable<UpdateTemporaryNameToTeacherData> {
-    return this.http.patch<UpdateTemporaryNameToTeacherData>(this.url + `/Group/${groupId}`, data);
+    return this.http.patch<UpdateTemporaryNameToTeacherData>(
+      this.url + `/Group/${groupId}`,
+      data,
+    );
   }
+
   /**
    * No description
    *
@@ -58,6 +63,29 @@ export class GroupService {
     facultyId: string,
     data: AssignInvigilatorsNumberToFacultyPayload,
   ): Observable<AssignInvigilatorsNumberToFacultyData> {
-    return this.http.patch<AssignInvigilatorsNumberToFacultyData>(this.url + `/Group/${groupId}/${facultyId}`, data);
+    return this.http.patch<AssignInvigilatorsNumberToFacultyData>(
+      this.url + `/Group/${groupId}/${facultyId}`,
+      data,
+    );
   }
+}
+
+export class GroupApiAction {
+  updateTemporaryNameToTeacherSuccessful = createAction(
+    '[Group/API] updateTemporaryNameToTeacher Successful',
+    props<{ data: UpdateTemporaryNameToTeacherData['data'] }>(),
+  );
+
+  updateTemporaryNameToTeacherFailed = createAction(
+    '[Group/API] updateTemporaryNameToTeacher Failed',
+  );
+
+  assignInvigilatorsNumberToFacultySuccessful = createAction(
+    '[Group/API] assignInvigilatorsNumberToFaculty Successful',
+    props<{ data: AssignInvigilatorsNumberToFacultyData['data'] }>(),
+  );
+
+  assignInvigilatorsNumberToFacultyFailed = createAction(
+    '[Group/API] assignInvigilatorsNumberToFaculty Failed',
+  );
 }

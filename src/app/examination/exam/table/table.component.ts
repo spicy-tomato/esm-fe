@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  OnInit,
   inject,
+  OnInit,
 } from '@angular/core';
 import {
   FormArray,
@@ -14,8 +14,12 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import {
+  ESMApplicationExaminationsQueriesGetAllShiftsGetAllShiftDto,
+  ESMDomainEnumsExaminationStatus,
+} from '@esm/api';
 import { ExamMethodPipe } from '@esm/core';
-import { ExaminationGetDataResponseItem, ExaminationStatus } from '@esm/data';
+import { ExaminationGetDataResponseItem } from '@esm/data';
 import { LetModule } from '@ngrx/component';
 import { TuiTableModule } from '@taiga-ui/addon-table';
 import { TuiButtonModule, TuiScrollbarModule } from '@taiga-ui/core';
@@ -56,7 +60,7 @@ export class ExaminationExamTableComponent implements OnInit {
     data: FormArray<FormControl<number>>;
   }>;
 
-  readonly ExaminationStatus = ExaminationStatus;
+  readonly ExaminationStatus = ESMDomainEnumsExaminationStatus;
   readonly columns = [
     'index',
     'moduleId',
@@ -99,14 +103,16 @@ export class ExaminationExamTableComponent implements OnInit {
     this.data$.pipe(tap((data) => this.buildForm(data))).subscribe();
   }
 
-  private buildForm(data: ExaminationGetDataResponseItem[]): void {
+  private buildForm(
+    data: ESMApplicationExaminationsQueriesGetAllShiftsGetAllShiftDto[],
+  ): void {
     this.form = this.fb.group({
       data: this.fb.array(
         data.map((row) =>
           this.fb.control(row.examsCount, {
             validators: [Validators.required, Validators.min(0)],
-          })
-        )
+          }),
+        ),
       ),
     });
 
@@ -114,7 +120,7 @@ export class ExaminationExamTableComponent implements OnInit {
       .pipe(
         withLatestFrom(this.tableFormIsPristine$),
         filter(({ 1: tableFormIsPristine }) => tableFormIsPristine),
-        tap(() => this.store.patchState({ tableFormIsPristine: false }))
+        tap(() => this.store.patchState({ tableFormIsPristine: false })),
       )
       .subscribe();
   }

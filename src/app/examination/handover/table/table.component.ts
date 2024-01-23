@@ -14,6 +14,10 @@ import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
 } from '@angular/forms';
+import {
+  ESMApplicationExaminationsQueriesGetHandoverDataHandoverDataDto,
+  ESMDomainEnumsExaminationStatus,
+} from '@esm/api';
 import { ObservableHelper } from '@esm/cdk';
 import { ExamMethodPipe } from '@esm/core';
 import { ExaminationStatus, GetHandoverDataResponseItem } from '@esm/data';
@@ -72,10 +76,10 @@ export class ExaminationHandoverTableComponent implements OnInit {
 
   // PUBLIC PROPERTIES
   form?: FormGroup<{
-    [key: string]: FormControl<string | null>;
+    [key: string]: FormControl<string | null | undefined>;
   }>;
 
-  readonly ExaminationStatus = ExaminationStatus;
+  readonly ExaminationStatus = ESMDomainEnumsExaminationStatus;
   readonly columns = [
     'index',
     'moduleId',
@@ -100,13 +104,13 @@ export class ExaminationHandoverTableComponent implements OnInit {
   // PUBLIC METHODS
   @tuiPure
   invigilatorStringify(
-    items: GetHandoverDataResponseItem['invigilatorShift']
+    items: GetHandoverDataResponseItem['invigilatorShift'],
   ): TuiStringHandler<TuiContextWithImplicit<string>> {
     const map = new Map(
       items.map(
         ({ invigilator }) =>
-          [invigilator?.id, invigilator?.fullName] as [string, string]
-      )
+          [invigilator?.id, invigilator?.fullName] as [string, string],
+      ),
     );
 
     return ({ $implicit }: TuiContextWithImplicit<string>) =>
@@ -122,15 +126,15 @@ export class ExaminationHandoverTableComponent implements OnInit {
       .open<string | null>(
         new PolymorpheusComponent(
           EditShiftReportDialogComponent,
-          this.injector
+          this.injector,
         ),
-        { data }
+        { data },
       )
       .pipe(
         ObservableHelper.filterNullish(),
         tap((reportContent) =>
-          this.store.updateHandoverReport({ shiftId: data.id, reportContent })
-        )
+          this.store.updateHandoverReport({ shiftId: data.id, reportContent }),
+        ),
       )
       .subscribe();
   }
@@ -143,17 +147,22 @@ export class ExaminationHandoverTableComponent implements OnInit {
         tap((data) => {
           this.buildForm(data);
           this.cdr.markForCheck();
-        })
+        }),
       )
       .subscribe();
   }
 
-  private buildForm(data: GetHandoverDataResponseItem[]): void {
+  private buildForm(
+    data: ESMApplicationExaminationsQueriesGetHandoverDataHandoverDataDto[],
+  ): void {
     this.form = this.fb.group(
-      data.reduce((acc, curr) => {
-        acc[curr.id] = [curr.handedOverUserId];
-        return acc;
-      }, {} as Record<string, (string | null)[]>)
+      data.reduce(
+        (acc, curr) => {
+          acc[curr.id] = [curr.handedOverUserId];
+          return acc;
+        },
+        {} as Record<string, (string | null | undefined)[]>,
+      ),
     );
   }
 }

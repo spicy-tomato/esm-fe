@@ -1,12 +1,12 @@
 import { inject, Injectable } from '@angular/core';
+import { GetUserData } from '@esm/api';
 import { Status } from '@esm/cdk';
-import { UserSummary } from '@esm/data';
 import { UserService } from '@esm/services';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { switchMap, tap } from 'rxjs';
 
 type DataResetPasswordState = {
-  data: UserSummary[];
+  data: GetUserData['data'];
   status: Status;
 };
 
@@ -31,11 +31,11 @@ export class DataResetPasswordStore extends ComponentStore<DataResetPasswordStat
                 data: data,
                 status: 'success',
               }),
-            () => this.patchState({ status: 'error' })
-          )
-        )
-      )
-    )
+            () => this.patchState({ status: 'error' }),
+          ),
+        ),
+      ),
+    ),
   );
 
   // CONSTRUCTOR

@@ -66,6 +66,8 @@ const describeReturnType = () => {
   return `Observable<${type}>`;
 };
 
+console.log(payload);
+
 %>
 /**
 <%~ routeDocs.description %>
@@ -76,10 +78,24 @@ const describeReturnType = () => {
 
  */
 <%~ route.routeName.usage %>(<%~ wrapperArgs %>): <%~ describeReturnType() %> {
-    return this.http.<%~ _.lowerCase(method) %><<%~ type %>>(
-        this.url + `<%~ path %>`
-        <%~ bodyTmpl ? `, ${bodyTmpl}` : '' %>
-        <%~ _.lowerCase(method) !== 'get' && !bodyTmpl ? `, {}` : '' %>
-        <%~ queryTmpl ? `, {params: ObjectHelper.removeUndefinedField(${queryTmpl})},` : '' %>
-    );
+    <% if(requestBodyInfo.contentKind === 'FORM_DATA') { %>
+        const formData = new FormData();
+        // const fromBody = <%~ bodyTmpl %> as any;
+        for (const property in <%~ bodyTmpl %>) {
+            formData.append(property, <%~ bodyTmpl %>[property as keyof <%~ _.get(payload, "type") %>]);
+        }
+
+        return this.http.<%~ _.lowerCase(method) %><<%~ type %>>(
+            this.url + `<%~ path %>`,
+            formData,
+            <%~ queryTmpl ? `, {params: ObjectHelper.removeUndefinedField(${queryTmpl})},` : '' %>
+        );
+    <% } else { %>
+        return this.http.<%~ _.lowerCase(method) %><<%~ type %>>(
+            this.url + `<%~ path %>`
+            <%~ bodyTmpl ? `, ${bodyTmpl}` : '' %>
+            <%~ _.lowerCase(method) !== 'get' && !bodyTmpl ? `, {}` : '' %>
+            <%~ queryTmpl ? `, {params: ObjectHelper.removeUndefinedField(${queryTmpl})},` : '' %>
+        );
+    <% } %>
 }

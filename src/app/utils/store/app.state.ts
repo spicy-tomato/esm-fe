@@ -1,20 +1,20 @@
-import { State, Status } from '@esm/cdk';
 import {
-  ExaminationSummary,
-  FacultyWithDepartments,
-  GetRelatedResponseItem,
-  MySummaryInfoResponse,
-} from '@esm/data';
+  GetAllFacultyData,
+  GetMySummaryInfoData,
+  GetSummaryData,
+} from '@esm/api';
+import { State, Status } from '@esm/cdk';
+import { GetRelatedResponseItem } from '@esm/data';
 
 type UserState = {
   showLoader: boolean | null;
-  user: MySummaryInfoResponse | null;
+  user: GetMySummaryInfoData['data'] | null;
   userStatus: Status;
 };
 
 type ExaminationState = {
   examinationId: string | null;
-  examination: ExaminationSummary | null;
+  examination: GetSummaryData['data'] | null;
   examinationStatus: Status;
 };
 
@@ -23,7 +23,7 @@ type RelatedExaminationsState = State<
   'relatedExaminations'
 >;
 
-type DepartmentsState = State<FacultyWithDepartments[], 'departments'>;
+type DepartmentsState = State<GetAllFacultyData['data'], 'departments'>;
 
 export type AppState = UserState &
   ExaminationState &

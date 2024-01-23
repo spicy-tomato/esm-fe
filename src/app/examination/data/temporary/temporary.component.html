@@ -95,9 +95,7 @@
                   <tui-data-list role="menu">
                     <button
                       tuiOption
-                      (click)="
-                        onAddModule(i); moduleIdDropdownHost.toggle(false)
-                      "
+                      (click)="onAddModule(i, moduleIdDropdownHost)"
                     >
                       Thêm học phần
                       <tui-svg class="ml-1" src="tuiIconPlus"></tui-svg>
@@ -150,19 +148,19 @@
               ></esm-error-flag>
             </td>
             <td *tuiCell="'date'" tuiTd>
-              {{ item.value.date | date : "dd/MM/y" }}
+              {{ item.value.date | date: "dd/MM/y" }}
               <esm-error-flag
                 [error]="item.value.errors['date']"
               ></esm-error-flag>
             </td>
             <td *tuiCell="'startAt'" tuiTd class="!text-center">
-              {{ item.value.startAt | date : "HH:mm" }}
+              {{ item.value.startAt | date: "HH:mm" }}
               <esm-error-flag
                 [error]="item.value.errors['startAt']"
               ></esm-error-flag>
             </td>
             <td *tuiCell="'endAt'" tuiTd class="!text-center">
-              {{ item.value.endAt | date : "HH:mm" }}
+              {{ item.value.endAt | date: "HH:mm" }}
               <esm-error-flag
                 [error]="item.value.errors['endAt']"
               ></esm-error-flag>

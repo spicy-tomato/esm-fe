@@ -6,7 +6,7 @@ import {
   TokenService,
 } from '@esm/cdk';
 import { UserSummary } from '@esm/data';
-import { UserService } from '@esm/services';
+import { UserService } from '@esm/api';
 import { AppEffects } from '@esm/store';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';

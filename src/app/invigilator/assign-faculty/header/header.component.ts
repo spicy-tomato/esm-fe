@@ -3,11 +3,11 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  inject,
   Injector,
   Output,
-  inject,
 } from '@angular/core';
-import { ExaminationStatus } from '@esm/data';
+import { ESMDomainEnumsExaminationStatus } from '@esm/api';
 import { ConfirmDialogComponent } from '@esm/shared/dialogs';
 import { LetModule } from '@ngrx/component';
 import {
@@ -38,7 +38,7 @@ export class InvigilatorAssignFacultyHeaderComponent {
   readonly exportFile = new EventEmitter<void>();
 
   // PROPERTIES
-  readonly ExaminationStatus = ExaminationStatus;
+  readonly ExaminationStatus = ESMDomainEnumsExaminationStatus;
   readonly headerObservables$ = this.store.headerObservables$;
 
   // PUBLIC METHODS
@@ -53,7 +53,7 @@ export class InvigilatorAssignFacultyHeaderComponent {
             onConfirm: this.store.calculate,
             confirmStatus: this.store.calculateStatus$,
           },
-        }
+        },
       )
       .subscribe();
   }

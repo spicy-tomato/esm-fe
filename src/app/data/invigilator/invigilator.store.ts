@@ -1,7 +1,8 @@
 import { inject, Injectable } from '@angular/core';
+import { FacultyService, GetUserData } from '@esm/api';
 import { Status } from '@esm/cdk';
 import { UserSummary } from '@esm/data';
-import { FacultyService, UserService } from '@esm/services';
+import { UserService } from '@esm/services';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
@@ -18,7 +19,7 @@ import {
 type DataInvigilatorState = {
   selectedFacultyId: string;
   selectedDepartmentId: string;
-  invigilators: UserSummary[];
+  invigilators: GetUserData['data'];
   cachedFacultyIds: string[];
   status: Status;
 };
@@ -37,7 +38,7 @@ export class DataInvigilatorStore extends ComponentStore<DataInvigilatorState> {
 
   private readonly selectedFacultyId$ = this.select((s) => s.selectedFacultyId);
   private readonly selectedDepartmentId$ = this.select(
-    (s) => s.selectedDepartmentId
+    (s) => s.selectedDepartmentId,
   );
 
   // GLOBAL SELECTORS
@@ -53,7 +54,7 @@ export class DataInvigilatorStore extends ComponentStore<DataInvigilatorState> {
     this.faculties$,
     this.selectedFacultyId$,
   ]).pipe(
-    map(([faculties, id]) => faculties.find((f) => f.id === id)?.name ?? '')
+    map(([faculties, id]) => faculties.find((f) => f.id === id)?.name ?? ''),
   );
 
   private readonly departments$ = combineLatest([
@@ -61,15 +62,18 @@ export class DataInvigilatorStore extends ComponentStore<DataInvigilatorState> {
     this.selectedFacultyId$,
   ]).pipe(
     map(
-      ([faculties, id]) => faculties.find((f) => f.id === id)?.departments ?? []
-    )
+      ([faculties, id]) =>
+        faculties.find((f) => f.id === id)?.departments ?? [],
+    ),
   );
 
   private readonly selectedDepartmentName$ = combineLatest([
     this.departments$,
     this.selectedDepartmentId$,
   ]).pipe(
-    map(([departments, id]) => departments.find((d) => d.id === id)?.name ?? '')
+    map(
+      ([departments, id]) => departments.find((d) => d.id === id)?.name ?? '',
+    ),
   );
 
   readonly headerObservables$ = combineLatest([
@@ -95,8 +99,8 @@ export class DataInvigilatorStore extends ComponentStore<DataInvigilatorState> {
         selectedDepartmentId,
         faculties,
         departments,
-      })
-    )
+      }),
+    ),
   );
 
   readonly tableObservables$ = combineLatest([
@@ -108,7 +112,7 @@ export class DataInvigilatorStore extends ComponentStore<DataInvigilatorState> {
       invigilators,
       selectedFacultyId,
       selectedDepartmentId,
-    }))
+    })),
   );
 
   // EFFECTS
@@ -134,9 +138,9 @@ export class DataInvigilatorStore extends ComponentStore<DataInvigilatorState> {
           } else if (departmentId !== selectedDepartmentId) {
             this.loadDepartment(departmentId);
           }
-        }
-      )
-    )
+        },
+      ),
+    ),
   );
 
   private readonly loadFaculty = this.effect<{
@@ -150,7 +154,7 @@ export class DataInvigilatorStore extends ComponentStore<DataInvigilatorState> {
           selectedFacultyId: force ? undefined : facultyId,
           selectedDepartmentId: force ? undefined : departmentId,
           status: 'loading',
-        })
+        }),
       ),
       withLatestFrom(this.cachedFacultyIds$, this.faculties$),
       switchMap(([{ facultyId, force }, cached, faculties]) => {
@@ -163,7 +167,7 @@ export class DataInvigilatorStore extends ComponentStore<DataInvigilatorState> {
         }
 
         const request = facultyId
-          ? this.facultyService.getUsers(facultyId)
+          ? this.facultyService.getUser(facultyId)
           : this.userService.getAllInvigilators('isInvigilator');
 
         return request.pipe(
@@ -179,15 +183,15 @@ export class DataInvigilatorStore extends ComponentStore<DataInvigilatorState> {
                 status: 'success',
               }));
             },
-            () => this.patchState({ status: 'error' })
-          )
+            () => this.patchState({ status: 'error' }),
+          ),
         );
-      })
-    )
+      }),
+    ),
   );
 
   private readonly loadDepartment = this.effect<string>((params$) =>
-    params$.pipe(tap((id) => this.patchState({ selectedDepartmentId: id })))
+    params$.pipe(tap((id) => this.patchState({ selectedDepartmentId: id }))),
   );
 
   // CONSTRUCTOR

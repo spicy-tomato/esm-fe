@@ -8,9 +8,9 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ESMDomainEnumsExaminationStatus } from '@esm/api';
 import { Status } from '@esm/cdk';
 import { ArrayPipe } from '@esm/core';
-import { ExaminationStatus } from '@esm/data';
 import { LetModule } from '@ngrx/component';
 import { provideComponentStore } from '@ngrx/component-store';
 import {
@@ -58,7 +58,7 @@ export class InvigilatorAssignTeacherComponent implements OnInit {
   table?: InvigilatorAssignTeacherTableComponent;
 
   // PROPERTIES
-  readonly ExaminationStatus = ExaminationStatus;
+  readonly ExaminationStatus = ESMDomainEnumsExaminationStatus;
   readonly roles$ = this.store.roles$;
   readonly dataStatus$ = this.store.dataStatus$;
   readonly updateStatus$ = this.store.updateStatus$;
@@ -89,7 +89,7 @@ export class InvigilatorAssignTeacherComponent implements OnInit {
           {
             label: 'Lỗi',
             status: TuiNotification.Error,
-          }
+          },
         );
 
       return of();

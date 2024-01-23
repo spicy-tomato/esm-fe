@@ -1,6 +1,6 @@
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { APP_STORE_PROVIDER, TESTING_COMMON_IMPORTS } from '@esm/cdk';
-import { ExaminationService } from '@esm/services';
+import { ExaminationService } from '@esm/api';
 import { cold } from 'jasmine-marbles';
 import { HomeStore } from './home.store';
 

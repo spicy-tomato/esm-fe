@@ -14,8 +14,8 @@ import {
   FormGroup,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { ESMDomainEntitiesExaminationData } from '@esm/api';
 import { ExamMethodPipe } from '@esm/core';
-import { TemporaryExamination } from '@esm/data';
 import { ErrorFlagComponent } from '@esm/shared/components';
 import {
   AddModuleDialogComponent,
@@ -27,6 +27,7 @@ import {
   TuiButtonModule,
   TuiDataListModule,
   TuiDialogService,
+  TuiDropdownDirective,
   TuiDropdownModule,
   TuiLoaderModule,
   TuiScrollbarModule,
@@ -98,7 +99,9 @@ export class ExaminationDataTemporaryComponent implements OnInit {
   form!: FormGroup<{
     data: FormArray<
       FormGroup<{
-        [K in keyof TemporaryExamination]: FormControl<TemporaryExamination[K]>;
+        [K in keyof ESMDomainEntitiesExaminationData]: FormControl<
+          ESMDomainEntitiesExaminationData[K]
+        >;
       }>
     >;
   }>;
@@ -126,24 +129,28 @@ export class ExaminationDataTemporaryComponent implements OnInit {
     this.store.getData();
   }
 
-  onAddModule(rowId: number): void {
+  onAddModule(rowId: number, moduleIdDropdownHost: TuiDropdownDirective): void {
+    const x = this.form.value.data?.[rowId];
     this.dialogService
       .open<boolean>(
         new PolymorpheusComponent(AddModuleDialogComponent, this.injector),
         {
           data: this.form.value.data?.[rowId],
-        }
+        },
       )
       .pipe(
         filter((x) => x),
-        tap(() => this.markLoadable())
+        tap(() => this.markLoadable()),
       )
       .subscribe();
+    moduleIdDropdownHost.toggle(false);
   }
 
   onAddRoom(rowId: number): void {
-    const errorRooms = this.form.value.data?.[rowId].errors?.rooms.data;
-    if (!errorRooms) {
+    const roomErrors = this.form.value.data?.[rowId].errors?.['rooms'];
+    const roomErrorsData =
+      roomErrors && 'data' in roomErrors ? roomErrors.data : null;
+    if (!roomErrorsData) {
       return;
     }
 
@@ -151,12 +158,12 @@ export class ExaminationDataTemporaryComponent implements OnInit {
       .open<boolean>(
         new PolymorpheusComponent(AddRoomDialogComponent, this.injector),
         {
-          data: errorRooms,
-        }
+          data: roomErrorsData,
+        },
       )
       .pipe(
         filter((x) => x),
-        tap(() => this.markLoadable())
+        tap(() => this.markLoadable()),
       )
       .subscribe();
   }
@@ -166,17 +173,20 @@ export class ExaminationDataTemporaryComponent implements OnInit {
     this.data$.pipe(tap((data) => this.buildForm(data))).subscribe();
   }
 
-  private buildForm(data: TemporaryExamination[]): void {
+  private buildForm(data: ESMDomainEntitiesExaminationData[]): void {
     this.form = this.fb.group({
       data: this.fb.array(
         data.map((row) =>
           this.fb.group(
-            Object.entries(row).reduce((acc, [key, value]) => {
-              acc[key as keyof TemporaryExamination] = [value as any];
-              return acc;
-            }, {} as Record<keyof TemporaryExamination, any[]>)
-          )
-        )
+            Object.entries(row).reduce(
+              (acc, [key, value]) => {
+                acc[key] = [value];
+                return acc;
+              },
+              {} as Record<string, any[]>,
+            ),
+          ),
+        ),
       ),
     }) as any;
   }

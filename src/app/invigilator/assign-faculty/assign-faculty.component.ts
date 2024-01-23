@@ -2,20 +2,20 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  inject,
   OnInit,
   ViewChild,
-  inject,
 } from '@angular/core';
-import { ExaminationStatus } from '@esm/data';
+import { ESMDomainEnumsExaminationStatus } from '@esm/api';
 import { SafeExaminationDataComponent } from '@esm/shared/components';
 import { LetModule } from '@ngrx/component';
 import {
   TuiAlertService,
+  tuiButtonOptionsProvider,
   TuiLoaderModule,
   TuiNotification,
-  tuiButtonOptionsProvider,
 } from '@taiga-ui/core';
-import { Subscription, of, switchMap } from 'rxjs';
+import { of, Subscription, switchMap } from 'rxjs';
 import { InvigilatorAssignFacultyStore } from './assign-faculty.store';
 import { InvigilatorAssignFacultyHeaderComponent } from './header/header.component';
 import { InvigilatorAssignFacultyTableComponent } from './table/table.component';
@@ -51,7 +51,7 @@ export class InvigilatorAssignFacultyComponent implements OnInit {
   table?: InvigilatorAssignFacultyTableComponent;
 
   // PROPERTIES
-  readonly ExaminationStatus = ExaminationStatus;
+  readonly ExaminationStatus = ESMDomainEnumsExaminationStatus;
   readonly dataStatus$ = this.store.dataStatus$;
   private readonly finishStatus$ = this.store.finishStatus$;
 
@@ -79,11 +79,11 @@ export class InvigilatorAssignFacultyComponent implements OnInit {
               {
                 label: 'Lỗi',
                 status: TuiNotification.Error,
-              }
+              },
             );
 
           return of();
-        })
+        }),
       )
       .subscribe();
   }

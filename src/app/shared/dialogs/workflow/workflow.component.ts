@@ -5,6 +5,7 @@ import {
   inject,
   ViewChild,
 } from '@angular/core';
+import { GetSummaryData } from '@esm/api';
 import { DIAGRAM_STATUS_MAP } from '@esm/cdk';
 import { ExaminationSummary } from '@esm/data';
 import { LetModule } from '@ngrx/component';
@@ -51,7 +52,7 @@ export class WorkflowDialogComponent {
   }
 
   getNodeDefaults(
-    examination: ExaminationSummary
+    examination: GetSummaryData['data'],
   ): (node: NodeModel) => NodeModel {
     return (node) => {
       if (node.style) {

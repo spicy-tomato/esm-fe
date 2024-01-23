@@ -1,7 +1,6 @@
 import { inject, Injectable } from '@angular/core';
+import { ExaminationService, GetHandoverDataData } from '@esm/api';
 import { ObservableHelper, Status } from '@esm/cdk';
-import { GetHandoverDataResponseItem } from '@esm/data';
-import { ExaminationService } from '@esm/services';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
@@ -15,7 +14,7 @@ import {
 } from 'rxjs';
 
 type ExaminationHandoverState = {
-  data: GetHandoverDataResponseItem[];
+  data: GetHandoverDataData['data'];
   dataStatus: Status;
   handoverPersonStatus: Record<string, Status>;
 };
@@ -31,7 +30,7 @@ export class ExaminationHandoverStore extends ComponentStore<ExaminationHandover
   readonly dataStatus$ = this.select((s) => s.dataStatus);
 
   private readonly handoverPersonStatus$ = this.select(
-    (s) => s.handoverPersonStatus
+    (s) => s.handoverPersonStatus,
   );
 
   // GLOBAL SELECTORS
@@ -55,7 +54,7 @@ export class ExaminationHandoverStore extends ComponentStore<ExaminationHandover
       dataStatus,
       data,
       handoverPersonStatus,
-    }))
+    })),
   );
 
   // EFFECTS
@@ -71,11 +70,11 @@ export class ExaminationHandoverStore extends ComponentStore<ExaminationHandover
                 data,
                 dataStatus: 'success',
               }),
-            () => this.patchState({ dataStatus: 'error' })
-          )
-        )
-      )
-    )
+            () => this.patchState({ dataStatus: 'error' }),
+          ),
+        ),
+      ),
+    ),
   );
 
   readonly updateHandoverPerson = this.effect<{
@@ -89,12 +88,12 @@ export class ExaminationHandoverStore extends ComponentStore<ExaminationHandover
             ...s.handoverPersonStatus,
             [shiftId]: 'loading',
           },
-        }))
+        })),
       ),
       withLatestFrom(this.examinationId$),
       switchMap(([{ shiftId, handoverUserId }, examinationId]) =>
         this.examinationService
-          .updateShift(examinationId, shiftId, { handoverUserId })
+          .updateShiftExamination(examinationId, shiftId, { handoverUserId })
           .pipe(
             tapResponse(
               () =>
@@ -105,18 +104,18 @@ export class ExaminationHandoverStore extends ComponentStore<ExaminationHandover
                           ...d,
                           handedOverUserId: handoverUserId,
                         }
-                      : d
+                      : d,
                   ),
                   handoverPersonStatus: {
                     ...s.handoverPersonStatus,
                     [shiftId]: 'success',
                   },
                 })),
-              () => this.patchState({ dataStatus: 'error' })
-            )
-          )
-      )
-    )
+              () => this.patchState({ dataStatus: 'error' }),
+            ),
+          ),
+      ),
+    ),
   );
 
   readonly updateHandoverReport = this.effect<{
@@ -132,11 +131,11 @@ export class ExaminationHandoverStore extends ComponentStore<ExaminationHandover
                   ...d,
                   report: reportContent,
                 }
-              : d
+              : d,
           ),
         }));
-      })
-    )
+      }),
+    ),
   );
 
   // CONSTRUCTOR

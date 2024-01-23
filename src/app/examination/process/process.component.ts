@@ -61,13 +61,13 @@ export class ExaminationProcessComponent implements OnInit {
   constructor() {
     this.diagramData$ = this.events$.pipe(
       map((x) =>
-        (x?.events ?? []).reduce(
+        [].reduce(
           (acc, curr, i) => {
             acc.nodes.push({
               id: `node${i}`,
               offsetY: 20,
               offsetX: 70 * i,
-              annotations: [{ id: `label${i}`, content: `${curr.status}` }],
+              // annotations: [{ id: `label${i}`, content: `${curr.status}` }],
             });
             if (i > 0) {
               acc.connectors.push({
@@ -81,9 +81,9 @@ export class ExaminationProcessComponent implements OnInit {
           {
             nodes: [] as NodeModel[],
             connectors: [] as ConnectorModel[],
-          }
-        )
-      )
+          },
+        ),
+      ),
     );
   }
 

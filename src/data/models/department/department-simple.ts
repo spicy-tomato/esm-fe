@@ -1,5 +1,5 @@
 export type DepartmentSimple = {
   id: string;
-  displayId: string | null;
+  displayId?: string | null;
   name: string;
 };

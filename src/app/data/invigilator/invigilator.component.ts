@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ESMDomainDtosUserUserSummary } from '@esm/api';
 import { StringifyHelper } from '@esm/cdk';
 import { UserSummary } from '@esm/data';
 import { EditInvigilatorDialogComponent } from '@esm/shared/dialogs';
@@ -88,7 +89,7 @@ export class DataInvigilatorComponent implements OnInit {
             facultyId: params['facultyId'] || '',
             departmentId: params['departmentId'] || '',
           });
-        })
+        }),
       )
       .subscribe();
   }
@@ -99,21 +100,21 @@ export class DataInvigilatorComponent implements OnInit {
       .open<UserSummary>(
         new PolymorpheusComponent(
           EditInvigilatorDialogComponent,
-          this.injector
+          this.injector,
         ),
-        { data }
+        { data },
       )
       .pipe(
         filter((x) => !!x),
-        tap(() => this.store.loadAfterCreated())
+        tap(() => this.store.loadAfterCreated()),
       )
       .subscribe();
   }
 
   readonly userMatcher = (
-    item: UserSummary,
+    item: ESMDomainDtosUserUserSummary,
     facultyId: string,
-    departmentId: string
+    departmentId: string,
   ): boolean =>
     !facultyId ||
     (item.department?.faculty?.id === facultyId && !departmentId) ||

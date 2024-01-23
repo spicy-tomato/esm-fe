@@ -3,8 +3,8 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  OnInit,
   inject,
+  OnInit,
 } from '@angular/core';
 import {
   FormControl,
@@ -14,17 +14,20 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { ExaminationStatus, ExaminationSummary } from '@esm/data';
+import {
+  ESMDomainDtosExaminationExaminationSummary,
+  ESMDomainEnumsExaminationStatus,
+} from '@esm/api';
 import { LetModule } from '@ngrx/component';
 import { TuiDay, TuiDayRange } from '@taiga-ui/cdk';
 import {
   TuiAlertService,
   TuiButtonModule,
+  tuiButtonOptionsProvider,
   TuiErrorModule,
   TuiLabelModule,
   TuiNotification,
   TuiTextfieldControllerModule,
-  tuiButtonOptionsProvider,
 } from '@taiga-ui/core';
 import {
   TuiFieldErrorPipeModule,
@@ -85,12 +88,12 @@ export class ExaminationEditComponent implements OnInit {
   // PUBLIC PROPERTIES
   form?: FormGroup<FormType>;
 
-  readonly ExaminationStatus = ExaminationStatus;
+  readonly ExaminationStatus = ESMDomainEnumsExaminationStatus;
   readonly obs$ = this.store.obs$;
   readonly status$ = this.store.status$;
   readonly examination$ = this.store.examination$;
   readonly isCreateMode$ = this.route.data.pipe(
-    map((data) => data['isCreateMode'] ?? false)
+    map((data) => data['isCreateMode'] ?? false),
   );
 
   // LIFECYCLE
@@ -133,8 +136,8 @@ export class ExaminationEditComponent implements OnInit {
         switchMap(() =>
           this.alertService.open('Chỉnh sửa thông tin thành công!', {
             status: TuiNotification.Success,
-          })
-        )
+          }),
+        ),
       )
       .subscribe();
   }
@@ -143,7 +146,7 @@ export class ExaminationEditComponent implements OnInit {
     this.isCreateMode$
       .pipe(
         filter((isCreateMode) => isCreateMode),
-        tap(() => this.buildCreateForm())
+        tap(() => this.buildCreateForm()),
       )
       .subscribe();
   }
@@ -152,10 +155,12 @@ export class ExaminationEditComponent implements OnInit {
     combineLatest([this.isCreateMode$, this.examination$])
       .pipe(
         filter(
-          (props): props is [boolean, ExaminationSummary] =>
-            !props[0] && !!props[1]
+          (
+            props,
+          ): props is [boolean, ESMDomainDtosExaminationExaminationSummary] =>
+            !props[0] && !!props[1],
         ),
-        tap(({ 1: examination }) => this.buildEditForm(examination))
+        tap(({ 1: examination }) => this.buildEditForm(examination)),
       )
       .subscribe();
   }
@@ -169,12 +174,14 @@ export class ExaminationEditComponent implements OnInit {
     });
   }
 
-  private buildEditForm(examination: ExaminationSummary): void {
+  private buildEditForm(
+    examination: ESMDomainDtosExaminationExaminationSummary,
+  ): void {
     let expectedDateRange: TuiDayRange | null = null;
     if (examination.expectStartAt && examination.expectEndAt) {
       expectedDateRange = new TuiDayRange(
         TuiDay.fromUtcNativeDate(new Date(examination.expectStartAt)),
-        TuiDay.fromUtcNativeDate(new Date(examination.expectEndAt))
+        TuiDay.fromUtcNativeDate(new Date(examination.expectEndAt)),
       );
     }
 

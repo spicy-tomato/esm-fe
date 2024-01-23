@@ -6,7 +6,7 @@ import {
   TESTING_COMMON_IMPORTS,
 } from '@esm/cdk';
 import { CreateExaminationRequest, ExaminationStatus } from '@esm/data';
-import { ExaminationService } from '@esm/services';
+import { ExaminationService } from '@esm/api';
 import { cold } from 'jasmine-marbles';
 import { of } from 'rxjs';
 import { ExaminationEditStore } from './edit.store';

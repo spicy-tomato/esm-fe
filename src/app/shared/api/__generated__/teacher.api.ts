@@ -9,22 +9,23 @@
  * ---------------------------------------------------------------
  */
 
-import { HttpClient } from "@angular/common/http";
-import { Injectable, inject } from "@angular/core";
-import { ObjectHelper } from "@esm/cdk";
-import { APP_ENV } from "@esm/core";
-import { Observable } from "rxjs";
+import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { ObjectHelper } from '@esm/cdk';
+import { APP_ENV } from '@esm/core';
+import { createAction, props } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import {
+  ESMApplicationTeachersCommandsUpdateUpdateRequest,
   GetAllTeacherData,
-  GetAllTeacherParams,
+  GetAllTeacherQuery,
   SearchData,
-  SearchParams,
+  SearchQuery,
   UpdateInfoData,
-  UpdateInfoPayload,
-} from "./data-contracts";
+} from './data-contracts';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class TeacherService {
   // INJECT PROPERTIES
@@ -42,11 +43,12 @@ export class TeacherService {
    * @request GET:/Teacher
    * @response `200` `GetAllTeacherData` Success
    */
-  getAllTeacher(query: GetAllTeacherParams): Observable<GetAllTeacherData> {
+  getAllTeacher(query: GetAllTeacherQuery): Observable<GetAllTeacherData> {
     return this.http.get<GetAllTeacherData>(this.url + `/Teacher`, {
       params: ObjectHelper.removeUndefinedField(query),
     });
   }
+
   /**
    * No description
    *
@@ -55,11 +57,12 @@ export class TeacherService {
    * @request GET:/Teacher/search
    * @response `200` `SearchData` Success
    */
-  search(query: SearchParams): Observable<SearchData> {
+  search(query: SearchQuery): Observable<SearchData> {
     return this.http.get<SearchData>(this.url + `/Teacher/search`, {
       params: ObjectHelper.removeUndefinedField(query),
     });
   }
+
   /**
    * No description
    *
@@ -68,7 +71,36 @@ export class TeacherService {
    * @request PUT:/Teacher/{teacherId}
    * @response `200` `UpdateInfoData` Success
    */
-  updateInfo(teacherId: string, data: UpdateInfoPayload): Observable<UpdateInfoData> {
-    return this.http.put<UpdateInfoData>(this.url + `/Teacher/${teacherId}`, data);
+  updateInfo(
+    teacherId: string,
+    data: ESMApplicationTeachersCommandsUpdateUpdateRequest,
+  ): Observable<UpdateInfoData> {
+    return this.http.put<UpdateInfoData>(
+      this.url + `/Teacher/${teacherId}`,
+      data,
+    );
   }
+}
+
+export class TeacherApiAction {
+  getAllTeacherSuccessful = createAction(
+    '[Teacher/API] getAllTeacher Successful',
+    props<{ data: GetAllTeacherData['data'] }>(),
+  );
+
+  getAllTeacherFailed = createAction('[Teacher/API] getAllTeacher Failed');
+
+  searchSuccessful = createAction(
+    '[Teacher/API] search Successful',
+    props<{ data: SearchData['data'] }>(),
+  );
+
+  searchFailed = createAction('[Teacher/API] search Failed');
+
+  updateInfoSuccessful = createAction(
+    '[Teacher/API] updateInfo Successful',
+    props<{ data: UpdateInfoData['data'] }>(),
+  );
+
+  updateInfoFailed = createAction('[Teacher/API] updateInfo Failed');
 }

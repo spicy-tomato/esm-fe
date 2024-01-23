@@ -9,14 +9,18 @@
  * ---------------------------------------------------------------
  */
 
-import { HttpClient } from "@angular/common/http";
-import { Injectable, inject } from "@angular/core";
-import { APP_ENV } from "@esm/core";
-import { Observable } from "rxjs";
-import { UpdateShiftData, UpdateShiftPayload } from "./data-contracts";
+import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { APP_ENV } from '@esm/core';
+import { createAction, props } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import {
+  ESMApplicationShiftsCommandsUpdateUpdateRequest,
+  UpdateShiftData,
+} from './data-contracts';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class ShiftService {
   // INJECT PROPERTIES
@@ -34,7 +38,22 @@ export class ShiftService {
    * @request PATCH:/Shift/{shiftId}
    * @response `200` `UpdateShiftData` Success
    */
-  updateShift(shiftId: string, data: UpdateShiftPayload): Observable<UpdateShiftData> {
-    return this.http.patch<UpdateShiftData>(this.url + `/Shift/${shiftId}`, data);
+  updateShift(
+    shiftId: string,
+    data: ESMApplicationShiftsCommandsUpdateUpdateRequest,
+  ): Observable<UpdateShiftData> {
+    return this.http.patch<UpdateShiftData>(
+      this.url + `/Shift/${shiftId}`,
+      data,
+    );
   }
+}
+
+export class ShiftApiAction {
+  updateShiftSuccessful = createAction(
+    '[Shift/API] updateShift Successful',
+    props<{ data: UpdateShiftData['data'] }>(),
+  );
+
+  updateShiftFailed = createAction('[Shift/API] updateShift Failed');
 }

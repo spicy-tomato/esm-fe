@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { ErrorResult, EsmHttpErrorResponse, Status } from '@esm/cdk';
 import { EditFacultyRequest } from '@esm/data';
-import { FacultyService } from '@esm/services';
+import { FacultyService } from '@esm/api';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { switchMap, tap } from 'rxjs';
 
@@ -24,7 +24,7 @@ export class EditFacultyDialogStore extends ComponentStore<EditFacultyDialogStat
     params$.pipe(
       tap(() => this.patchState({ status: 'loading', errors: null })),
       switchMap((param) =>
-        this.facultyService.create(param).pipe(
+        this.facultyService.createFaculty(param).pipe(
           tapResponse(
             () => {
               this.patchState({ status: 'success' });
@@ -33,11 +33,11 @@ export class EditFacultyDialogStore extends ComponentStore<EditFacultyDialogStat
               this.patchState({
                 status: 'error',
                 errors: res.error.errors,
-              })
-          )
-        )
-      )
-    )
+              }),
+          ),
+        ),
+      ),
+    ),
   );
 
   readonly update = this.effect<{ id: string; request: EditFacultyRequest }>(
@@ -45,7 +45,7 @@ export class EditFacultyDialogStore extends ComponentStore<EditFacultyDialogStat
       params$.pipe(
         tap(() => this.patchState({ status: 'loading', errors: null })),
         switchMap(({ id, request }) =>
-          this.facultyService.update(id, request).pipe(
+          this.facultyService.updateFaculty(id, request).pipe(
             tapResponse(
               () => {
                 this.patchState({ status: 'success' });
@@ -54,11 +54,11 @@ export class EditFacultyDialogStore extends ComponentStore<EditFacultyDialogStat
                 this.patchState({
                   status: 'error',
                   errors: res.error.errors,
-                })
-            )
-          )
-        )
-      )
+                }),
+            ),
+          ),
+        ),
+      ),
   );
 
   // CONSTRUCTOR

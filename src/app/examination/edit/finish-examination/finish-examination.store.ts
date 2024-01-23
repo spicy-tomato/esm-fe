@@ -1,8 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { ESMDomainEnumsExaminationStatus, ExaminationService } from '@esm/api';
 import { ObservableHelper, Status } from '@esm/cdk';
-import { ExaminationStatus } from '@esm/data';
-import { ExaminationService } from '@esm/services';
 import { AppApiAction, AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
@@ -36,7 +35,7 @@ export class ExaminationEditFinishExaminationStore extends ComponentStore<Examin
       switchMap(([_, { id }]) =>
         this.examinationService
           .changeStatus(id, {
-            status: ExaminationStatus.Closed,
+            status: ESMDomainEnumsExaminationStatus.Closed,
             createdAt: new Date(),
           })
           .pipe(
@@ -49,11 +48,11 @@ export class ExaminationEditFinishExaminationStore extends ComponentStore<Examin
                 this.patchState({
                   status: 'error',
                   error: error as string,
-                })
-            )
-          )
-      )
-    )
+                }),
+            ),
+          ),
+      ),
+    ),
   );
 
   // CONSTRUCTOR

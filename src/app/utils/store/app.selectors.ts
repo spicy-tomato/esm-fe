@@ -1,11 +1,8 @@
+import { GetMySummaryInfoData } from '@esm/api';
 import { ObservableHelper, StringHelper } from '@esm/cdk';
-import {
-  DepartmentSummary,
-  FacultySummary,
-  MySummaryInfoResponse,
-} from '@esm/data';
+import { DepartmentSummary, FacultySummary } from '@esm/data';
 import { createFeatureSelector, createSelector, select } from '@ngrx/store';
-import { Observable, UnaryFunction, map, pipe } from 'rxjs';
+import { map, Observable, pipe, UnaryFunction } from 'rxjs';
 import { appFeatureKey } from './app.reducer';
 import { AppState } from './app.state';
 
@@ -16,15 +13,15 @@ export class AppSelector {
   static readonly user = createSelector(this.selector, (state) => state.user);
   static readonly notNullUser = pipe(
     select(this.user),
-    ObservableHelper.filterNullish()
+    ObservableHelper.filterNullish(),
   );
   static readonly userStatus = createSelector(
     this.selector,
-    (state) => state.userStatus
+    (state) => state.userStatus,
   );
   static readonly roles = createSelector(
     this.selector,
-    (state) => state.user?.roles ?? []
+    (state) => state.user?.roles ?? [],
   );
 
   static readonly userName = pipe(
@@ -32,12 +29,12 @@ export class AppSelector {
     map((user) =>
       this.isOrganizationAccount(user)
         ? user.fullName
-        : StringHelper.getFirstName(user.fullName ?? '')
-    )
+        : StringHelper.getFirstName(user.fullName ?? ''),
+    ),
   );
 
   static readonly userTitle = (
-    useTitleCase = true
+    useTitleCase = true,
   ): UnaryFunction<Observable<object>, Observable<string | null>> =>
     pipe(
       this.notNullUser,
@@ -49,7 +46,7 @@ export class AppSelector {
           title = title.toLocaleLowerCase();
         }
         return title;
-      })
+      }),
     );
 
   static readonly showLoader = createSelector(
@@ -60,49 +57,49 @@ export class AppSelector {
         return userShowLoader;
       }
       return status === 'idle' || status === 'loading';
-    }
+    },
   );
 
   static readonly examinationStatus = createSelector(
     this.selector,
-    (state) => state.examinationStatus
+    (state) => state.examinationStatus,
   );
 
   static readonly examinationId = createSelector(
     this.selector,
-    (state) => state.examinationId
+    (state) => state.examinationId,
   );
 
   static readonly examination = createSelector(
     this.selector,
-    (state) => state.examination
+    (state) => state.examination,
   );
 
   static readonly relatedExaminationsStatus = createSelector(
     this.selector,
-    (state) => state.relatedExaminationsStatus
+    (state) => state.relatedExaminationsStatus,
   );
 
   static readonly relatedExaminations = createSelector(
     this.selector,
-    (state) => state.relatedExaminations
+    (state) => state.relatedExaminations,
   );
 
   static readonly departmentsStatus = createSelector(
     this.selector,
-    (state) => state.departmentsStatus
+    (state) => state.departmentsStatus,
   );
 
   static readonly facultiesWithDepartment = createSelector(
     this.selector,
-    (state) => state.departments
+    (state) => state.departments,
   );
 
   static readonly faculties = createSelector(this.selector, (state) =>
     state.departments.map((f) => {
       const { departments, ...rest } = f;
       return rest as FacultySummary;
-    })
+    }),
   );
 
   static readonly departmentsWithFaculty = createSelector(
@@ -113,17 +110,18 @@ export class AppSelector {
           ...acc,
           ...curr.departments.map((f) => {
             const { departments, ...faculty } = curr;
-            return { ...f, faculty };
+            const res = { ...f, faculty };
+            return res;
           }),
         ];
         return acc;
-      }, [] as DepartmentSummary[])
+      }, [] as DepartmentSummary[]),
   );
 
   private static isOrganizationAccount({
     faculty,
     roles,
-  }: MySummaryInfoResponse): boolean {
+  }: GetMySummaryInfoData['data']): boolean {
     return !!faculty || roles.includes('ExaminationDepartmentHead');
   }
 }

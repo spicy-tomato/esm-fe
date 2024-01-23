@@ -14,5 +14,6 @@
     "whiteblock"
   ],
   "prettier.singleQuote": true,
-  "prettier.jsxSingleQuote": true
+  "prettier.jsxSingleQuote": true,
+  "typescript.tsdk": "node_modules\\typescript\\lib"
 }

@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Status } from '@esm/cdk';
 import { ChangePasswordRequest } from '@esm/data';
-import { AuthService } from '@esm/services';
+import { AuthService } from '@esm/api';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';

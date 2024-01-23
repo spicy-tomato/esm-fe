@@ -1,4 +1,5 @@
 import { ExaminationStatus } from '@esm/data';
+import { ESMDomainEnumsExaminationStatus } from '@esm/api';
 import { createReducer, on } from '@ngrx/store';
 import { AppApiAction } from './app.api.actions';
 import { AppPageAction } from './app.page.actions';
@@ -49,10 +50,8 @@ export const appReducer = createReducer(
       name: data.name ?? state.examination!.name,
       displayId: data.displayId ?? state.examination!.displayId,
       description: data.description,
-      expectStartAt:
-        data.expectStartAt?.toUTCString() ?? state.examination!.expectStartAt,
-      expectEndAt:
-        data.expectEndAt?.toUTCString() ?? state.examination!.expectEndAt,
+      expectStartAt: data.expectStartAt ?? state.examination!.expectStartAt,
+      expectEndAt: data.expectEndAt ?? state.examination!.expectEndAt,
       updatedAt: data.updatedAt,
     },
     relatedExaminations: state.relatedExaminations.map((e) =>
@@ -62,7 +61,7 @@ export const appReducer = createReducer(
             ...e,
             displayId: data.displayId ?? state.examination!.displayId,
             name: data.name ?? state.examination!.name,
-          }
+          },
     ),
   })),
   on(AppApiAction.noCacheUserInfo, (state) => ({
@@ -71,7 +70,7 @@ export const appReducer = createReducer(
   })),
   on(AppApiAction.getUserInfoSuccessful, (state, { user }) => ({
     ...state,
-    user: user,
+    user,
     userStatus: 'success',
   })),
   on(AppApiAction.getUserInfoFailed, (state) => ({
@@ -90,7 +89,7 @@ export const appReducer = createReducer(
     examinationStatus: 'success',
     relatedExaminations:
       examination === null ||
-      examination.status === ExaminationStatus.Closed ||
+      examination.status === ESMDomainEnumsExaminationStatus.Closed ||
       state.relatedExaminations.find((e) => e.id === examination.id)
         ? state.relatedExaminations
         : [...state.relatedExaminations, examination],
@@ -106,7 +105,7 @@ export const appReducer = createReducer(
       ...state,
       relatedExaminations,
       relatedExaminationsStatus: 'success',
-    })
+    }),
   ),
   on(AppApiAction.getRelatedExaminationsFailed, (state) => ({
     ...state,
@@ -127,7 +126,7 @@ export const appReducer = createReducer(
     ...state,
     examination: {
       ...state.examination!,
-      status: ExaminationStatus.AssignInvigilator,
+      status: ESMDomainEnumsExaminationStatus.AssignInvigilator,
     },
     relatedExaminations: state.relatedExaminations.map((e) =>
       e.id !== state.examination!.id
@@ -135,14 +134,14 @@ export const appReducer = createReducer(
         : {
             ...e,
             status: ExaminationStatus.AssignInvigilator,
-          }
+          },
     ),
   })),
   on(AppApiAction.closeSuccessful, (state) => ({
     ...state,
     examination: {
       ...state.examination!,
-      status: ExaminationStatus.Closed,
+      status: ESMDomainEnumsExaminationStatus.Closed,
     },
     relatedExaminations: state.relatedExaminations.map((e) =>
       e.id !== state.examination!.id
@@ -150,7 +149,7 @@ export const appReducer = createReducer(
         : {
             ...e,
             status: ExaminationStatus.Closed,
-          }
+          },
     ),
-  }))
+  })),
 );

@@ -3,9 +3,9 @@ import { CommonModule, DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  inject,
   OnInit,
   ViewChild,
-  inject,
 } from '@angular/core';
 import {
   FormArray,
@@ -15,19 +15,19 @@ import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
 } from '@angular/forms';
+import {
+  ESMApplicationExaminationsQueriesGetAllGroupsGetAllGroupsDto,
+  ESMDomainEnumsExaminationStatus,
+} from '@esm/api';
 import { StringHelper } from '@esm/cdk';
 import { ArrayPipe, ExamMethodPipe } from '@esm/core';
-import {
-  ExaminationStatus,
-  FacultySummary,
-  GetAllGroupsResponseResponseItem,
-} from '@esm/data';
+import { FacultySummary, GetAllGroupsResponseResponseItem } from '@esm/data';
 import { LetModule } from '@ngrx/component';
 import { TuiTableModule } from '@taiga-ui/addon-table';
 import { TuiDestroyService } from '@taiga-ui/cdk';
 import { TuiScrollbarModule, TuiTooltipModule } from '@taiga-ui/core';
 import { TuiInputNumberComponent, TuiInputNumberModule } from '@taiga-ui/kit';
-import { Subject, combineLatest, map, takeUntil, tap } from 'rxjs';
+import { combineLatest, map, Subject, takeUntil, tap } from 'rxjs';
 import { utils, writeFileXLSX } from 'xlsx';
 import { InvigilatorAssignFacultyStore } from '../assign-faculty.store';
 
@@ -84,7 +84,7 @@ export class InvigilatorAssignFacultyTableComponent implements OnInit {
   focusedControl: FormControl | null = null;
   focusedCellData: FocusedCellData | null = null;
 
-  readonly ExaminationStatus = ExaminationStatus;
+  readonly ExaminationStatus = ESMDomainEnumsExaminationStatus;
   readonly exportFile$ = new Subject<void>();
   readonly tableObservables$ = this.store.tableObservables$;
 
@@ -154,7 +154,7 @@ export class InvigilatorAssignFacultyTableComponent implements OnInit {
 
   private buildForm(
     faculties: FacultySummary[],
-    data: GetAllGroupsResponseResponseItem[]
+    data: ESMApplicationExaminationsQueriesGetAllGroupsGetAllGroupsDto[],
   ): void {
     this.form = this.fb.group({
       data: this.fb.array(
@@ -163,42 +163,49 @@ export class InvigilatorAssignFacultyTableComponent implements OnInit {
             ...this.buildFormDataPart(row),
             ...this.buildFormFacultyPart(row, faculties),
             ...this.buildFormCalculatePart(row),
-          })
-        )
+          }),
+        ),
       ),
     }) as any;
   }
 
   private buildFormDataPart(
-    group: GetAllGroupsResponseResponseItem
+    group: ESMApplicationExaminationsQueriesGetAllGroupsGetAllGroupsDto,
   ): Record<string, any[]> {
-    const columns: (keyof GetAllGroupsResponseResponseItem)[] = [
-      'module',
-      'method',
-      'startAt',
-      'shift',
-      'roomsCount',
-      'invigilatorsCount',
-    ];
+    const columns: (keyof ESMApplicationExaminationsQueriesGetAllGroupsGetAllGroupsDto)[] =
+      [
+        'module',
+        'method',
+        'startAt',
+        'shift',
+        'roomsCount',
+        'invigilatorsCount',
+      ];
 
-    return columns.reduce((acc, curr) => {
-      acc[curr] = [group[curr]];
-      return acc;
-    }, {} as Record<string, any[]>);
+    return columns.reduce(
+      (acc, curr) => {
+        acc[curr] = [group[curr]];
+        return acc;
+      },
+      {} as Record<string, any[]>,
+    );
   }
 
   private buildFormFacultyPart(
-    group: GetAllGroupsResponseResponseItem,
-    faculties: FacultySummary[]
+    group: ESMApplicationExaminationsQueriesGetAllGroupsGetAllGroupsDto,
+    faculties: FacultySummary[],
   ): Record<string, any[]> {
-    return faculties.reduce((acc, { id }) => {
-      acc[id] = [group.assignNumerate[id] || 0];
-      return acc;
-    }, {} as Record<string, any[]>);
+    return faculties.reduce(
+      (acc, { id }) => {
+        acc[id] = [group.assignNumerate[id] || 0];
+        return acc;
+      },
+      {} as Record<string, any[]>,
+    );
   }
 
   private buildFormCalculatePart(
-    group: GetAllGroupsResponseResponseItem
+    group: ESMApplicationExaminationsQueriesGetAllGroupsGetAllGroupsDto,
   ): Record<string, any[]> {
     return {
       total: [group.assignNumerate['total']],
@@ -216,7 +223,7 @@ export class InvigilatorAssignFacultyTableComponent implements OnInit {
     ])
       .pipe(
         tap(([faculties]) => this.onExportFile(faculties)),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }

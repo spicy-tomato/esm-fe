@@ -2,7 +2,7 @@ import { FacultySummary } from '../faculty';
 
 export type DepartmentSummary = {
   id: string;
-  displayId: string | null;
+  displayId?: string | null;
   name: string;
   faculty: FacultySummary | null;
 };

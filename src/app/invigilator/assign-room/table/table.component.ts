@@ -13,6 +13,10 @@ import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
 } from '@angular/forms';
+import {
+  AssignInvigilatorsToShiftsPayload,
+  ESMApplicationExaminationsQueriesGetAvailableInvigilatorsInGroupsGetAvailableInvigilatorsInGroupsItemResponseItem,
+} from '@esm/api';
 import { AssignInvigilatorsToShiftsRequest } from '@esm/data';
 import { LetModule } from '@ngrx/component';
 import { TuiTableModule } from '@taiga-ui/addon-table';
@@ -101,19 +105,20 @@ export class InvigilatorAssignRoomTableComponent implements OnInit {
   // PUBLIC METHODS
   @tuiPure
   invigilatorStringify(
-    items: InvigilatorItem[]
+    items: ESMApplicationExaminationsQueriesGetAvailableInvigilatorsInGroupsGetAvailableInvigilatorsInGroupsItemResponseItem[],
   ): TuiStringHandler<TuiContextWithImplicit<string>> {
     const map = new Map(
       items
         .filter(
           (
-            item
+            item,
           ): item is {
             id: string;
             fullName: string;
-          } => 'id' in item
+            isPriority: boolean;
+          } => 'id' in item,
         )
-        .map(({ id, fullName }) => [id, fullName] as [string, string])
+        .map(({ id, fullName }) => [id, fullName] as [string, string]),
     );
 
     return ({ $implicit }: TuiContextWithImplicit<string>) =>
@@ -125,11 +130,11 @@ export class InvigilatorAssignRoomTableComponent implements OnInit {
       return;
     }
 
-    const dataToSave: AssignInvigilatorsToShiftsRequest = {};
+    const dataToSave: AssignInvigilatorsToShiftsPayload = {};
 
     Object.entries(this.form.controls).forEach(([controlName, control]) => {
       if (control.pristine) return;
-      const invigilatorId = control.getRawValue();
+      const invigilatorId = control.getRawValue() ?? '';
       dataToSave[controlName] = invigilatorId;
     });
 
@@ -144,17 +149,20 @@ export class InvigilatorAssignRoomTableComponent implements OnInit {
         tap((data) => {
           this.buildForm(data);
           this.cdr.markForCheck();
-        })
+        }),
       )
       .subscribe();
   }
 
   private buildForm(data: ShiftUiModel[]): void {
     this.form = this.fb.group(
-      data.reduce((acc, curr) => {
-        acc[curr.id] = [curr.invigilator?.id ?? null];
-        return acc;
-      }, {} as Record<string, (string | null)[]>)
+      data.reduce(
+        (acc, curr) => {
+          acc[curr.id] = [curr.invigilator?.id ?? null];
+          return acc;
+        },
+        {} as Record<string, (string | null)[]>,
+      ),
     );
   }
 
@@ -172,7 +180,7 @@ export class InvigilatorAssignRoomTableComponent implements OnInit {
           });
 
           this.usedInvigilatorsMap$.next(res);
-        })
+        }),
       )
       .subscribe();
   }

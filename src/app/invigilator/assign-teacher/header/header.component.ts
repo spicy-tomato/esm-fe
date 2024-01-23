@@ -3,13 +3,13 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
-  Output,
   inject,
+  Output,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ESMDomainEnumsExaminationStatus } from '@esm/api';
 import { StringifyHelper } from '@esm/cdk';
 import { ArrayPipe } from '@esm/core';
-import { ExaminationStatus } from '@esm/data';
 import { MinimumExaminationStatusDirective } from '@esm/shared/directives';
 import { LetModule } from '@ngrx/component';
 import {
@@ -54,7 +54,7 @@ export class InvigilatorAssignTeacherHeaderComponent {
   // PROPERTIES
   readonly stringify = StringifyHelper.idName;
   readonly hideAutoAssign = environment.production;
-  readonly ExaminationStatus = ExaminationStatus;
+  readonly ExaminationStatus = ESMDomainEnumsExaminationStatus;
   readonly headerObservables$ = this.store.headerObservables$;
 
   /**

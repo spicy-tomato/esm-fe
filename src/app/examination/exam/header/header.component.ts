@@ -3,14 +3,14 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  inject,
   OnInit,
   Output,
-  inject,
 } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { ESMDomainEnumsExaminationStatus } from '@esm/api';
 import { StringHelper } from '@esm/cdk';
 import { ExamMethodPipe } from '@esm/core';
-import { ExaminationStatus } from '@esm/data';
 import { MinimumExaminationStatusDirective } from '@esm/shared/directives';
 import { LetModule } from '@ngrx/component';
 import { TuiDayRange, TuiDestroyService } from '@taiga-ui/cdk';
@@ -65,10 +65,10 @@ export class ExaminationExamHeaderComponent implements OnInit {
   save = new EventEmitter<void>();
 
   // PUBLIC PROPERTIES
-  readonly ExaminationStatus = ExaminationStatus;
+  readonly ExaminationStatus = ESMDomainEnumsExaminationStatus;
   readonly shifts = [1, 2, 3, 4];
   readonly methods = Object.keys(StringHelper.EXAM_METHOD_MAPPING).map(
-    (k) => +k
+    (k) => +k,
   );
   readonly form = this.fb.group({
     methods: [[]],
@@ -87,7 +87,7 @@ export class ExaminationExamHeaderComponent implements OnInit {
           const filter = this.form.getRawValue();
           this.store.patchState({ filter });
         }),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }

@@ -1,7 +1,12 @@
 import { inject, Injectable } from '@angular/core';
 import { ObservableHelper, Status } from '@esm/cdk';
 import { ExaminationStatus, GetAllGroupsResponseResponseItem } from '@esm/data';
-import { ExaminationService } from '@esm/services';
+import {
+  AssignInvigilatorNumerateOfShiftToFacultyData,
+  ESMDomainEnumsExaminationStatus,
+  ExaminationService,
+  GetAllGroupsData,
+} from '@esm/api';
 import { AppApiAction, AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
@@ -15,7 +20,7 @@ import {
 } from 'rxjs';
 
 type InvigilatorAssignFacultyState = {
-  data: GetAllGroupsResponseResponseItem[];
+  data: GetAllGroupsData['data'];
   dataStatus: Status;
   calculateStatus: Status;
   finishStatus: Status;
@@ -64,7 +69,7 @@ export class InvigilatorAssignFacultyStore extends ComponentStore<InvigilatorAss
       ...faculties.map((f) => f.id),
       'total',
       'difference',
-    ])
+    ]),
   );
 
   readonly headerObservables$ = combineLatest([
@@ -87,8 +92,8 @@ export class InvigilatorAssignFacultyStore extends ComponentStore<InvigilatorAss
         calculateStatus,
         updateRows,
         examination,
-      })
-    )
+      }),
+    ),
   );
 
   readonly tableObservables$ = combineLatest([
@@ -102,7 +107,7 @@ export class InvigilatorAssignFacultyStore extends ComponentStore<InvigilatorAss
       faculties,
       updateRows,
       examination,
-    }))
+    })),
   );
 
   // EFFECTS
@@ -118,11 +123,11 @@ export class InvigilatorAssignFacultyStore extends ComponentStore<InvigilatorAss
                 data,
                 dataStatus: 'success',
               }),
-            () => this.patchState({ dataStatus: 'error' })
-          )
-        )
-      )
-    )
+            () => this.patchState({ dataStatus: 'error' }),
+          ),
+        ),
+      ),
+    ),
   );
 
   readonly calculate = this.effect<void>((params$) =>
@@ -130,17 +135,19 @@ export class InvigilatorAssignFacultyStore extends ComponentStore<InvigilatorAss
       tap(() => this.patchState({ calculateStatus: 'loading' })),
       withLatestFrom(this.examinationId$),
       switchMap(({ 1: id }) => {
-        return this.examinationService.calculate(id).pipe(
-          tapResponse(
-            () => {
-              this.patchState({ calculateStatus: 'success' });
-              this.getData();
-            },
-            () => this.patchState({ calculateStatus: 'error' })
-          )
-        );
-      })
-    )
+        return this.examinationService
+          .calculateInvigilatorNumerateOfShiftForEachFaculty(id)
+          .pipe(
+            tapResponse(
+              () => {
+                this.patchState({ calculateStatus: 'success' });
+                this.getData();
+              },
+              () => this.patchState({ calculateStatus: 'error' }),
+            ),
+          );
+      }),
+    ),
   );
 
   readonly finishAssign = this.effect<void>((params$) =>
@@ -150,7 +157,7 @@ export class InvigilatorAssignFacultyStore extends ComponentStore<InvigilatorAss
       switchMap(({ 1: id }) => {
         return this.examinationService
           .changeStatus(id, {
-            status: ExaminationStatus.AssignInvigilator,
+            status: ESMDomainEnumsExaminationStatus.AssignInvigilator,
             createdAt: new Date(),
           })
           .pipe(
@@ -158,15 +165,15 @@ export class InvigilatorAssignFacultyStore extends ComponentStore<InvigilatorAss
               () => {
                 this.patchState({ finishStatus: 'success' });
                 this.appStore.dispatch(
-                  AppApiAction.commitNumberOfInvigilatorForFacultySuccessful()
+                  AppApiAction.commitNumberOfInvigilatorForFacultySuccessful(),
                 );
                 this.getData();
               },
-              () => this.patchState({ finishStatus: 'error' })
-            )
+              () => this.patchState({ finishStatus: 'error' }),
+            ),
           );
-      })
-    )
+      }),
+    ),
   );
 
   readonly save = this.effect<{
@@ -176,7 +183,7 @@ export class InvigilatorAssignFacultyStore extends ComponentStore<InvigilatorAss
   }>((params$) =>
     params$.pipe(
       tap(({ rowId }) =>
-        this.patchState((s) => ({ updateRows: [...s.updateRows, rowId] }))
+        this.patchState((s) => ({ updateRows: [...s.updateRows, rowId] })),
       ),
       withLatestFrom(this.data$, this.examinationId$),
       switchMap(([{ rowId, facultyId, numberOfInvigilator }, data, id]) => {
@@ -185,7 +192,7 @@ export class InvigilatorAssignFacultyStore extends ComponentStore<InvigilatorAss
             id,
             data[rowId].id,
             facultyId,
-            numberOfInvigilator
+            numberOfInvigilator,
           )
           .pipe(
             tapResponse(
@@ -195,11 +202,11 @@ export class InvigilatorAssignFacultyStore extends ComponentStore<InvigilatorAss
                   updateRows: s.updateRows.filter((r) => r !== rowId),
                 }));
               },
-              () => {}
-            )
+              () => {},
+            ),
           );
-      })
-    )
+      }),
+    ),
   );
 
   // CONSTRUCTOR

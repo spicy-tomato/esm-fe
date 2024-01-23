@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { ObservableHelper, Status } from '@esm/cdk';
-import { ExaminationService } from '@esm/services';
+import { ExaminationService, ImportExaminationPayload } from '@esm/api';
 import { AppPageAction, AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
@@ -26,12 +26,12 @@ export class ExaminationDataImportStore extends ComponentStore<ExaminationDataIm
     .pipe(ObservableHelper.filterNullish(), takeUntil(this.destroy$));
 
   // EFFECTS
-  readonly import = this.effect<FormData>((params$) =>
+  readonly import = this.effect<ImportExaminationPayload>((params$) =>
     params$.pipe(
       tap(() => this.patchState({ status: 'loading' })),
       withLatestFrom(this.examinationId$),
-      switchMap(([formData, id]) =>
-        this.examinationService.import(id, formData).pipe(
+      switchMap(([payload, id]) =>
+        this.examinationService.importExamination(id, payload).pipe(
           tapResponse(
             ({ data: success }) => {
               if (!success) {
@@ -39,15 +39,15 @@ export class ExaminationDataImportStore extends ComponentStore<ExaminationDataIm
               }
               this.patchState({ status: 'success' });
             },
-            () => this.patchState({ status: 'error' })
-          )
-        )
-      )
-    )
+            () => this.patchState({ status: 'error' }),
+          ),
+        ),
+      ),
+    ),
   );
 
   readonly clearRejected = this.effect<void>((params$) =>
-    params$.pipe(tap(() => this.patchState({ status: 'idle' })))
+    params$.pipe(tap(() => this.patchState({ status: 'idle' }))),
   );
 
   // CONSTRUCTOR
@@ -71,7 +71,7 @@ export class ExaminationDataImportStore extends ComponentStore<ExaminationDataIm
         withLatestFrom(this.examinationId$),
         tap(({ 1: id }) => {
           this.appStore.dispatch(AppPageAction.getExaminationSummary({ id }));
-        })
+        }),
       )
       .subscribe();
   }

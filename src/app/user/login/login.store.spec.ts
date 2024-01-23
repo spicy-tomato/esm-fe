@@ -6,7 +6,7 @@ import {
   TESTING_COMMON_IMPORTS,
   TokenService,
 } from '@esm/cdk';
-import { UserService } from '@esm/services';
+import { UserService } from '@esm/api';
 import { MockStore } from '@ngrx/store/testing';
 import { cold } from 'jasmine-marbles';
 import { of } from 'rxjs';

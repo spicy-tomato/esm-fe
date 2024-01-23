@@ -2,24 +2,27 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  forwardRef,
+  inject,
   Injector,
   Input,
   ViewChild,
-  forwardRef,
-  inject,
 } from '@angular/core';
 import {
   ControlValueAccessor,
   DefaultValueAccessor,
   FormControl,
-  NG_VALUE_ACCESSOR,
   NgControl,
+  NG_VALUE_ACCESSOR,
   ReactiveFormsModule,
 } from '@angular/forms';
+import {
+  ESMDomainEnumsExaminationStatus,
+  GetAvailableInvigilatorsInShiftGroupData,
+} from '@esm/api';
+import { ObservableHelper } from '@esm/cdk';
 import { ObjectPipe } from '@esm/core';
 import {
-  ExaminationStatus,
-  GetAvailableInvigilatorsInShiftGroupResponseItem,
   GetAvailableInvigilatorsInShiftGroupTemporaryInvigilator,
   UserSummary,
 } from '@esm/data';
@@ -42,7 +45,6 @@ import {
   InvigilatorAssignRoomStore,
   ShiftUiModel,
 } from '../../assign-room.store';
-import { ObservableHelper } from '@esm/cdk';
 
 export const TAIGA_UI = [
   TuiDataListModule,
@@ -89,7 +91,7 @@ export class InvigilatorAssignRoomTableTeacherCellComponent
   invigilatorContent!: TuiStringHandler<TuiContextWithImplicit<string>>;
 
   @Input()
-  invigilatorsData!: GetAvailableInvigilatorsInShiftGroupResponseItem[string];
+  invigilatorsData!: GetAvailableInvigilatorsInShiftGroupData['data'][string];
 
   // VIEW CHILD
   @ViewChild(DefaultValueAccessor)
@@ -100,7 +102,7 @@ export class InvigilatorAssignRoomTableTeacherCellComponent
   readonly usedInvigilatorsMap$ = this.store.usedInvigilatorsMap$;
   readonly examinationIsClosed$ = this.store.examination$.pipe(
     ObservableHelper.filterNullish(),
-    map((e) => e.status === ExaminationStatus.Closed)
+    map((e) => e.status === ESMDomainEnumsExaminationStatus.Closed),
   );
 
   // GETTERS
@@ -129,7 +131,7 @@ export class InvigilatorAssignRoomTableTeacherCellComponent
   onInvigilatorChanges(
     currentShiftGroupId: string,
     currentShiftId: string,
-    newInvigilatorId: string
+    newInvigilatorId: string,
   ): void {
     const newValue = this.usedInvigilatorsMap$.value;
     newValue[currentShiftGroupId] ??= {};
@@ -153,15 +155,15 @@ export class InvigilatorAssignRoomTableTeacherCellComponent
   onAddNewInvigilator(
     invigilatorName: string,
     departmentId: string,
-    shiftGroupId: string
+    shiftGroupId: string,
   ): void {
     this.dialogService
       .open<UserSummary>(
         new PolymorpheusComponent(
           EditInvigilatorDialogComponent,
-          this.injector
+          this.injector,
         ),
-        { data: { invigilatorName, departmentId } }
+        { data: { invigilatorName, departmentId } },
       )
       .pipe(
         filter((x) => !!x),
@@ -170,8 +172,8 @@ export class InvigilatorAssignRoomTableTeacherCellComponent
             shiftGroupId,
             departmentId,
             userId: id,
-          })
-        )
+          }),
+        ),
       )
       .subscribe();
   }
@@ -179,11 +181,11 @@ export class InvigilatorAssignRoomTableTeacherCellComponent
   onAddOtherInvigilator(shiftGroupId: string): void {
     this.dialogService
       .open<UserSummary>(
-        new PolymorpheusComponent(SelectTeacherDialogComponent, this.injector)
+        new PolymorpheusComponent(SelectTeacherDialogComponent, this.injector),
       )
       .pipe(
         filter((x) => !!x),
-        tap(({ id }) => this.store.save({ [shiftGroupId]: id }))
+        tap(({ id }) => this.store.save({ [shiftGroupId]: id })),
       )
       .subscribe();
   }

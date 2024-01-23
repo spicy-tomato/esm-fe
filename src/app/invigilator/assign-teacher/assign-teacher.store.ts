@@ -1,5 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 import {
+  ESMApplicationExaminationsQueriesGetGroupsByFacultyIdGetGroupsByFacultyIdDto,
+  ESMDomainDtosUserUserSummary,
+  ExaminationService,
+  FacultyService,
+} from '@esm/api';
+import {
   EsmHttpErrorResponse,
   ObservableHelper,
   State,
@@ -8,11 +14,9 @@ import {
 import {
   DepartmentSummary,
   FacultySummary,
-  GetGroupByFacultyIdResponseItem,
   UpdateTeacherAssignmentRequest,
   UserSummary,
 } from '@esm/data';
-import { ExaminationService, FacultyService } from '@esm/services';
 import { AppSelector, AppState } from '@esm/store';
 import {
   ComponentStore,
@@ -33,17 +37,17 @@ import {
 
 type UserInfoMap = Record<
   string,
-  null | { phoneNumber: string | null; department: DepartmentSummary | null }
+  null | { phoneNumber?: string | null; department: DepartmentSummary | null }
 >;
 
 type InvigilatorAssignTeacherState = State<
-  GetGroupByFacultyIdResponseItem[],
+  ESMApplicationExaminationsQueriesGetGroupsByFacultyIdGetGroupsByFacultyIdDto[],
   'data',
   EsmHttpErrorResponse['error']
 > & {
   faculty: FacultySummary | null;
   //
-  invigilatorsData: UserSummary[];
+  invigilatorsData: ESMDomainDtosUserUserSummary[];
   invigilatorsDataStatus: Status;
   //
   invigilatorInfoMap: UserInfoMap;
@@ -75,7 +79,7 @@ export class InvigilatorAssignTeacherStore
   private readonly disableSaveBtn$ = this.select((s) => s.disableSaveBtn);
   private readonly invigilatorsData$ = this.select((s) => s.invigilatorsData);
   private readonly invigilatorInfoMap$ = this.select(
-    (s) => s.invigilatorInfoMap
+    (s) => s.invigilatorInfoMap,
   );
 
   // GLOBAL SELECTORS
@@ -89,7 +93,7 @@ export class InvigilatorAssignTeacherStore
 
   private readonly user$ = this.appStore.pipe(
     AppSelector.notNullUser,
-    takeUntil(this.destroy$)
+    takeUntil(this.destroy$),
   );
 
   // CUSTOM SELECTORS
@@ -100,9 +104,9 @@ export class InvigilatorAssignTeacherStore
     this.faculty$,
   ]).pipe(
     map(([departments, currentFaculty]) =>
-      departments.filter((d) => d.faculty?.id === currentFaculty?.id)
+      departments.filter((d) => d.faculty?.id === currentFaculty?.id),
     ),
-    takeUntil(this.destroy$)
+    takeUntil(this.destroy$),
   );
 
   private readonly showLoader$ = combineLatest([
@@ -133,8 +137,8 @@ export class InvigilatorAssignTeacherStore
         roles,
         disableSaveBtn,
         updateStatus,
-      })
-    )
+      }),
+    ),
   );
 
   readonly tableObservables$ = combineLatest([
@@ -150,7 +154,7 @@ export class InvigilatorAssignTeacherStore
       invigilatorsData,
       invigilatorInfoMap,
       roles,
-    }))
+    })),
   );
 
   // PRIVATE PROPERTIES
@@ -164,8 +168,8 @@ export class InvigilatorAssignTeacherStore
         this.examinationId$,
         this.faculty$.pipe(
           ObservableHelper.filterNullish(),
-          map((f) => f.id)
-        )
+          map((f) => f.id),
+        ),
       ),
       switchMap(({ 1: id, 2: facultyId }) =>
         this.examinationService.getGroupsByFacultyId(id, facultyId).pipe(
@@ -177,11 +181,11 @@ export class InvigilatorAssignTeacherStore
               }),
             (e: EsmHttpErrorResponse) => {
               this.patchState({ dataStatus: 'error', dataError: e.error });
-            }
-          )
-        )
-      )
-    )
+            },
+          ),
+        ),
+      ),
+    ),
   );
 
   readonly getInvigilatorsData = this.effect<void>((params$) =>
@@ -190,11 +194,11 @@ export class InvigilatorAssignTeacherStore
       withLatestFrom(
         this.faculty$.pipe(
           ObservableHelper.filterNullish(),
-          map((f) => f.id)
-        )
+          map((f) => f.id),
+        ),
       ),
       switchMap(({ 1: facultyId }) =>
-        this.facultyService.getUsers(facultyId).pipe(
+        this.facultyService.getUser(facultyId).pipe(
           tapResponse(
             ({ data: invigilatorsData }) =>
               this.patchState({
@@ -206,14 +210,14 @@ export class InvigilatorAssignTeacherStore
                     acc[curr.id] = { phoneNumber, department };
                     return acc;
                   },
-                  {}
+                  {},
                 ),
               }),
-            () => this.patchState({ invigilatorsDataStatus: 'error' })
-          )
-        )
-      )
-    )
+            () => this.patchState({ invigilatorsDataStatus: 'error' }),
+          ),
+        ),
+      ),
+    ),
   );
 
   /**
@@ -226,8 +230,8 @@ export class InvigilatorAssignTeacherStore
         this.patchState({ faculty: faculties.find((f) => f.id === id) });
         this.getData();
         this.getInvigilatorsData();
-      })
-    )
+      }),
+    ),
   );
 
   readonly autoAssign = this.effect<void>((params$) =>
@@ -237,23 +241,21 @@ export class InvigilatorAssignTeacherStore
         this.examinationId$,
         this.faculty$.pipe(
           ObservableHelper.filterNullish(),
-          map((f) => f.id)
-        )
+          map((f) => f.id),
+        ),
       ),
       switchMap(([_, id, facultyId]) =>
-        this.examinationService
-          .autoAssignTeacherToShiftGroups(id, facultyId)
-          .pipe(
-            tapResponse(
-              () => {
-                this.patchState({ autoAssignStatus: 'success' });
-                this.getData();
-              },
-              () => this.patchState({ autoAssignStatus: 'error' })
-            )
-          )
-      )
-    )
+        this.examinationService.autoAssignTeachersToGroups(id, facultyId).pipe(
+          tapResponse(
+            () => {
+              this.patchState({ autoAssignStatus: 'success' });
+              this.getData();
+            },
+            () => this.patchState({ autoAssignStatus: 'error' }),
+          ),
+        ),
+      ),
+    ),
   );
 
   readonly save = this.effect<UpdateTeacherAssignmentRequest>((params$) =>
@@ -263,8 +265,8 @@ export class InvigilatorAssignTeacherStore
         this.examinationId$,
         this.faculty$.pipe(
           ObservableHelper.filterNullish(),
-          map((f) => f.id)
-        )
+          map((f) => f.id),
+        ),
       ),
       switchMap(([params, id, facultyId]) =>
         this.examinationService
@@ -275,11 +277,11 @@ export class InvigilatorAssignTeacherStore
                 this.patchState({ updateStatus: 'success' });
                 this.getData();
               },
-              () => this.patchState({ updateStatus: 'error' })
-            )
-          )
-      )
-    )
+              () => this.patchState({ updateStatus: 'error' }),
+            ),
+          ),
+      ),
+    ),
   );
 
   // CONSTRUCTOR
@@ -315,7 +317,7 @@ export class InvigilatorAssignTeacherStore
             });
           }
         }),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }
@@ -329,7 +331,7 @@ export class InvigilatorAssignTeacherStore
         map(([_, faculties]) => faculties[0]),
         ObservableHelper.filterNullish(),
         tap((faculty) => this.patchState({ faculty })),
-        take(1)
+        take(1),
       )
       .subscribe();
   }

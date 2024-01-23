@@ -1,21 +1,37 @@
 require('dotenv').config();
-const { generateApi } = require('swagger-typescript-api');
+
 const path = require('path');
+const { generateApi } = require('swagger-typescript-api');
 const generateOperationId = require('./generateOperationId');
+const customTranslator = require('./custom-translator').CustomTranslator;
 
 generateApi({
   input: path.resolve(__dirname, './swagger.yaml'),
-  output: path.resolve(__dirname, '../src/shared/api/__generated__'),
+  output: path.resolve(__dirname, '../src/app/shared/api/__generated__'),
   httpClientType: 'axios',
-  cleanOutput: true,
+  customTranslator: customTranslator,
+  prettier: {
+    proseWrap: 'always',
+    singleQuote: true,
+    printWidth: 80,
+  },
   modular: true,
   extractRequestBody: true,
   extractRequestParams: true,
   extractResponseBody: true,
   extractResponseError: true,
   generateResponses: true,
+  cleanOutput: true,
   templates: path.resolve(__dirname, './templates'),
   sortTypes: true,
+  extractingOptions: {
+    requestParamsSuffix: ['Query'],
+  },
+  primitiveTypeConstructs: (struct) => ({
+    string: {
+      'date-time': 'Date',
+    },
+  }),
   hooks: {
     onFormatRouteName: (routeInfo, templateRouteName) => {
       if (!routeInfo.operationId) {

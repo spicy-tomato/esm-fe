@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Status, TokenService } from '@esm/cdk';
 import { LoginRequest } from '@esm/data';
-import { AuthService } from '@esm/services';
+import { AuthService } from '@esm/api';
 import { AppPageAction, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';

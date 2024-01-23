@@ -51,10 +51,7 @@ export class ExaminationDataImportComponent implements OnInit {
   }
 
   importFile(file: File): void {
-    const formData = new FormData();
-    formData.append('createdAt', new Date().toISOString());
-    formData.append('file', file);
-    this.store.import(formData);
+    this.store.import({ File: file });
   }
 
   // PRIVATE METHODS
@@ -62,7 +59,7 @@ export class ExaminationDataImportComponent implements OnInit {
     this.status$
       .pipe(
         filter((s) => s === 'success'),
-        tap(() => this.store.reloadExamination())
+        tap(() => this.store.reloadExamination()),
       )
       .subscribe();
   }

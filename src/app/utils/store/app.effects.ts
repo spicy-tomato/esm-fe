@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { TokenService } from '@esm/cdk';
-import { AuthService, ExaminationService, FacultyService } from '@esm/services';
+import { AuthService, ExaminationService, FacultyService } from '@esm/api';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store } from '@ngrx/store';
@@ -35,9 +35,9 @@ export class AppEffects {
         }
         return this.authService.getMySummaryInfo().pipe(
           map(({ data }) => AppApiAction.getUserInfoSuccessful({ user: data })),
-          catchError(() => of(AppApiAction.getUserInfoFailed()))
+          catchError(() => of(AppApiAction.getUserInfoFailed())),
         );
-      })
+      }),
     );
   });
 
@@ -48,25 +48,25 @@ export class AppEffects {
         tap(() => {
           this.tokenService.clear();
           this.router.navigate(['/login']).catch(() => null);
-        })
+        }),
       );
     },
-    { dispatch: false }
+    { dispatch: false },
   );
 
   readonly getRelatedExaminations$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(AppPageAction.getRelatedExaminations),
       mergeMap(() => {
-        return this.examinationService.getRelated(true).pipe(
+        return this.examinationService.getRelated({ IsActive: true }).pipe(
           map(({ data: relatedExaminations }) =>
             AppApiAction.getRelatedExaminationsSuccessful({
               relatedExaminations,
-            })
+            }),
           ),
-          catchError(() => of(AppApiAction.getRelatedExaminationsFailed()))
+          catchError(() => of(AppApiAction.getRelatedExaminationsFailed())),
         );
-      })
+      }),
     );
   });
 
@@ -74,13 +74,13 @@ export class AppEffects {
     return this.actions$.pipe(
       ofType(AppPageAction.getDepartments),
       mergeMap(() => {
-        return this.facultyService.getAll().pipe(
+        return this.facultyService.getAllFaculty().pipe(
           map(({ data: departments }) =>
-            AppApiAction.getDepartmentsSuccessful({ departments })
+            AppApiAction.getDepartmentsSuccessful({ departments }),
           ),
-          catchError(() => of(AppApiAction.getDepartmentsFailed()))
+          catchError(() => of(AppApiAction.getDepartmentsFailed())),
         );
-      })
+      }),
     );
   });
 
@@ -105,10 +105,10 @@ export class AppEffects {
           }
 
           return of(null);
-        })
+        }),
       );
     },
-    { dispatch: false }
+    { dispatch: false },
   );
 
   readonly changeExaminationId$ = createEffect(() => {
@@ -117,11 +117,11 @@ export class AppEffects {
       mergeMap(({ id }) => {
         if (id === null) {
           return of(
-            AppApiAction.getExaminationSuccessful({ examination: null })
+            AppApiAction.getExaminationSuccessful({ examination: null }),
           );
         }
         return of(AppPageAction.getExaminationSummary({ id }));
-      })
+      }),
     );
   });
 
@@ -131,11 +131,11 @@ export class AppEffects {
       mergeMap(({ id }) => {
         return this.examinationService.getSummary(id).pipe(
           map(({ data: examination }) =>
-            AppApiAction.getExaminationSuccessful({ examination })
+            AppApiAction.getExaminationSuccessful({ examination }),
           ),
-          catchError(() => of(AppApiAction.getExaminationFailed()))
+          catchError(() => of(AppApiAction.getExaminationFailed())),
         );
-      })
+      }),
     );
   });
 }

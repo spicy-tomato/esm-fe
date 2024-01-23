@@ -12,6 +12,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { GetAllFacultyData } from '@esm/api';
 import { ObservableHelper } from '@esm/cdk';
 import { FacultyWithDepartments, UserSummary } from '@esm/data';
 import { LetModule } from '@ngrx/component';
@@ -94,7 +95,7 @@ export class EditInvigilatorDialogComponent implements OnInit {
   private readonly alertService = inject(TuiAlertService);
   private readonly store = inject(EditInvigilatorDialogStore);
   private readonly context = inject(POLYMORPHEUS_CONTEXT) as TuiDialogContext<
-    UserSummary,
+    string,
     UserSummary | UserTemplate | undefined
   >;
 
@@ -134,7 +135,7 @@ export class EditInvigilatorDialogComponent implements OnInit {
     const contextData = this.context.data!;
     if (!('id' in contextData)) {
       throw Error(
-        'EditInvigilatorDialogComponent is edit dialog, but contextData.id is undefined'
+        'EditInvigilatorDialogComponent is edit dialog, but contextData.id is undefined',
       );
     }
 
@@ -143,18 +144,21 @@ export class EditInvigilatorDialogComponent implements OnInit {
 
   @tuiPure
   departmentStringify(
-    items: FacultyWithDepartments[]
+    items: GetAllFacultyData['data'],
   ): TuiStringHandler<TuiContextWithImplicit<string>> {
     const map = new Map(
-      items.reduce((acc, curr) => {
-        acc = [
-          ...acc,
-          ...curr.departments.map(
-            ({ id, name }) => [id, name] as [string, string]
-          ),
-        ];
-        return acc;
-      }, [] as [string, string][])
+      items.reduce(
+        (acc, curr) => {
+          acc = [
+            ...acc,
+            ...curr.departments.map(
+              ({ id, name }) => [id, name] as [string, string],
+            ),
+          ];
+          return acc;
+        },
+        [] as [string, string][],
+      ),
     );
 
     return ({ $implicit }: TuiContextWithImplicit<string>) =>
@@ -166,7 +170,7 @@ export class EditInvigilatorDialogComponent implements OnInit {
     this.status$
       .pipe(
         filter((s) => s === 'error'),
-        tap(() => this.form.enable())
+        tap(() => this.form.enable()),
       )
       .subscribe();
   }
@@ -183,7 +187,7 @@ export class EditInvigilatorDialogComponent implements OnInit {
 
             this.form.get(e.property)?.setErrors({ duplicated: e.message });
           });
-        })
+        }),
       )
       .subscribe();
   }
@@ -200,7 +204,7 @@ export class EditInvigilatorDialogComponent implements OnInit {
             .open(message, { status: TuiNotification.Success })
             .subscribe();
           this.context.completeWith(data);
-        })
+        }),
       )
       .subscribe();
   }

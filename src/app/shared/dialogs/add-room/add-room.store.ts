@@ -1,7 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { Status } from '@esm/cdk';
 import { CreateRoomRequest } from '@esm/data';
-import { RoomService } from '@esm/services';
+import {
+  ESMApplicationRoomsCommandsCreateCreateCommand,
+  RoomService,
+} from '@esm/api';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { switchMap, tap } from 'rxjs';
 
@@ -31,28 +34,30 @@ export class AddRoomDialogStore extends ComponentStore<AddRoomDialogState> {
           status: new Array(roomsCount).fill('idle'),
           error: new Array(roomsCount).fill(null),
         });
-      })
-    )
+      }),
+    ),
   );
 
-  readonly create = this.effect<{ rowId: number; params: CreateRoomRequest }>(
-    (params$) =>
-      params$.pipe(
-        tap(({ rowId }) =>
-          this.patchState((state) => ({
-            status: state.status.map((v, i) => (i === rowId ? 'loading' : v)),
-            error: state.error.map((v, i) => (i === rowId ? null : v)),
-          }))
+  readonly create = this.effect<{
+    rowId: number;
+    params: ESMApplicationRoomsCommandsCreateCreateCommand;
+  }>((params$) =>
+    params$.pipe(
+      tap(({ rowId }) =>
+        this.patchState((state) => ({
+          status: state.status.map((v, i) => (i === rowId ? 'loading' : v)),
+          error: state.error.map((v, i) => (i === rowId ? null : v)),
+        })),
+      ),
+      switchMap(({ rowId, params }) =>
+        this.roomService.createRoom(params).pipe(
+          tapResponse(
+            () => this.onAddSuccess(rowId),
+            (error) => this.onAddFail(rowId, error as string),
+          ),
         ),
-        switchMap(({ rowId, params }) =>
-          this.roomService.create(params).pipe(
-            tapResponse(
-              () => this.onAddSuccess(rowId),
-              (error) => this.onAddFail(rowId, error as string)
-            )
-          )
-        )
-      )
+      ),
+    ),
   );
 
   readonly remove = this.effect<number>((params$) =>
@@ -61,9 +66,9 @@ export class AddRoomDialogStore extends ComponentStore<AddRoomDialogState> {
         this.patchState((state) => ({
           status: state.status.filter((_, i) => i !== index),
           error: state.error.filter((_, i) => i !== index),
-        }))
-      )
-    )
+        })),
+      ),
+    ),
   );
 
   // CONSTRUCTOR

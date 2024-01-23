@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { ESMDomainEnumsExaminationStatus } from '@esm/api';
 import { ExaminationStatus, ExaminationSummary } from '@esm/data';
 import { MinimumExaminationStatusDirective } from '@esm/shared/directives';
 import { LetModule } from '@ngrx/component';
@@ -26,12 +27,13 @@ export const TAIGA_UI = [TuiLinkModule, TuiLoaderModule];
 })
 export class SafeExaminationDataComponent {
   // INPUTS
-  @Input() minimumStatus: ExaminationStatus = ExaminationStatus.Closed;
+  @Input() minimumStatus: ESMDomainEnumsExaminationStatus =
+    ESMDomainEnumsExaminationStatus.Closed;
   @Input() getDataFunc: Function = () => null;
   @Input() showLoader: Observable<boolean> | boolean = false;
 
   // PUBLIC PROPERTIES
-  readonly ExaminationStatus = ExaminationStatus;
+  readonly ExaminationStatus = ESMDomainEnumsExaminationStatus;
   readonly context!: {
     $implicit: ExaminationStatus | null;
     status: ExaminationStatus;

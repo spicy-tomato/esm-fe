@@ -21,7 +21,7 @@ export class AuthInterceptor implements HttpInterceptor {
   // IMPLEMENTATIONS
   intercept(
     req: HttpRequest<unknown>,
-    next: HttpHandler
+    next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
     const token = this.tokenService.get() ?? '';
     const headers = req.headers.set('Authorization', `Bearer ${token}`);
@@ -36,7 +36,7 @@ export class AuthInterceptor implements HttpInterceptor {
             this.handleUnauthorized(error);
           }
         },
-      })
+      }),
     );
   }
 

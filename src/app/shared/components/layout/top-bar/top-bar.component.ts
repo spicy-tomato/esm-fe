@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { ESMDomainDtosExaminationExaminationSummary } from '@esm/api';
 import { fadeInOut } from '@esm/core';
 import { ExaminationSummary, GetRelatedResponseItem } from '@esm/data';
 import { LetModule } from '@ngrx/component';
@@ -83,7 +84,7 @@ export class TopBarComponent implements OnInit {
   @Input() isInCreatePage!: boolean;
 
   // PUBLIC PROPERTIES
-  selectedExamination: ExaminationSummary | null = null;
+  selectedExamination: ESMDomainDtosExaminationExaminationSummary | null = null;
   searchExaminationValue = '';
   searchValue = '';
   openExaminationDropdown = false;
@@ -123,7 +124,7 @@ export class TopBarComponent implements OnInit {
         tap(({ 1: examination }) => {
           this.selectedExamination = examination;
           this.cdr.markForCheck();
-        })
+        }),
       )
       .subscribe();
   }

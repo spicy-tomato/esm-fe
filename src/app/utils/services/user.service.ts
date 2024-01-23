@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { GetUserData } from '@esm/api';
 import { Result } from '@esm/cdk';
 import { APP_ENV } from '@esm/core';
 import { SearchParams, UpdateUserRequest, UserSummary } from '@esm/data';
@@ -18,9 +19,9 @@ export class UserService {
 
   // [GET] /user
   getAllInvigilators(
-    search: 'isInvigilator' | 'isFaculty'
-  ): Observable<Result<UserSummary[]>> {
-    return this.http.get<Result<UserSummary[]>>(this.url, {
+    search: 'isInvigilator' | 'isFaculty',
+  ): Observable<GetUserData> {
+    return this.http.get<GetUserData>(this.url, {
       params: { [search]: true },
     });
   }
@@ -35,7 +36,7 @@ export class UserService {
   // [PUT] /user/{userId}
   update(
     userId: string,
-    request: UpdateUserRequest
+    request: UpdateUserRequest,
   ): Observable<Result<UserSummary>> {
     return this.http.put<Result<UserSummary>>(this.url + userId, request);
   }

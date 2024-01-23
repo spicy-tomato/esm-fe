@@ -5,7 +5,13 @@ import {
   ExaminationGetShiftResponseItem,
   GetAvailableInvigilatorsInShiftGroupResponseItem,
 } from '@esm/data';
-import { ExaminationService } from '@esm/services';
+import {
+  AssignInvigilatorsToShiftsPayload,
+  ESMApplicationExaminationsQueriesGetAllShiftsDetailsShiftDetailsDto,
+  ESMApplicationExaminationsQueriesGetAvailableInvigilatorsInGroupsGetAvailableInvigilatorsInGroupsItemResponseItem,
+  ExaminationService,
+  GetAvailableInvigilatorsInShiftGroupData,
+} from '@esm/api';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
@@ -20,10 +26,10 @@ import {
 } from 'rxjs';
 
 export type ShiftUiModel = Omit<
-  ExaminationGetShiftResponseItem,
+  ESMApplicationExaminationsQueriesGetAllShiftsDetailsShiftDetailsDto,
   'invigilatorShift' | 'id'
 > &
-  ExaminationGetShiftResponseItem['invigilatorShift'][number];
+  ESMApplicationExaminationsQueriesGetAllShiftsDetailsShiftDetailsDto['invigilatorShift'][number];
 
 export type InvigilatorItem =
   | {
@@ -35,9 +41,9 @@ export type InvigilatorItem =
 type InvigilatorMapType = Record<
   string,
   {
-    facultyName: string | null;
-    departmentName: string | null;
-    phoneNumber: string | null;
+    facultyName?: string | null;
+    departmentName?: string | null;
+    phoneNumber?: string | null;
   } | null
 >;
 
@@ -45,7 +51,7 @@ type InvigilatorAssignRoomState = {
   data: ShiftUiModel[];
   dataStatus: Status;
   //
-  invigilatorsData: GetAvailableInvigilatorsInShiftGroupResponseItem;
+  invigilatorsData: GetAvailableInvigilatorsInShiftGroupData['data'];
   invigilatorsDataStatus: Status;
   //
   invigilatorMap: InvigilatorMapType;
@@ -68,7 +74,7 @@ export class InvigilatorAssignRoomStore extends ComponentStore<InvigilatorAssign
   private readonly invigilatorsData$ = this.select((s) => s.invigilatorsData);
   private readonly autoAssignStatus$ = this.select((s) => s.autoAssignStatus);
   private readonly invigilatorFacultyMap$ = this.select(
-    (s) => s.invigilatorMap
+    (s) => s.invigilatorMap,
   );
 
   // GLOBAL SELECTORS
@@ -88,7 +94,8 @@ export class InvigilatorAssignRoomStore extends ComponentStore<InvigilatorAssign
 
   private readonly invigilatorsList$ = this.invigilatorsData$.pipe(
     map((data) => {
-      const res: InvigilatorItem[] = [];
+      const res: ESMApplicationExaminationsQueriesGetAvailableInvigilatorsInGroupsGetAvailableInvigilatorsInGroupsItemResponseItem[] =
+        [];
 
       Object.values(data).forEach((invigilators) => {
         invigilators.forEach((i) => {
@@ -97,7 +104,7 @@ export class InvigilatorAssignRoomStore extends ComponentStore<InvigilatorAssign
       });
 
       return res;
-    })
+    }),
   );
 
   readonly usedInvigilatorsMap$ = new BehaviorSubject<
@@ -111,7 +118,7 @@ export class InvigilatorAssignRoomStore extends ComponentStore<InvigilatorAssign
     map(([showLoader, examination]) => ({
       showLoader,
       examination,
-    }))
+    })),
   );
 
   readonly tableObservables$ = combineLatest([
@@ -127,7 +134,7 @@ export class InvigilatorAssignRoomStore extends ComponentStore<InvigilatorAssign
       invigilatorsList: arr[2],
       invigilatorFacultyMap: arr[3],
       usedInvigilatorsMap: arr[4],
-    }))
+    })),
   );
 
   // EFFECTS
@@ -149,11 +156,11 @@ export class InvigilatorAssignRoomStore extends ComponentStore<InvigilatorAssign
                 dataStatus: 'success',
               });
             },
-            () => this.patchState({ dataStatus: 'error' })
-          )
-        )
-      )
-    )
+            () => this.patchState({ dataStatus: 'error' }),
+          ),
+        ),
+      ),
+    ),
   );
 
   readonly getInvigilatorsData = this.effect<void>((params$) =>
@@ -182,14 +189,14 @@ export class InvigilatorAssignRoomStore extends ComponentStore<InvigilatorAssign
                     });
                     return acc;
                   },
-                  {}
+                  {},
                 ),
               }),
-            () => this.patchState({ invigilatorsDataStatus: 'error' })
-          )
-        )
-      )
-    )
+            () => this.patchState({ invigilatorsDataStatus: 'error' }),
+          ),
+        ),
+      ),
+    ),
   );
 
   readonly autoAssign = this.effect<void>((params$) =>
@@ -197,20 +204,20 @@ export class InvigilatorAssignRoomStore extends ComponentStore<InvigilatorAssign
       tap(() => this.patchState({ autoAssignStatus: 'loading' })),
       withLatestFrom(this.examinationId$),
       switchMap(({ 1: id }) =>
-        this.examinationService.autoAssignTeacherToShifts(id).pipe(
+        this.examinationService.autoAssignTeachersToShift(id).pipe(
           tapResponse(
             () => {
               this.patchState({ autoAssignStatus: 'success' });
               this.getData();
             },
-            () => this.patchState({ autoAssignStatus: 'error' })
-          )
-        )
-      )
-    )
+            () => this.patchState({ autoAssignStatus: 'error' }),
+          ),
+        ),
+      ),
+    ),
   );
 
-  readonly save = this.effect<AssignInvigilatorsToShiftsRequest>((params$) =>
+  readonly save = this.effect<AssignInvigilatorsToShiftsPayload>((params$) =>
     params$.pipe(
       tap(() => this.patchState({ updateStatus: 'loading' })),
       withLatestFrom(this.examinationId$),
@@ -221,11 +228,11 @@ export class InvigilatorAssignRoomStore extends ComponentStore<InvigilatorAssign
               this.patchState({ updateStatus: 'success' });
               this.getData();
             },
-            () => this.patchState({ updateStatus: 'error' })
-          )
-        )
-      )
-    )
+            () => this.patchState({ updateStatus: 'error' }),
+          ),
+        ),
+      ),
+    ),
   );
 
   readonly updateTeacherAssignment = this.effect<{
@@ -238,7 +245,12 @@ export class InvigilatorAssignRoomStore extends ComponentStore<InvigilatorAssign
       withLatestFrom(this.examinationId$),
       switchMap(([{ departmentId, shiftGroupId, userId }, id]) =>
         this.examinationService
-          .updateTemporaryTeacher(id, shiftGroupId, departmentId, userId)
+          .updateTemporaryTeacherToUserIdInDepartmentShiftGroup(
+            id,
+            shiftGroupId,
+            departmentId,
+            userId,
+          )
           .pipe(
             tapResponse(
               () => {
@@ -246,11 +258,11 @@ export class InvigilatorAssignRoomStore extends ComponentStore<InvigilatorAssign
                 this.getData();
                 this.getInvigilatorsData();
               },
-              () => this.patchState({ updateStatus: 'error' })
-            )
-          )
-      )
-    )
+              () => this.patchState({ updateStatus: 'error' }),
+            ),
+          ),
+      ),
+    ),
   );
 
   // CONSTRUCTOR
