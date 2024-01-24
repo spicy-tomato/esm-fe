@@ -44,7 +44,7 @@ export const TAIGA_UI = [
 ];
 
 @Component({
-  selector: 'dialog-add-module',
+  selector: 'esm-dialog-add-module',
   templateUrl: './add-module.component.html',
   styleUrls: ['./add-module.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,

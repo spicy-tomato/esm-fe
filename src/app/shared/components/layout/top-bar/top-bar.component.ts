@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ESMDomainDtosExaminationExaminationSummary } from '@esm/api';
 import { fadeInOut } from '@esm/core';
-import { ExaminationSummary, GetRelatedResponseItem } from '@esm/data';
+import { GetRelatedResponseItem } from '@esm/data';
 import { LetModule } from '@ngrx/component';
 import {
   TuiActiveZoneModule,
