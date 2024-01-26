@@ -16,7 +16,7 @@ export class EchoService {
     {} as {
       event: MessageEvent;
       content: EchoMessage;
-    }
+    },
   );
 
   // PRIVATE PROPERTIES
@@ -25,7 +25,7 @@ export class EchoService {
   // CONSTRUCTOR
   constructor(
     @Inject(APP_ENV) env: AppEnv,
-    private readonly appStore: Store<AppState>
+    private readonly appStore: Store<AppState>,
   ) {
     // this.echo = new Echo({
     //   broadcaster: 'pusher',

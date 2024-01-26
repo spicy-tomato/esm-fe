@@ -78,7 +78,7 @@ export class ObjectHelper {
    * // returns false
    */
   static removeUndefinedField<T>(obj: T): Required<T> {
-    let result: Record<string, any> = {};
+    const result: Record<string, unknown> = {};
 
     for (const key in obj) {
       if (obj[key] !== undefined) {

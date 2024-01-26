@@ -9,7 +9,7 @@ export class ResultBuilder {
     };
   }
 
-  static error(): Result<any> {
+  static error(): Result<boolean> {
     return {
       data: false,
       success: false,

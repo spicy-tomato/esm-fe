@@ -4,6 +4,9 @@ type Operator = 'in';
 type OperatorParam = {
   in: string;
 };
+type OperatorResult = {
+  in: boolean;
+};
 
 @Pipe({
   name: 'object',
@@ -14,14 +17,14 @@ export class ObjectPipe implements PipeTransform {
     value: T,
     operator: 'in',
     param: string,
-    _: V
+    _: V,
   ): value is V;
 
-  transform<T extends Record<string, any>, O extends Operator>(
+  transform<T extends Record<string, unknown>, O extends Operator>(
     value: T,
     operator: O,
-    param: OperatorParam[O]
-  ): any {
+    param: OperatorParam[O],
+  ): OperatorResult[O] {
     if (operator === 'in') {
       return (param as OperatorParam['in']) in value;
     }

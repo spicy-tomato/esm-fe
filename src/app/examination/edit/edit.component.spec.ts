@@ -34,7 +34,7 @@ describe('ExaminationEditComponent', () => {
         name: 'Mock name',
         expectedDateRange: new TuiDayRange(
           new TuiDay(2023, 0, 1),
-          new TuiDay(2023, 1, 1)
+          new TuiDay(2023, 1, 1),
         ),
       });
 

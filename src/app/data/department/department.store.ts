@@ -33,7 +33,7 @@ export class DataDepartmentStore extends ComponentStore<DataDepartmentState> {
     this.faculties$,
     this.selectedFacultyId$,
   ]).pipe(
-    map(([faculties, id]) => faculties.find((f) => f.id === id)?.name ?? '')
+    map(([faculties, id]) => faculties.find((f) => f.id === id)?.name ?? ''),
   );
 
   readonly headerObservables$ = combineLatest([
@@ -45,7 +45,7 @@ export class DataDepartmentStore extends ComponentStore<DataDepartmentState> {
       selectedFacultyName,
       selectedFacultyId,
       faculties,
-    }))
+    })),
   );
 
   readonly tableObservables$ = combineLatest([
@@ -55,12 +55,12 @@ export class DataDepartmentStore extends ComponentStore<DataDepartmentState> {
     map(([departments, selectedFacultyId]) => ({
       departments,
       selectedFacultyId,
-    }))
+    })),
   );
 
   // EFFECTS
   readonly changeSelectedFaculty = this.effect<string>((params$) =>
-    params$.pipe(tap((id) => this.patchState({ selectedFacultyId: id })))
+    params$.pipe(tap((id) => this.patchState({ selectedFacultyId: id }))),
   );
 
   // CONSTRUCTOR

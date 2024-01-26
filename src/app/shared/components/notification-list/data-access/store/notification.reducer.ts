@@ -120,5 +120,5 @@ export const notificationReducer = createReducer(
       ...state.unread,
       data: [notification, ...state.unread.data],
     },
-  }))
+  })),
 );

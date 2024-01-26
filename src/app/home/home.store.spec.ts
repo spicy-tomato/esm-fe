@@ -11,7 +11,7 @@ describe('HomeStore', () => {
   beforeEach(async () => {
     mockExaminationService = jasmine.createSpyObj<ExaminationService>(
       'ExaminationService',
-      ['getRelated']
+      ['getRelated'],
     );
 
     await TestBed.configureTestingModule({

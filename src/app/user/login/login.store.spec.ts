@@ -73,8 +73,8 @@ describe('LoginStore', () => {
           ResultBuilder.success({
             token: 'token response',
             expiration: new Date(),
-          })
-        )
+          }),
+        ),
       );
 
       store.login({ userName: '', password: '' });

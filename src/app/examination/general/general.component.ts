@@ -37,7 +37,7 @@ const TAIGA_UI = [
 @Component({
   templateUrl: './general.component.html',
   standalone: true,
-  imports: [CommonModule,  LetModule, ...TAIGA_UI],
+  imports: [CommonModule, LetModule, ...TAIGA_UI],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     // tuiButtonOptionsProvider({ size: 'm' }),
@@ -76,8 +76,7 @@ export class ExaminationGeneralComponent implements OnInit {
   readonly statistic$ = this.store.data$;
 
   // CONSTRUCTOR
-  constructor() {
-  }
+  constructor() {}
 
   // LIFECYCLE
   ngOnInit(): void {

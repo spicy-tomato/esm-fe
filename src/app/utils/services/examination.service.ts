@@ -38,7 +38,7 @@ export class ExaminationService {
 
   // [POST] /examination
   create(
-    request: CreateExaminationRequest
+    request: CreateExaminationRequest,
   ): Observable<Result<ExaminationSummary>> {
     return this.http.post<Result<ExaminationSummary>>(this.url, request);
   }
@@ -49,14 +49,14 @@ export class ExaminationService {
       this.url + 'related',
       {
         params: isActive !== undefined ? { isActive } : {},
-      }
+      },
     );
   }
 
   // [GET] /examination/{examinationId}
   getData(id: string): Observable<Result<ExaminationGetDataResponseItem[]>> {
     return this.http.get<Result<ExaminationGetDataResponseItem[]>>(
-      this.url + id
+      this.url + id,
     );
   }
 
@@ -68,7 +68,7 @@ export class ExaminationService {
   // [PATCH] /examination/{examinationId}
   update(
     id: string,
-    request: UpdateExaminationRequest
+    request: UpdateExaminationRequest,
   ): Observable<Result<ExaminationSummary>> {
     return this.http.patch<Result<ExaminationSummary>>(this.url + id, request);
   }
@@ -80,10 +80,10 @@ export class ExaminationService {
 
   // [GET] /examination/{examinationId}/handover
   getHandoverData(
-    id: string
+    id: string,
   ): Observable<Result<GetHandoverDataResponseItem[]>> {
     return this.http.get<Result<GetHandoverDataResponseItem[]>>(
-      this.url + `${id}/handover`
+      this.url + `${id}/handover`,
     );
   }
 
@@ -91,25 +91,25 @@ export class ExaminationService {
   updateShift(
     id: string,
     shiftId: string,
-    request: UpdateShiftRequest
+    request: UpdateShiftRequest,
   ): Observable<Result<boolean>> {
     return this.http.patch<Result<boolean>>(
       this.url + `${id}/shift/${shiftId}`,
-      request
+      request,
     );
   }
 
   // [GET] /examination/{examinationId}/shift
   getShifts(id: string): Observable<Result<ExaminationGetShiftResponseItem[]>> {
     return this.http.get<Result<ExaminationGetShiftResponseItem[]>>(
-      this.url + `${id}/shift`
+      this.url + `${id}/shift`,
     );
   }
 
   // [PATCH] /examination/{examinationId}/shift
   assignInvigilatorsToShifts(
     id: string,
-    params: AssignInvigilatorsToShiftsRequest
+    params: AssignInvigilatorsToShiftsRequest,
   ): Observable<Result<true>> {
     return this.http.patch<Result<true>>(this.url + `${id}/shift`, params);
   }
@@ -122,7 +122,7 @@ export class ExaminationService {
   // [POST] /examination/{examinationId}/status
   changeStatus(
     id: string,
-    request: ChangeExaminationStatusRequest
+    request: ChangeExaminationStatusRequest,
   ): Observable<Result<boolean>> {
     return this.http.post<Result<boolean>>(this.url + `${id}/status`, request);
   }
@@ -130,23 +130,23 @@ export class ExaminationService {
   // [PATCH] /examination/{examinationId}/exams-number
   updateExamsNumber(
     id: string,
-    params: Record<string, number>
+    params: Record<string, number>,
   ): Observable<Result<boolean>> {
     return this.http.patch<Result<boolean>>(
       this.url + `${id}/exams-number`,
-      params
+      params,
     );
   }
 
   // [GET] /examination/{examinationId}/faculty/{facultyId}/group
   getGroupsByFacultyId(
     id: string,
-    facultyId: string
+    facultyId: string,
   ): Observable<Result<GetGroupByFacultyIdResponseItem[]>> {
     return this.http
-      .get<Result<GetGroupByFacultyIdResponseItem[]>>(
-        this.url + `${id}/faculty/${facultyId}/group`
-      )
+      .get<
+        Result<GetGroupByFacultyIdResponseItem[]>
+      >(this.url + `${id}/faculty/${facultyId}/group`)
       .pipe(
         map((x) =>
           ResultBuilder.success(
@@ -156,10 +156,10 @@ export class ExaminationService {
                     ...d,
                     user: Object.assign(new UserSummary(), d.user),
                   }
-                : d
-            )
-          )
-        )
+                : d,
+            ),
+          ),
+        ),
       );
   }
 
@@ -167,31 +167,31 @@ export class ExaminationService {
   updateTeacherAssignment(
     id: string,
     facultyId: string,
-    params: UpdateTeacherAssignmentRequest
+    params: UpdateTeacherAssignmentRequest,
   ): Observable<Result<true>> {
     return this.http.post<Result<true>>(
       this.url + `${id}/faculty/${facultyId}/group`,
-      params
+      params,
     );
   }
 
   // [POST] /examination/{examinationId}/faculty/{facultyId}/group/calculate
   autoAssignTeacherToShiftGroups(
     id: string,
-    facultyId: string
+    facultyId: string,
   ): Observable<Result<true>> {
     return this.http.post<Result<true>>(
       this.url + `${id}/faculty/${facultyId}/group/calculate`,
-      {}
+      {},
     );
   }
 
   // [GET] /examination/{examinationId}/group
   getAllGroups(
-    id: string
+    id: string,
   ): Observable<Result<GetAllGroupsResponseResponseItem[]>> {
     return this.http.get<Result<GetAllGroupsResponseResponseItem[]>>(
-      this.url + id + '/group'
+      this.url + id + '/group',
     );
   }
 
@@ -199,7 +199,7 @@ export class ExaminationService {
   calculate(id: string): Observable<Result<boolean>> {
     return this.http.post<Result<boolean>>(
       this.url + id + '/group/calculate',
-      {}
+      {},
     );
   }
 
@@ -208,13 +208,13 @@ export class ExaminationService {
     examinationId: string,
     groupId: string,
     departmentId: string,
-    userId: string
+    userId: string,
   ): Observable<Result<AssignInvigilatorNumerateOfShiftToFacultyResponse>> {
     return this.http.post<
       Result<AssignInvigilatorNumerateOfShiftToFacultyResponse>
     >(
       `${this.url}${examinationId}/group/${groupId}/department/${departmentId}`,
-      { userId }
+      { userId },
     );
   }
 
@@ -223,19 +223,19 @@ export class ExaminationService {
     examinationId: string,
     groupId: string,
     facultyId: string,
-    numberOfInvigilator: number
+    numberOfInvigilator: number,
   ): Observable<Result<AssignInvigilatorNumerateOfShiftToFacultyResponse>> {
     return this.http.post<
       Result<AssignInvigilatorNumerateOfShiftToFacultyResponse>
     >(
       `${this.url}${examinationId}/group/${groupId}/${facultyId}`,
-      numberOfInvigilator
+      numberOfInvigilator,
     );
   }
 
   // [POST] /examination/{examinationId}/invigilator
   getAvailableInvigilatorsInShiftGroup(
-    examinationId: string
+    examinationId: string,
   ): Observable<Result<GetAvailableInvigilatorsInShiftGroupResponseItem>> {
     return this.http.get<
       Result<GetAvailableInvigilatorsInShiftGroupResponseItem>
@@ -245,21 +245,21 @@ export class ExaminationService {
   // [GET] /examination/{examinationId}/statistic
   getStatistic(id: string): Observable<Result<ExaminationStatistic>> {
     return this.http.get<Result<ExaminationStatistic>>(
-      this.url + `${id}/statistic`
+      this.url + `${id}/statistic`,
     );
   }
 
   // [GET] /examination/{examinationId}/summary
   getSummary(id: string): Observable<Result<ExaminationSummary>> {
     return this.http.get<Result<ExaminationSummary>>(
-      this.url + `${id}/summary`
+      this.url + `${id}/summary`,
     );
   }
 
   // [GET] /examination/{examinationId}/temporary
   getTemporaryData(id: string): Observable<Result<TemporaryExamination[]>> {
     return this.http.get<Result<TemporaryExamination[]>>(
-      this.url + id + '/temporary'
+      this.url + id + '/temporary',
     );
   }
 }

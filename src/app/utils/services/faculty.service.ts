@@ -36,7 +36,7 @@ export class FacultyService {
   // [PUT] /faculty/{facultyId}
   update(
     facultyId: string,
-    request: EditFacultyRequest
+    request: EditFacultyRequest,
   ): Observable<Result<FacultySummary>> {
     return this.http.put<Result<FacultySummary>>(this.url + facultyId, request);
   }
@@ -44,11 +44,11 @@ export class FacultyService {
   // [POST] /faculty/{facultyId}/module
   createModule(
     facultyId: string,
-    request: CreateModuleRequest
+    request: CreateModuleRequest,
   ): Observable<Result<ModuleSimple>> {
     return this.http.post<Result<ModuleSimple>>(
       this.url + facultyId + '/module',
-      request
+      request,
     );
   }
 
@@ -59,9 +59,9 @@ export class FacultyService {
       .pipe(
         map((x) =>
           ResultBuilder.success(
-            x.data.map((d) => Object.assign(new UserSummary(), d))
-          )
-        )
+            x.data.map((d) => Object.assign(new UserSummary(), d)),
+          ),
+        ),
       );
   }
 }

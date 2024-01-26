@@ -85,17 +85,17 @@ export class DataDepartmentComponent implements OnInit {
     this.dialogService
       .open<boolean>(
         new PolymorpheusComponent(EditDepartmentDialogComponent, this.injector),
-        { data }
+        { data },
       )
       .pipe(
         filter((x) => x),
-        tap(() => this.store.load())
+        tap(() => this.store.load()),
       )
       .subscribe();
   }
 
   readonly departmentMatcher = (
     item: DepartmentSummary,
-    facultyId: string
+    facultyId: string,
   ): boolean => !facultyId || item.faculty?.id === facultyId;
 }

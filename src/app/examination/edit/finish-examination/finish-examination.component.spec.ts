@@ -14,7 +14,7 @@ describe('ExaminationEditFinishExaminationComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(
-      ExaminationEditFinishExaminationComponent
+      ExaminationEditFinishExaminationComponent,
     );
     component = fixture.componentInstance;
     fixture.detectChanges();

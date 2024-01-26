@@ -6,7 +6,7 @@ describe('ObservableHelper', () => {
   describe('filterNullish', () => {
     it('should ignore falsy values', () => {
       const obs$ = from([null, undefined, 0, 1]).pipe(
-        ObservableHelper.filterNullish()
+        ObservableHelper.filterNullish(),
       );
 
       const expected = hot('(ab|)', { a: 0, b: 1 });

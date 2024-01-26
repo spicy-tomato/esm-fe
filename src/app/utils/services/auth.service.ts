@@ -41,7 +41,7 @@ export class AuthService {
     return this.http.patch<Result<void>>(
       this.url + 'reset-password',
       {},
-      { params: { userId } }
+      { params: { userId } },
     );
   }
 }

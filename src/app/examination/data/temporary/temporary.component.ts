@@ -51,6 +51,16 @@ export const TAIGA_UI = [
   TuiTableModule,
 ];
 
+type FormType = {
+  data: FormArray<
+    FormGroup<{
+      [K in keyof ESMDomainEntitiesExaminationData]: FormControl<
+        ESMDomainEntitiesExaminationData[K]
+      >;
+    }>
+  >;
+};
+
 @Component({
   selector: 'esm-examination-data-temporary',
   templateUrl: './temporary.component.html',
@@ -96,15 +106,7 @@ export class ExaminationDataTemporaryComponent implements OnInit {
   ];
   readonly headerObservables$ = this.store.headerObservables$;
 
-  form!: FormGroup<{
-    data: FormArray<
-      FormGroup<{
-        [K in keyof ESMDomainEntitiesExaminationData]: FormControl<
-          ESMDomainEntitiesExaminationData[K]
-        >;
-      }>
-    >;
-  }>;
+  form!: FormGroup<FormType>;
   disableReload = true;
 
   // PRIVATE PROPERTIES
@@ -130,7 +132,6 @@ export class ExaminationDataTemporaryComponent implements OnInit {
   }
 
   onAddModule(rowId: number, moduleIdDropdownHost: TuiDropdownDirective): void {
-    const x = this.form.value.data?.[rowId];
     this.dialogService
       .open<boolean>(
         new PolymorpheusComponent(AddModuleDialogComponent, this.injector),
@@ -174,7 +175,7 @@ export class ExaminationDataTemporaryComponent implements OnInit {
   }
 
   private buildForm(data: ESMDomainEntitiesExaminationData[]): void {
-    this.form = this.fb.group({
+    this.form = this.fb.group<FormType>({
       data: this.fb.array(
         data.map((row) =>
           this.fb.group(
@@ -183,12 +184,12 @@ export class ExaminationDataTemporaryComponent implements OnInit {
                 acc[key] = [value];
                 return acc;
               },
-              {} as Record<string, any[]>,
+              {} as Record<string, unknown[]>,
             ),
           ),
         ),
       ),
-    }) as any;
+    } as any);
   }
 
   private markLoadable(): void {

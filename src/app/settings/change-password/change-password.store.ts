@@ -22,7 +22,7 @@ export class SettingsChangePasswordStore extends ComponentStore<SettingsChangePa
   readonly status$ = this.select((s) => s.status);
   readonly userTitle$ = this.appStore.pipe(
     AppSelector.userTitle(),
-    takeUntil(this.destroy$)
+    takeUntil(this.destroy$),
   );
 
   // EFFECTS
@@ -41,11 +41,11 @@ export class SettingsChangePasswordStore extends ComponentStore<SettingsChangePa
               this.patchState({
                 status: 'error',
                 error: error as string,
-              })
-          )
-        )
-      )
-    )
+              }),
+          ),
+        ),
+      ),
+    ),
   );
 
   // CONSTRUCTOR

@@ -38,18 +38,18 @@ export class LoginStore extends ComponentStore<LoginState> {
                 this.patchState({
                   status: 'error',
                   error: error as string,
-                })
+                }),
               );
             },
             (error) =>
               this.patchState({
                 status: 'error',
                 error: error as string,
-              })
-          )
-        )
-      )
-    )
+              }),
+          ),
+        ),
+      ),
+    ),
   );
 
   // CONSTRUCTOR

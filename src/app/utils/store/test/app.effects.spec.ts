@@ -100,7 +100,7 @@ describe('AppEffects', () => {
             errors: null,
             success: true,
           },
-        })
+        }),
       );
 
       actions$ = of({ type: '[App/Page] Get user info' });
@@ -126,7 +126,7 @@ describe('AppEffects', () => {
   describe('logOut$', () => {
     it('should call tokenService.clear() and outer.navigate()', () => {
       const navigateSpy = spyOn(router, 'navigate').and.returnValue(
-        new Promise(() => true)
+        new Promise(() => true),
       );
       actions$ = of({ type: '[App/Page] Log out' });
       effects.logOut$.subscribe();

@@ -83,7 +83,7 @@ describe('ExaminationDataImportComponent', () => {
 
     it('[Success] Reload examination', fakeAsync(() => {
       const spy = spyOn(component['store'], 'reloadExamination');
-      for (let status of ['idle', 'loading', 'error'] as const) {
+      for (const status of ['idle', 'loading', 'error'] as const) {
         component['store'].patchState({ status });
         component.status$.subscribe(() => {
           expect(spy).not.toHaveBeenCalled();

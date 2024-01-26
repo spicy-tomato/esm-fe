@@ -20,7 +20,7 @@ export class NotificationEffects {
   // PRIVATE PROPERTIES
   private readonly uuidAccount$ = this.appStore.pipe(
     AppSelector.notNullUser,
-    map(({ id }) => id)
+    map(({ id }) => id),
   );
 
   // EFFECTS
@@ -32,10 +32,10 @@ export class NotificationEffects {
           NotificationPageAction.actions.forEach((action) => {
             this.store.dispatch(action());
           });
-        })
+        }),
       );
     },
-    { dispatch: false }
+    { dispatch: false },
   );
 
   // getAll$ = createEffect(() => {
@@ -92,11 +92,11 @@ export class NotificationEffects {
         ofType(NotificationPageAction.markAllAsRead),
         withLatestFrom(this.uuidAccount$),
         mergeMap(({ 1: uuidAccount }) =>
-          this.notificationService.markAllAsRead(uuidAccount)
-        )
+          this.notificationService.markAllAsRead(uuidAccount),
+        ),
       );
     },
-    { dispatch: false }
+    { dispatch: false },
   );
 
   markAsRead$ = createEffect(
@@ -105,17 +105,17 @@ export class NotificationEffects {
         ofType(NotificationPageAction.markAsRead),
         withLatestFrom(this.uuidAccount$),
         mergeMap(({ 0: { id }, 1: uuidAccount }) =>
-          this.notificationService.markAsRead(uuidAccount, id)
-        )
+          this.notificationService.markAsRead(uuidAccount, id),
+        ),
       );
     },
-    { dispatch: false }
+    { dispatch: false },
   );
 
   resetAfterLogout$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(AppPageAction.logOut),
-      map(() => NotificationPageAction.reset())
+      map(() => NotificationPageAction.reset()),
     );
   });
 
@@ -130,7 +130,7 @@ export class NotificationEffects {
     this.uuidAccount$
       .pipe(
         filter((x) => !!x),
-        tap(() => this.store.dispatch(NotificationPageAction.getInitialData()))
+        tap(() => this.store.dispatch(NotificationPageAction.getInitialData())),
       )
       .subscribe();
   }
@@ -141,10 +141,10 @@ export class NotificationEffects {
         tap(({ content }) => {
           if (content) {
             this.store.dispatch(
-              NotificationApiAction.add({ notification: content })
+              NotificationApiAction.add({ notification: content }),
             );
           }
-        })
+        }),
       )
       .subscribe();
   }

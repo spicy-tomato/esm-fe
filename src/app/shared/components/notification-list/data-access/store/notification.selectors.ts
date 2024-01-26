@@ -8,24 +8,24 @@ export class NotificationSelector {
 
   static readonly all = createSelector(
     this.notificationSelector,
-    (state) => state.all
+    (state) => state.all,
   );
 
   static readonly unread = createSelector(
     this.notificationSelector,
-    (state) => state.unread
+    (state) => state.unread,
   );
 
   static readonly selectHasUnread = createSelector(
     this.notificationSelector,
-    (state) => !!state.unread.data.length
+    (state) => !!state.unread.data.length,
   );
 
   static readonly data = createSelector(this.notificationSelector, (state) =>
-    [state.all, state.unread].map((x) => x.data)
+    [state.all, state.unread].map((x) => x.data),
   );
 
   static readonly hasNext = createSelector(this.notificationSelector, (state) =>
-    [state.all, state.unread].map((x) => x.hasNext)
+    [state.all, state.unread].map((x) => x.hasNext),
   );
 }

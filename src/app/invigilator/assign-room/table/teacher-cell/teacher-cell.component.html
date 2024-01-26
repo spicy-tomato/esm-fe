@@ -56,8 +56,10 @@
                 <button
                   tuiOption
                   *ngIf="
-                  !usedInvigilatorsMap[row.shiftGroup.id]?.[$any(invigilator).id]
-                "
+                    !usedInvigilatorsMap[row.shiftGroup.id]?.[
+                      $any(invigilator).id
+                    ]
+                  "
                   [value]="$any(invigilator).id"
                 >
                   {{ $any(invigilator).fullName }}

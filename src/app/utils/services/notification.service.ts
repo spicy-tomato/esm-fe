@@ -18,28 +18,28 @@ export class NotificationService {
 
   getAll(
     idAccount: string,
-    params: GetNotificationParams
+    params: GetNotificationParams,
   ): Observable<NotificationPage> {
     return this.http.get<NotificationPage>(
       this.url + `v1/accounts/${idAccount}/notifications`,
-      { params }
+      { params },
     );
   }
 
   getUnread(
     idAccount: string,
-    params: GetNotificationParams
+    params: GetNotificationParams,
   ): Observable<NotificationPage> {
     return this.http.get<NotificationPage>(
       this.url + `v1/accounts/${idAccount}/notifications/unread`,
-      { params }
+      { params },
     );
   }
 
   markAllAsRead(idAccount: string): Observable<void> {
     return this.http.put<void>(
       this.url + `v1/accounts/${idAccount}/notifications/mark-as-read`,
-      {}
+      {},
     );
   }
 
@@ -47,7 +47,7 @@ export class NotificationService {
     return this.http.patch<void>(
       this.url +
         `v1/accounts/${idAccount}/notifications/${idNotification}/mark-as-read`,
-      {}
+      {},
     );
   }
 }

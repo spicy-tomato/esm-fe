@@ -19,7 +19,7 @@ describe('ExaminationEditStore', () => {
   beforeEach(async () => {
     mockExaminationService = jasmine.createSpyObj<ExaminationService>(
       'ExaminationService',
-      ['create']
+      ['create'],
     );
 
     await TestBed.configureTestingModule({
@@ -90,8 +90,8 @@ describe('ExaminationEditStore', () => {
               isMale: true,
               phoneNumber: '',
             },
-          })
-        )
+          }),
+        ),
       );
 
       store.create(params);

@@ -53,10 +53,10 @@ export class DataResetPasswordComponent implements OnInit {
         {
           data: accountId,
           dismissible: false,
-        }
+        },
       )
       .pipe(
-        filter((x) => x)
+        filter((x) => x),
         // tap(() => this.store.load())
       )
       .subscribe();

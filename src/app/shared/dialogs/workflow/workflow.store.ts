@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import { takeUntil } from 'rxjs';
 
 @Injectable()
-export class WorkflowDialogStore extends ComponentStore<{}> {
+export class WorkflowDialogStore extends ComponentStore<Record<string, never>> {
   // INJECT PROPERTIES
   private readonly appStore = inject(Store<AppState>);
 

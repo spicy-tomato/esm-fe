@@ -17,10 +17,10 @@ describe('StringifyHelper', () => {
         },
       ];
       expect(StringifyHelper.idName(faculties)({ $implicit: '1' })).toEqual(
-        'mock-name-1'
+        'mock-name-1',
       );
       expect(StringifyHelper.idName(faculties)({ $implicit: '2' })).toEqual(
-        'mock-name-2'
+        'mock-name-2',
       );
     });
   });

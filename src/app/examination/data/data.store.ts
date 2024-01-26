@@ -5,10 +5,10 @@ import { ComponentStore } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
 import { takeUntil } from 'rxjs';
 
-type ExaminationDataState = {};
-
 @Injectable()
-export class ExaminationDataStore extends ComponentStore<ExaminationDataState> {
+export class ExaminationDataStore extends ComponentStore<
+  Record<string, never>
+> {
   // INJECT PROPERTIES
   private readonly appStore = inject(Store<AppState>);
 

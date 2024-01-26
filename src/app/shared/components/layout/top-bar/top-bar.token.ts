@@ -13,7 +13,7 @@ export const TOP_BAR_OPTIONS = new InjectionToken('top-bar', {
 });
 
 export const topBarOptionsProvider: (
-  options: Partial<TopBarOptions>
+  options: Partial<TopBarOptions>,
 ) => ValueProvider = (options: Partial<TopBarOptions>) => ({
   provide: TOP_BAR_OPTIONS,
   useValue: { ...TOP_BAR_DEFAULT_OPTIONS, ...options },

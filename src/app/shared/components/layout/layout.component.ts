@@ -70,7 +70,7 @@ export class LayoutComponent {
           e = e as NavigationEnd;
           this.isInCommonPage$.next(this.isCommonPage(e.url));
           this.isInCreatePage$.next(e.url === '/create');
-        })
+        }),
       )
       .subscribe();
   }

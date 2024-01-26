@@ -6,7 +6,7 @@ export function sameControlValueValidator<T>(
   options?: {
     comp?: (a: T, b: T) => boolean;
     error?: unknown;
-  }
+  },
 ): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const errorValue = { sameValue: options?.error ?? true };

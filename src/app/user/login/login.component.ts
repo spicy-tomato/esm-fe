@@ -82,7 +82,7 @@ export class LoginComponent implements OnInit {
           if (status === 'error') {
             this.form.setErrors({ validator: 'Username or password is wrong' });
           }
-        })
+        }),
       )
       .subscribe();
   }

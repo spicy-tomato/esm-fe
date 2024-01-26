@@ -45,7 +45,7 @@ export class ConfirmDialogComponent implements OnInit {
     this.confirmStatus$
       ?.pipe(
         filter((s, i) => i !== 0 && s === 'success'),
-        tap(() => this.context.completeWith(true))
+        tap(() => this.context.completeWith(true)),
       )
       .subscribe();
   }

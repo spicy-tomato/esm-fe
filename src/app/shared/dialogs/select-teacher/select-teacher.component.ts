@@ -69,7 +69,7 @@ export const TAIGA_UI = [
 export class SelectTeacherDialogComponent implements OnInit {
   // INJECT PROPERTIES
   private readonly context = inject(
-    POLYMORPHEUS_CONTEXT
+    POLYMORPHEUS_CONTEXT,
   ) as TuiDialogContext<UserSummary>;
   private readonly store = inject(SelectTeacherDialogStore);
   private readonly destroy$ = inject(TuiDestroyService);
@@ -79,7 +79,7 @@ export class SelectTeacherDialogComponent implements OnInit {
   private readonly data$ = this.store.data$;
   private readonly status$ = this.store.status$;
   readonly componentState$ = combineLatest([this.data$, this.status$]).pipe(
-    map((arr) => ({ data: arr[0], status: arr[1] }))
+    map((arr) => ({ data: arr[0], status: arr[1] })),
   );
   teacher: UserSummary | null = null;
   search: string | null = null;
@@ -91,7 +91,7 @@ export class SelectTeacherDialogComponent implements OnInit {
         tap(() => {
           if (this.search) this.store.search(this.search);
         }),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }

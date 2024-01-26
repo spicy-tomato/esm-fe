@@ -21,7 +21,7 @@ export const permissionGuard: CanActivateFn = (route) => {
         return true;
       }
 
-      if (acceptRoles.find(r => roles.includes(r as any))) {
+      if (acceptRoles.find((r) => roles.includes(r))) {
         return true;
       }
 
@@ -29,6 +29,6 @@ export const permissionGuard: CanActivateFn = (route) => {
       router.navigate([redirect ?? '/403']).catch(() => null);
 
       return false;
-    })
+    }),
   );
 };

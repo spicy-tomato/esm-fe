@@ -28,7 +28,7 @@ describe('InvigilatorAssignTeacherComponent', () => {
     it('should handle update status changes', () => {
       const updateStatusChangesSpy = spyOn<any>(
         component,
-        'handleUpdateStatusChanges'
+        'handleUpdateStatusChanges',
       );
       component.ngOnInit();
       expect(updateStatusChangesSpy).toHaveBeenCalled();

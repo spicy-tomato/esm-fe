@@ -72,7 +72,7 @@ export class ResetPasswordDialogComponent implements OnInit {
             })
             .subscribe();
           this.context.completeWith(true);
-        })
+        }),
       )
       .subscribe();
   }
@@ -85,8 +85,8 @@ export class ResetPasswordDialogComponent implements OnInit {
           this.alertService.open('Đã có lỗi xảy ra, vui lòng thử lại sau!', {
             label: 'Lỗi',
             status: TuiNotification.Error,
-          })
-        )
+          }),
+        ),
       )
       .subscribe();
   }

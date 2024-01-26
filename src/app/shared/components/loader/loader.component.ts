@@ -26,7 +26,7 @@ export class LoaderComponent {
     .select(AppSelector.showLoader)
     .pipe(
       concatMap((x) =>
-        of(x).pipe(delayWhen((x) => (x ? of(null) : interval(500))))
-      )
+        of(x).pipe(delayWhen((x) => (x ? of(null) : interval(500)))),
+      ),
     );
 }

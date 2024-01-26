@@ -1,7 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { FacultyService, GetUserData } from '@esm/api';
 import { Status } from '@esm/cdk';
-import { UserSummary } from '@esm/data';
 import { UserService } from '@esm/services';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';

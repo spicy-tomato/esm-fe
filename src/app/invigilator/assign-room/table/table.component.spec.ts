@@ -1,7 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { APP_STORE_PROVIDER, TESTING_COMMON_IMPORTS } from '@esm/cdk';
 import { InvigilatorAssignRoomStore } from '../assign-room.store';
-import { InvigilatorAssignRoomTableComponent, TAIGA_UI } from './table.component';
+import {
+  InvigilatorAssignRoomTableComponent,
+  TAIGA_UI,
+} from './table.component';
 
 describe('InvigilatorAssignRoomTableComponent', () => {
   let component: InvigilatorAssignRoomTableComponent;

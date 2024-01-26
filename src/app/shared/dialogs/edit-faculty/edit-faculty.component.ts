@@ -10,7 +10,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ObservableHelper } from '@esm/cdk';
+import { LoggerService, ObservableHelper } from '@esm/cdk';
+import { loggerProvider } from '@esm/core';
 import { FacultySummary } from '@esm/data';
 import { LetModule } from '@ngrx/component';
 import {
@@ -37,17 +38,21 @@ export const TAIGA_UI = [
   TuiTextfieldControllerModule,
 ];
 
+const selector = 'esm-edit-faculty';
+
 @Component({
+  selector,
   templateUrl: './edit-faculty.component.html',
   styleUrls: ['./edit-faculty.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, ...NGRX, ...TAIGA_UI],
-  providers: [EditFacultyDialogStore],
+  providers: [EditFacultyDialogStore, loggerProvider({ tag: selector })],
 })
 export class EditFacultyDialogComponent implements OnInit {
   // INJECT PROPERTIES
   private readonly fb = inject(NonNullableFormBuilder);
+  private readonly loggerService = inject(LoggerService);
   private readonly store = inject(EditFacultyDialogStore);
   private readonly alertService = inject(TuiAlertService);
   private readonly context = inject(POLYMORPHEUS_CONTEXT) as TuiDialogContext<
@@ -74,11 +79,17 @@ export class EditFacultyDialogComponent implements OnInit {
   onFinish(): void {
     this.form.markAllAsTouched();
     const formValue = this.form.getRawValue();
+
     if (this.isEditDialog) {
-      this.store.update({ id: this.context.data!.id, request: formValue });
-    } else {
-      this.store.create(formValue);
+      const data = this.loggerService.errorNotNullOrEmpty({
+        value: this.context.data,
+        valueType: 'Data',
+      });
+
+      this.store.update({ id: data.id, request: formValue });
     }
+
+    this.store.create(formValue);
   }
 
   // PRIVATE METHODS
@@ -96,7 +107,7 @@ export class EditFacultyDialogComponent implements OnInit {
             })
             .subscribe();
           this.context.completeWith(true);
-        })
+        }),
       )
       .subscribe();
   }
@@ -113,7 +124,7 @@ export class EditFacultyDialogComponent implements OnInit {
 
             this.form.get(e.property)?.setErrors({ duplicated: e.message });
           });
-        })
+        }),
       )
       .subscribe();
   }

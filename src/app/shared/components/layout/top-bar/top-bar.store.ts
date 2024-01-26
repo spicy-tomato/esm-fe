@@ -23,7 +23,7 @@ export class TopBarStore extends ComponentStore<{}> {
   private readonly roles$ = this.appStore.select(AppSelector.roles);
 
   private readonly userTitle$ = this.appStore.pipe(
-    AppSelector.userTitle(false)
+    AppSelector.userTitle(false),
   );
 
   private readonly relatedStatus$ = this.appStore
@@ -36,7 +36,7 @@ export class TopBarStore extends ComponentStore<{}> {
 
   // CUSTOM SELECTORS
   private readonly isInvigilator$ = this.roles$.pipe(
-    map((r) => r.includes('ExaminationDepartmentHead'))
+    map((r) => r.includes('ExaminationDepartmentHead')),
   );
 
   readonly navObservables$ = combineLatest([
@@ -62,8 +62,8 @@ export class TopBarStore extends ComponentStore<{}> {
         isInvigilator,
         relatedStatus,
         relatedExaminations,
-      })
-    )
+      }),
+    ),
   );
 
   // CONSTRUCTOR

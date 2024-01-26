@@ -14,7 +14,7 @@ import {
 } from '@angular/forms';
 import { GetAllFacultyData } from '@esm/api';
 import { ObservableHelper } from '@esm/cdk';
-import { FacultyWithDepartments, UserSummary } from '@esm/data';
+import { UserSummary } from '@esm/data';
 import { LetModule } from '@ngrx/component';
 import {
   TuiContextWithImplicit,

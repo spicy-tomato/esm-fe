@@ -124,17 +124,17 @@ export class SettingsChangePasswordComponent implements OnInit {
     this.newPassword.addValidators(
       sameControlValueValidator(this.password, {
         error: new TuiValidationError(
-          'Mật khẩu mới không được trùng mật khẩu cũ!'
+          'Mật khẩu mới không được trùng mật khẩu cũ!',
         ),
-      })
+      }),
     );
 
     this.confirmPassword.addValidators(
       differentControlValueValidator(this.newPassword, {
         error: new TuiValidationError(
-          'Xác nhận mật khẩu không khớp với mật khẩu mới!'
+          'Xác nhận mật khẩu không khớp với mật khẩu mới!',
         ),
-      })
+      }),
     );
   }
 
@@ -152,13 +152,13 @@ export class SettingsChangePasswordComponent implements OnInit {
           if (status === 'error') {
             this.password.setErrors(
               new TuiValidationError(
-                'Mật khẩu không chính xác, vui lòng thử lại!'
-              )
+                'Mật khẩu không chính xác, vui lòng thử lại!',
+              ),
             );
           }
 
           return of({});
-        })
+        }),
       )
       .subscribe();
   }

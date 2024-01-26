@@ -17,7 +17,7 @@ describe('InvigilatorAssignRoomTableTeacherCellComponent', () => {
     component.valueAccessor = new DefaultValueAccessor(
       {} as Renderer2,
       {} as ElementRef,
-      true
+      true,
     );
   };
 
@@ -37,7 +37,7 @@ describe('InvigilatorAssignRoomTableTeacherCellComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(
-      InvigilatorAssignRoomTableTeacherCellComponent
+      InvigilatorAssignRoomTableTeacherCellComponent,
     );
 
     component = fixture.componentInstance;
@@ -134,7 +134,7 @@ describe('InvigilatorAssignRoomTableTeacherCellComponent', () => {
       component.onInvigilatorChanges(
         'shift-group-1',
         'shift-1',
-        'invigilator-id-13'
+        'invigilator-id-13',
       );
 
       expect(spy).toHaveBeenCalledWith(expectedParam);
@@ -151,13 +151,13 @@ describe('InvigilatorAssignRoomTableTeacherCellComponent', () => {
       const storeSpy = spyOn(component['store'], 'updateTeacherAssignment');
       const dialogSpy = spyOn(
         component['dialogService'],
-        'open'
+        'open',
       ).and.returnValue(of({ id: userId }));
 
       component.onAddNewInvigilator(
         invigilatorName,
         departmentId,
-        shiftGroupId
+        shiftGroupId,
       );
 
       expect(dialogSpy).toHaveBeenCalled();
@@ -186,7 +186,7 @@ describe('InvigilatorAssignRoomTableTeacherCellComponent', () => {
       const storeSpy = spyOn(component['store'], 'save');
       const dialogSpy = spyOn(
         component['dialogService'],
-        'open'
+        'open',
       ).and.returnValue(of({ id: userId }));
 
       component.onAddOtherInvigilator(shiftGroupId);

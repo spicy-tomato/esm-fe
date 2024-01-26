@@ -23,7 +23,7 @@ export class DepartmentService {
 
   // [POST] /department
   create(
-    request: EditDepartmentRequest
+    request: EditDepartmentRequest,
   ): Observable<Result<DepartmentSummary>> {
     return this.http.post<Result<DepartmentSummary>>(this.url, request);
   }
@@ -31,22 +31,22 @@ export class DepartmentService {
   // [PUT] /department/{departmentId}
   update(
     departmentId: string,
-    request: EditDepartmentRequest
+    request: EditDepartmentRequest,
   ): Observable<Result<DepartmentSummary>> {
     return this.http.put<Result<DepartmentSummary>>(
       this.url + departmentId,
-      request
+      request,
     );
   }
 
   // [POST] /department/{departmentId}/user
   createUser(
     departmentId: string,
-    request: CreateUserRequest
+    request: CreateUserRequest,
   ): Observable<Result<UserSummary>> {
     return this.http.post<Result<UserSummary>>(
       this.url + departmentId + '/user',
-      request
+      request,
     );
   }
 }

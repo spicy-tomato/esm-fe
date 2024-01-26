@@ -5,7 +5,7 @@ export class NotificationPageAction {
   static readonly reset = createAction('[Notification/Page] Reset');
 
   static readonly getInitialData = createAction(
-    '[Notification/Page] Get initial data'
+    '[Notification/Page] Get initial data',
   );
 
   static readonly getAll = createAction('[Notification/Page] Get all');
@@ -17,11 +17,11 @@ export class NotificationPageAction {
     this.actions[tab];
 
   static readonly markAllAsRead = createAction(
-    '[Notification/Page] Mark all as read'
+    '[Notification/Page] Mark all as read',
   );
 
   static readonly markAsRead = createAction(
     '[Notification/Page] Mark as read',
-    props<{ id: number }>()
+    props<{ id: number }>(),
   );
 }

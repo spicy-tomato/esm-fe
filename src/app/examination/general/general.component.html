@@ -19,7 +19,7 @@
       <li class="tui-list__item">
         Thời gian:
         <span class="font-bold">
-          {{ statistic.timePercent | number : "2.0-2" }}%
+          {{ statistic.timePercent | number: "2.0-2" }}%
         </span>
         <progress
           tuiProgressBar
@@ -27,8 +27,8 @@
           [max]="100"
         ></progress>
         <div class="flex justify-between">
-          <span>{{ statistic.startAt | date : "dd/MM/Y" }}</span>
-          <span>{{ statistic.endAt | date : "dd/MM/Y" }}</span>
+          <span>{{ statistic.startAt | date: "dd/MM/Y" }}</span>
+          <span>{{ statistic.endAt | date: "dd/MM/Y" }}</span>
         </div>
       </li>
       <li class="tui-list__item">
@@ -38,7 +38,7 @@
         <span class="ml-2 font-bold"
           >({{
             (statistic.numberOfModulesOver / statistic.numberOfModules) * 100
-              | number : "2.0-2"
+              | number: "2.0-2"
           }}%)</span
         >
         <progress
@@ -57,7 +57,7 @@
         <span class="ml-2 font-bold">
           ({{
             (statistic.numberOfShiftsOver / statistic.numberOfShifts) * 100
-              | number : "2.0-2"
+              | number: "2.0-2"
           }}%)
         </span>
         <progress

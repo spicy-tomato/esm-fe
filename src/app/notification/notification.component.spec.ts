@@ -6,8 +6,7 @@ describe('NotificationComponent', () => {
   let fixture: ComponentFixture<NotificationComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-    }).compileComponents();
+    await TestBed.configureTestingModule({}).compileComponents();
 
     fixture = TestBed.createComponent(NotificationComponent);
     component = fixture.componentInstance;

@@ -46,7 +46,7 @@ export class MinimumExaminationStatusDirective {
   }
 
   @Input()
-  esmMinimumExaminationStatusLoad: Function = () => null;
+  esmMinimumExaminationStatusLoad: () => void = () => null;
 
   // PRIVATE PROPERTIES
   private _minimumStatus!: ESMDomainEnumsExaminationStatus | null;

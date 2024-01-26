@@ -4,6 +4,7 @@ import { createReducer, on } from '@ngrx/store';
 import { AppApiAction } from './app.api.actions';
 import { AppPageAction } from './app.page.actions';
 import { AppState } from './app.state';
+import { ErrorLogger } from '@esm/cdk';
 
 export const appInitialState: AppState = {
   showLoader: null,
@@ -43,27 +44,35 @@ export const appReducer = createReducer(
     ...state,
     departmentsStatus: 'loading',
   })),
-  on(AppPageAction.updateExamination, (state, { id, data }) => ({
-    ...state,
-    examination: {
-      ...state.examination!,
-      name: data.name ?? state.examination!.name,
-      displayId: data.displayId ?? state.examination!.displayId,
-      description: data.description,
-      expectStartAt: data.expectStartAt ?? state.examination!.expectStartAt,
-      expectEndAt: data.expectEndAt ?? state.examination!.expectEndAt,
-      updatedAt: data.updatedAt,
-    },
-    relatedExaminations: state.relatedExaminations.map((e) =>
-      e.id !== id
-        ? e
-        : {
-            ...e,
-            displayId: data.displayId ?? state.examination!.displayId,
-            name: data.name ?? state.examination!.name,
-          },
-    ),
-  })),
+  on(AppPageAction.updateExamination, (state, { id, data }) => {
+    const examination = ErrorLogger.notNullOrEmpty(
+      state.examination,
+      'appReducer/updateExamination',
+      'Examination',
+    );
+
+    return {
+      ...state,
+      examination: {
+        ...examination,
+        name: data.name ?? examination.name,
+        displayId: data.displayId ?? examination.displayId,
+        description: data.description,
+        expectStartAt: data.expectStartAt ?? examination.expectStartAt,
+        expectEndAt: data.expectEndAt ?? examination.expectEndAt,
+        updatedAt: data.updatedAt,
+      },
+      relatedExaminations: state.relatedExaminations.map((e) =>
+        e.id !== id
+          ? e
+          : {
+              ...e,
+              displayId: data.displayId ?? examination.displayId,
+              name: data.name ?? examination.name,
+            },
+      ),
+    };
+  }),
   on(AppApiAction.noCacheUserInfo, (state) => ({
     ...state,
     userStatus: 'success',
@@ -122,34 +131,50 @@ export const appReducer = createReducer(
     departments: [],
     departmentsStatus: 'error',
   })),
-  on(AppApiAction.commitNumberOfInvigilatorForFacultySuccessful, (state) => ({
-    ...state,
-    examination: {
-      ...state.examination!,
-      status: ESMDomainEnumsExaminationStatus.AssignInvigilator,
-    },
-    relatedExaminations: state.relatedExaminations.map((e) =>
-      e.id !== state.examination!.id
-        ? e
-        : {
-            ...e,
-            status: ExaminationStatus.AssignInvigilator,
-          },
-    ),
-  })),
-  on(AppApiAction.closeSuccessful, (state) => ({
-    ...state,
-    examination: {
-      ...state.examination!,
-      status: ESMDomainEnumsExaminationStatus.Closed,
-    },
-    relatedExaminations: state.relatedExaminations.map((e) =>
-      e.id !== state.examination!.id
-        ? e
-        : {
-            ...e,
-            status: ExaminationStatus.Closed,
-          },
-    ),
-  })),
+  on(AppApiAction.commitNumberOfInvigilatorForFacultySuccessful, (state) => {
+    const examination = ErrorLogger.notNullOrEmpty(
+      state.examination,
+      'appReducer/commitNumberOfInvigilatorForFacultySuccessful',
+      'Examination',
+    );
+
+    return {
+      ...state,
+      examination: {
+        ...examination,
+        status: ESMDomainEnumsExaminationStatus.AssignInvigilator,
+      },
+      relatedExaminations: state.relatedExaminations.map((e) =>
+        e.id !== examination.id
+          ? e
+          : {
+              ...e,
+              status: ExaminationStatus.AssignInvigilator,
+            },
+      ),
+    };
+  }),
+  on(AppApiAction.closeSuccessful, (state) => {
+    const examination = ErrorLogger.notNullOrEmpty(
+      state.examination,
+      'appReducer/closeSuccessful',
+      'Examination',
+    );
+
+    return {
+      ...state,
+      examination: {
+        ...examination,
+        status: ESMDomainEnumsExaminationStatus.Closed,
+      },
+      relatedExaminations: state.relatedExaminations.map((e) =>
+        e.id !== examination.id
+          ? e
+          : {
+              ...e,
+              status: ExaminationStatus.Closed,
+            },
+      ),
+    };
+  }),
 );

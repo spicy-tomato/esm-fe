@@ -6,8 +6,7 @@ describe('ExamDepartmentComponent', () => {
   let fixture: ComponentFixture<PaidExamDepartmentComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-    }).compileComponents();
+    await TestBed.configureTestingModule({}).compileComponents();
 
     fixture = TestBed.createComponent(PaidExamDepartmentComponent);
     component = fixture.componentInstance;

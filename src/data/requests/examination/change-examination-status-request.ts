@@ -1,4 +1,4 @@
-import { ExaminationStatus } from "src/data/models";
+import { ExaminationStatus } from 'src/data/models';
 
 export type ChangeExaminationStatusRequest = {
   status: ExaminationStatus;

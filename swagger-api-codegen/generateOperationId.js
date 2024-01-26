@@ -23,7 +23,7 @@ const generateOperationId = (routeInfo) => {
       ...(firstPathArg && firstPathArg.name !== lastPart
         ? ['by', firstPathArg.name]
         : []),
-    ]).join('_')
+    ]).join('_'),
   );
 };
 

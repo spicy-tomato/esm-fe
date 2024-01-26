@@ -14,7 +14,7 @@ describe('ExaminationDataImportStore', () => {
   beforeEach(async () => {
     mockExaminationService = jasmine.createSpyObj<ExaminationService>(
       'ExaminationService',
-      ['import']
+      ['import'],
     );
 
     await TestBed.configureTestingModule({
@@ -58,7 +58,7 @@ describe('ExaminationDataImportStore', () => {
     it('[Create successful] should patch state `success`', fakeAsync(() => {
       const expected = cold('a-b', { a: 'loading', b: 'success' });
       mockExaminationService.import.and.returnValue(
-        cold('--a', { a: ResultBuilder.success() })
+        cold('--a', { a: ResultBuilder.success() }),
       );
 
       store.import(params);

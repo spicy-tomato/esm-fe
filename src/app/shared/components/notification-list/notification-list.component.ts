@@ -85,7 +85,7 @@ export class NotificationListComponent implements OnInit {
   // PRIVATE PROPERTIES
   private readonly hasNext$ = this.store.select(NotificationSelector.hasNext);
   private readonly hasUnread$ = this.store.select(
-    NotificationSelector.selectHasUnread
+    NotificationSelector.selectHasUnread,
   );
   private readonly nameTitle$ = this.appStore.select(AppSelector.user);
 
@@ -107,7 +107,7 @@ export class NotificationListComponent implements OnInit {
       hasNext,
       hasUnread,
       nameTitle,
-    }))
+    })),
   );
 
   openDropdown = false;
@@ -144,10 +144,10 @@ export class NotificationListComponent implements OnInit {
     this.data$
       .pipe(
         filter((notificationTypes) =>
-          notificationTypes.some(({ length }) => length > 0)
+          notificationTypes.some(({ length }) => length > 0),
         ),
         tap(() => this.cdr.markForCheck()),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }

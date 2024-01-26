@@ -18,54 +18,27 @@
     "importHelpers": true,
     "target": "ES2022",
     "module": "es2020",
-    "lib": [
-      "es2020",
-      "dom"
-    ],
+    "lib": ["es2020", "dom"],
     "paths": {
-      "@esm/cdk": [
-        "src/cdk"
-      ],
-      "@esm/core": [
-        "src/core"
-      ],
-      "@esm/data": [
-        "src/data"
-      ],
-      "@esm/guards": [
-        "src/app/utils/guards"
-      ],
-      "@esm/interceptors": [
-        "src/app/utils/interceptors"
-      ],
-      "@esm/services": [
-        "src/app/utils/services"
-      ],
-      "@esm/api": [
-        "src/app/shared/api"
-      ],
-      "@esm/shared/components": [
-        "src/app/shared/components"
-      ],
-      "@esm/shared/dialogs": [
-        "src/app/shared/dialogs"
-      ],
-      "@esm/shared/directives": [
-        "src/app/shared/directives"
-      ],
-      "@esm/shared/*": [
-        "src/app/shared/*"
-      ],
-      "@esm/store": [
-        "src/app/utils/store"
-      ]
+      "@esm/cdk": ["src/cdk"],
+      "@esm/core": ["src/core"],
+      "@esm/data": ["src/data"],
+      "@esm/guards": ["src/app/utils/guards"],
+      "@esm/interceptors": ["src/app/utils/interceptors"],
+      "@esm/services": ["src/app/utils/services"],
+      "@esm/api": ["src/app/shared/api"],
+      "@esm/shared/components": ["src/app/shared/components"],
+      "@esm/shared/dialogs": ["src/app/shared/dialogs"],
+      "@esm/shared/directives": ["src/app/shared/directives"],
+      "@esm/shared/*": ["src/app/shared/*"],
+      "@esm/store": ["src/app/utils/store"],
     },
-    "useDefineForClassFields": false
+    "useDefineForClassFields": false,
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "strictTemplates": true
-  }
+    "strictTemplates": true,
+  },
 }

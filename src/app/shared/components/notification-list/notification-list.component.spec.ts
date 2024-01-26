@@ -71,7 +71,7 @@ describe('NotificationListComponent', () => {
       const spy = spyOn(component['store'], 'dispatch');
       component.markAllAsRead();
       expect(spy).toHaveBeenCalledOnceWith(
-        NotificationPageAction.markAllAsRead()
+        NotificationPageAction.markAllAsRead(),
       );
     });
 
@@ -100,7 +100,7 @@ describe('NotificationListComponent', () => {
       const spy = spyOn(component['store'], 'dispatch');
       component.markAsRead(0);
       expect(spy).toHaveBeenCalledWith(
-        NotificationPageAction.markAsRead({ id: 0 })
+        NotificationPageAction.markAsRead({ id: 0 }),
       );
     });
   });

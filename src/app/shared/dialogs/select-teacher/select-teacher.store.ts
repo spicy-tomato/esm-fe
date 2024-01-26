@@ -37,11 +37,11 @@ export class SelectTeacherDialogStore extends ComponentStore<SelectTeacherDialog
               this.patchState({
                 status: 'error',
                 errors: res.error.errors,
-              })
-          )
-        )
-      )
-    )
+              }),
+          ),
+        ),
+      ),
+    ),
   );
 
   // CONSTRUCTOR

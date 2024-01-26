@@ -16,11 +16,11 @@ export const slideUp = trigger('slideUp', [
         stagger('150ms', [
           animate(
             '500ms ease-in-out',
-            style({ opacity: 1, transform: 'translateY(0)' })
+            style({ opacity: 1, transform: 'translateY(0)' }),
           ),
         ]),
       ],
-      { optional: true }
+      { optional: true },
     ),
   ]),
 ]);

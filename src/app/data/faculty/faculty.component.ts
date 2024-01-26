@@ -61,11 +61,11 @@ export class DataFacultyComponent {
     this.dialogService
       .open<boolean>(
         new PolymorpheusComponent(EditFacultyDialogComponent, this.injector),
-        { data }
+        { data },
       )
       .pipe(
         filter((x) => x),
-        tap(() => this.store.load())
+        tap(() => this.store.load()),
       )
       .subscribe();
   }

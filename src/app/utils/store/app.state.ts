@@ -13,7 +13,7 @@ type UserState = {
 };
 
 type ExaminationState = {
-  examinationId: string | null;
+  examinationId?: string | null;
   examination: GetSummaryData['data'] | null;
   examinationStatus: Status;
 };

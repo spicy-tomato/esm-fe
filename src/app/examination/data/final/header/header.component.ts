@@ -9,7 +9,12 @@ import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { StringHelper } from '@esm/cdk';
 import { ExamMethodPipe } from '@esm/core';
 import { LetModule } from '@ngrx/component';
-import { TUI_FIRST_DAY, TUI_LAST_DAY, TuiDay, TuiDayRange } from '@taiga-ui/cdk';
+import {
+  TUI_FIRST_DAY,
+  TUI_LAST_DAY,
+  TuiDay,
+  TuiDayRange,
+} from '@taiga-ui/cdk';
 import {
   TuiDataListModule,
   TuiTextfieldControllerModule,
@@ -52,7 +57,7 @@ export class ExaminationDataFinalHeaderComponent implements OnInit {
 
   readonly shifts = [1, 2, 3, 4];
   readonly methods = Object.keys(StringHelper.EXAM_METHOD_MAPPING).map(
-    (k) => +k
+    (k) => +k,
   );
   readonly form = this.fb.group({
     methods: [[]],
@@ -67,11 +72,11 @@ export class ExaminationDataFinalHeaderComponent implements OnInit {
         ? {
             min: TuiDay.fromUtcNativeDate(new Date(data[0].shiftGroup.startAt)),
             max: TuiDay.fromUtcNativeDate(
-              new Date(data[data.length - 1].shiftGroup.startAt)
+              new Date(data[data.length - 1].shiftGroup.startAt),
             ),
           }
-        : { min: TUI_FIRST_DAY, max: TUI_LAST_DAY }
-    )
+        : { min: TUI_FIRST_DAY, max: TUI_LAST_DAY },
+    ),
   );
 
   ngOnInit(): void {
@@ -80,7 +85,7 @@ export class ExaminationDataFinalHeaderComponent implements OnInit {
         tap(() => {
           const filter = this.form.getRawValue();
           this.store.patchState({ filter });
-        })
+        }),
       )
       .subscribe();
   }

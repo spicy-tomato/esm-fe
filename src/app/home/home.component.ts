@@ -1,5 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  inject,
+} from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { LetModule } from '@ngrx/component';
 import { TuiLinkModule, TuiLoaderModule } from '@taiga-ui/core';
@@ -20,7 +25,7 @@ export const TAIGA_UI = [TuiActionModule, TuiLinkModule, TuiLoaderModule];
 export class HomeComponent implements OnInit {
   // INJECT PROPERTIES
   private readonly store = inject(HomeStore);
-  
+
   // PUBLIC PROPERTIES
   readonly relatedStatus$ = this.store.relatedStatus$;
   readonly relatedExaminations$ = this.store.relatedExaminations$;

@@ -1,7 +1,7 @@
 import { Role } from '@esm/data';
 import { AppApiAction } from '../app.api.actions';
 import { AppPageAction } from '../app.page.actions';
-import { appReducer, appInitialState } from '../app.reducer';
+import { appInitialState, appReducer } from '../app.reducer';
 import { AppState } from '../app.state';
 
 describe('appReducer', () => {
@@ -9,10 +9,16 @@ describe('appReducer', () => {
     user: {
       fullName: 'Tester',
       department: {
-        faculty: null,
+        faculty: {
+          id: '',
+          name: '',
+        },
         id: 'fac',
       },
-      faculty: null,
+      faculty: {
+        id: '',
+        name: '',
+      },
       id: 'id',
       isMale: true,
       roles: [Role.EXAMINATION_DEPARTMENT_HEAD],

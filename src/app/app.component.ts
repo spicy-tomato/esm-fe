@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
 import { ObservableHelper } from '@esm/cdk';
 import { AppPageAction, AppSelector } from '@esm/store';
 import { Store } from '@ngrx/store';
@@ -33,7 +38,7 @@ export class AppComponent implements OnInit {
         tap(() => {
           this.appStore.dispatch(AppPageAction.getRelatedExaminations());
           this.appStore.dispatch(AppPageAction.getDepartments());
-        })
+        }),
       )
       .subscribe();
   }

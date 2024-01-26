@@ -104,7 +104,7 @@ export class EditDepartmentDialogComponent implements OnInit {
             .open(message, { status: TuiNotification.Success })
             .subscribe();
           this.context.completeWith(true);
-        })
+        }),
       )
       .subscribe();
   }
@@ -121,7 +121,7 @@ export class EditDepartmentDialogComponent implements OnInit {
 
             this.form.get(e.property)?.setErrors({ duplicated: e.message });
           });
-        })
+        }),
       )
       .subscribe();
   }

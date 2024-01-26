@@ -7,8 +7,7 @@ describe('ErrorFlagComponent', () => {
   let fixture: ComponentFixture<ErrorFlagComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-    }).compileComponents();
+    await TestBed.configureTestingModule({}).compileComponents();
 
     fixture = TestBed.createComponent(ErrorFlagComponent);
     component = fixture.componentInstance;

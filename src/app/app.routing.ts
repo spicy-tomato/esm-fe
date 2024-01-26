@@ -35,7 +35,7 @@ const routes: Routes = [
     providers: [
       importProvidersFrom(
         StoreModule.forFeature(notificationFeatureKey, notificationReducer),
-        EffectsModule.forFeature([NotificationEffects])
+        EffectsModule.forFeature([NotificationEffects]),
       ),
     ],
     children: [

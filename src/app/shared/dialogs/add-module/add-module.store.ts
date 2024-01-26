@@ -44,7 +44,7 @@ export class AddModuleDialogStore extends ComponentStore<AddModuleDialogState> {
 
   // CUSTOM SELECTORS
   readonly faculties$ = this.facultiesWithDepartment$.pipe(
-    map((e) => e.map(({ departments, ...rest }) => rest))
+    map((e) => e.map(({ departments, ...rest }) => rest)),
   );
 
   readonly departments$ = this.facultiesWithDepartment$.pipe(
@@ -55,8 +55,8 @@ export class AddModuleDialogStore extends ComponentStore<AddModuleDialogState> {
           ...curr.departments.map((d) => ({ ...d, facultyId: curr.id })),
         ];
         return acc;
-      }, [] as AddModuleDialogDepartment[])
-    )
+      }, [] as AddModuleDialogDepartment[]),
+    ),
   );
 
   readonly observables$ = combineLatest([
@@ -68,7 +68,7 @@ export class AddModuleDialogStore extends ComponentStore<AddModuleDialogState> {
       faculties,
       departments,
       status,
-    }))
+    })),
   );
 
   // EFFECTS
@@ -85,11 +85,11 @@ export class AddModuleDialogStore extends ComponentStore<AddModuleDialogState> {
               this.patchState({
                 status: 'error',
                 error: error as string,
-              })
-          )
-        )
-      )
-    )
+              }),
+          ),
+        ),
+      ),
+    ),
   );
 
   // CONSTRUCTOR

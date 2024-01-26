@@ -64,7 +64,7 @@ export class EditShiftReportDialogComponent implements OnInit {
   // PUBLIC PROPERTIES
   reportValue = this.context.data.report ?? '';
   readonly handoverInvigilatorName = this.context.data.invigilatorShift.find(
-    (ivs) => ivs.invigilator?.id === this.context.data.handedOverUserId
+    (ivs) => ivs.invigilator?.id === this.context.data.handedOverUserId,
   )?.invigilator?.fullName;
   readonly status$ = this.store.status$;
 
@@ -92,7 +92,7 @@ export class EditShiftReportDialogComponent implements OnInit {
               .subscribe();
             this.context.completeWith(this.reportValue);
           }
-        })
+        }),
       )
       .subscribe();
   }

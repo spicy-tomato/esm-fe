@@ -1,5 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-import { RouterModule, RouterStateSnapshot } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  RouterModule,
+  RouterStateSnapshot,
+} from '@angular/router';
 import { TokenService } from '@esm/cdk';
 import { RedirectService } from '../services/redirect.service';
 import { authGuard } from './auth.guard';
@@ -14,7 +18,7 @@ describe('authGuard', () => {
     ]);
     mockRedirectService = jasmine.createSpyObj<RedirectService>(
       'RedirectService',
-      ['login', 'app']
+      ['login', 'app'],
     );
 
     await TestBed.configureTestingModule({
@@ -41,8 +45,8 @@ describe('authGuard', () => {
       testUrls.forEach((url) => {
         TestBed.runInInjectionContext(() => {
           const canActive = authGuard(
-            null as any,
-            { url } as RouterStateSnapshot
+            null as unknown as ActivatedRouteSnapshot,
+            { url } as RouterStateSnapshot,
           );
 
           expect(canActive).toBeTrue();
@@ -58,8 +62,8 @@ describe('authGuard', () => {
       testUrls.forEach((url) => {
         TestBed.runInInjectionContext(() => {
           const canActive = authGuard(
-            null as any,
-            { url } as RouterStateSnapshot
+            null as unknown as ActivatedRouteSnapshot,
+            { url } as RouterStateSnapshot,
           );
 
           expect(canActive).toBeFalse();
@@ -78,8 +82,8 @@ describe('authGuard', () => {
       testUrls.forEach((url) => {
         TestBed.runInInjectionContext(() => {
           const canActive = authGuard(
-            null as any,
-            { url } as RouterStateSnapshot
+            null as unknown as ActivatedRouteSnapshot,
+            { url } as RouterStateSnapshot,
           );
 
           expect(canActive).toBeTrue();
@@ -92,11 +96,11 @@ describe('authGuard', () => {
 
       const testUrls = ['login', 'login?redirect=example-path'];
 
-      testUrls.forEach((url) => {
+      testUrls.forEach(() => {
         TestBed.runInInjectionContext(() => {
           const canActive = authGuard(
-            null as any,
-            { url: 'login' } as RouterStateSnapshot
+            null as unknown as ActivatedRouteSnapshot,
+            { url: 'login' } as RouterStateSnapshot,
           );
 
           expect(canActive).toBeFalse();

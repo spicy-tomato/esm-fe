@@ -10,7 +10,7 @@ const fadeInTransition = transition(
     style({ opacity: 0 }),
     animate('{{duration}} ease-in-out', style({ opacity: 1 })),
   ],
-  { params: defaultDuration }
+  { params: defaultDuration },
 );
 
 const fadeOutTransition = transition(
@@ -19,7 +19,7 @@ const fadeOutTransition = transition(
     style({ opacity: 1 }),
     animate('{{duration}} ease-in-out', style({ opacity: 0 })),
   ],
-  { params: defaultDuration }
+  { params: defaultDuration },
 );
 
 export const fadeIn = trigger('fadeIn', [fadeInTransition]);

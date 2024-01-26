@@ -7,7 +7,6 @@ import {
 } from '@angular/core';
 import { GetSummaryData } from '@esm/api';
 import { DIAGRAM_STATUS_MAP } from '@esm/cdk';
-import { ExaminationSummary } from '@esm/data';
 import { LetModule } from '@ngrx/component';
 import {
   ConnectorModel,

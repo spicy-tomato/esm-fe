@@ -1,5 +1,5 @@
 export const messageEvent = ['.notification-created'] as const;
-export type MessageEvent = typeof messageEvent[number];
+export type MessageEvent = (typeof messageEvent)[number];
 
 export type EchoMessage = {
   id: number;

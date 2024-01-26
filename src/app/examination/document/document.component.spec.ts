@@ -7,8 +7,7 @@ describe('DocumentComponent', () => {
   let fixture: ComponentFixture<ExaminationDocumentComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-    }).compileComponents();
+    await TestBed.configureTestingModule({}).compileComponents();
 
     fixture = TestBed.createComponent(ExaminationDocumentComponent);
     component = fixture.componentInstance;
