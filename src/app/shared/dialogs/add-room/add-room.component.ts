@@ -14,7 +14,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { ESMApplicationRoomsCommandsCreateCreateCommand } from '@esm/api';
-import { CreateRoomRequest } from '@esm/data';
 import { LetModule } from '@ngrx/component';
 import { TuiTableModule } from '@taiga-ui/addon-table';
 import {

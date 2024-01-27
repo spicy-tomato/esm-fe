@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { ESM_LOGGER_OPTIONS, LoggerOptions } from '@esm/core';
-import { ErrorLogger } from 'src/cdk/loggers';
+import { ErrorLogger, ErrorLoggerContainsField } from 'src/cdk/loggers';
 
 export type NotNullErrorParams<T> = {
   value: T | null | undefined;
@@ -15,22 +15,36 @@ export class LoggerService {
     @Inject(ESM_LOGGER_OPTIONS) private readonly options: LoggerOptions,
   ) {}
 
-  public errorNotNullOrEmpty<T>(params: NotNullErrorParams<T>): T;
-  public errorNotNullOrEmpty<T>(params: NotNullErrorParams<T>[]): T[];
+  errorNullOrEmpty<T>(params: NotNullErrorParams<T>): T;
+  errorNullOrEmpty<T>(params: NotNullErrorParams<T>[]): T[];
 
-  public errorNotNullOrEmpty<T>(
+  errorNullOrEmpty<T>(
     params: NotNullErrorParams<T> | NotNullErrorParams<T>[],
   ): T | T[] {
     if ('value' in params) {
-      return ErrorLogger.notNullOrEmpty(
+      return ErrorLogger.nullOrEmpty(
         params.value,
-        this.options.tag,
         params.valueType,
+        this.options.tag,
       );
     }
 
     return params.map((p) =>
-      ErrorLogger.notNullOrEmpty(p.value, this.options.tag, p.valueType),
+      ErrorLogger.nullOrEmpty(p.value, p.valueType, this.options.tag),
     );
+  }
+
+  containsField(
+    value: object,
+    field: 'id',
+    valueType: string,
+  ): value is { id: unknown };
+
+  containsField(
+    value: object,
+    field: ErrorLoggerContainsField,
+    valueType: string,
+  ): boolean {
+    return ErrorLogger.containsField(value, field, valueType, this.options.tag);
   }
 }

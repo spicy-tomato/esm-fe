@@ -19,7 +19,6 @@ import {
   ESMDomainEnumsExaminationStatus,
 } from '@esm/api';
 import { ExamMethodPipe } from '@esm/core';
-import { ExaminationGetDataResponseItem } from '@esm/data';
 import { LetModule } from '@ngrx/component';
 import { TuiTableModule } from '@taiga-ui/addon-table';
 import { TuiButtonModule, TuiScrollbarModule } from '@taiga-ui/core';

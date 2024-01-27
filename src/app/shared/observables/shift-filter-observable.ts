@@ -1,7 +1,6 @@
 import { GetAllShiftsData } from '@esm/api';
-import { ExaminationGetDataResponseItem } from '@esm/data';
 import { TuiDay, TuiDayRange } from '@taiga-ui/cdk';
-import { Observable, combineLatest, map } from 'rxjs';
+import { combineLatest, map, Observable } from 'rxjs';
 
 export type ShiftFilterFilterType = {
   methods: number[];

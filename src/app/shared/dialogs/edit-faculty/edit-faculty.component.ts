@@ -81,7 +81,7 @@ export class EditFacultyDialogComponent implements OnInit {
     const formValue = this.form.getRawValue();
 
     if (this.isEditDialog) {
-      const data = this.loggerService.errorNotNullOrEmpty({
+      const data = this.loggerService.errorNullOrEmpty({
         value: this.context.data,
         valueType: 'Data',
       });

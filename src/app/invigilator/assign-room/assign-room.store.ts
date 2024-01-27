@@ -1,10 +1,4 @@
 import { inject, Injectable } from '@angular/core';
-import { ObservableHelper, Status } from '@esm/cdk';
-import {
-  AssignInvigilatorsToShiftsRequest,
-  ExaminationGetShiftResponseItem,
-  GetAvailableInvigilatorsInShiftGroupResponseItem,
-} from '@esm/data';
 import {
   AssignInvigilatorsToShiftsPayload,
   ESMApplicationExaminationsQueriesGetAllShiftsDetailsShiftDetailsDto,
@@ -12,6 +6,7 @@ import {
   ExaminationService,
   GetAvailableInvigilatorsInShiftGroupData,
 } from '@esm/api';
+import { ObservableHelper, Status } from '@esm/cdk';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';

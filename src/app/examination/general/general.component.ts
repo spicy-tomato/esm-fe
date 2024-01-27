@@ -3,30 +3,11 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
-  Injector,
   OnInit,
-  ViewChild,
 } from '@angular/core';
-import { WorkflowDialogComponent } from '@esm/shared/dialogs';
-import {
-  TuiButtonModule,
-  tuiButtonOptionsProvider,
-  TuiDialogService,
-} from '@taiga-ui/core';
-import { TuiIslandModule, TuiProgressModule } from '@taiga-ui/kit';
-import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
-import { ExaminationProcessStore } from './general.store';
 import { LetModule } from '@ngrx/component';
-import {
-  ConnectorModel,
-  DiagramComponent,
-  DiagramConstraints,
-  DiagramModule,
-  NodeModel,
-  SnapConstraints,
-  SnapSettingsModel,
-} from '@syncfusion/ej2-angular-diagrams';
-import { Observable, map } from 'rxjs';
+import { TuiIslandModule, TuiProgressModule } from '@taiga-ui/kit';
+import { ExaminationProcessStore } from './general.store';
 
 const TAIGA_UI = [
   // TuiButtonModule,
@@ -76,7 +57,7 @@ export class ExaminationGeneralComponent implements OnInit {
   readonly statistic$ = this.store.data$;
 
   // CONSTRUCTOR
-  constructor() {}
+  // constructor() {}
 
   // LIFECYCLE
   ngOnInit(): void {

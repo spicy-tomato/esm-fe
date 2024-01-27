@@ -19,13 +19,11 @@ import {
   ESMApplicationExaminationsQueriesGetGroupsByFacultyIdGetGroupsByFacultyIdDtoInternalFacultyShiftGroup,
   ESMDomainDtosUserUserSimple,
   ESMDomainDtosUserUserSummary,
-  GetGroupsByFacultyIdData,
 } from '@esm/api';
 import { StringifyHelper } from '@esm/cdk';
 import { ArrayPipe } from '@esm/core';
 import {
   DepartmentSummary,
-  GetGroupByFacultyIdResponseItem,
   UpdateTeacherAssignmentRequest,
   UserSummary,
 } from '@esm/data';

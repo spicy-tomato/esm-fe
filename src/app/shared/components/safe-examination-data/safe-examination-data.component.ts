@@ -29,7 +29,7 @@ export class SafeExaminationDataComponent {
   // INPUTS
   @Input() minimumStatus: ESMDomainEnumsExaminationStatus =
     ESMDomainEnumsExaminationStatus.Closed;
-  @Input() getDataFunc: Function = () => null;
+  @Input() getDataFunc: () => null = () => null;
   @Input() showLoader: Observable<boolean> | boolean = false;
 
   // PUBLIC PROPERTIES

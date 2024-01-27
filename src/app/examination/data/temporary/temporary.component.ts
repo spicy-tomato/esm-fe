@@ -51,14 +51,14 @@ export const TAIGA_UI = [
   TuiTableModule,
 ];
 
-type FormType = {
-  data: FormArray<
-    FormGroup<{
-      [K in keyof ESMDomainEntitiesExaminationData]: FormControl<
-        ESMDomainEntitiesExaminationData[K]
-      >;
-    }>
+type FormItemType = {
+  [K in keyof ESMDomainEntitiesExaminationData]: FormControl<
+    ESMDomainEntitiesExaminationData[K]
   >;
+};
+
+type FormType = {
+  data: FormArray<FormGroup<FormItemType>>;
 };
 
 @Component({
@@ -179,17 +179,14 @@ export class ExaminationDataTemporaryComponent implements OnInit {
       data: this.fb.array(
         data.map((row) =>
           this.fb.group(
-            Object.entries(row).reduce(
-              (acc, [key, value]) => {
-                acc[key] = [value];
-                return acc;
-              },
-              {} as Record<string, unknown[]>,
-            ),
+            Object.entries(row).reduce((acc, [key, value]) => {
+              acc[key as keyof FormItemType] = [value] as never;
+              return acc;
+            }, {} as FormItemType),
           ),
         ),
       ),
-    } as any);
+    });
   }
 
   private markLoadable(): void {

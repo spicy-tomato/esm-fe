@@ -1,5 +1,4 @@
 import { inject, Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { ESMDomainEnumsExaminationStatus, ExaminationService } from '@esm/api';
 import { ObservableHelper, Status } from '@esm/cdk';
 import { AppApiAction, AppSelector, AppState } from '@esm/store';
@@ -15,7 +14,6 @@ type ExaminationEditFinishExaminationState = {
 @Injectable()
 export class ExaminationEditFinishExaminationStore extends ComponentStore<ExaminationEditFinishExaminationState> {
   // INJECT PROPERTIES
-  private readonly router = inject(Router);
   private readonly appStore = inject(Store<AppState>);
   private readonly examinationService = inject(ExaminationService);
 

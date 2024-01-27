@@ -39,8 +39,8 @@ export class EchoService {
 
   // PUBLIC METHODS
   subscribe(channels: string[]): void {
-    messageEvent.forEach((e) => {
-      channels.forEach((channel) => {
+    messageEvent.forEach(() => {
+      channels.forEach(() => {
         // this.echo.channel(channel).listen(e, (data: EchoMessage) => {
         //   data.readAt = null;
         //   this.message$.next({ event: e, content: data });
@@ -51,8 +51,8 @@ export class EchoService {
   }
 
   unsubscribe(): void {
-    messageEvent.forEach((e) => {
-      this.channels.forEach((channel) => {
+    messageEvent.forEach(() => {
+      this.channels.forEach(() => {
         // this.echo.channel(channel).stopListening(e);
       });
     });

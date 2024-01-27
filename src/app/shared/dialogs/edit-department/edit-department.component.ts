@@ -10,7 +10,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ObservableHelper, StringifyHelper } from '@esm/cdk';
+import { LoggerService, ObservableHelper, StringifyHelper } from '@esm/cdk';
+import { loggerProvider } from '@esm/core';
 import { DepartmentSummary } from '@esm/data';
 import { LetModule } from '@ngrx/component';
 import {
@@ -44,17 +45,21 @@ export const TAIGA_UI = [
   TuiTextfieldControllerModule,
 ];
 
+const selector = 'esm-dialog-edit-department';
+
 @Component({
+  selector,
   templateUrl: './edit-department.component.html',
   styleUrls: ['./edit-department.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, ...NGRX, ...TAIGA_UI],
-  providers: [EditDepartmentDialogStore],
+  providers: [EditDepartmentDialogStore, loggerProvider({ tag: selector })],
 })
 export class EditDepartmentDialogComponent implements OnInit {
   // INJECT PROPERTIES
   private readonly fb = inject(NonNullableFormBuilder);
+  private readonly loggerService = inject(LoggerService);
   private readonly alertService = inject(TuiAlertService);
   private readonly store = inject(EditDepartmentDialogStore);
   private readonly context = inject(POLYMORPHEUS_CONTEXT) as TuiDialogContext<
@@ -85,7 +90,11 @@ export class EditDepartmentDialogComponent implements OnInit {
     this.form.markAllAsTouched();
     const formValue = this.form.getRawValue();
     if (this.isEditDialog) {
-      this.store.update({ id: this.context.data!.id, request: formValue });
+      const data = this.loggerService.errorNullOrEmpty({
+        value: this.context.data,
+        valueType: 'Context data',
+      });
+      this.store.update({ id: data.id, request: formValue });
     } else {
       this.store.create(formValue);
     }

@@ -4,7 +4,7 @@ import { ComponentStore } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
 
 @Injectable()
-export class SideBarStore extends ComponentStore<{}> {
+export class SideBarStore extends ComponentStore<Record<string, never>> {
   // INJECT PROPERTIES
   private readonly store = inject(Store<AppState>);
 

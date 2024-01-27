@@ -92,7 +92,7 @@ export class MinimumExaminationStatusDirective {
 export class MinimumExaminationStatusContext {
   constructor(
     public $implicit: ESMDomainEnumsExaminationStatus | null = null,
-    public status: ESMDomainEnumsExaminationStatus = null!,
-    public examination: GetSummaryData['data'] = null!,
+    public status: ESMDomainEnumsExaminationStatus,
+    public examination: GetSummaryData['data'],
   ) {}
 }

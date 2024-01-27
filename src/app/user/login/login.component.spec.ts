@@ -46,7 +46,7 @@ describe('LoginComponent', () => {
 
   describe('status$', () => {
     it('[No error] Form error should be null', fakeAsync(() => {
-      for (let status of ['idle', 'loading', 'success'] as const) {
+      for (const status of ['idle', 'loading', 'success'] as const) {
         component['store'].patchState({ status });
         component.status$.subscribe(() => {
           expect(component.form.errors).toBeNull();

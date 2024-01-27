@@ -1,12 +1,10 @@
 import { inject, Injectable } from '@angular/core';
-import { ObservableHelper, Status } from '@esm/cdk';
-import { ExaminationStatus, GetAllGroupsResponseResponseItem } from '@esm/data';
 import {
-  AssignInvigilatorNumerateOfShiftToFacultyData,
   ESMDomainEnumsExaminationStatus,
   ExaminationService,
   GetAllGroupsData,
 } from '@esm/api';
+import { ObservableHelper, Status } from '@esm/cdk';
 import { AppApiAction, AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
@@ -202,6 +200,7 @@ export class InvigilatorAssignFacultyStore extends ComponentStore<InvigilatorAss
                   updateRows: s.updateRows.filter((r) => r !== rowId),
                 }));
               },
+              // eslint-disable-next-line @typescript-eslint/no-empty-function
               () => {},
             ),
           );

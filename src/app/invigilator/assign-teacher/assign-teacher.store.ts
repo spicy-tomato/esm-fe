@@ -15,7 +15,6 @@ import {
   DepartmentSummary,
   FacultySummary,
   UpdateTeacherAssignmentRequest,
-  UserSummary,
 } from '@esm/data';
 import { AppSelector, AppState } from '@esm/store';
 import {

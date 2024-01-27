@@ -45,10 +45,10 @@ export const appReducer = createReducer(
     departmentsStatus: 'loading',
   })),
   on(AppPageAction.updateExamination, (state, { id, data }) => {
-    const examination = ErrorLogger.notNullOrEmpty(
+    const examination = ErrorLogger.nullOrEmpty(
       state.examination,
-      'appReducer/updateExamination',
       'Examination',
+      'appReducer/updateExamination',
     );
 
     return {
@@ -132,10 +132,10 @@ export const appReducer = createReducer(
     departmentsStatus: 'error',
   })),
   on(AppApiAction.commitNumberOfInvigilatorForFacultySuccessful, (state) => {
-    const examination = ErrorLogger.notNullOrEmpty(
+    const examination = ErrorLogger.nullOrEmpty(
       state.examination,
-      'appReducer/commitNumberOfInvigilatorForFacultySuccessful',
       'Examination',
+      'appReducer/commitNumberOfInvigilatorForFacultySuccessful',
     );
 
     return {
@@ -155,10 +155,10 @@ export const appReducer = createReducer(
     };
   }),
   on(AppApiAction.closeSuccessful, (state) => {
-    const examination = ErrorLogger.notNullOrEmpty(
+    const examination = ErrorLogger.nullOrEmpty(
       state.examination,
-      'appReducer/closeSuccessful',
       'Examination',
+      'appReducer/closeSuccessful',
     );
 
     return {

@@ -60,7 +60,7 @@ export class ExaminationProcessComponent implements OnInit {
   // CONSTRUCTOR
   constructor() {
     this.diagramData$ = this.events$.pipe(
-      map((x) =>
+      map(() =>
         [].reduce(
           (acc, curr, i) => {
             acc.nodes.push({

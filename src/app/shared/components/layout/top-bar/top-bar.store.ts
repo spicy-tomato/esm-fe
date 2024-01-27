@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { combineLatest, map, takeUntil } from 'rxjs';
 
 @Injectable()
-export class TopBarStore extends ComponentStore<{}> {
+export class TopBarStore extends ComponentStore<Record<string, never>> {
   // INJECT PROPERTIES
   private readonly appStore = inject(Store<AppState>);
 

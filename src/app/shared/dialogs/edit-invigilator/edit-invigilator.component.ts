@@ -13,7 +13,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { GetAllFacultyData } from '@esm/api';
-import { ObservableHelper } from '@esm/cdk';
+import { LoggerService, ObservableHelper } from '@esm/cdk';
+import { loggerProvider } from '@esm/core';
 import { UserSummary } from '@esm/data';
 import { LetModule } from '@ngrx/component';
 import {
@@ -71,7 +72,10 @@ type FormType = {
   phoneNumber: FormControl<string>;
 };
 
+const selector = 'esm-dialog-edit-department';
+
 @Component({
+  selector,
   templateUrl: './edit-invigilator.component.html',
   styleUrls: ['./edit-invigilator.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -87,11 +91,13 @@ type FormType = {
       },
     },
     EditInvigilatorDialogStore,
+    loggerProvider({ tag: selector }),
   ],
 })
 export class EditInvigilatorDialogComponent implements OnInit {
   // INJECT PROPERTIES
   private readonly fb = inject(NonNullableFormBuilder);
+  private readonly loggerService = inject(LoggerService);
   private readonly alertService = inject(TuiAlertService);
   private readonly store = inject(EditInvigilatorDialogStore);
   private readonly context = inject(POLYMORPHEUS_CONTEXT) as TuiDialogContext<
@@ -132,14 +138,14 @@ export class EditInvigilatorDialogComponent implements OnInit {
       return;
     }
 
-    const contextData = this.context.data!;
-    if (!('id' in contextData)) {
-      throw Error(
-        'EditInvigilatorDialogComponent is edit dialog, but contextData.id is undefined',
-      );
-    }
+    const contextData = this.loggerService.errorNullOrEmpty({
+      value: this.context.data,
+      valueType: 'Context data',
+    });
 
-    this.store.update({ id: contextData.id, request });
+    if (this.loggerService.containsField(contextData, 'id', '')) {
+      this.store.update({ id: contextData.id, request });
+    }
   }
 
   @tuiPure
@@ -244,7 +250,7 @@ export class EditInvigilatorDialogComponent implements OnInit {
     });
   }
 
-  private static isTemporaryInvigilator(value: any): value is UserTemplate {
+  private static isTemporaryInvigilator(value: object): value is UserTemplate {
     return 'invigilatorName' in value;
   }
 }

@@ -21,7 +21,7 @@ import {
 } from '@esm/api';
 import { StringHelper } from '@esm/cdk';
 import { ArrayPipe, ExamMethodPipe } from '@esm/core';
-import { FacultySummary, GetAllGroupsResponseResponseItem } from '@esm/data';
+import { FacultySummary } from '@esm/data';
 import { LetModule } from '@ngrx/component';
 import { TuiTableModule } from '@taiga-ui/addon-table';
 import { TuiDestroyService } from '@taiga-ui/cdk';
@@ -166,12 +166,12 @@ export class InvigilatorAssignFacultyTableComponent implements OnInit {
           }),
         ),
       ),
-    }) as any;
+    });
   }
 
   private buildFormDataPart(
     group: ESMApplicationExaminationsQueriesGetAllGroupsGetAllGroupsDto,
-  ): Record<string, any[]> {
+  ): Record<string, unknown[]> {
     const columns: (keyof ESMApplicationExaminationsQueriesGetAllGroupsGetAllGroupsDto)[] =
       [
         'module',
@@ -187,26 +187,26 @@ export class InvigilatorAssignFacultyTableComponent implements OnInit {
         acc[curr] = [group[curr]];
         return acc;
       },
-      {} as Record<string, any[]>,
+      {} as Record<string, unknown[]>,
     );
   }
 
   private buildFormFacultyPart(
     group: ESMApplicationExaminationsQueriesGetAllGroupsGetAllGroupsDto,
     faculties: FacultySummary[],
-  ): Record<string, any[]> {
+  ): Record<string, unknown[]> {
     return faculties.reduce(
       (acc, { id }) => {
         acc[id] = [group.assignNumerate[id] || 0];
         return acc;
       },
-      {} as Record<string, any[]>,
+      {} as Record<string, unknown[]>,
     );
   }
 
   private buildFormCalculatePart(
     group: ESMApplicationExaminationsQueriesGetAllGroupsGetAllGroupsDto,
-  ): Record<string, any[]> {
+  ): Record<string, unknown[]> {
     return {
       total: [group.assignNumerate['total']],
     };
@@ -229,35 +229,38 @@ export class InvigilatorAssignFacultyTableComponent implements OnInit {
   }
 
   private onExportFile(faculties: FacultySummary[]): void {
-    const data = (this.form.value.data as any[]).map((row, idx) => {
-      const res: Record<string, any> = {
-        idx: idx + 1,
-        moduleId: row.module.displayId,
-        moduleName: row.module.name,
-        faculty: row.module.faculty.name,
-        method: StringHelper.getExamMethod(row.method),
-        startAt: this.datePipe.transform(row.startAt, 'dd/MM/y'),
-        total: row.total.actual,
-        difference: row.total.calculated,
-        _shift: row.shift,
-      };
+    const data = this.form.value.data.map(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (row: Record<string, any>, idx: number) => {
+        const res: Record<string, unknown> = {
+          idx: idx + 1,
+          moduleId: row['module'].displayId,
+          moduleName: row['module'].name,
+          faculty: row['module'].faculty.name,
+          method: StringHelper.getExamMethod(row['method']),
+          startAt: this.datePipe.transform(row['startAt'], 'dd/MM/y'),
+          total: row['total'].actual,
+          difference: row['total'].calculated,
+          _shift: row['shift'],
+        };
 
-      const ignoreColumns = ['module', 'total', 'method', 'shift', 'startAt'];
+        const ignoreColumns = ['module', 'total', 'method', 'shift', 'startAt'];
 
-      Object.entries<any>(row).forEach(([key, value]) => {
-        if (ignoreColumns.includes(key)) return;
+        Object.entries(row).forEach(([key, value]) => {
+          if (ignoreColumns.includes(key)) return;
 
-        // Faculty columns
-        if (/^\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$/.exec(key)) {
-          res[key] = value.actual ?? 0;
-          return;
-        }
+          // Faculty columns
+          if (/^\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$/.exec(key)) {
+            res[key] = value.actual ?? 0;
+            return;
+          }
 
-        res[key] = value;
-      });
+          res[key] = value;
+        });
 
-      return res;
-    });
+        return res;
+      },
+    );
 
     const header = [
       'idx',

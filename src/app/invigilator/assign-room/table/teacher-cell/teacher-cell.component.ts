@@ -20,8 +20,8 @@ import {
   ESMDomainEnumsExaminationStatus,
   GetAvailableInvigilatorsInShiftGroupData,
 } from '@esm/api';
-import { ObservableHelper } from '@esm/cdk';
-import { ObjectPipe } from '@esm/core';
+import { LoggerService, ObservableHelper } from '@esm/cdk';
+import { loggerProvider, ObjectPipe } from '@esm/core';
 import {
   GetAvailableInvigilatorsInShiftGroupTemporaryInvigilator,
   UserSummary,
@@ -53,8 +53,10 @@ export const TAIGA_UI = [
   TuiTextfieldControllerModule,
 ];
 
+const selector = 'esm-invigilator-assign-room-table-teacher-cell';
+
 @Component({
-  selector: 'esm-invigilator-assign-room-table-teacher-cell',
+  selector,
   standalone: true,
   imports: [
     CommonModule,
@@ -67,6 +69,7 @@ export const TAIGA_UI = [
   styleUrls: ['./teacher-cell.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
+    loggerProvider({ tag: selector }),
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => DefaultValueAccessor),
@@ -81,6 +84,7 @@ export class InvigilatorAssignRoomTableTeacherCellComponent
   ngControl = inject(NgControl);
   private readonly store = inject(InvigilatorAssignRoomStore);
   private readonly injector = inject(Injector);
+  private readonly loggerService = inject(LoggerService);
   private readonly dialogService = inject(TuiDialogService);
 
   // INPUT
@@ -107,19 +111,23 @@ export class InvigilatorAssignRoomTableTeacherCellComponent
 
   // GETTERS
   get control(): FormControl {
-    return this.ngControl.control! as FormControl;
+    const control = this.loggerService.errorNullOrEmpty({
+      value: this.ngControl.control,
+      valueType: 'control',
+    });
+    return control as FormControl;
   }
 
   // IMPLEMENTATIONS
-  writeValue(obj: any): void {
+  writeValue(obj: unknown): void {
     this.valueAccessor?.writeValue(obj);
   }
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: (_: unknown) => object): void {
     this.valueAccessor?.registerOnChange(fn);
   }
 
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: () => void): void {
     this.valueAccessor?.registerOnTouched(fn);
   }
 

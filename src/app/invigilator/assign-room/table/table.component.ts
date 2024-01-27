@@ -4,8 +4,8 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  OnInit,
   inject,
+  OnInit,
 } from '@angular/core';
 import {
   FormControl,
@@ -17,13 +17,12 @@ import {
   AssignInvigilatorsToShiftsPayload,
   ESMApplicationExaminationsQueriesGetAvailableInvigilatorsInGroupsGetAvailableInvigilatorsInGroupsItemResponseItem,
 } from '@esm/api';
-import { AssignInvigilatorsToShiftsRequest } from '@esm/data';
 import { LetModule } from '@ngrx/component';
 import { TuiTableModule } from '@taiga-ui/addon-table';
 import {
   TuiContextWithImplicit,
-  TuiStringHandler,
   tuiPure,
+  TuiStringHandler,
 } from '@taiga-ui/cdk';
 import {
   TuiDataListModule,
@@ -33,11 +32,7 @@ import {
 } from '@taiga-ui/core';
 import { TuiLineClampModule, TuiSelectModule } from '@taiga-ui/kit';
 import { filter, tap } from 'rxjs';
-import {
-  InvigilatorAssignRoomStore,
-  InvigilatorItem,
-  ShiftUiModel,
-} from '../assign-room.store';
+import { InvigilatorAssignRoomStore, ShiftUiModel } from '../assign-room.store';
 import { InvigilatorAssignRoomTableTeacherCellComponent } from './teacher-cell/teacher-cell.component';
 
 export const TAIGA_UI = [

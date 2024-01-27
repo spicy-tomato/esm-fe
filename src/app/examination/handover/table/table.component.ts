@@ -4,9 +4,9 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  inject,
   Injector,
   OnInit,
-  inject,
 } from '@angular/core';
 import {
   FormControl,
@@ -20,14 +20,14 @@ import {
 } from '@esm/api';
 import { ObservableHelper } from '@esm/cdk';
 import { ExamMethodPipe } from '@esm/core';
-import { ExaminationStatus, GetHandoverDataResponseItem } from '@esm/data';
+import { GetHandoverDataResponseItem } from '@esm/data';
 import { EditShiftReportDialogComponent } from '@esm/shared/dialogs';
 import { LetModule } from '@ngrx/component';
 import { TuiTableModule } from '@taiga-ui/addon-table';
 import {
   TuiContextWithImplicit,
-  TuiStringHandler,
   tuiPure,
+  TuiStringHandler,
 } from '@taiga-ui/cdk';
 import {
   TuiButtonModule,
