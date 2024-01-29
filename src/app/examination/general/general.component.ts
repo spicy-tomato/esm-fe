@@ -8,6 +8,9 @@ import {
 import { LetModule } from '@ngrx/component';
 import { TuiIslandModule, TuiProgressModule } from '@taiga-ui/kit';
 import { ExaminationProcessStore } from './general.store';
+import { SafeExaminationDataComponent } from '@esm/shared/components';
+import { ESMDomainEnumsExaminationStatus } from '@esm/api';
+import { map, Subscription } from 'rxjs';
 
 const TAIGA_UI = [
   // TuiButtonModule,
@@ -18,7 +21,7 @@ const TAIGA_UI = [
 @Component({
   templateUrl: './general.component.html',
   standalone: true,
-  imports: [CommonModule, LetModule, ...TAIGA_UI],
+  imports: [CommonModule, LetModule, SafeExaminationDataComponent, ...TAIGA_UI],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     // tuiButtonOptionsProvider({ size: 'm' }),
@@ -51,7 +54,11 @@ export class ExaminationGeneralComponent implements OnInit {
   subjectsCount = 1000;
   candidatesCount = 10000;
   invigilatorsCount = 1000;
+  readonly ExaminationStatus = ESMDomainEnumsExaminationStatus;
+  readonly getDataFunc = (): Subscription => this.store.getStatistic();
+
   readonly status$ = this.store.status$;
+  readonly showLoader$ = this.store.status$.pipe(map((s) => s === 'loading'));
 
   // PRIVATE PROPERTIES
   readonly statistic$ = this.store.data$;

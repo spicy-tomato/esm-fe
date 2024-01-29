@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { ActionCreator, Creator } from '@ngrx/store/src/models';
+import { ActionCreator, TypedAction } from '@ngrx/store/src/models';
 
 export class NotificationPageAction {
   static readonly reset = createAction('[Notification/Page] Reset');
@@ -13,8 +13,9 @@ export class NotificationPageAction {
   static readonly getUnread = createAction('[Notification/Page] Get unread');
 
   static readonly actions = [this.getAll, this.getUnread];
-  static readonly getData = (tab: number): ActionCreator<string, Creator> =>
-    this.actions[tab];
+  static readonly getData = (
+    tab: number,
+  ): ActionCreator<string, () => TypedAction<string>> => this.actions[tab];
 
   static readonly markAllAsRead = createAction(
     '[Notification/Page] Mark all as read',

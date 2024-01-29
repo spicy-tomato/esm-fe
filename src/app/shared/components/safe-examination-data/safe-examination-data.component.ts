@@ -29,7 +29,8 @@ export class SafeExaminationDataComponent {
   // INPUTS
   @Input() minimumStatus: ESMDomainEnumsExaminationStatus =
     ESMDomainEnumsExaminationStatus.Closed;
-  @Input() getDataFunc: () => null = () => null;
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  @Input() getDataFunc: () => void = () => {};
   @Input() showLoader: Observable<boolean> | boolean = false;
 
   // PUBLIC PROPERTIES

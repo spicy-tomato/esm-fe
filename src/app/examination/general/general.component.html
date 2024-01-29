@@ -1,6 +1,12 @@
 <!-- <button tuiButton (click)="openWorkflow()">Biểu đồ</button> -->
 
-<ng-container *ngrxLet="statistic$ as statistic">
+<esm-safe-examination-data
+  *ngrxLet="statistic$ as statistic"
+  [minimumStatus]="ExaminationStatus.AssignFaculty"
+  [getDataFunc]="getDataFunc"
+  [showLoader]="showLoader$"
+  class="grow"
+>
   <tui-island *ngIf="statistic" class="w-[700px] mx-auto">
     <p class="tui-island__category">Thông tin chung</p>
     <h3 class="tui-island__title">
@@ -71,4 +77,4 @@
       </li>
     </ul>
   </tui-island>
-</ng-container>
+</esm-safe-examination-data>

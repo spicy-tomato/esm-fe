@@ -82,7 +82,6 @@ export class AddModuleDialogComponent implements OnInit {
   ngOnInit(): void {
     this.handleGetFacultiesAndDepartmentsData();
     this.handleCreateSuccess();
-    console.log('init');
   }
 
   // PUBLIC METHODS
