@@ -25,7 +25,7 @@
       <li class="tui-list__item">
         Thời gian:
         <span class="font-bold">
-          {{ statistic.timePercent | number: "2.0-2" }}%
+          {{ statistic.timePercent | percentage }}
         </span>
         <progress
           tuiProgressBar
@@ -41,12 +41,12 @@
         Số môn thi: {{ statistic.numberOfModulesOver }}/{{
           statistic.numberOfModules
         }}
-        <span class="ml-2 font-bold"
-          >({{
-            (statistic.numberOfModulesOver / statistic.numberOfModules) * 100
-              | number: "2.0-2"
-          }}%)</span
-        >
+        <span class="ml-2 font-bold">
+          ({{
+            statistic.numberOfModulesOver
+              | percentage: statistic.numberOfModules
+          }})
+        </span>
         <progress
           tuiProgressBar
           [value]="statistic.numberOfModulesOver"
@@ -62,9 +62,8 @@
         }}
         <span class="ml-2 font-bold">
           ({{
-            (statistic.numberOfShiftsOver / statistic.numberOfShifts) * 100
-              | number: "2.0-2"
-          }}%)
+            statistic.numberOfShiftsOver | percentage: statistic.numberOfShifts
+          }})
         </span>
         <progress
           tuiProgressBar

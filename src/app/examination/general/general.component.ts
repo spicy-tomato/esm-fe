@@ -5,12 +5,13 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
+import { ESMDomainEnumsExaminationStatus } from '@esm/api';
+import { PercentagePipe } from '@esm/core';
+import { SafeExaminationDataComponent } from '@esm/shared/components';
 import { LetModule } from '@ngrx/component';
 import { TuiIslandModule, TuiProgressModule } from '@taiga-ui/kit';
-import { ExaminationProcessStore } from './general.store';
-import { SafeExaminationDataComponent } from '@esm/shared/components';
-import { ESMDomainEnumsExaminationStatus } from '@esm/api';
 import { map, Subscription } from 'rxjs';
+import { ExaminationProcessStore } from './general.store';
 
 const TAIGA_UI = [
   // TuiButtonModule,
@@ -21,7 +22,13 @@ const TAIGA_UI = [
 @Component({
   templateUrl: './general.component.html',
   standalone: true,
-  imports: [CommonModule, LetModule, SafeExaminationDataComponent, ...TAIGA_UI],
+  imports: [
+    CommonModule,
+    LetModule,
+    SafeExaminationDataComponent,
+    PercentagePipe,
+    ...TAIGA_UI,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     // tuiButtonOptionsProvider({ size: 'm' }),
