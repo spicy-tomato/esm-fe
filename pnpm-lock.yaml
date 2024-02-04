@@ -205,6 +205,9 @@ devDependencies:
   lodash:
     specifier: ^4.17.21
     version: 4.17.21
+  pnpm:
+    specifier: ^8.15.1
+    version: 8.15.1
   postcss:
     specifier: ^8.4.31
     version: 8.4.31
@@ -9044,6 +9047,12 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       find-up: 4.1.0
+    dev: true
+
+  /pnpm@8.15.1:
+    resolution: {integrity: sha512-gxz0xfi4N0r3FSHU0VPbSdcIbeYVwq98tenX64umMN2sRv6kldZD5VLvLmijqpmj5en77oaWcClnUE31xZyycw==}
+    engines: {node: '>=16.14'}
+    hasBin: true
     dev: true
 
   /postcss-import@15.1.0(postcss@8.4.31):
