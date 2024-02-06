@@ -7,9 +7,8 @@
       obs.selectedFacultyName
         ? "Dữ liệu CBCT thuộc khoa " + obs.selectedFacultyName
         : "Dữ liệu CBCT"
-    }}
-    <ng-container *ngIf="obs.selectedDepartmentName">
-      , bộ môn {{ obs.selectedDepartmentName }}
+    }}<ng-container *ngIf="obs.selectedDepartmentName"
+      >, bộ môn {{ obs.selectedDepartmentName }}
     </ng-container>
   </h1>
   <div class="header-right flex items-center">
