@@ -90,7 +90,7 @@
     "lodash": "^4.17.21",
     "pnpm": "^8.15.1",
     "postcss": "^8.4.31",
-    "prettier": "^3.2.4",
+    "prettier": "^3.2.5",
     "prettier-eslint": "^16.3.0",
     "release-please": "^15.13.0",
     "tailwindcss": "^3.3.3",
