@@ -18,10 +18,12 @@ import {
 } from 'rxjs';
 
 type ExaminationDataTemporaryState = State<
-  GetTemporaryDataData['data'],
+  GetTemporaryDataData['data']['items'],
   'data'
 > & {
   activateStatus: Status;
+  totalPages: number;
+  pageNumber: number;
 };
 
 @Injectable()
@@ -34,6 +36,8 @@ export class ExaminationDataTemporaryStore extends ComponentStore<ExaminationDat
   readonly data$ = this.select((s) => s.data);
 
   private readonly dataStatus$ = this.select((s) => s.dataStatus);
+  private readonly pageNumber$ = this.select((s) => s.pageNumber);
+  private readonly totalPages$ = this.select((s) => s.totalPages);
   private readonly activateStatus$ = this.select((s) => s.activateStatus);
 
   // GLOBAL SELECTORS
@@ -47,14 +51,26 @@ export class ExaminationDataTemporaryStore extends ComponentStore<ExaminationDat
   );
 
   readonly headerObservables$ = combineLatest([
+    this.pageNumber$,
     this.dataStatus$,
     this.hasError$,
     this.activateStatus$,
   ]).pipe(
-    map(([dataStatus, hasError, activateStatus]) => ({
+    map(([pageNumber, dataStatus, hasError, activateStatus]) => ({
+      pageNumber,
       dataStatus,
       hasError,
       activateStatus,
+    })),
+  );
+
+  readonly paginationObservables$ = combineLatest([
+    this.pageNumber$,
+    this.totalPages$,
+  ]).pipe(
+    map(([pageNumber, totalPages]) => ({
+      pageNumber,
+      totalPages,
     })),
   );
 
@@ -84,26 +100,34 @@ export class ExaminationDataTemporaryStore extends ComponentStore<ExaminationDat
     ),
   );
 
-  readonly getData = this.effect<void>((params$) =>
+  readonly getData = this.effect<number>((params$) =>
     params$.pipe(
       tap(() => this.patchState({ dataStatus: 'loading', dataError: null })),
       withLatestFrom(this.examinationId$),
-      switchMap(({ 1: id }) =>
-        this.examinationService.getTemporaryData(id).pipe(
-          tapResponse(
-            ({ data }) =>
-              this.patchState({
-                data,
-                dataStatus: 'success',
-                dataError: null,
-              }),
-            (error) =>
-              this.patchState({
-                dataStatus: 'error',
-                dataError: error as string,
-              }),
+      switchMap(([pageNumber, id]) =>
+        this.examinationService
+          .getTemporaryData({
+            examinationId: id,
+            pageNumber: pageNumber + 1,
+            pageSize: 50,
+          })
+          .pipe(
+            tapResponse(
+              ({ data }) =>
+                this.patchState({
+                  data: data.items,
+                  dataStatus: 'success',
+                  dataError: null,
+                  totalPages: data.totalPages,
+                  pageNumber,
+                }),
+              (error) =>
+                this.patchState({
+                  dataStatus: 'error',
+                  dataError: error as string,
+                }),
+            ),
           ),
-        ),
       ),
     ),
   );
@@ -115,6 +139,8 @@ export class ExaminationDataTemporaryStore extends ComponentStore<ExaminationDat
       dataStatus: 'loading',
       dataError: null,
       activateStatus: 'idle',
+      totalPages: 0,
+      pageNumber: 0,
     });
   }
 }

@@ -104,9 +104,10 @@ export class AddModuleDialogComponent implements OnInit {
     this.faculties$
       .pipe(
         tap((faculties) => {
-          const currentFacultyId = faculties.find(
-            (f) =>
-              f.name.toUpperCase() === this.context.data.faculty?.toUpperCase(),
+          const currentFacultyId = faculties.find((f) =>
+            this.context.data.faculty
+              ?.toUpperCase()
+              .includes(f.name.toUpperCase()),
           )?.id;
           if (currentFacultyId) {
             this.form.controls.faculty.setValue(currentFacultyId);

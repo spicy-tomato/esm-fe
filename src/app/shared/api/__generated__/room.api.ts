@@ -56,9 +56,16 @@ export class RoomService {
    */
   importRoom(data: ImportRoomPayload): Observable<ImportRoomData> {
     const formData = new FormData();
-    // const fromBody = data as any;
+
     for (const property in data) {
-      formData.append(property, data[property as keyof ImportRoomPayload]);
+      const d = data[property as keyof ImportRoomPayload];
+      if (Array.isArray(d)) {
+        d.forEach((element) => {
+          formData.append(property, element);
+        });
+      } else if (d !== undefined) {
+        formData.append(property, d);
+      }
     }
 
     return this.http.post<ImportRoomData>(this.url + `/Room/import`, formData);

@@ -80,9 +80,16 @@ console.log(payload);
 <%~ route.routeName.usage %>(<%~ wrapperArgs %>): <%~ describeReturnType() %> {
     <% if(requestBodyInfo.contentKind === 'FORM_DATA') { %>
         const formData = new FormData();
-        // const fromBody = <%~ bodyTmpl %> as any;
+
         for (const property in <%~ bodyTmpl %>) {
-            formData.append(property, <%~ bodyTmpl %>[property as keyof <%~ _.get(payload, "type") %>]);
+            const d = <%~ bodyTmpl %>[property as keyof <%~ _.get(payload, "type") %>];
+            if (Array.isArray(d)) {
+              d.forEach((element) => {
+                formData.append(property, element);
+              });
+            } else if (d !== undefined) {
+              formData.append(property, d);
+            }
         }
 
         return this.http.<%~ _.lowerCase(method) %><<%~ type %>>(

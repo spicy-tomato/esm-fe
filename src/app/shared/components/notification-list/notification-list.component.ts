@@ -87,7 +87,10 @@ export class NotificationListComponent implements OnInit {
   private readonly hasUnread$ = this.store.select(
     NotificationSelector.selectHasUnread,
   );
-  private readonly nameTitle$ = this.appStore.select(AppSelector.user);
+  private readonly nameTitle$ = this.appStore.pipe(
+    AppSelector.userTitle(),
+    takeUntil(this.destroy$),
+  );
 
   // PUBLIC PROPERTIES
   readonly tabsBtn = ['Tất cả', 'Chưa đọc'];

@@ -1,4 +1,3 @@
-import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -33,7 +32,11 @@ import {
   TuiScrollbarModule,
   TuiSvgModule,
 } from '@taiga-ui/core';
-import { TuiInputNumberModule, TuiLineClampModule } from '@taiga-ui/kit';
+import {
+  TuiInputNumberModule,
+  TuiLineClampModule,
+  TuiPaginationModule,
+} from '@taiga-ui/kit';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { filter, tap } from 'rxjs';
 import { ExaminationDataTemporaryStore } from './temporary.store';
@@ -46,6 +49,7 @@ export const TAIGA_UI = [
   TuiInputNumberModule,
   TuiLineClampModule,
   TuiLoaderModule,
+  TuiPaginationModule,
   TuiScrollbarModule,
   TuiSvgModule,
   TuiTableModule,
@@ -70,7 +74,6 @@ type FormType = {
     CommonModule,
     ReactiveFormsModule,
     ExamMethodPipe,
-    ScrollingModule,
     ErrorFlagComponent,
     ...NGRX,
     ...TAIGA_UI,
@@ -105,6 +108,7 @@ export class ExaminationDataTemporaryComponent implements OnInit {
     'departmentAssign',
   ];
   readonly headerObservables$ = this.store.headerObservables$;
+  readonly paginationObservables$ = this.store.paginationObservables$;
 
   form!: FormGroup<FormType>;
   disableReload = true;
@@ -115,7 +119,7 @@ export class ExaminationDataTemporaryComponent implements OnInit {
   // LIFECYCLE
   ngOnInit(): void {
     this.handleDataChanges();
-    this.getData();
+    this.getData(0);
   }
 
   // PUBLIC METHODS
@@ -127,8 +131,8 @@ export class ExaminationDataTemporaryComponent implements OnInit {
     this.store.activate();
   }
 
-  getData(): void {
-    this.store.getData();
+  getData(pageNumber: number): void {
+    this.store.getData(pageNumber);
   }
 
   onAddModule(rowId: number, moduleIdDropdownHost: TuiDropdownDirective): void {

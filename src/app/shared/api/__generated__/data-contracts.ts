@@ -56,12 +56,6 @@ export type CreateFacultyData =
 
 export type CreateModuleData = ESMApplicationCommonModelsResultSystemGuid;
 
-export type CreateModuleFacultyData =
-  | ESMApplicationCommonModelsResultSystemBoolean
-  | ESMApplicationCommonModelsResult;
-
-export type CreateModuleFacultyPayload = any;
-
 export type CreateRoomData = ESMApplicationCommonModelsResultSystemGuid;
 
 export type CreateUserData = ESMApplicationCommonModelsResultSystemGuid;
@@ -231,11 +225,30 @@ export interface ESMApplicationCommonModelsError {
   property?: string | null;
 }
 
+export interface ESMApplicationCommonModelsPaginatedListESMDomainEntitiesExaminationData {
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+  isEmpty: boolean;
+  items: ESMDomainEntitiesExaminationData[];
+  /** @format int32 */
+  pageNumber: number;
+  /** @format int32 */
+  totalCount: number;
+  /** @format int32 */
+  totalPages: number;
+}
+
 export type ESMApplicationCommonModelsResult =
   ESMApplicationCommonModelsResultSystemBoolean;
 
 export interface ESMApplicationCommonModelsResultESMApplicationAuthQueriesMySummaryInfoMySummaryInfoDto {
   data: ESMApplicationAuthQueriesMySummaryInfoMySummaryInfoDto;
+  errors?: ESMApplicationCommonModelsError[] | null;
+  success: boolean;
+}
+
+export interface ESMApplicationCommonModelsResultESMApplicationCommonModelsPaginatedListESMDomainEntitiesExaminationData {
+  data: ESMApplicationCommonModelsPaginatedListESMDomainEntitiesExaminationData;
   errors?: ESMApplicationCommonModelsError[] | null;
   success: boolean;
 }
@@ -348,12 +361,6 @@ export interface ESMApplicationCommonModelsResultSystemCollectionsGenericListESM
   success: boolean;
 }
 
-export interface ESMApplicationCommonModelsResultSystemCollectionsGenericListESMDomainEntitiesExaminationData {
-  data: ESMDomainEntitiesExaminationData[];
-  errors?: ESMApplicationCommonModelsError[] | null;
-  success: boolean;
-}
-
 export interface ESMApplicationCommonModelsResultSystemCollectionsGenericListESMDomainEntitiesExaminationEvent {
   data: ESMDomainEntitiesExaminationEvent[];
   errors?: ESMApplicationCommonModelsError[] | null;
@@ -380,10 +387,6 @@ export interface ESMApplicationDepartmentsCommandsCreateUserInDepartmentCreateUs
   isMale: boolean;
   phoneNumber?: string | null;
   teacherId?: string | null;
-}
-
-export interface ESMApplicationDepartmentsCommandsImportDepartmentImportDepartmentCommand {
-  files: File[];
 }
 
 export interface ESMApplicationDepartmentsCommandsUpdateDepartmentUpdateDepartmentParams {
@@ -841,7 +844,7 @@ export interface ESMApplicationModulesCommandsImportImportCommand {
 
 export interface ESMApplicationRoomsCommandsCreateCreateCommand {
   /** @format int32 */
-  capacity: number;
+  capacity?: number | null;
   displayId: string;
 }
 
@@ -903,7 +906,8 @@ export interface ESMDomainDtosDepartmentDepartmentSummary {
 export interface ESMDomainDtosExaminationExaminationSummary {
   /** @format date-time */
   createdAt: Date;
-  createdBy: ESMDomainDtosUserUserSummary;
+  /** @format uuid */
+  createdBy: string;
   description?: string | null;
   displayId: string;
   /** @format date-time */
@@ -1002,11 +1006,13 @@ export interface ESMDomainDtosUserUserSummary {
 
 export interface ESMDomainEntitiesCandidate {
   candidateShift: ESMDomainEntitiesCandidateShift[];
+  /** @maxLength 20 */
   displayId: string;
   examinationModules: ESMDomainEntitiesCandidateExaminationModule[];
   /** @format uuid */
   id: string;
   isStudent: boolean;
+  /** @maxLength 100 */
   name: string;
   /** @format date-time */
   updatedAt: Date;
@@ -1045,10 +1051,12 @@ export interface ESMDomainEntitiesCandidateShift {
 
 export type ESMDomainEntitiesDepartment = ESMDomainCommonBaseAuditableEntity & {
   departmentShiftGroups: ESMDomainEntitiesDepartmentShiftGroup[];
+  /** @maxLength 20 */
   displayId?: string | null;
   faculty: ESMDomainEntitiesFaculty;
   /** @format uuid */
   facultyId?: string | null;
+  /** @maxLength 100 */
   name: string;
   teachers: ESMDomainEntitiesTeacher[];
 };
@@ -1062,6 +1070,7 @@ export interface ESMDomainEntitiesDepartmentShiftGroup {
   facultyShiftGroupId: string;
   /** @format uuid */
   id: string;
+  /** @maxLength 100 */
   temporaryInvigilatorName?: string | null;
   user: ESMDomainIdentityApplicationUser;
   /** @format uuid */
@@ -1073,13 +1082,16 @@ export type ESMDomainEntitiesExamination =
     candidatesOfModule: ESMDomainEntitiesCandidateExaminationModule[];
     /** @format date-time */
     createdAt: Date;
+    /** @maxLength 200 */
     description?: string | null;
+    /** @maxLength 20 */
     displayId?: string | null;
     events: ESMDomainEntitiesExaminationEvent[];
     /** @format date-time */
     expectEndAt?: Date | null;
     /** @format date-time */
     expectStartAt?: Date | null;
+    /** @maxLength 100 */
     name: string;
     shiftGroups: ESMDomainEntitiesShiftGroup[];
     /**
@@ -1109,6 +1121,7 @@ export interface ESMDomainEntitiesExaminationData {
   credit?: number | null;
   /** @format date-time */
   date?: Date | null;
+  /** @maxLength 100 */
   department?: string | null;
   departmentAssign?: boolean | null;
   /** @format date-time */
@@ -1122,6 +1135,7 @@ export interface ESMDomainEntitiesExaminationData {
   examination: ESMDomainEntitiesExamination;
   /** @format uuid */
   examinationId: string;
+  /** @maxLength 100 */
   faculty?: string | null;
   /** @format uuid */
   id: string;
@@ -1141,9 +1155,13 @@ export interface ESMDomainEntitiesExaminationData {
    * 5 = Report2
    */
   method: ESMDomainEnumsExamMethod;
+  /** @maxLength 200 */
   moduleClass?: string | null;
+  /** @maxLength 20 */
   moduleId?: string | null;
+  /** @maxLength 100 */
   moduleName?: string | null;
+  /** @maxLength 50 */
   rooms?: string | null;
   /** @format int32 */
   roomsCount?: number | null;
@@ -1194,8 +1212,10 @@ export interface ESMDomainEntitiesExaminationEvent {
 
 export type ESMDomainEntitiesFaculty = ESMDomainCommonBaseAuditableEntity & {
   departments: ESMDomainEntitiesDepartment[];
+  /** @maxLength 20 */
   displayId?: string | null;
   facultyShiftGroups: ESMDomainEntitiesFacultyShiftGroup[];
+  /** @maxLength 100 */
   name: string;
   teachers: ESMDomainEntitiesTeacher[];
 };
@@ -1242,6 +1262,7 @@ export interface ESMDomainEntitiesModule {
   department: ESMDomainEntitiesDepartment;
   /** @format uuid */
   departmentId?: string | null;
+  /** @maxLength 20 */
   displayId: string;
   /** @format int32 */
   durationInMinutes: number;
@@ -1250,12 +1271,14 @@ export interface ESMDomainEntitiesModule {
   facultyId: string;
   /** @format uuid */
   id: string;
+  /** @maxLength 100 */
   name: string;
 }
 
 export interface ESMDomainEntitiesRoom {
   /** @format int32 */
   capacity?: number | null;
+  /** @maxLength 20 */
   displayId: string;
   /** @format uuid */
   id: string;
@@ -1276,6 +1299,7 @@ export interface ESMDomainEntitiesShift {
   invigilatorShift: ESMDomainEntitiesInvigilatorShift[];
   /** @format int32 */
   invigilatorsCount: number;
+  /** @maxLength 10000 */
   report?: string | null;
   room: ESMDomainEntitiesRoom;
   /** @format uuid */
@@ -1331,10 +1355,12 @@ export type ESMDomainEntitiesTeacher = ESMDomainCommonBaseAuditableEntity & {
   faculty: ESMDomainEntitiesFaculty;
   /** @format uuid */
   facultyId?: string | null;
+  /** @maxLength 100 */
   fullName: string;
   handedOverShifts: ESMDomainEntitiesShift[];
   invigilatorShifts: ESMDomainEntitiesInvigilatorShift[];
   isMale: boolean;
+  /** @maxLength 20 */
   teacherId?: string | null;
   user: ESMDomainIdentityApplicationUser;
   /** @format uuid */
@@ -1462,7 +1488,15 @@ export type GetSummaryData =
   ESMApplicationCommonModelsResultESMDomainDtosExaminationExaminationSummary;
 
 export type GetTemporaryDataData =
-  ESMApplicationCommonModelsResultSystemCollectionsGenericListESMDomainEntitiesExaminationData;
+  ESMApplicationCommonModelsResultESMApplicationCommonModelsPaginatedListESMDomainEntitiesExaminationData;
+
+export interface GetTemporaryDataQuery {
+  examinationId: string;
+  /** @format int32 */
+  pageNumber?: number;
+  /** @format int32 */
+  pageSize?: number;
+}
 
 export type GetUserData =
   ESMApplicationCommonModelsResultSystemCollectionsGenericListESMDomainDtosUserUserSummary;
@@ -1470,6 +1504,10 @@ export type GetUserData =
 export type ImportDepartmentData =
   | ESMApplicationCommonModelsResultSystemBoolean
   | ESMApplicationCommonModelsResult;
+
+export interface ImportDepartmentPayload {
+  Files?: File[];
+}
 
 export type ImportExaminationData =
   | ESMApplicationCommonModelsResultSystemBoolean

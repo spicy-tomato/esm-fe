@@ -16,8 +16,6 @@ import { createAction, props } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import {
   CreateFacultyData,
-  CreateModuleFacultyData,
-  CreateModuleFacultyPayload,
   ESMApplicationFacultiesCommandsCreateCreateCommand,
   ESMApplicationFacultiesCommandsUpdateUpdateRequest,
   GetAllFacultyData,
@@ -91,25 +89,6 @@ export class FacultyService {
   getUser(facultyId: string): Observable<GetUserData> {
     return this.http.get<GetUserData>(this.url + `/Faculty/${facultyId}/users`);
   }
-
-  /**
-   * No description
-   *
-   * @tags Faculty
-   * @name CreateModuleFaculty
-   * @request POST:/Faculty/{facultyId}/module
-   * @deprecated
-   * @response `200` `CreateModuleFacultyData` Success
-   */
-  createModuleFaculty(
-    facultyId: string,
-    data: CreateModuleFacultyPayload,
-  ): Observable<CreateModuleFacultyData> {
-    return this.http.post<CreateModuleFacultyData>(
-      this.url + `/Faculty/${facultyId}/module`,
-      data,
-    );
-  }
 }
 
 export class FacultyApiAction {
@@ -140,13 +119,4 @@ export class FacultyApiAction {
   );
 
   getUserFailed = createAction('[Faculty/API] getUser Failed');
-
-  createModuleFacultySuccessful = createAction(
-    '[Faculty/API] createModuleFaculty Successful',
-    props<{ data: CreateModuleFacultyData['data'] }>(),
-  );
-
-  createModuleFacultyFailed = createAction(
-    '[Faculty/API] createModuleFaculty Failed',
-  );
 }

@@ -40,6 +40,7 @@ import {
   GetStatisticData,
   GetSummaryData,
   GetTemporaryDataData,
+  GetTemporaryDataQuery,
   ImportExaminationData,
   ImportExaminationPayload,
   UpdateExaminationData,
@@ -122,12 +123,16 @@ export class ExaminationService {
     data: ImportExaminationPayload,
   ): Observable<ImportExaminationData> {
     const formData = new FormData();
-    // const fromBody = data as any;
+
     for (const property in data) {
-      formData.append(
-        property,
-        data[property as keyof ImportExaminationPayload],
-      );
+      const d = data[property as keyof ImportExaminationPayload];
+      if (Array.isArray(d)) {
+        d.forEach((element) => {
+          formData.append(property, element);
+        });
+      } else if (d !== undefined) {
+        formData.append(property, d);
+      }
     }
 
     return this.http.post<ImportExaminationData>(
@@ -468,9 +473,13 @@ export class ExaminationService {
    * @request GET:/Examination/{examinationId}/temporary
    * @response `200` `GetTemporaryDataData` Success
    */
-  getTemporaryData(examinationId: string): Observable<GetTemporaryDataData> {
+  getTemporaryData({
+    examinationId,
+    ...query
+  }: GetTemporaryDataQuery): Observable<GetTemporaryDataData> {
     return this.http.get<GetTemporaryDataData>(
       this.url + `/Examination/${examinationId}/temporary`,
+      { params: ObjectHelper.removeUndefinedField(query) },
     );
   }
 }

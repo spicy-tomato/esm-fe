@@ -19,9 +19,9 @@ import {
   CreateUserData,
   ESMApplicationDepartmentsCommandsCreateDepartmentCreateDepartmentCommand,
   ESMApplicationDepartmentsCommandsCreateUserInDepartmentCreateUserInDepartmentParams,
-  ESMApplicationDepartmentsCommandsImportDepartmentImportDepartmentCommand,
   ESMApplicationDepartmentsCommandsUpdateDepartmentUpdateDepartmentParams,
   ImportDepartmentData,
+  ImportDepartmentPayload,
   UpdateDepartmentData,
 } from './data-contracts';
 
@@ -59,11 +59,24 @@ export class DepartmentService {
    * @response `200` `ImportDepartmentData` Success
    */
   importDepartment(
-    data: ESMApplicationDepartmentsCommandsImportDepartmentImportDepartmentCommand,
+    data: ImportDepartmentPayload,
   ): Observable<ImportDepartmentData> {
+    const formData = new FormData();
+
+    for (const property in data) {
+      const d = data[property as keyof ImportDepartmentPayload];
+      if (Array.isArray(d)) {
+        d.forEach((element) => {
+          formData.append(property, element);
+        });
+      } else if (d !== undefined) {
+        formData.append(property, d);
+      }
+    }
+
     return this.http.post<ImportDepartmentData>(
       this.url + `/Department/import`,
-      data,
+      formData,
     );
   }
 

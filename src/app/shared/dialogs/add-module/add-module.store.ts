@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Status } from '@esm/cdk';
 import { DepartmentSimple, FacultyWithDepartments } from '@esm/data';
-import { FacultyService } from '@esm/api';
+import { ModuleService } from '@esm/api';
 import { AppSelector, AppState } from '@esm/store';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Store } from '@ngrx/store';
@@ -32,7 +32,7 @@ export type AddModuleDialogCreateParams = {
 export class AddModuleDialogStore extends ComponentStore<AddModuleDialogState> {
   // INJECT PROPERTIES
   private readonly appStore = inject(Store<AppState>);
-  private readonly facultyService = inject(FacultyService);
+  private readonly moduleService = inject(ModuleService);
 
   // STATE SELECTORS
   readonly status$ = this.select((s) => s.status);
@@ -75,8 +75,8 @@ export class AddModuleDialogStore extends ComponentStore<AddModuleDialogState> {
   readonly create = this.effect<AddModuleDialogCreateParams>((params$) =>
     params$.pipe(
       tap(() => this.patchState({ status: 'loading', error: null })),
-      switchMap(({ facultyId, ...rest }) =>
-        this.facultyService.createModuleFaculty(facultyId, rest).pipe(
+      switchMap((params) =>
+        this.moduleService.createModule(params).pipe(
           tapResponse(
             () => {
               this.patchState({ status: 'success' });
